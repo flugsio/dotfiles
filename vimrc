@@ -106,8 +106,10 @@ endif
 "  au GUIEnter * set fullscreen
 "endif
 
+:au FocusLost * silent! wa " autosave
+
 set number
-#colorscheme railscasts
+"colorscheme railscasts
 set background=dark
 colorscheme solarized
 set sts=2

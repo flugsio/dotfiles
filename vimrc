@@ -1,30 +1,17 @@
 filetype off
 call pathogen#infect()
-call pathogen#helptags()
+"call pathogen#helptags()
 
-" An example for a vimrc file.
-"
-" Maintainer:	Bram Moolenaar <Bram@vim.org>
-" Last change:	2008 Jul 02
-"
-" To use it, copy it to
-"     for Unix and OS/2:  ~/.vimrc
-"	      for Amiga:  s:.vimrc
-"  for MS-DOS and Win32:  $VIM\_vimrc
-"	    for OpenVMS:  sys$login:.vimrc
+" some stuff from http://amix.dk/vim/vimrc.html
 
-" When started as "evim", evim.vim will already have done these settings.
-if v:progname =~? "evim"
-  finish
-endif
-
-" Use Vim settings, rather then Vi settings (much better!).
-" This must be first, because it changes other options as a side effect.
 set nocompatible
 " allow backspacing over everything in insert mode
 set backspace=indent,eol,start
 
 set noswapfile
+
+" MySys()
+source ~/.vimrc_local
 
 if has("vms")
   set nobackup		" do not keep a backup file, use versions instead
@@ -47,9 +34,9 @@ map Q gq
 inoremap <C-U> <C-G>u<C-U>
 
 " In many terminal emulators the mouse works just fine, thus enable it.
-if has('mouse')
-  set mouse=a
-endif
+"if has('mouse')
+"  set mouse=a
+"endif
 
 " Switch syntax highlighting on, when the terminal has colors
 " Also switch on highlighting the last used search pattern.
@@ -109,14 +96,11 @@ endif
 :au FocusLost * silent! wa " autosave
 
 set number
-augroup BgHighlight
-    autocmd!
-    autocmd WinEnter * set cursorcolumn
-    autocmd WinLeave * set nocursorcolumn
-augroup END
-"colorscheme railscasts
-set background=light
-colorscheme solarized
+"augroup BgHighlight
+"    autocmd!
+"    autocmd WinEnter * set cursorcolumn
+"    autocmd WinLeave * set nocursorcolumn
+"augroup END
 set sts=2
 set sw=2
 
@@ -125,7 +109,7 @@ let Tlist_GainFocus_On_ToggleOpen=1
 
 " http://stevelosh.com/blog/2010/09/coming-home-to-vim/
 set encoding=utf-8
-set scrolloff=3
+set scrolloff=2
 "set autoindent
 "set showmode
 "set showcmd
@@ -179,9 +163,26 @@ inoremap jj <ESC>
 
 " har tagit bort r och T för typ right scrollbar och toolbar
 set guioptions=egmt
-set guifont=Menlo:h14
-"set guifont=Ubuntu\ Mono:h16
-"set guifont=Inconsolata:h18
+
+set background=dark
+if has("gui_running")
+  colorscheme solarized
+else
+  colorscheme darkblue
+endif
+
+" Set font according to system
+if MySys() == "mac"
+  set guifont=Menlo:h14
+  "set guifont=Ubuntu\ Mono:h16
+  "set guifont=Inconsolata:h18
+  set shell=/bin/bash
+elseif MySys() == "windows"
+  set  guifont=Bitstream\ Vera\ Sans\ Mono:h10
+elseif MySys() == "linux"
+  set guifont=Ubuntu\ Mono\ 12
+  set shell=/bin/bash
+endif
 
 " leaders Q
 nnoremap <leader>w <C-w>v<C-w>l
@@ -217,17 +218,100 @@ nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
 
+vnoremap <silent> * :call VisualSearch('f')<CR>
+vnoremap <silent> # :call VisualSearch('b')<CR>
+
 let g:CommandTMaxHeight = 15
 noremap <leader>y :CommandTFlush<CR>
 
-nnoremap § :
-nnoremap ö /
-nnoremap Ö ?
+map § $
+imap § $
+vmap § $
+cmap § $
+nnoremap ö :
+nnoremap Ö ;
+map <space> /
+map <c-space> ?
+"nnoremap - /
+"nnoremap _ ?
 nnoremap ä ]`
 nnoremap Ä [`
-nnoremap - :cprevious<CR>
-nnoremap + :cnext<CR>
+nnoremap <M-p> :cprevious<CR>
+nnoremap <M-n> :cnext<CR>
 nnoremap å `
+" disable arrow keys till i have learned
+noremap  <Up> ""
+noremap! <Up> <Esc>
+noremap  <Down> ""
+noremap! <Down> <Esc>
+noremap  <Left> ""
+noremap! <Left> <Esc>
+noremap  <Right> ""
+noremap! <Right> <Esc>
+"map <right> :bn<cr>
+"map <left> :bp<cr>
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Parenthesis/bracket expanding
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+vnoremap $1 <esc>`>a)<esc>`<i(<esc>
+vnoremap $2 <esc>`>a]<esc>`<i[<esc>
+vnoremap $3 <esc>`>a}<esc>`<i{<esc>
+vnoremap $$ <esc>`>a"<esc>`<i"<esc>
+vnoremap $q <esc>`>a'<esc>`<i'<esc>
+vnoremap $e <esc>`>a"<esc>`<i"<esc>
+
+" Map auto complete of (, ", ', [
+inoremap $1 ()<esc>i
+inoremap $2 []<esc>i
+inoremap $3 {}<esc>i
+inoremap $4 {<esc>o}<esc>O
+inoremap $q ''<esc>i
+inoremap $e ""<esc>i
+inoremap $t <><esc>i
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Editing mappings
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"Remap VIM 0
+map 0 ^
+
+"Move a line of text using ALT+[jk] or Comamnd+[jk] on mac
+nmap <M-j> mz:m+<cr>`z
+nmap <M-k> mz:m-2<cr>`z
+vmap <M-j> :m'>+<cr>`<my`>mzgv`yo`z
+vmap <M-k> :m'<-2<cr>`>my`<mzgv`yo`z
+
+if MySys() == "mac"
+  nmap <D-j> <M-j>
+  nmap <D-k> <M-k>
+  vmap <D-j> <M-j>
+  vmap <D-k> <M-k>
+endif
+
+
+cno $q <C-\>eDeleteTillSlash()<cr>
+
+func! DeleteTillSlash()
+  let g:cmd = getcmdline()
+  if MySys() == "linux" || MySys() == "mac"
+    let g:cmd_edited = substitute(g:cmd, "\\(.*\[/\]\\).*", "\\1", "")
+  else
+    let g:cmd_edited = substitute(g:cmd, "\\(.*\[\\\\]\\).*", "\\1", "")
+  endif
+  if g:cmd == g:cmd_edited
+    if MySys() == "linux" || MySys() == "mac"
+      let g:cmd_edited = substitute(g:cmd, "\\(.*\[/\]\\).*/", "\\1", "")
+    else
+      let g:cmd_edited = substitute(g:cmd, "\\(.*\[\\\\\]\\).*\[\\\\\]", "\\1", "")
+    endif
+  endif
+  return g:cmd_edited
+endfunc
+
+func! CurrentFileDir(cmd)
+  return a:cmd . " " . expand("%:p:h") . "/"
+endfunc
 
 "nnoremap <leader>a :Ack 
 "nnoremap <leader>f :Ack <c-r>=expand("<cword>")<CR><CR>

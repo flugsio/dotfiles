@@ -109,8 +109,13 @@ endif
 :au FocusLost * silent! wa " autosave
 
 set number
+augroup BgHighlight
+    autocmd!
+    autocmd WinEnter * set cursorcolumn
+    autocmd WinLeave * set nocursorcolumn
+augroup END
 "colorscheme railscasts
-set background=dark
+set background=light
 colorscheme solarized
 set sts=2
 set sw=2
@@ -175,12 +180,14 @@ inoremap jj <ESC>
 " har tagit bort r och T för typ right scrollbar och toolbar
 set guioptions=egmt
 set guifont=Menlo:h14
+"set guifont=Ubuntu\ Mono:h16
 "set guifont=Inconsolata:h18
 
 " leaders Q
 nnoremap <leader>w <C-w>v<C-w>l
 
 nnoremap <leader>e :RVview<cr>:RSview _form<cr><C-w>h:RSmodel<cr><C-w>k
+nnoremap <leader>E :e doc/changes.txt<cr>:RVtask permissions<cr>:RVlocale sv-SE<cr><C-w>K:RVmigration 0<cr><C-w>h<C-w>10+
 
 nnoremap <leader>r :R<cr>
 nnoremap <leader>R :R 
@@ -213,6 +220,7 @@ nnoremap <C-l> <C-w>l
 let g:CommandTMaxHeight = 15
 noremap <leader>y :CommandTFlush<CR>
 
+nnoremap § :
 nnoremap ö /
 nnoremap Ö ?
 nnoremap ä ]`
@@ -234,6 +242,7 @@ nnoremap <F5> :GundoToggle<CR>
 set wildignore+=*.jpg,*.bmp,*.gif
 set wildignore+=doc
 set wildignore+=coverage
+set wildignore+=*~
 
 let @t='itry(:ea)'
 

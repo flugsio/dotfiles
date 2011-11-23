@@ -1,5 +1,6 @@
 filetype off
 call pathogen#infect()
+call pathogen#helptags()
 
 " An example for a vimrc file.
 "
@@ -20,7 +21,6 @@ endif
 " Use Vim settings, rather then Vi settings (much better!).
 " This must be first, because it changes other options as a side effect.
 set nocompatible
-colorscheme railscasts
 " allow backspacing over everything in insert mode
 set backspace=indent,eol,start
 

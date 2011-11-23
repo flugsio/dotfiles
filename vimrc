@@ -161,8 +161,7 @@ nnoremap <leader>S ?{<CR>jV/^\s*\}\?$<CR>k:sort<CR>:noh<CR>
 
 inoremap jj <ESC>
 
-" har tagit bort r och T för typ right scrollbar och toolbar
-set guioptions=egmt
+set guioptions=e
 
 set background=dark
 if has("gui_running")

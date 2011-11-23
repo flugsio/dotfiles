@@ -49,3 +49,6 @@
 [submodule "vim/bundle/vim-afterimage"]
 	path = vim/bundle/vim-afterimage
 	url = git://github.com/tpope/vim-afterimage.git
+[submodule "vim/bundle/lojban"]
+	path = vim/bundle/lojban
+	url = https://github.com/vim-scripts/lojban

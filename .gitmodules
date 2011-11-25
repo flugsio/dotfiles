@@ -52,3 +52,9 @@
 [submodule "vim/bundle/lojban"]
 	path = vim/bundle/lojban
 	url = https://github.com/vim-scripts/lojban
+[submodule "vim/bundle/viki_vim"]
+	path = vim/bundle/viki_vim
+	url = git://github.com/tomtom/viki_vim.git
+[submodule "vim/bundle/vikitasks_vim"]
+	path = vim/bundle/vikitasks_vim
+	url = git://github.com/tomtom/vikitasks_vim.git

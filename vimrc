@@ -73,6 +73,8 @@ if has("autocmd")
 
   augroup END
 
+  let g:vikiNameSuffix=".viki"
+  autocmd! BufRead,BufNewFile *.viki set filetype=viki
 else
 
   set autoindent		" always set autoindenting on
@@ -107,13 +109,15 @@ set sw=2
 nnoremap <silent> <F8> :TlistToggle<CR>
 let Tlist_GainFocus_On_ToggleOpen=1
 
+noremap <m-r> :TRecentlyUsedFiles<cr> 
+
 " http://stevelosh.com/blog/2010/09/coming-home-to-vim/
 set encoding=utf-8
 set scrolloff=2
 "set autoindent
 "set showmode
 "set showcmd
-"set hidden
+set hidden
 "set wildmenu
 "set wildmode=list:longest
 "set visualbell
@@ -126,6 +130,7 @@ set laststatus=2
 "set undofile
 
 let mapleader = ","
+let maplocalleader = ";"
 
 " för att få riktiga regexp
 " nnoremap / /\v
@@ -243,12 +248,12 @@ noremap  <Up> ""
 noremap! <Up> <Esc>
 noremap  <Down> ""
 noremap! <Down> <Esc>
-noremap  <Left> ""
+"noremap  <Left> ""
 noremap! <Left> <Esc>
-noremap  <Right> ""
+"noremap  <Right> ""
 noremap! <Right> <Esc>
-"map <right> :bn<cr>
-"map <left> :bp<cr>
+map <right> :bn<cr>
+map <left> :bp<cr>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Parenthesis/bracket expanding

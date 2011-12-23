@@ -237,8 +237,8 @@ map <c-space> ?
 "nnoremap _ ?
 nnoremap ä ]`
 nnoremap Ä [`
-nnoremap <M-p> :cprevious<CR>
-nnoremap <M-n> :cnext<CR>
+nnoremap <C-p> :cprevious<CR>
+nnoremap <C-n> :cnext<CR>
 nnoremap å `
 " disable arrow keys till i have learned
 noremap  <Up> ""
@@ -251,6 +251,20 @@ noremap! <Left> <Esc>
 noremap! <Right> <Esc>
 map <right> :bn<cr>
 map <left> :bp<cr>
+
+"tab mappings
+map <D-1> 1gt
+map <D-2> 2gt
+map <D-3> 3gt
+map <D-4> 4gt
+map <D-5> 5gt
+map <D-6> 6gt
+map <D-7> 7gt
+map <D-8> 8gt
+map <D-9> 9gt
+" these already exists in macvim
+"map <D-t> :tabnew<CR>
+"map <D-w> :tabclose<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Parenthesis/bracket expanding

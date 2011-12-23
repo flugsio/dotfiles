@@ -73,3 +73,6 @@
 [submodule "vim/bundle/tmru_vim"]
 	path = vim/bundle/tmru_vim
 	url = git://github.com/tomtom/tmru_vim
+[submodule "vim/bundle/rainbow_paranthesis"]
+	path = vim/bundle/rainbow_paranthesis
+	url = git://github.com/kien/rainbow_parentheses.vim.git

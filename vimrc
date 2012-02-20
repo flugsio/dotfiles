@@ -350,6 +350,15 @@ compiler rspec
 nmap <Leader>fd :cf /tmp/autotest.txt<cr> :compiler rspec<cr>
 
 
+function! ToggleShowTabLine()
+  if &showtabline != 0
+    set showtabline=0
+  else
+    set showtabline=2
+  end
+endfunction
+"map <silent> <F12> :call ToggleShowTabLine()<cr>
+
 " Control-Shift-PageUp: Drag active tab page left. {{{2
 
 imap <C-S-PageUp> <C-O>:TabMoveLeft<CR>

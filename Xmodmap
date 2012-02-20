@@ -1,0 +1,11 @@
+clear control
+clear mod4
+
+keycode 37 = Super_L
+keycode 133 = Control_L
+keycode 105 = Super_R
+keycode 134 = Control_R
+!### change 134 to 116 if using Ubuntu hardy, not 8.10 or later. ###
+add control = Control_L Control_R
+
+add mod4 = Super_L Super_R

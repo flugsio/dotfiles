@@ -1,27 +1,31 @@
 [global_config]
   handle_size = 2
 [keybindings]
-  paste = <Control>v
-  copy = <Control>c
-  split_vert = <Shift><Control>v
-  split_horiz = <Shift><Control>s
+  go_up = <Shift><Control>k
   close_window = None
+  split_horiz = <Shift><Control>s
+  go_down = <Shift><Control>j
+  split_vert = <Shift><Control>v
+  go_right = <Shift><Control>l
+  go_left = <Shift><Control>h
+  copy = <Shift><Control>y
+  paste = <Shift><Control>p
 [profiles]
   [[default]]
+    palette = "#073642:#d30102:#859900:#b58900:#6c71c4:#d33682:#2aa198:#839496:#586e75:#cb4b16:#859900:#b58900:#268bd2:#d33682:#2aa198:#93a1a1"
     scrollback_lines = 3000
     scrollbar_position = hidden
-    show_titlebar = False
-    palette = "#073642:#d30102:#859900:#b58900:#6c71c4:#d33682:#2aa198:#839496:#586e75:#cb4b16:#859900:#b58900:#268bd2:#d33682:#2aa198:#93a1a1"
     cursor_color = "#eee8d5"
     foreground_color = "#eee8d5"
+    show_titlebar = False
     background_color = "#002b36"
   [[Light]]
+    palette = "#073642:#d30102:#859900:#b58900:#6c71c4:#d33682:#2aa198:#839496:#586e75:#cb4b16:#859900:#b58900:#268bd2:#d33682:#2aa198:#93a1a1"
     scrollback_lines = 3000
     scrollbar_position = hidden
-    show_titlebar = False
-    palette = "#073642:#d30102:#859900:#b58900:#6c71c4:#d33682:#2aa198:#839496:#586e75:#cb4b16:#859900:#b58900:#268bd2:#d33682:#2aa198:#93a1a1"
     cursor_color = "#002b36"
     foreground_color = "#002b36"
+    show_titlebar = False
     background_color = "#eee8d5"
 [layouts]
   [[default]]
@@ -32,4 +36,3 @@
       type = Window
       parent = ""
 [plugins]
-

@@ -76,3 +76,9 @@
 [submodule "vim/bundle/rainbow_paranthesis"]
 	path = vim/bundle/rainbow_paranthesis
 	url = git://github.com/kien/rainbow_parentheses.vim.git
+[submodule "vim/bundle/vim-browsereload-mac"]
+	path = vim/bundle/vim-browsereload-mac
+	url = git://github.com/tell-k/vim-browsereload-mac.git
+[submodule "vim/bundle/vim-extradite"]
+	path = vim/bundle/vim-extradite
+	url = git://github.com/int3/vim-extradite.git

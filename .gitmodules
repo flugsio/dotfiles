@@ -82,3 +82,6 @@
 [submodule "vim/bundle/vim-extradite"]
 	path = vim/bundle/vim-extradite
 	url = git://github.com/int3/vim-extradite.git
+[submodule "vim/bundle/gitv"]
+	path = vim/bundle/gitv
+	url = git://github.com/gregsexton/gitv.git

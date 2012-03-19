@@ -53,25 +53,26 @@ if has("autocmd")
 
   " Put these in an autocmd group, so that we can delete them easily.
   augroup vimrcEx
-  au!
+    au!
 
-  " For all text files set 'textwidth' to 78 characters.
-  autocmd FileType text setlocal textwidth=78
+    " For all text files set 'textwidth' to 78 characters.
+    autocmd FileType text setlocal textwidth=78
 
-  " When editing a file, always jump to the last known cursor position.
-  " Don't do it when the position is invalid or when inside an event handler
-  " (happens when dropping a file on gvim).
-  " Also don't do it when the mark is in the first line, that is the default
-  " position when opening a file.
-  autocmd BufReadPost *
-    \ if line("'\"") > 1 && line("'\"") <= line("$") |
-    \   exe "normal! g`\"" |
-    \ endif
+    " When editing a file, always jump to the last known cursor position.
+    " Don't do it when the position is invalid or when inside an event handler
+    " (happens when dropping a file on gvim).
+    " Also don't do it when the mark is in the first line, that is the default
+    " position when opening a file.
+    autocmd BufReadPost *
+	  \ if line("'\"") > 1 && line("'\"") <= line("$") |
+	  \   exe "normal! g`\"" |
+	  \ endif
 
+    autocmd! BufRead,BufNewFile *.viki set filetype=viki
+    :au FocusLost * silent! wa " autosave
   augroup END
 
   let g:vikiNameSuffix=".viki"
-  autocmd! BufRead,BufNewFile *.viki set filetype=viki
 else
 
   set autoindent		" always set autoindenting on
@@ -92,7 +93,6 @@ endif
 "  au GUIEnter * set fullscreen
 "endif
 
-:au FocusLost * silent! wa " autosave
 
 set number
 "augroup BgHighlight
@@ -162,6 +162,7 @@ nnoremap <leader>S ?{<CR>jV/^\s*\}\?$<CR>k:sort<CR>:noh<CR>
 "nnoremap <leader>v V`]
 
 inoremap jj <ESC>
+inoremap kj <ESC>
 
 set guioptions=e
 

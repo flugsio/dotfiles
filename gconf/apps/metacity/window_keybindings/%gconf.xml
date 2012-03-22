@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<gconf>
+	<entry name="move_to_workspace_down" mtime="1332437150" type="string">
+		<stringvalue>&lt;Shift&gt;&lt;Control&gt;&lt;Alt&gt;j</stringvalue>
+	</entry>
+	<entry name="move_to_workspace_up" mtime="1332437149" type="string">
+		<stringvalue>&lt;Shift&gt;&lt;Control&gt;&lt;Alt&gt;k</stringvalue>
+	</entry>
+	<entry name="move_to_workspace_right" mtime="1332437144" type="string">
+		<stringvalue>&lt;Shift&gt;&lt;Control&gt;&lt;Alt&gt;l</stringvalue>
+	</entry>
+	<entry name="move_to_workspace_left" mtime="1332437139" type="string">
+		<stringvalue>&lt;Shift&gt;&lt;Control&gt;&lt;Alt&gt;h</stringvalue>
+	</entry>
+</gconf>

@@ -5,6 +5,9 @@ keycode 37 = Super_L
 keycode 133 = Control_L
 keycode 105 = Super_R
 keycode 134 = Control_R
+
+clear Lock
+keycode 66 = Escape
 !### change 134 to 116 if using Ubuntu hardy, not 8.10 or later. ###
 add control = Control_L Control_R
 

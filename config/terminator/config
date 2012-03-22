@@ -1,15 +1,30 @@
 [global_config]
+  enabled_plugins = LaunchpadCodeURLHandler, APTURLHandler, LaunchpadBugURLHandler
   handle_size = 2
 [keybindings]
-  go_up = <Shift><Control>k
+  cycle_prev = None
   close_window = None
-  split_horiz = <Shift><Control>s
-  go_down = <Shift><Control>j
-  split_vert = <Shift><Control>v
+  switch_to_tab_10 = <Control>0
   go_right = <Shift><Control>l
+  split_vert = <Shift><Control>v
+  prev_tab = <Shift><Control>Tab
+  switch_to_tab_6 = <Control>6
+  switch_to_tab_7 = <Control>7
+  switch_to_tab_4 = <Control>4
+  switch_to_tab_5 = <Control>5
+  cycle_next = None
+  switch_to_tab_3 = <Control>3
+  switch_to_tab_1 = <Control>1
+  switch_to_tab_2 = <Control>2
+  switch_to_tab_8 = <Control>8
+  switch_to_tab_9 = <Control>9
   go_left = <Shift><Control>h
   copy = <Shift><Control>y
   paste = <Shift><Control>p
+  go_up = <Shift><Control>k
+  next_tab = <Control>Tab
+  split_horiz = <Shift><Control>s
+  go_down = <Shift><Control>j
 [profiles]
   [[default]]
     scrollbar_position = hidden
@@ -34,6 +49,7 @@
     [[[child1]]]
       type = Terminal
       parent = window0
+      profile = default
     [[[window0]]]
       type = Window
       parent = ""

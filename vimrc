@@ -115,10 +115,11 @@ set scrolloff=2
 "set showmode
 "set showcmd
 set hidden
+set autoread
 "set wildmenu
 "set wildmode=list:longest
 "set visualbell
-set cursorline
+"set cursorline
 "set ttyfast
 "set ruler
 "set backspace=indent,eol,start
@@ -161,15 +162,13 @@ nmap <silent> <leader>s :set nolist!<CR>
 nnoremap <leader>S ?{<CR>jV/^\s*\}\?$<CR>k:sort<CR>:noh<CR>
 "nnoremap <leader>v V`]
 
-inoremap jj <ESC>
-inoremap kj <ESC>
+set guioptions=ec
 
-set guioptions=e
-
-set background=dark
 if has("gui_running")
+  set background=light
   colorscheme solarized
 else
+  set background=dark
   colorscheme darkblue
 endif
 
@@ -231,7 +230,7 @@ imap § $
 vmap § $
 cmap § $
 nnoremap ö :
-nnoremap Ö ;
+nnoremap Ö :
 map <space> /
 map <c-space> ?
 "nnoremap - /

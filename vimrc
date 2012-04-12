@@ -164,13 +164,18 @@ nnoremap <leader>S ?{<CR>jV/^\s*\}\?$<CR>k:sort<CR>:noh<CR>
 
 set guioptions=ec
 
-if has("gui_running")
-  set background=light
-  colorscheme solarized
-else
-  set background=dark
-  colorscheme darkblue
-endif
+set t_Co=16
+let g:solarized_termcolors=16
+let g:solarized_termtrans=1
+set background=light
+"if has("gui_running")
+"  set background=light
+"  colorscheme solarized
+"else
+"  set background=dark
+"  colorscheme darkblue
+"endif
+colorscheme solarized
 
 " Set font according to system
 if MySys() == "mac"

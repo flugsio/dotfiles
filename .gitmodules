@@ -51,7 +51,7 @@
 	url = git://github.com/tpope/vim-afterimage.git
 [submodule "vim/bundle/lojban"]
 	path = vim/bundle/lojban
-	url = https://github.com/vim-scripts/lojban
+	url = git://github.com/vim-scripts/lojban.git
 [submodule "vim/bundle/viki_vim"]
 	path = vim/bundle/viki_vim
 	url = git://github.com/tomtom/viki_vim.git
@@ -100,3 +100,6 @@
 [submodule "config/awesome/pomodoro"]
 	path = config/awesome/pomodoro
 	url = git://github.com/nikolavp/awesome-pomodoro.git
+[submodule "vim/bundle/vim-flatfoot"]
+	path = vim/bundle/vim-flatfoot
+	url = git://github.com/tpope/vim-flatfoot.git

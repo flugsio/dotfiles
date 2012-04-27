@@ -103,3 +103,6 @@
 [submodule "vim/bundle/vim-flatfoot"]
 	path = vim/bundle/vim-flatfoot
 	url = git://github.com/tpope/vim-flatfoot.git
+[submodule "vim/bundle/tslime"]
+	path = vim/bundle/tslime
+	url = git://github.com/xaviershay/tslime.vim.git

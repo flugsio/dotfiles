@@ -17,12 +17,13 @@ clear mod3
 clear mod4
 clear mod5
 
-keycode 37 = Super_L
-keycode 133 = Control_L
-keycode 105 = Super_R
-keycode 134 = Control_R
+keycode 133 = Super_L
+keycode 66 = Control_L
+!keycode 134 = Super_R
+keycode 36 = Control_R
+keycode 105 =  Return NoSymbol Return NoSymbol Return
 
-keycode 66 = Escape
+keycode 23 = Escape
 
 ! default, rebind as osx
 ! keycode  16 = 7 slash 7 slash braceleft division
@@ -36,17 +37,20 @@ keycode  16 = 7 slash backslash bar guillemotleft division
 keycode  17 = 8 parenleft bracketleft braceleft bracketleft braceleft
 keycode  18 = 9 parenright bracketright braceright bracketright braceright
 keycode  19 = 0 equal 0 equal guillemotright degree
-keycode  23 = Tab ISO_Left_Tab Tab ISO_Left_Tab kana_a kana_i kana_o kana_u
+keycode  37 = Tab ISO_Left_Tab Tab ISO_Left_Tab kana_a kana_i kana_o kana_u
 keycode  31 = i I i I rightarrow idotless rightarrow idotless i I i I rightarrow idotless
 ! https://bugzilla.redhat.com/show_bug.cgi?id=537708
 !keycode  64 = ISO_Level3_Shift
 !add mod2 = Alt_R Alt_L Mode_switch
-keycode  64 = Alt_L ISO_Prev_Group Alt_L ISO_Prev_Group Alt_L ISO_Prev_Group
+!moved ALT-L and ALT-R, Alt-Tab broken+
+keycode 108 = Alt_L ISO_Prev_Group Alt_L ISO_Prev_Group Alt_L ISO_Prev_Group
+keycode 64 = ISO_Level3_Shift NoSymbol ISO_Level3_Shift NoSymbol ISO_Level3_Shift
 
 add control = Control_L Control_R
 add mod1 = Meta_L
 !add mod2 = Mode_switch
 add mod3 = Alt_L
-add mod4 = Super_L Super_R
+!add mod4 = Super_L Super_R
+add mod4 = Super_L
 add mod5 = ISO_Level3_Shift
 

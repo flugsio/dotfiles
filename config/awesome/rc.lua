@@ -91,9 +91,19 @@ myawesomemenu = {
    { "quit", awesome.quit }
 }
 
-mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesome_icon },
+-- Custom laucher apps
+myapps = {
+   { "Dimea GMail", "/opt/google/chrome/google-chrome --app='http://gmail.dimea.se/'" },
+   { "Workflowy", "/opt/google/chrome/google-chrome --app='https://www.workflowy.com/'" },
+   { "Harvest", "/opt/google/chrome/google-chrome --app='https://dimea.harvestapp.com/'" },
+   { "Pivotal", "/opt/google/chrome/google-chrome --app='https://www.pivotaltracker.com/'" }
+}
+
+mymainmenu = awful.menu({ items = { { "Awesome", myawesomemenu, beautiful.awesome_icon },
+                                    { "Apps", myapps },
                                     { "Debian", debian.menu.Debian_menu.Debian },
-                                    { "open terminal", terminal }
+                                    { "Chrome", "google-chrome" },
+                                    { "Terminal", terminal }
                                   }
                         })
 

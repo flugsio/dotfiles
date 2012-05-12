@@ -17,6 +17,10 @@ clear mod3
 clear mod4
 clear mod5
 
+keysym Alt_L = Meta_L Alt_L
+!keysym ISO_Level3_Shift = Meta_L ISO_Level3_Shift
+
+
 keycode 133 = Super_L
 keycode 66 = Control_L
 !keycode 134 = Super_R
@@ -42,12 +46,12 @@ keycode  31 = i I i I rightarrow idotless rightarrow idotless i I i I rightarrow
 ! https://bugzilla.redhat.com/show_bug.cgi?id=537708
 !keycode  64 = ISO_Level3_Shift
 !add mod2 = Alt_R Alt_L Mode_switch
-!moved ALT-L and ALT-R, Alt-Tab broken+
-keycode 108 = Alt_L ISO_Prev_Group Alt_L ISO_Prev_Group Alt_L ISO_Prev_Group
-keycode 64 = ISO_Level3_Shift NoSymbol ISO_Level3_Shift NoSymbol ISO_Level3_Shift
+!this is to switch left alt with right alt, don't use it anymore
+!keycode 108 = Alt_L ISO_Prev_Group Alt_L ISO_Prev_Group Alt_L ISO_Prev_Group
+!keycode 64 = ISO_Level3_Shift NoSymbol ISO_Level3_Shift NoSymbol ISO_Level3_Shift
 
 add control = Control_L Control_R
-add mod1 = Meta_L
+!add mod1 = Meta_L
 !add mod2 = Mode_switch
 add mod3 = Alt_L
 !add mod4 = Super_L Super_R

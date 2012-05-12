@@ -190,6 +190,9 @@ elseif MySys() == "linux"
   set shell=/bin/bash
 endif
 
+nnoremap n nzzzv
+nnoremap N Nzzzv
+
 " leaders Q
 nnoremap <leader>w <C-w>v<C-w>l
 

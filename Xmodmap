@@ -37,12 +37,40 @@ keycode 23 = Escape
 ! keycode  23 = Tab ISO_Left_Tab Tab ISO_Left_Tab
 ! keycode  31 = i I i I rightarrow idotless rightarrow idotless i I rightarrow idotless
 ! keycode  64 = Alt_L ISO_Prev_Group Alt_L ISO_Prev_Group Alt_L ISO_Prev_Group
+!
+!
+! () [] {} <>
+keycode  26 = e E e E parenleft E e E e E EuroSign cent e E EuroSign cent
+keycode  27 = r R r R parenright r R r R registered registered r R registered registered
+keycode  40 = d D d D bracketleft d D d D eth ETH d D eth ETH
+keycode  41 = f F f F bracketright F f F  f F dstroke ordfeminine f F dstroke ordfeminine
+keycode  52 = z Z z Z less z Z z Z guillemotleft less z Z guillemotleft less
+keycode  53 = x X x X greater X x X x X guillemotright greater x X guillemotright greater
+keycode  54 = c C c C braceleft c C c C copyright copyright c C copyright copyright
+keycode  55 = v V v V braceright v V v V leftdoublequotemark leftsinglequotemark v V leftdoublequotemark leftsinglequotemark
+
+! | / \
+keycode  28 = t T t T bar THORN thorn THORN t T thorn THORN t T thorn THORN
+keycode  49 = section onehalf section onehalf bar threequarters paragraph threequarters section onehalf paragraph threequarters section onehalf paragraph threequarters
+keycode  42 = g G g G slash ENG eng ENG g G eng ENG g G eng ENG
+keycode  56 = b B b B backslash rightsinglequotemark rightdoublequotemark rightsinglequotemark b B rightdoublequotemark rightsinglequotemark b B rightdoublequotemark rightsinglequotemark
+
+! =
+keycode  39 = s S s S equal section ssharp section s S ssharp section s S ssharp section
+
 keycode  16 = 7 slash backslash bar guillemotleft division
 keycode  17 = 8 parenleft bracketleft braceleft bracketleft braceleft
 keycode  18 = 9 parenright bracketright braceright bracketright braceright
 keycode  19 = 0 equal 0 equal guillemotright degree
 keycode  37 = Tab ISO_Left_Tab Tab ISO_Left_Tab kana_a kana_i kana_o kana_u
 keycode  31 = i I i I rightarrow idotless rightarrow idotless i I i I rightarrow idotless
+
+keycode  33 = p P p P p P p P p P p P p P p P
+keycode  43 = h H h H h H h H h H hstroke Hstroke h H hstroke Hstroke
+keycode  44 = j J j J j J j J j J j J j J j J
+keycode  45 = k K k K k K k K k K kra ampersand k K kra ampersand
+keycode  46 = l L l L l L l L l L lstroke Lstroke l L lstroke Lstroke
+
 ! https://bugzilla.redhat.com/show_bug.cgi?id=537708
 !keycode  64 = ISO_Level3_Shift
 !add mod2 = Alt_R Alt_L Mode_switch

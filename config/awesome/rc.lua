@@ -94,7 +94,7 @@ myawesomemenu = {
 -- Custom laucher apps
 myapps = {
    { "Dimea GMail", "/opt/google/chrome/google-chrome --app='http://gmail.dimea.se/'" },
-   { "Workflowy", "/opt/google/chrome/google-chrome --app='https://www.workflowy.com/'" },
+   { "Workflowish", "gvim SparkleShare/sparkleshare_wofl_flugsio/start.wofl" },
    { "Harvest", "/opt/google/chrome/google-chrome --app='https://dimea.harvestapp.com/'" },
    { "Pivotal", "/opt/google/chrome/google-chrome --app='https://www.pivotaltracker.com/'" }
 }

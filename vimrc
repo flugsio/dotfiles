@@ -194,6 +194,15 @@ nnoremap n nzzzv
 nnoremap N Nzzzv
 
 " leaders Q
+
+nnoremap <leader>gs :Gstatus<CR>
+nnoremap <leader>gc :Gcommit -v<CR>
+nnoremap <leader>gC :Gcommit -v --amend<CR>
+nnoremap <leader>gd :Gdiff<CR>
+nnoremap <leader>gw :Gwrite<CR>
+
+nnoremap <leader>k :w\|:call Send_to_Tmux("rspec\n")
+nnoremap <leader>p :silent !xdg-open <C-R>=escape("<C-R><C-F>", "#?&;\|%")<CR><CR>
 nnoremap <leader>w <C-w>v<C-w>l
 
 nnoremap <leader>e :RVview<cr>:RSview _form<cr><C-w>h:RSmodel<cr><C-w>k

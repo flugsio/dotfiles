@@ -115,6 +115,11 @@ mylauncher = awful.widget.launcher({ image = image(beautiful.awesome_icon),
 -- Create a textclock widget
 mytextclock = awful.widget.textclock({ align = "right" })
 
+hexaclock = widget({type = "textbox"})
+hexaclock.align = "right"
+hexaclock.width = "30"
+hexaclock.text = "#"
+
 -- Create a systray
 mysystray = widget({ type = "systray" })
 
@@ -195,6 +200,7 @@ for s = 1, screen.count() do
         mylayoutbox[s],
 	pomodoro.widget, pomodoro.icon_widget,
         mytextclock,
+        hexaclock,
         s == 1 and mysystray or nil,
         mytasklist[s],
         layout = awful.widget.layout.horizontal.rightleft

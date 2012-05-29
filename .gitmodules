@@ -109,3 +109,6 @@
 [submodule "vim/bundle/colorizer"]
 	path = vim/bundle/colorizer
 	url = git://github.com/lilydjwg/colorizer.git
+[submodule "vim/bundle/asciidoc-vim"]
+	path = vim/bundle/asciidoc-vim
+	url = git://github.com/spf13/asciidoc-vim.git

@@ -93,7 +93,7 @@
 	url = git://github.com/wincent/Command-T.git
 [submodule "vim/bundle/workflowish"]
 	path = vim/bundle/workflowish
-	url = git://github.com/lukaszkorecki/workflowish.git
+	url = git@github.com:flugsio/workflowish.git
 [submodule "vim/bundle/vim-vspec"]
 	path = vim/bundle/vim-vspec
 	url = git://github.com/kana/vim-vspec.git

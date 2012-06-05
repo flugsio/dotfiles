@@ -44,7 +44,7 @@ pomodoro.pre_text = ""
 pomodoro.init()
 
 -- This is used later as the default terminal and editor to run.
-terminal = "x-terminal-emulator"
+terminal = "gnome-terminal"
 editor = os.getenv("EDITOR") or "editor"
 editor_cmd = terminal .. " -e " .. editor
 
@@ -58,18 +58,18 @@ modkey = "Mod4"
 -- Table of layouts to cover with awful.layout.inc, order matters.
 layouts =
 {
-    awful.layout.suit.floating,
     awful.layout.suit.tile,
     awful.layout.suit.tile.left,
-    awful.layout.suit.tile.bottom,
-    awful.layout.suit.tile.top,
-    awful.layout.suit.fair,
-    awful.layout.suit.fair.horizontal,
+    --awful.layout.suit.tile.bottom,
+    --awful.layout.suit.tile.top,
+    --awful.layout.suit.fair,
+    --awful.layout.suit.fair.horizontal,
     awful.layout.suit.spiral,
     awful.layout.suit.spiral.dwindle,
     awful.layout.suit.max,
-    awful.layout.suit.max.fullscreen,
-    awful.layout.suit.magnifier
+    --awful.layout.suit.max.fullscreen,
+    --awful.layout.suit.magnifier
+    awful.layout.suit.floating
 }
 -- }}}
 
@@ -85,7 +85,7 @@ end
 -- {{{ Menu
 -- Create a laucher widget and a main menu
 myawesomemenu = {
-   { "manual", terminal .. " -e man awesome" },
+   { "manual", terminal .. " -e \"man awesome\"" },
    { "edit config", editor_cmd .. " " .. awesome.conffile },
    { "restart", awesome.restart },
    { "quit", awesome.quit }
@@ -95,7 +95,8 @@ myawesomemenu = {
 myapps = {
    { "Dimea GMail", "/opt/google/chrome/google-chrome --app='http://gmail.dimea.se/'" },
    { "Workflowish", "gvim SparkleShare/sparkleshare_wofl_flugsio/start.wofl" },
-   { "Harvest", "/opt/google/chrome/google-chrome --app='https://dimea.harvestapp.com/'" },
+   { "Harvest", "/opt/google/chrome/google-chrome --app='https://dimea.harvestapp.com/timesheet'" },
+   { "Harvest Team", "/opt/google/chrome/google-chrome --app='https://dimea.harvestapp.com/timesheet/team'" },
    { "Pivotal", "/opt/google/chrome/google-chrome --app='https://www.pivotaltracker.com/'" }
 }
 
@@ -103,7 +104,8 @@ mymainmenu = awful.menu({ items = { { "Awesome", myawesomemenu, beautiful.awesom
                                     { "Apps", myapps },
                                     { "Debian", debian.menu.Debian_menu.Debian },
                                     { "Chrome", "google-chrome" },
-                                    { "Terminal", terminal }
+                                    { "Terminal", terminal },
+				    { "Ranger", terminal .. " -e ranger" },
                                   }
                         })
 
@@ -117,7 +119,7 @@ mytextclock = awful.widget.textclock({ align = "right" })
 
 hexaclock = widget({type = "textbox"})
 hexaclock.align = "right"
-hexaclock.width = "30"
+hexaclock.width = "85"
 hexaclock.text = "#"
 
 -- Create a systray

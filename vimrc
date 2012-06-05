@@ -190,6 +190,11 @@ elseif MySys() == "linux"
   set shell=/bin/bash
 endif
 
+
+" Abbreviations
+iab <expr> dts strftime("%Y-%m-%d")
+iab <expr> dtts strftime("%Y-%m-%d %H:%M")
+
 nnoremap n nzzzv
 nnoremap N Nzzzv
 
@@ -229,6 +234,7 @@ nnoremap <leader>N :Rmigration
 nnoremap <leader>m :Rmodel<cr>
 nnoremap <leader>M :Rmodel 
 
+cmap w!! w !sudo tee % >/dev/null
 
 
 nnoremap <C-h> <C-w>h

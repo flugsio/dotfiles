@@ -51,7 +51,7 @@ keycode  55 = v V v V braceright v V v V leftdoublequotemark leftsinglequotemark
 
 ! | / \
 keycode  28 = t T t T bar THORN thorn THORN t T thorn THORN t T thorn THORN
-keycode  49 = section onehalf section onehalf bar threequarters paragraph threequarters section onehalf paragraph threequarters section onehalf paragraph threequarters
+keycode  49 = grave asciitilde section onehalf bar threequarters paragraph threequarters section onehalf paragraph threequarters section onehalf paragraph threequarters
 keycode  42 = g G g G slash ENG eng ENG g G eng ENG g G eng ENG
 keycode  56 = b B b B backslash rightsinglequotemark rightdoublequotemark rightsinglequotemark b B rightdoublequotemark rightsinglequotemark b B rightdoublequotemark rightsinglequotemark
 
@@ -65,11 +65,24 @@ keycode  19 = 0 equal 0 equal guillemotright degree
 keycode  37 = Tab ISO_Left_Tab Tab ISO_Left_Tab kana_a kana_i kana_o kana_u
 keycode  31 = i I i I rightarrow idotless rightarrow idotless i I i I rightarrow idotless
 
-keycode  33 = p P p P p P p P p P p P p P p P
+! 9AB0
+! 5678
+! 1234
+keycode  30 = u U u U 9 uparrow downarrow uparrow u U downarrow uparrow u U downarrow uparrow
+keycode  31 = i I i I A idotless rightarrow idotless i I
+keycode  32 = o O o O B OE oe OE o O oe OE o O oe OE
+keycode  33 = p P p P 0 P p P p P p P p P p P
 keycode  43 = h H h H h H h H h H hstroke Hstroke h H hstroke Hstroke
-keycode  44 = j J j J j J j J j J j J j J j J
-keycode  45 = k K k K k K k K k K kra ampersand k K kra ampersand
-keycode  46 = l L l L l L l L l L lstroke Lstroke l L lstroke Lstroke
+keycode  44 = j J j J 5 J j J j J j J j J j J
+keycode  45 = k K k K 6 K k K k K kra ampersand k K kra ampersand
+keycode  46 = l L l L 7 L l L l L lstroke Lstroke l L lstroke Lstroke
+keycode  47 = odiaeresis Odiaeresis odiaeresis Odiaeresis 8 Oslash oslash Oslash odiaeresis Odiaeresis oslash Oslash odiaeresis Odiaeresis oslash Oslash
+keycode  48 = adiaeresis Adiaeresis adiaeresis Adiaeresis ae AE ae AE adiaeresis Adiaeresis ae AE adiaeresis Adiaeresis ae AE
+keycode  58 = m M m M 1 mu masculine mu m M mu masculine m M mu masculine
+keycode  59 = comma semicolon comma semicolon 2 dead_ogonek dead_cedilla dead_ogonek comma semicolon dead_cedilla dead_ogonek comma semicolon dead_cedilla dead_ogonek
+keycode  60 = period colon period colon 3 dead_abovedot periodcentered dead_abovedot period colon periodcentered dead_abovedot period colon periodcentered dead_abovedot
+keycode  61 = minus underscore minus underscore 4 dead_abovedot dead_belowdot dead_abovedot minus underscore dead_belowdot dead_abovedot minus underscore dead_belowdot dead_abovedot
+
 
 ! https://bugzilla.redhat.com/show_bug.cgi?id=537708
 !keycode  64 = ISO_Level3_Shift

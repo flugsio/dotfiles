@@ -1,0 +1,5 @@
+alias t='tig --all'
+alias cpu_temp='sensors | grep temp2 | cut -d "+" -f 2 | cut -d "." -f 1'
+alias teag='(notify-send "Starting 2 min tea timer."; sleep 2m; notify-send "Your green tea is ready." -u critical)&'
+alias teab='(notify-send "Starting 4 min tea timer."; sleep 4m; notify-send "Your black tea is ready." -u critical)&'
+alias teaegh='(notify-send "Starting 3.5 min earl gray tea timer."; sleep 3.5m; notify-send "Your hot earl gray tea is ready, captain." -u critical)&'

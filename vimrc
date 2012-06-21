@@ -205,6 +205,11 @@ nnoremap <leader>gc :Gcommit -v<CR>
 nnoremap <leader>gC :Gcommit -v --amend<CR>
 nnoremap <leader>gd :Gdiff<CR>
 nnoremap <leader>gw :Gwrite<CR>
+nnoremap <leader>gb :Gblame<CR>
+
+nnoremap <leader>db :vertical diffsplit ../ereg_byn/%:.<CR>
+nnoremap <leader>dv :vertical diffsplit ../ereg_vvs/%:.<CR>
+nnoremap <leader>do :diffoff!<CR>:only<CR>
 
 nnoremap <leader>k :w\|:call Send_to_Tmux("rspec\n")
 nnoremap <leader>p :silent !xdg-open <C-R>=escape("<C-R><C-F>", "#?&;\|%")<CR><CR>

@@ -112,3 +112,6 @@
 [submodule "vim/bundle/asciidoc-vim"]
 	path = vim/bundle/asciidoc-vim
 	url = git://github.com/spf13/asciidoc-vim.git
+[submodule "vim/bundle/vim-powerline"]
+	path = vim/bundle/vim-powerline
+	url = https://github.com/Lokaltog/vim-powerline.git

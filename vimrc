@@ -277,17 +277,6 @@ nnoremap Ä [`
 nnoremap <C-p> :cprevious<CR>
 nnoremap <C-n> :cnext<CR>
 nnoremap å `
-" disable arrow keys till i have learned
-noremap  <Up> ""
-noremap! <Up> <Esc>
-noremap  <Down> ""
-noremap! <Down> <Esc>
-"noremap  <Left> ""
-noremap! <Left> <Esc>
-"noremap  <Right> ""
-noremap! <Right> <Esc>
-map <right> :bn<cr>
-map <left> :bp<cr>
 
 "tab mappings
 map <D-1> 1gt

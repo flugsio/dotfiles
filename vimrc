@@ -268,8 +268,6 @@ vmap § $
 cmap § $
 nnoremap ö :
 nnoremap Ö :
-map <space> /
-map <c-space> ?
 "nnoremap - /
 "nnoremap _ ?
 nnoremap ä ]`

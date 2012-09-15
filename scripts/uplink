@@ -1,0 +1,3 @@
+#!/bin/bash -e
+
+/usr/games/uplink/uplink.bin.x86 -graphics_fullscreen '!graphics_screenwidth' 1680 '!graphics_screenheight' 1050

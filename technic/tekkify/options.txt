@@ -1,0 +1,62 @@
+music:0.0
+sound:0.42957747
+invertYMouse:false
+mouseSensitivity:0.471831
+fov:1.0
+gamma:1.0
+viewDistance:3
+guiScale:2
+particles:0
+bobView:false
+anaglyph3d:false
+advancedOpengl:true
+fpsLimit:2
+difficulty:0
+fancyGraphics:false
+ao:false
+clouds:false
+skin:Default
+lastServer:
+lang:en_US
+chatVisibility:0
+chatColors:true
+chatLinks:true
+chatLinksPrompt:true
+chatOpacity:1.0
+serverTextures:true
+snooperEnabled:true
+fullscreen:false
+enableVsync:false
+hideServerAddress:false
+advancedItemTooltips:false
+pauseOnLostFocus:true
+showCape:true
+touchscreen:false
+overrideWidth:0
+overrideHeight:0
+heldItemTooltips:true
+key_key.attack:-100
+key_key.use:-99
+key_key.forward:18
+key_key.left:31
+key_key.back:32
+key_key.right:33
+key_key.jump:57
+key_key.sneak:42
+key_key.climb:30
+key_key.sprint:48
+key_key.config.toggle:62
+key_key.speed.increase:25
+key_key.speed.decrease:24
+key_key.drop:16
+key_key.inventory:19
+key_key.chat:20
+key_key.playerlist:15
+key_key.pickItem:-98
+key_Zoom:29
+key_key.command:53
+key_ALT Key:56
+key_Boost Key:17
+key_Mode Switch Key:50
+key_Side Inventory Key:47
+key_Change OneWayBlock face:74

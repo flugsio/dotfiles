@@ -115,3 +115,12 @@
 [submodule "vim/bundle/vim-powerline"]
 	path = vim/bundle/vim-powerline
 	url = https://github.com/Lokaltog/vim-powerline.git
+[submodule "vim/bundle/tabular"]
+	path = vim/bundle/tabular
+	url = git://github.com/godlygeek/tabular.git
+[submodule "vim/bundle/UltiSnips"]
+	path = vim/bundle/UltiSnips
+	url = git://github.com/vim-scripts/UltiSnips.git
+[submodule "vim/bundle/YouCompleteMe"]
+	path = vim/bundle/YouCompleteMe
+	url = git://github.com/Valloric/YouCompleteMe.git

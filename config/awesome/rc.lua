@@ -42,6 +42,53 @@ end
 -- Themes define colours, icons, and wallpapers
 beautiful.init("/usr/share/awesome/themes/default/theme.lua")
 
+function awesome_cmd(name, cmd_lamda, result_lamda)
+    local val = nil
+    awful.prompt.run({ text=val and tostring(val),
+        selectall = true,
+        fg_cursor = black,
+        bg_cursor = orange,
+        prompt = "<span color='#A5AB00'>" .. name .. ":" .. "</span> "}, mypromptbox[mouse.screen].widget,
+        function(expr)
+            local f = io.popen(cmd_lamda(expr))
+            if f then
+                val = f:read("*all")
+                f:close()
+            else
+                val = "< error >"
+            end
+            notify_keychain = naughty.notify({
+                text = result_lamda(expr, val),
+                timeout = 0,
+                position = "top_left"
+            })
+            root.keys(awful.util.table.join(
+                keychain["awesome"],
+                awful.key({},"Escape",function ()
+                    reset_keychain()
+                end)
+            ))
+        end,
+        nil, awful.util.getdir("cache") .. "/" .. string.lower(name))
+end
+
+function awesome_general()
+  return awesome_cmd("Walk", function(expr) return "source ~/.bash_aliases ; " .. expr end, function(expr, result) return string_strip(result) end )
+end
+
+function awesome_calc()
+  return awesome_cmd("Calc", function(expr) return "echo '" .. expr ..  "' | bc -l" end, function(expr, result) return expr .. ' = <span color="white">' .. string_strip(result) .. "</span>" end )
+end
+
+function awesome_dict()
+  return awesome_cmd("Dict", function(expr) return "dict " .. expr end, function(expr, result) return string_strip(result) end )
+end
+
+function string_strip(str)
+  str = string.gsub(str, '^%s+', '')
+  str = string.gsub(str, '%s+$', '')
+  return str
+end
 
 -- local pomodoro = require("pomodoro")
 -- pomodoro.pre_text = ""
@@ -80,10 +127,12 @@ layouts =
 -- {{{ Tags
 -- Define a tag table which hold all screen tags.
 tags = {}
-for s = 1, screen.count() do
-    -- Each screen has its own tag table.
-    tags[s] = awful.tag({ 1, 2, 3, 4, 5, 6, 7, 8, 9 }, s, layouts[1])
-end
+tags[1] = awful.tag({ "1:WF", "2:NSA", "3:SYS", "4:PLAY", 5, 6, 7, 8, "9:MC" }, 1, layouts[1])
+tags[2] = awful.tag({ 1, 2, 3, 4, 5, 6, 7, 8, 9 }, 2, layouts[1])
+--for s = 1, screen.count() do
+--    -- Each screen has its own tag table.
+--    tags[s] = awful.tag({ 1, 2, 3, 4, 5, 6, 7, 8, 9 }, s, layouts[1])
+--end
 -- }}}
 
 -- {{{ Menu
@@ -278,7 +327,10 @@ globalkeys = awful.util.table.join(
                   awful.util.eval, nil,
                   awful.util.getdir("cache") .. "/history_eval")
               end),
-    awful.key({ modkey }, "e", function() menubar.show() end)
+    awful.key({ modkey }, "e", function() menubar.show() end),
+    awful.key({ modkey }, "F7", function() awesome_general() end),
+    awful.key({ modkey }, "F8", function() awesome_calc() end),
+    awful.key({ modkey }, "F9", function() awesome_dict() end),
 )
 
 clientkeys = awful.util.table.join(

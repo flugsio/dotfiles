@@ -383,21 +383,12 @@ set wildignore+=*~
 let @t='itry(:ea)'
 " dbext execute line and paste result buffer indended on next line
 " almost the same as PasteDBExecSQLUnderCursor, slighly slower
-let @r=",sel ggjj\"yYjjVGk\"Yyp`[`]0I  k"
+" let @r=",sel ggjj\"yYjjVGk\"Yyp`[`]0I  k"
 
 
 compiler rspec
 nmap <Leader>fd :cf /tmp/autotest.txt<cr> :compiler rspec<cr>
 
-
-function! ToggleShowTabLine()
-  if &showtabline != 0
-    set showtabline=0
-  else
-    set showtabline=2
-  end
-endfunction
-"map <silent> <F12> :call ToggleShowTabLine()<cr>
 
 " Control-Shift-PageUp: Drag active tab page left. {{{2
 
@@ -425,7 +416,7 @@ command -bar TabMoveRight call s:TabMoveRight()
 function s:TabMoveRight()
   let n = tabpagenr()
   execute 'tabmove' (n == tabpagenr('$') ? 0 : n)
-  " Redraw tab pageitry(:ea) labels.
+  " Redraw tab page labels.
   let &showtabline = &showtabline
 endfunction
 
@@ -466,5 +457,6 @@ function! ChangePaste(type, ...)
     silent exe "normal! `[v`]\"_c"
     silent exe "normal! p"
 endfunction
+" }}}1
 
 set wildmode=list:longest

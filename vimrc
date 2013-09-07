@@ -172,6 +172,7 @@ set guioptions=ec
 set t_Co=16
 let g:solarized_termcolors=16
 let g:solarized_termtrans=1
+let g:solarized_underline=0
 set background=light
 "if has("gui_running")
 "  set background=light
@@ -205,6 +206,13 @@ nnoremap N Nzzzv
 
 " leaders Q
 
+nnoremap <leader>sef :call PasteDBExecSQLUnderCursor()<cr>
+function! PasteDBExecSQLUnderCursor()
+  DBSetOption use_result_buffer=0
+  call append(line('.'), split(dbext#DB_execSql(dbext#DB_getQueryUnderCursor()), '\n'))
+  DBSetOption use_result_buffer=1
+endfunction
+
 nnoremap <leader>gs :Gstatus<CR>
 nnoremap <leader>gc :Gcommit -v<CR>
 nnoremap <leader>gC :Gcommit -v --amend<CR>
@@ -218,6 +226,10 @@ nnoremap <leader>do :diffoff!<CR>:only<CR>
 
 nnoremap <leader>k :w\|:call Send_to_Tmux("rspec\n")
 nnoremap <leader>p :silent !xdg-open <C-R>=escape("<C-R><C-F>", "#?&;\|%")<CR><CR>
+
+" ctrlp
+let g:ctrlp_map = '<leader>t'
+
 nnoremap <leader>w <C-w>v<C-w>l
 
 nnoremap <leader>e :RVview<cr>:RSview _form<cr><C-w>h:RSmodel<cr><C-w>k
@@ -264,17 +276,12 @@ endfunction
 vnoremap <silent> * :call VisualSearch('f')<CR>
 vnoremap <silent> # :call VisualSearch('b')<CR>
 
-let g:CommandTMaxHeight = 15
-noremap <leader>y :CommandTFlush<CR>
-
 map § $
 imap § $
 vmap § $
 cmap § $
 nnoremap ö :
 nnoremap Ö :
-map <space> /
-map <c-space> ?
 "nnoremap - /
 "nnoremap _ ?
 nnoremap ä ]`
@@ -282,17 +289,6 @@ nnoremap Ä [`
 nnoremap <C-p> :cprevious<CR>
 nnoremap <C-n> :cnext<CR>
 nnoremap å `
-" disable arrow keys till i have learned
-noremap  <Up> ""
-noremap! <Up> <Esc>
-noremap  <Down> ""
-noremap! <Down> <Esc>
-"noremap  <Left> ""
-noremap! <Left> <Esc>
-"noremap  <Right> ""
-noremap! <Right> <Esc>
-map <right> :bn<cr>
-map <left> :bp<cr>
 
 "tab mappings
 map <D-1> 1gt
@@ -346,7 +342,6 @@ if MySys() == "mac"
   vmap <D-k> <M-k>
 endif
 
-
 cno $q <C-\>eDeleteTillSlash()<cr>
 
 func! DeleteTillSlash()
@@ -386,6 +381,9 @@ set wildignore+=coverage
 set wildignore+=*~
 
 let @t='itry(:ea)'
+" dbext execute line and paste result buffer indended on next line
+" almost the same as PasteDBExecSQLUnderCursor, slighly slower
+let @r=",sel ggjj\"yYjjVGk\"Yyp`[`]0I  k"
 
 
 compiler rspec

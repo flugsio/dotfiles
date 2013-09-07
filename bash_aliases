@@ -10,3 +10,4 @@ alias teag='(notify-send "Starting 2 min tea timer."; sleep 2m; notify-send "You
 alias teab='(notify-send "Starting 4 min tea timer."; sleep 4m; notify-send "Your black tea is ready." -u critical)&'
 alias teaegh='(notify-send "Starting 3.5 min earl gray tea timer."; sleep 3.5m; notify-send "Your hot earl gray tea is ready, captain." -u critical)&'
 alias engage="play -n -c1 synth whitenoise lowpass -1 120 lowpass -1 120 lowpass -1 120 gain +14"
+alias mstsc_laura='rdesktop 192.168.2.40 -u Administrator -k sv -g 1675x1024 -r sound:off'

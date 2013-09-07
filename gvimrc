@@ -47,5 +47,4 @@ if version >= 500
 endif
 
 colorscheme solarized
-set sts=2 sw=2
 "set guifont=Menlo:h14

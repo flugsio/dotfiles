@@ -64,9 +64,6 @@
 [submodule "vim/bundle/quickfixsigns_vim"]
 	path = vim/bundle/quickfixsigns_vim
 	url = git://github.com/tomtom/quickfixsigns_vim.git
-[submodule "vim/bundles/tmarks_vim"]
-	path = vim/bundles/tmarks_vim
-	url = git://github.com/tomtom/tmarks_vim.git
 [submodule "vim/bundle/trag_vim"]
 	path = vim/bundle/trag_vim
 	url = git://github.com/tomtom/trag_vim.git

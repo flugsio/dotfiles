@@ -1,9 +1,0 @@
-<?xml version="1.0"?>
-<gconf>
-	<entry name="command_window_screenshot" mtime="1276195467" type="string">
-		<stringvalue>gnome-screenshot --window</stringvalue>
-	</entry>
-	<entry name="command_screenshot" mtime="1276195467" type="string">
-		<stringvalue>gnome-screenshot</stringvalue>
-	</entry>
-</gconf>

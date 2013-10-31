@@ -4,8 +4,8 @@ require 'erb'
 desc "install the dot files into user's home directory"
 task :install do
   replace_all = false
-  Dir['*', 'config/*', 'gconf/apps/*'].each do |file|
-    next if %w[Rakefile README.rdoc LICENSE config gconf flugsio.cfg].include? file
+  Dir['*', 'config/*'].each do |file|
+    next if %w[Rakefile README.rdoc LICENSE config flugsio.cfg].include? file
     
     if File.exist?(File.join(ENV['HOME'], ".#{file.sub('.erb', '')}"))
       if File.identical? file, File.join(ENV['HOME'], ".#{file.sub('.erb', '')}")

@@ -40,7 +40,7 @@ end
 
 -- {{{ Variable definitions
 -- Themes define colours, icons, and wallpapers
-beautiful.init("/usr/share/awesome/themes/default/theme.lua")
+beautiful.init( awful.util.getdir("config") .. "/themes/awesome-solarized/dark/theme.lua" )
 
 function awesome_cmd(name, cmd_lamda, result_lamda)
     local val = nil
@@ -90,9 +90,6 @@ function string_strip(str)
   return str
 end
 
--- local pomodoro = require("pomodoro")
--- pomodoro.pre_text = ""
--- pomodoro.init()
 
 -- This is used later as the default terminal and editor to run.
 terminal = "gnome-terminal"
@@ -250,7 +247,6 @@ for s = 1, screen.count() do
     right_layout:add(mytextclock)
     right_layout:add(mylayoutbox[s])
     -- hexaclock2.widget,
-    -- pomodoro.widget, pomodoro.icon_widget,
 
     -- Now bring it all together (with the tasklist in the middle)
     local layout = wibox.layout.align.horizontal()
@@ -421,6 +417,10 @@ awful.rules.rules = {
       properties = { floating = true } },
     { rule = { class = "gimp" },
       properties = { floating = true } },
+    { rule = { class = "Steam" },
+      properties = { tag = tags[1][4] } },
+    { rule = { class = "Wine" },
+      properties = { tag = tags[1][4] } },
     -- Set Firefox to always map on tags number 2 of screen 1.
     -- { rule = { class = "Firefox" },
     --   properties = { tag = tags[1][2] } },

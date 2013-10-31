@@ -94,9 +94,6 @@
 [submodule "vim/bundle/vim-vspec"]
 	path = vim/bundle/vim-vspec
 	url = git://github.com/kana/vim-vspec.git
-[submodule "config/awesome/pomodoro"]
-	path = config/awesome/pomodoro
-	url = git://github.com/nikolavp/awesome-pomodoro.git
 [submodule "vim/bundle/vim-flatfoot"]
 	path = vim/bundle/vim-flatfoot
 	url = git://github.com/tpope/vim-flatfoot.git

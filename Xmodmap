@@ -72,6 +72,7 @@ keycode  30 = u U u U 9 uparrow downarrow uparrow u U downarrow uparrow u U down
 keycode  31 = i I i I A idotless rightarrow idotless i I
 keycode  32 = o O o O B OE oe OE o O oe OE o O oe OE
 keycode  33 = p P p P 0 P p P p P p P p P p P
+keycode  35 = asciitilde asciicircum dead_diaeresis dead_circumflex dead_tilde dead_caron dead_tilde dead_caron dead_diaeresis dead_circumflex dead_tilde dead_caron dead_diaeresis dead_circumflex dead_tilde dead_caron
 keycode  43 = h H h H h H h H h H hstroke Hstroke h H hstroke Hstroke
 keycode  44 = j J j J 5 J j J j J j J j J j J
 keycode  45 = k K k K 6 K k K k K kra ampersand k K kra ampersand

@@ -7,15 +7,15 @@ from subprocess import Popen, PIPE
 
 def get_pomodoro_name():
     #with open('/sys/devices/system/cpu/cpu0/cpufreq/scaling_governor') as fp:
-        return Popen("p name", stdout=PIPE, shell=True).stdout.read().strip()
+        return Popen("p name", stdout=PIPE, shell=True, universal_newlines=True).stdout.read().strip()
 
 def get_pomodoro_graph():
     #with open('/sys/devices/system/cpu/cpu0/cpufreq/scaling_governor') as fp:
-        return Popen("p graph", stdout=PIPE, shell=True).stdout.read().strip()
+        return Popen("p graph", stdout=PIPE, shell=True, universal_newlines=True).stdout.read().strip()
 
 def get_hexa_clock():
     #with open('/sys/devices/system/cpu/cpu0/cpufreq/scaling_governor') as fp:
-        return Popen("hexa_clock", stdout=PIPE, shell=True).stdout.read().strip()
+        return Popen("hexa_clock", stdout=PIPE, shell=True, universal_newlines=True).stdout.read().strip()
 
 def get_cpu_temperature():
     #with open('/sys/devices/system/cpu/cpu0/cpufreq/scaling_governor') as fp:

@@ -1,0 +1,21 @@
+#!/bin/bash -e
+
+if [ "$1" = "" ]; then
+  TIME="5s"
+  echo "Example: p 3m tea &"
+  exit
+fi
+
+if [ "$2" = "" ]; then
+  notify-send "Starting $1 timer."
+else
+  notify-send "Starting $1 timer for $2."
+fi
+
+sleep $1
+
+if [ "$2" = "" ]; then
+  notify-send "$1 timer finished." -u critical
+else
+  notify-send "$1 timer for $2 finished." -u critical
+fi

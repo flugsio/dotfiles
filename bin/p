@@ -1,0 +1,87 @@
+#!/bin/bash
+
+function init {
+  if [ $# -lt 1 ]
+  then
+    echo "Usage : $0 stop|status|<new task name to start>"
+    exit
+  fi
+
+  case "$1" in
+
+    "stop")
+      stop_task
+      ;;
+    "status")
+      show_status
+      ;;
+    "name")
+      show_name
+      ;;
+    "graph")
+      show_graph
+      ;;
+    *)
+      start_task "$@"
+      ;;
+  esac
+}
+
+function start_task {
+  echo -e "$(date +'%s')\n$@" > ~/.pomodoro_status
+  killall -USR1 i3status
+  timer 25m "Pomodoro: $@" &
+}
+
+function stop_task {
+  echo -e "0\n" > ~/.pomodoro_status
+  killall -USR1 i3status
+  # todo stop timer? save pid in status file
+}
+
+function notify {
+  notify-send "$1"
+}
+
+function show_status {
+  echo "$(show_name) | $(show_graph)"
+}
+
+function show_name {
+  tail -n1 ~/.pomodoro_status
+}
+
+function show_graph {
+  workunits_done=$(echo "($(date +'%s')-$(head -n1 ~/.pomodoro_status))/60" | bc)
+  pauseunits_done=$(echo "($(date +'%s')-$(head -n1 ~/.pomodoro_status)-1500)/12" | bc)
+  
+  if [ $pauseunits_done -lt 0 ]; then
+    pauseunits_done=0
+  fi
+  
+  if [ $pauseunits_done -gt 25 ]; then
+    pauseunits_done=25
+  fi
+  
+  if [ $workunits_done -gt 25 ]; then
+    workunits_done=25
+  fi
+  
+  for (( i=0 ; i < $pauseunits_done ; i++ ))
+  do
+    echo -n '_'
+  done
+  
+  for (( i=0 ; i < $workunits_done - $pauseunits_done ; i++ ))
+  do
+    echo -n '-'
+  done
+  
+  for (( i=$workunits_done ; i < 25 ; i++ ))
+  do
+    echo -n '='
+  done
+  echo
+}
+
+init $*

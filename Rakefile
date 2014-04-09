@@ -4,16 +4,27 @@ require 'erb'
 desc "install the dot files into user's home directory"
 task :install do
   replace_all = false
+  excluded_files = %w[Rakefile README.rdoc LICENSE config flugsio.cfg]
+
   Dir['*', 'config/*'].each do |file|
-    next if %w[Rakefile README.rdoc LICENSE config flugsio.cfg].include? file
+    next if excluded_files.include? file
+
+    def file.target
+      if %w[bin].include? self
+	prefix = ""
+      else
+	prefix = "."
+      end
+      File.join(ENV['HOME'], "#{prefix}#{self.sub('.erb', '')}")
+    end
     
-    if File.exist?(File.join(ENV['HOME'], ".#{file.sub('.erb', '')}"))
-      if File.identical? file, File.join(ENV['HOME'], ".#{file.sub('.erb', '')}")
-        puts "identical ~/.#{file.sub('.erb', '')}"
+    if File.exist?(file.target)
+      if File.identical? file, file.target
+        puts "identical #{file.target}"
       elsif replace_all
         replace_file(file)
       else
-        print "overwrite ~/.#{file.sub('.erb', '')}? [ynaq] "
+        print "overwrite #{file.target}? [ynaq] "
         case $stdin.gets.chomp
         when 'a'
           replace_all = true
@@ -23,7 +34,7 @@ task :install do
         when 'q'
           exit
         else
-          puts "skipping ~/.#{file.sub('.erb', '')}"
+          puts "skipping #{file.target}"
         end
       end
     else
@@ -33,19 +44,19 @@ task :install do
 end
 
 def replace_file(file)
-  system %Q{rm -rf "$HOME/.#{file.sub('.erb', '')}"}
+  system %Q{rm -rf "#{file.target}"}
   link_file(file)
 end
 
 def link_file(file)
   if file =~ /.erb$/
-    puts "generating ~/.#{file.sub('.erb', '')}"
-    File.open(File.join(ENV['HOME'], ".#{file.sub('.erb', '')}"), 'w') do |new_file|
+    puts "generating #{file.target}"
+    File.open(file.target) do |new_file|
       new_file.write ERB.new(File.read(file)).result(binding)
     end
   else
-    puts "linking ~/.#{file}"
-    system %Q{ln -s "$PWD/#{file}" "$HOME/.#{file}"}
+    puts "linking #{file.target}"
+    system %Q{ln -s "$PWD/#{file}" "#{file.target}"}
   end
 end
 

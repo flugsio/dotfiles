@@ -1,6 +1,60 @@
 filetype off
-call pathogen#infect()
+"call pathogen#infect()
 "call pathogen#helptags()
+
+set rtp+=~/.vim/bundle/vundle/
+call vundle#rc()
+
+Bundle 'gmarik/vundle'
+
+Bundle 'kien/ctrlp.vim'
+Bundle 'altercation/vim-colors-solarized.git'
+Bundle 'vim-scripts/dbext.vim.git'
+"Bundle 'sjl/gundo.vim.git'
+Bundle 'mileszs/ack.vim.git'
+Bundle 'vim-scripts/dbext.vim.git'
+Bundle 'tpope/vim-fugitive.git'
+Bundle 'tpope/vim-git.git'
+Bundle 'tpope/vim-rails.git'
+Bundle 'tpope/vim-surround.git'
+"Bundle 'tpope/vim-cucumber.git'
+"Bundle 'tpope/vim-commentary.git'
+"Bundle 'tpope/vim-repeat.git'
+"Bundle 'tpope/vim-haml.git'
+"Bundle 'tpope/vim-abolish.git'
+"Bundle 'tpope/vim-endwise.git'
+"Bundle 'tpope/vim-bundler.git'
+"Bundle 'tpope/vim-ragtag.git'
+"Bundle 'tpope/vim-afterimage.git'
+"Bundle 'vim-scripts/lojban.git'
+"Bundle 'tomtom/viki_vim.git'
+"Bundle 'tomtom/vikitasks_vim.git'
+"Bundle 'tomtom/tlib_vim.git'
+"Bundle 'tomtom/quickfixsigns_vim.git'
+"Bundle 'tomtom/trag_vim.git'
+"Bundle 'tomtom/tmru_vim'
+"Bundle 'kien/rainbow_parentheses.vim.git'
+"Bundle 'tell-k/vim-browsereload-mac.git'
+"Bundle 'int3/vim-extradite.git'
+"Bundle 'gregsexton/gitv.git'
+"Bundle 'Lokaltog/vim-easymotion.git'
+"Bundle 'wincent/Command-T.git'
+"Bundle 'kana/vim-vspec.git'
+"Bundle 'tpope/vim-flatfoot.git'
+"Bundle 'xaviershay/tslime.vim.git'
+"Bundle 'lilydjwg/colorizer.git'
+"Bundle 'spf13/asciidoc-vim.git'
+"Bundle 'Lokaltog/vim-powerline.git'
+Bundle 'kien/ctrlp.vim.git'
+"Bundle 'kchmck/vim-coffee-script.git'
+Bundle 'godlygeek/tabular.git'
+Bundle 'flugsio/Vomodoro.git'
+"Bundle 'vim-scripts/UltiSnips.git'
+"Bundle 'Valloric/YouCompleteMe.git'
+"Bundle 'tyru/open-browser.vim.git'
+Bundle 'flugsio/workflowish.git'
+Bundle 'tpope/vim-sleuth.git'
+Bundle 'morhetz/gruvbox.git'
 
 " some stuff from http://amix.dk/vim/vimrc.html
 

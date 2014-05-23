@@ -229,7 +229,7 @@ set guioptions=ec
 set background=dark
 set t_Co=256
 let g:gruvbox_italic=0
-colorscheme gruvbox
+silent! colorscheme gruvbox
 
 " Set font according to system
 if MySys() == "mac"

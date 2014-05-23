@@ -41,6 +41,17 @@ task :install do
       link_file(file)
     end
   end
+
+  install_vundle
+end
+
+def install_vundle
+  vundle_path = File.join(ENV['HOME'], ".vim/bundle/Vundle.vim")
+  if not Dir.exist?(vundle_path)
+    puts "Installing vundle"
+    system "git clone https://github.com/gmarik/Vundle.vim.git #{vundle_path}"
+    system "vim -c VundleInstall -c qa"
+  end
 end
 
 def replace_file(file)

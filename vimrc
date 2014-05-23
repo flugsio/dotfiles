@@ -193,7 +193,6 @@ let maplocalleader = ";"
 " vnoremap / /\v
 set ignorecase
 set smartcase
-set gdefault
 set incsearch
 set showmatch
 set hlsearch
@@ -227,19 +226,10 @@ nnoremap <leader>S ?{<CR>jV/^\s*\}\?$<CR>k:sort<CR>:noh<CR>
 
 set guioptions=ec
 
-set t_Co=16
-let g:solarized_termcolors=16
-let g:solarized_termtrans=1
-let g:solarized_underline=0
-set background=light
-"if has("gui_running")
-"  set background=light
-"  colorscheme solarized
-"else
-"  set background=dark
-"  colorscheme darkblue
-"endif
-colorscheme solarized
+set background=dark
+set t_Co=256
+let g:gruvbox_italic=0
+colorscheme gruvbox
 
 " Set font according to system
 if MySys() == "mac"

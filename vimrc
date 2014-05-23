@@ -434,7 +434,6 @@ nnoremap <F5> :GundoToggle<CR>
 " highlight ColorColumn guibg=#333333
 
 set wildignore+=*.jpg,*.bmp,*.gif
-set wildignore+=doc
 set wildignore+=coverage
 set wildignore+=*~
 

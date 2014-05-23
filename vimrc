@@ -1,64 +1,68 @@
+set nocompatible
 filetype off
-"call pathogen#infect()
-"call pathogen#helptags()
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
 
-set rtp+=~/.vim/bundle/vundle/
-call vundle#rc()
+Plugin 'gmarik/Vundle.vim'
 
-Bundle 'gmarik/vundle'
+" Type next row ON third row to run it (sorts and aligns by plugin name)
+" "qy$@q
+" }jvip!sort -k2 -t/:Tabularize /'.*\/gv:s/\v(Plugin +)('.*\/)( +)/\1\3\2
+" next paragraph next line visual inside paragraph command sort by second field separated by /
+" tabularize around user name
+" replace/move the space between username/repo to between Plugin/username
 
-Bundle 'kien/ctrlp.vim'
-Bundle 'altercation/vim-colors-solarized.git'
-Bundle 'vim-scripts/dbext.vim.git'
-"Bundle 'sjl/gundo.vim.git'
-Bundle 'mileszs/ack.vim.git'
-Bundle 'vim-scripts/dbext.vim.git'
-Bundle 'tpope/vim-fugitive.git'
-Bundle 'tpope/vim-git.git'
-Bundle 'tpope/vim-rails.git'
-Bundle 'tpope/vim-surround.git'
-"Bundle 'tpope/vim-cucumber.git'
-"Bundle 'tpope/vim-commentary.git'
-"Bundle 'tpope/vim-repeat.git'
-"Bundle 'tpope/vim-haml.git'
-"Bundle 'tpope/vim-abolish.git'
-"Bundle 'tpope/vim-endwise.git'
-"Bundle 'tpope/vim-bundler.git'
-"Bundle 'tpope/vim-ragtag.git'
-"Bundle 'tpope/vim-afterimage.git'
-"Bundle 'vim-scripts/lojban.git'
-"Bundle 'tomtom/viki_vim.git'
-"Bundle 'tomtom/vikitasks_vim.git'
-"Bundle 'tomtom/tlib_vim.git'
-"Bundle 'tomtom/quickfixsigns_vim.git'
-"Bundle 'tomtom/trag_vim.git'
-"Bundle 'tomtom/tmru_vim'
-"Bundle 'kien/rainbow_parentheses.vim.git'
-"Bundle 'tell-k/vim-browsereload-mac.git'
-"Bundle 'int3/vim-extradite.git'
-"Bundle 'gregsexton/gitv.git'
-"Bundle 'Lokaltog/vim-easymotion.git'
-"Bundle 'wincent/Command-T.git'
-"Bundle 'kana/vim-vspec.git'
-"Bundle 'tpope/vim-flatfoot.git'
-"Bundle 'xaviershay/tslime.vim.git'
-"Bundle 'lilydjwg/colorizer.git'
-"Bundle 'spf13/asciidoc-vim.git'
-"Bundle 'Lokaltog/vim-powerline.git'
-Bundle 'kien/ctrlp.vim.git'
-"Bundle 'kchmck/vim-coffee-script.git'
-Bundle 'godlygeek/tabular.git'
-Bundle 'flugsio/Vomodoro.git'
-"Bundle 'vim-scripts/UltiSnips.git'
-"Bundle 'Valloric/YouCompleteMe.git'
-"Bundle 'tyru/open-browser.vim.git'
-Bundle 'flugsio/workflowish.git'
-Bundle 'tpope/vim-sleuth.git'
-Bundle 'morhetz/gruvbox.git'
+Plugin       'mileszs/ack.vim'
+"Plugin        'spf13/asciidoc-vim'
+"Plugin     'lilydjwg/colorizer'
+"Plugin      'wincent/Command-T'
+Plugin          'kien/ctrlp.vim'
+Plugin   'vim-scripts/dbext.vim'
+"Plugin   'gregsexton/gitv'
+Plugin       'morhetz/gruvbox'
+"Plugin          'sjl/gundo.vim'
+"Plugin  'vim-scripts/lojban'
+"Plugin         'tyru/open-browser.vim'
+"Plugin       'tomtom/quickfixsigns_vim'
+"Plugin         'kien/rainbow_parentheses.vim'
+Plugin     'godlygeek/tabular'
+"Plugin       'tomtom/tlib_vim'
+"Plugin       'tomtom/tmru_vim'
+"Plugin       'tomtom/trag_vim'
+"Plugin   'xaviershay/tslime.vim'
+"Plugin  'vim-scripts/UltiSnips'
+"Plugin       'tomtom/vikitasks_vim'
+"Plugin       'tomtom/viki_vim'
+"Plugin        'tpope/vim-abolish'
+"Plugin        'tpope/vim-afterimage'
+"Plugin       'tell-k/vim-browsereload-mac'
+"Plugin        'tpope/vim-bundler'
+"Plugin       'kchmck/vim-coffee-script'
+Plugin   'altercation/vim-colors-solarized'
+"Plugin        'tpope/vim-commentary'
+"Plugin        'tpope/vim-cucumber'
+"Plugin     'Lokaltog/vim-easymotion'
+"Plugin        'tpope/vim-endwise'
+"Plugin         'int3/vim-extradite'
+"Plugin        'tpope/vim-flatfoot'
+Plugin         'tpope/vim-fugitive'
+Plugin         'tpope/vim-git'
+"Plugin        'tpope/vim-haml'
+"Plugin     'Lokaltog/vim-powerline'
+"Plugin        'tpope/vim-ragtag'
+Plugin         'tpope/vim-rails'
+"Plugin        'tpope/vim-repeat'
+Plugin         'tpope/vim-sleuth'
+Plugin         'tpope/vim-surround'
+"Plugin         'kana/vim-vspec'
+Plugin       'flugsio/Vomodoro'
+Plugin       'flugsio/workflowish'
+"Plugin     'Valloric/YouCompleteMe'
+
+call vundle#end()
 
 " some stuff from http://amix.dk/vim/vimrc.html
 
-set nocompatible
 " allow backspacing over everything in insert mode
 set backspace=indent,eol,start
 

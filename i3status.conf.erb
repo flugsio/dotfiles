@@ -10,6 +10,9 @@ general {
         output_format = "i3bar"
         colors = true
         interval = 5
+	color_good = "#357700"
+	color_degraded = "#b58900"
+	color_bad = "#cc322f"
 }
 
 #order += "ipv6"
@@ -17,25 +20,27 @@ order += "tztime local"
 order += "disk /"
 #order += "run_watch DHCP"
 #order += "run_watch VPN"
-#order += "wireless wlan0"
-#order += "ethernet eth0"
-#order += "battery 0"
-#order += "load"
+<% if hostname == "kribev" %>
+  order += "wireless wlp18s0"
+  order += "ethernet enp19s0"
+  order += "battery 0"
+<% end %>
+order += "load"
 order += "volume master"
 
-wireless wlan0 {
+wireless wlp18s0 {
         format_up = "W: (%quality at %essid) %ip"
-        format_down = "W: down"
+        format_down = "W"
 }
 
-ethernet eth0 {
+ethernet enp19s0 {
         # if you use %speed, i3status requires root privileges
-        format_up = "E: %ip (%speed)"
-        format_down = "E: down"
+        format_up = "E: %ip"
+        format_down = "E"
 }
 
 battery 0 {
-        format = "%status %percentage %remaining"
+        format = "%status %percentage"
 }
 
 run_watch DHCP {
@@ -70,7 +75,16 @@ volume master {
         mixer_idx = 0
 }
 
+<% if hostname == "kribev" %>
 cpu_temperature 0 {
-        format = "T: %degrees °C"
+        format = "%degrees °C"
+        max_threshold = 65
+        path = "/sys/class/thermal/thermal_zone0/temp"
+}
+<% else  %>
+cpu_temperature 0 {
+        format = "%degrees °C"
         path = "/sys/devices/platform/coretemp.0/temp1_input"
 }
+<% end %>
+

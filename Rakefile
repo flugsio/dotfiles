@@ -1,45 +1,11 @@
 require 'rake'
 require 'erb'
+require 'socket'
 
 desc "install the dot files into user's home directory"
 task :install do
-  replace_all = false
-  excluded_files = %w[Rakefile README.rdoc LICENSE config flugsio.cfg]
-
-  Dir['*', 'config/*'].each do |file|
-    next if excluded_files.include? file
-
-    def file.target
-      if %w[bin].include? self
-	prefix = ""
-      else
-	prefix = "."
-      end
-      File.join(ENV['HOME'], "#{prefix}#{self.sub('.erb', '')}")
-    end
-    
-    if File.exist?(file.target)
-      if File.identical? file, file.target
-        puts "identical #{file.target}"
-      elsif replace_all
-        replace_file(file)
-      else
-        print "overwrite #{file.target}? [ynaq] "
-        case $stdin.gets.chomp
-        when 'a'
-          replace_all = true
-          replace_file(file)
-        when 'y'
-          replace_file(file)
-        when 'q'
-          exit
-        else
-          puts "skipping #{file.target}"
-        end
-      end
-    else
-      link_file(file)
-    end
+  files_to_install.each do |file|
+    process(file)
   end
 
   install_vundle
@@ -54,15 +20,62 @@ def install_vundle
   end
 end
 
+def files_to_install
+  excluded_files = %w[Rakefile README.rdoc LICENSE config flugsio.cfg]
+
+  Dir['*', 'config/*'].map { |file|
+    next if excluded_files.include? file
+
+    def file.target
+      if %w[bin].include? self
+        prefix = ""
+      else
+        prefix = "."
+      end
+      File.join(ENV['HOME'], "#{prefix}#{self.sub('.erb', '')}")
+    end
+    file
+  }.compact
+end
+
+
+def process(file)
+  replace_all = false
+  if File.exist?(file.target)
+    if File.identical? file, file.target
+      puts "identical #{file.target}"
+    elsif replace_all
+      replace_file(file)
+    else
+      print "overwrite #{file.target}? [ynaq] "
+      case $stdin.gets.chomp
+      when 'a'
+        replace_all = true
+        replace_file(file)
+      when 'y'
+        replace_file(file)
+      when 'q'
+        exit
+      else
+        puts "skipping #{file.target}"
+      end
+    end
+  else
+    link_file(file)
+  end
+end
+
 def replace_file(file)
   system %Q{rm -rf "#{file.target}"}
   link_file(file)
 end
 
 def link_file(file)
+  hostname = Socket.gethostname
+
   if file =~ /.erb$/
     puts "generating #{file.target}"
-    File.open(file.target) do |new_file|
+    File.open(file.target, 'w') do |new_file|
       new_file.write ERB.new(File.read(file)).result(binding)
     end
   else

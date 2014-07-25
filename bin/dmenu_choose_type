@@ -24,8 +24,8 @@ word0=${RUN%% *}
 match="^$word0$"
 while ! grep -q $match $CONFIG/apps-{term,command,bg,hterm,hcommand}
 do
-    type=$(echo -e "term\ncommand\nbg\nhterm\nhcommand\nabort" | dmenu -p type)
-    [ $type = abort ] && exit
+    type=$(echo -e "term\ncommand\nbg\nhterm\nhcommand" | dmenu -p type)
+    [[ -z $type ]] && exit
     [ $type = term -o $type = command  -o $type = bg  -o $type = hterm  -o $type = hcommand ] || continue
     echo $word0 >> $CONFIG/apps-$type
 done

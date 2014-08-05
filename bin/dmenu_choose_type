@@ -1,8 +1,8 @@
 #!/bin/bash
-TERM="urxvt -e"
-COMMAND="urxvt -e sh -c"
-HTERM="urxvt --hold -e"
-HCOMMAND="urxvt --hold -e sh -c"
+TERM="st -e"
+COMMAND="st -e sh -c"
+HTERM="st --hold -e"
+HCOMMAND="st --hold -e sh -c"
 CACHE=${XDG_CACHE_HOME:-$HOME/.cache}/dmenu-recent-apps
 mkdir -p ${XDG_CACHE_HOME:-$HOME/.cache}
 CONFIG=${XDG_CONFIG_HOME:-$HOME/.config}/dmenu

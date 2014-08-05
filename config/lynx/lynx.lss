@@ -16,7 +16,7 @@ em:		bold:			brightblue
 strong:		bold:			brightred
 b:		bold:			red
 i:		bold:			brightblue
-a:		bold:			green
+a:		normal:			blue
 img:		dim:			brown
 fig:		normal:			gray
 caption:	reverse:		brown
@@ -26,7 +26,12 @@ ul:		normal:			brown
 address:	normal:			magenta
 title:		normal:			magenta
 tt:		dim:			brightmagenta:	black
-h1:		bold:			yellow:		blue
+h1:		bold:			yellow
+h2:		bold:			brown
+h3:		bold:			red
+h4:		bold:			red
+h5:		bold:			red
+h6:		bold:			red
 label:		normal:			magenta
 q:		normal:			yellow:		magenta
 small:		dim:			default
@@ -50,7 +55,7 @@ br:		normal:			default
 #	whereis	- whereis search target
 #
 #normal:normal:default:blue
-alink:		reverse:		yellow:		black
+alink:		normal:			brightcyan
 status:		reverse:		yellow:		blue
 alert:		bold:			yellow:		red
 whereis:	reverse+underline:	magenta:	cyan

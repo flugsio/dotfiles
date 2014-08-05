@@ -1,5 +1,25 @@
 # vim:ft=zsh ts=2 sw=2 sts=2
 
+# ls colors
+autoload colors; colors;
+export LSCOLORS="Gxfxcxdxbxegedabagacad"
+#export LS_COLORS
+
+# Enable ls colors
+if [ "$DISABLE_LS_COLORS" != "true" ]
+then
+    ls --color -d . &>/dev/null 2>&1 && alias ls='ls --color=tty' || alias ls='ls -G'
+fi
+
+setopt prompt_subst
+
+typeset -Ag FG BG
+
+for color in {000..255}; do
+    FG[$color]="%{[38;5;${color}m%}"
+    BG[$color]="%{[48;5;${color}m%}"
+done
+
 rvm_current() {
   rvm current 2>/dev/null
 }
@@ -9,7 +29,7 @@ rbenv_version() {
 }
 
 PROMPT='
-%{$FG[076]%}${PWD/#$HOME/~}%{$reset_color%}$(git_prompt_info) %{$FG[142]%}%*%{$reset_color%}
+%{$FG[208]%}%m:%{$FG[076]%}${PWD/#$HOME/~}%{$reset_color%} %{$FG[242]%}%*%{$reset_color%}
 $ '
 
 ZSH_THEME_GIT_PROMPT_PREFIX=" @ %{$FG[208]%}"

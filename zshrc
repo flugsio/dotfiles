@@ -13,18 +13,18 @@ export DISABLE_AUTO_TITLE=true
 HISTFILE=~/.histfile
 HISTSIZE=30000
 SAVEHIST=30000
+# man zshoptions
 setopt HIST_IGNORE_DUPS
 setopt appendhistory autocd
+#setopt no_beep
+setopt auto_cd
+setopt multios
+setopt cdablevarS
 
 source /usr/share/doc/pkgfile/command-not-found.zsh
 
-# some manual includes
-ZSH=/usr/share/oh-my-zsh
+#ZSH=/usr/share/oh-my-zsh
 
-# for the theme
-source $ZSH/lib/git.zsh
-source $ZSH/lib/theme-and-appearance.zsh
-source $ZSH/lib/spectrum.zsh
 source ~/.zsh_theme
 
 # Example aliases

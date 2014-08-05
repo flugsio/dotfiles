@@ -1,21 +1,25 @@
-#!/bin/bash -e
+#!/bin/bash
 
-if [ "$1" = "" ]; then
-  TIME="5s"
-  echo "Example: p 3m tea &"
+TIME="$1"
+shift
+WHAT="$@"
+
+if [ -z $TIME ]; then
+  echo "Example: timer 3m tea &"
   exit
 fi
 
-if [ "$2" = "" ]; then
-  notify-send "Starting $1 timer."
+if [ -z "$WHAT" ]; then
+  start_message="Starting $TIME timer"
+  stop_message="$TIME timer finished"
 else
-  notify-send "Starting $1 timer for $2."
+  start_message="Starting $TIME timer for $WHAT"
+  stop_message="$TIME timer for $WHAT finished"
 fi
 
-sleep $1
+notify-send "$start_message"
 
-if [ "$2" = "" ]; then
-  notify-send "$1 timer finished." -u critical
-else
-  notify-send "$1 timer for $2 finished." -u critical
-fi
+sleep $TIME
+
+notify-send "$stop_message" -u critical
+

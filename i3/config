@@ -225,3 +225,5 @@ bar {
         }
 }
 
+
+exec_always ~/bin/kbd

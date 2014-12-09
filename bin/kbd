@@ -1,0 +1,4 @@
+#!/bin/bash
+
+setxkbmap -layout se -option caps:swapescape -variant nodeadkeys
+/usr/bin/xmodmap $HOME/.Xmodmap

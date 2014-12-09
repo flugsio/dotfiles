@@ -9,31 +9,53 @@
 ! 5. AltGr+Key
 ! 6. AltGr+Shift+Key
 
-clear Lock
+
+! current altgr layout
+! @ł()|←9AB0¨
+! ª=[]/h5678æ
+! <>{}\n1234
+!
+! maybe try this
+! ')]}>
+! "([{<
+! =\|/*
+
+!clear Lock
 clear control
+clear mod1
 clear mod4
 
-!keysym ISO_Level3_Shift = Meta_L ISO_Level3_Shift
+! keyboard layout last row : Alt_L Mod4 Ctrl_L Spacebar Alt_L Fn AltGr
+keycode 37 = Alt_L Meta_L Alt_L Meta_L
+keycode 64 = Control_L NoSymbol Control_L NoSymbol Control_L
+
+keycode 108 = Alt_L Meta_L Alt_L Meta_L
+keycode 105 = ISO_Level3_Shift NoSymbol ISO_Level3_Shift NoSymbol ISO_Level3_Shift
 
 
-keycode 133 = Super_L
-keycode 66 = Control_L
-!keycode 134 = Super_R
-keycode 36 = Control_R
-keycode 105 =  Return NoSymbol Return NoSymbol Return
+! rotate SPACE AltGr Control_R 1 step to the left
+!    65 spacebar will default to AltGr + using xcape to generate space when tapped
+!keycode 65 = ISO_Level3_Shift NoSymbol ISO_Level3_Shift NoSymbol ISO_Level3_Shift
+!   108 AltrGr-key will be an easy to reach Ctrl
+!keycode 108 = Control_R NoSymbol Control_R NoSymbol Control_R
+!   105 Control_R-key will be an emergency space if xcape stops
+!keycode 105 = space space space space space nobreakspace space
 
-keycode 23 = Escape
 
-! default, rebind as osx
-! keycode  16 = 7 slash 7 slash braceleft division
-! keycode  17 = 8 parenleft 8 parenleft bracketleft guillemotleft
-! keycode  18 = 9 parenright 9 parenright bracketright guillemotright
-! keycode  19 = 0 equal 0 equal braceright degree
-! keycode  23 = Tab ISO_Left_Tab Tab ISO_Left_Tab
-! keycode  31 = i I i I rightarrow idotless rightarrow idotless i I rightarrow idotless
-! keycode  64 = Alt_L ISO_Prev_Group Alt_L ISO_Prev_Group Alt_L ISO_Prev_Group
-!
-!
+! rotate 1 to the left for Control_L, Super_L, Alt_L
+! allows thumb for ctrl/alt
+!keycode  37 = Super_L NoSymbol Super_L NoSymbol Super_L Super_L
+!keycode 133 = Alt_L Meta_L Alt_L Meta_L
+!keycode  64 = Control_L NoSymbol Control_L
+
+
+! switch space and Control_R, generate space on spacebar tap with xcape
+!keycode 65 = Control_R NoSymbol Control_R NoSymbol Control_R
+!keycode 105 = space space space space space nobreakspace space
+
+
+!keycode 23 = Escape
+
 ! () [] {} <>
 keycode  26 = e E e E parenleft E e E e E EuroSign cent e E EuroSign cent
 keycode  27 = r R r R parenright r R r R registered registered r R registered registered
@@ -57,7 +79,7 @@ keycode  16 = 7 slash backslash bar guillemotleft division
 keycode  17 = 8 parenleft bracketleft braceleft bracketleft braceleft
 keycode  18 = 9 parenright bracketright braceright bracketright braceright
 keycode  19 = 0 equal 0 equal guillemotright degree
-keycode  37 = Tab ISO_Left_Tab Tab ISO_Left_Tab kana_a kana_i kana_o kana_u
+!keycode  37 = Tab ISO_Left_Tab Tab ISO_Left_Tab kana_a kana_i kana_o kana_u
 keycode  31 = i I i I rightarrow idotless rightarrow idotless i I i I rightarrow idotless
 
 ! 9AB0
@@ -80,13 +102,7 @@ keycode  60 = period colon period colon 3 dead_abovedot periodcentered dead_abov
 keycode  61 = minus underscore minus underscore 4 dead_abovedot dead_belowdot dead_abovedot minus underscore dead_belowdot dead_abovedot minus underscore dead_belowdot dead_abovedot
 
 
-! https://bugzilla.redhat.com/show_bug.cgi?id=537708
-!keycode  64 = ISO_Level3_Shift
-!add mod2 = Alt_R Alt_L Mode_switch
-!this is to switch left alt with right alt, don't use it anymore
-!keycode 108 = Alt_L ISO_Prev_Group Alt_L ISO_Prev_Group Alt_L ISO_Prev_Group
-!keycode 64 = ISO_Level3_Shift NoSymbol ISO_Level3_Shift NoSymbol ISO_Level3_Shift
-
 add control = Control_L Control_R
-add mod4 = Super_L
+add mod1 = Alt_L Meta_L
+add mod4 = Super_L Super_R Hyper_L
 

@@ -21,6 +21,9 @@ function init {
     "graph")
       show_graph
       ;;
+    "-")
+      start_task "$(</dev/stdin)"
+      ;;
     *)
       start_task "$@"
       ;;
@@ -48,12 +51,17 @@ function show_status {
 }
 
 function show_name {
-  tail -n1 ~/.pomodoro_status
+  #tail -n1 ~/.pomodoro_status
+  egrep -m 1 "[[(]_[])]" ~/todotoday | sed 's/ \+/ /g'
+}
+
+function started_at {
+  pcregrep -o1 "Timer: (\d.*)" ~/todotoday | head -n1 | awk '$0="--date=\""$0"\""' | xargs date +'%s' --date=
 }
 
 function show_graph {
-  workunits_done=$(echo "($(date +'%s')-$(head -n1 ~/.pomodoro_status))/60" | bc)
-  pauseunits_done=$(echo "($(date +'%s')-$(head -n1 ~/.pomodoro_status)-1500)/12" | bc)
+  workunits_done=$(echo "($(date +'%s')-$(started_at))/60" | bc)
+  pauseunits_done=$(echo "($(date +'%s')-$(started_at)-1500)/12" | bc)
   
   if [ $pauseunits_done -lt 0 ]; then
     pauseunits_done=0

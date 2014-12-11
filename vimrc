@@ -14,7 +14,7 @@ Plugin 'gmarik/Vundle.vim'
 
 Plugin       'mileszs/ack.vim'
 "Plugin        'spf13/asciidoc-vim'
-"Plugin     'lilydjwg/colorizer'
+Plugin     'lilydjwg/colorizer'
 "Plugin      'wincent/Command-T'
 Plugin          'kien/ctrlp.vim'
 Plugin   'vim-scripts/dbext.vim'
@@ -58,6 +58,7 @@ Plugin         'tpope/vim-surround'
 Plugin       'flugsio/Vomodoro'
 Plugin       'flugsio/workflowish'
 "Plugin     'Valloric/YouCompleteMe'
+Plugin 'derekwyatt/vim-scala'
 
 call vundle#end()
 
@@ -161,6 +162,8 @@ set number
 "augroup END
 set sts=2
 set sw=2
+
+let g:colorizer_nomap = 1
 
 nnoremap <silent> <F8> :TlistToggle<CR>
 let Tlist_GainFocus_On_ToggleOpen=1
@@ -273,8 +276,17 @@ nnoremap <leader>db :vertical diffsplit ../ereg_byn/%:.<CR>
 nnoremap <leader>dv :vertical diffsplit ../ereg_vvs/%:.<CR>
 nnoremap <leader>do :diffoff!<CR>:only<CR>
 
-nnoremap <leader>k :w\|:call Send_to_Tmux("rspec\n")
+"nnoremap <leader>k :w\|:call Send_to_Tmux("rspec\n")
+"nnoremap <leader>k :w\|:call system("tmux send-keys -t:1 C-p C-m")
+"nnoremap <leader>k :w\|:call system("tmux send-keys -t.+ C-p C-m")
+"nnoremap <leader>k :w\|:call system("tmux send-keys -t%7 C-p C-m")
 nnoremap <leader>p :silent !xdg-open <C-R>=escape("<C-R><C-F>", "#?&;\|%")<CR><CR>
+
+nnoremap <leader>k :w\|:call system("send_key_to 'ctrl+r' " . g:browser_id)
+
+function! SelectBrowser()
+  let g:browser_id = system("xdotool selectwindow 2> /dev/null")
+endfunction
 
 " ctrlp
 let g:ctrlp_map = '<leader>t'

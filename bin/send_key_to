@@ -1,0 +1,5 @@
+#!/bin/bash
+CUR_WID=$(xdotool getwindowfocus)
+xdotool windowactivate $2 2> /dev/null
+xdotool key $1
+xdotool windowactivate $CUR_WID 2> /dev/null

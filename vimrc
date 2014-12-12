@@ -289,10 +289,17 @@ function! SelectBrowser()
 endfunction
 
 " ctrlp
+let g:ctrlp_custom_ignore = {
+      \ 'dir':  '\v[\/](target|build|node_modules|public\/compiled|public\/piece)$',
+      \ 'file': '\v\.(rlib|exe|so|dll)$',
+      \ }
 let g:ctrlp_map = '<leader>t'
+nnoremap <leader>. :CtrlPTag<cr>
+nnoremap <leader>: :!ctags -R .<cr>
 
 nnoremap <leader>w <C-w>v<C-w>l
 
+" Rails
 nnoremap <leader>e :RVview<cr>:RSview _form<cr><C-w>h:RSmodel<cr><C-w>k
 nnoremap <leader>E :e doc/changes.txt<cr>:RVtask permissions<cr>:RVlocale sv-SE<cr><C-w>K:RVmigration 0<cr><C-w>h<C-w>10+
 
@@ -450,37 +457,6 @@ compiler rspec
 nmap <Leader>fd :cf /tmp/autotest.txt<cr> :compiler rspec<cr>
 
 
-" Control-Shift-PageUp: Drag active tab page left. {{{2
-
-imap <C-S-PageUp> <C-O>:TabMoveLeft<CR>
-nmap <C-S-PageUp> :TabMoveLeft<CR>
-
-command -bar TML call s:TabMoveLeft()
-command -bar TabMoveLeft call s:TabMoveLeft()
-
-function s:TabMoveLeft()
-  let n = tabpagenr()
-  execute 'tabmove' (n == 1 ? '' : n - 2)
-  " Redraw tab page labels.
-  let &showtabline = &showtabline
-endfunction
-
-" Control-Shift-PageDown: Drag active tab page right. {{{2
-
-imap <C-S-PageDown> <C-O>:TabMoveRight<CR>
-nmap <C-S-PageDown> :TabMoveRight<CR>
-
-command -bar TMR call s:TabMoveRight()
-command -bar TabMoveRight call s:TabMoveRight()
-
-function s:TabMoveRight()
-  let n = tabpagenr()
-  execute 'tabmove' (n == tabpagenr('$') ? 0 : n)
-  " Redraw tab page labels.
-  let &showtabline = &showtabline
-endfunction
-
-
 "" Tab: Add one level of indent to selected lines. {{{2
 "
 "xmap <Tab> >0gv
@@ -512,6 +488,9 @@ endfunction
 "  endif
 "endfunction
 
+" This allows for change paste motion cp{motion}
+" for example cpw replaces word with pastebuffer while keeping buffer intact
+" http://stackoverflow.com/a/5357194
 nmap <silent> cp :set opfunc=ChangePaste<CR>g@
 function! ChangePaste(type, ...)
     silent exe "normal! `[v`]\"_c"

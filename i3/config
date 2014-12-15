@@ -227,9 +227,11 @@ set $green   #859900
 set $tmux_base2 #232323
 set $tmux_orange #d75f00
 set $tmux_yellow #b58900
+set $tmux_orange_middle #885500
+set $tmux_orange_dark #663300
 
 # set some nice colors      border     background  text
-client.focused              $tmux_base2        $tmux_base2         $tmux_orange
+client.focused              $tmux_orange_dark        $tmux_orange_dark         $base03
 client.unfocused            $bg        $bg         $ia
 client.focused_inactive     $tmux_base2        $tmux_base2         $ac
 client.urgent               $red        $red         $base3
@@ -247,7 +249,7 @@ bar {
                 background          $bg2
 	        statusline          $fg
 	        separator           $green
-	        focused_workspace   $green        $bg2        $green
+	        focused_workspace   $bg2        $bg2        $tmux_orange_middle
 	        active_workspace    $gn        $ac        $tx
 	        inactive_workspace  $bg2        $bg2        $ia
 	        urgent_workspace    $red        $red        $base3

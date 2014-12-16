@@ -1,3 +1,4 @@
+" Plugins {{{1
 set nocompatible
 filetype off
 set rtp+=~/.vim/bundle/Vundle.vim
@@ -61,6 +62,7 @@ Plugin       'flugsio/workflowish'
 Plugin 'derekwyatt/vim-scala'
 
 call vundle#end()
+" }}}1
 
 " some stuff from http://amix.dk/vim/vimrc.html
 
@@ -79,9 +81,6 @@ set ruler		" show the cursor position all the time
 set showcmd		" display incomplete commands
 set incsearch		" do incremental searching
 set t_kb=
-
-" For Win32 GUI: remove 't' flag from 'guioptions': no tearoff menu entries
-" let &guioptions = substitute(&guioptions, "t", "", "g")
 
 " Don't use Ex mode, use Q for formatting
 map Q gq
@@ -147,19 +146,7 @@ if !exists(":DiffOrig")
 		  \ | wincmd p | diffthis
 endif
 
-" Fullskärm, cmd-shift-F för att toggla
-"if has("gui_running")
-"  set fuoptions=maxvert,maxhorz
-"  au GUIEnter * set fullscreen
-"endif
-
-
 set number
-"augroup BgHighlight
-"    autocmd!
-"    autocmd WinEnter * set cursorcolumn
-"    autocmd WinLeave * set nocursorcolumn
-"augroup END
 set sts=2
 set sw=2
 
@@ -175,16 +162,15 @@ set encoding=utf-8
 set scrolloff=2
 "set autoindent
 "set showmode
-"set showcmd
 set hidden
 set autoread
 "set wildmenu
-"set wildmode=list:longest
+set wildmode=list:longest
+set wildignore+=*.jpg,*.bmp,*.gif
+set wildignore+=coverage
+set wildignore+=*~
 "set visualbell
-"set cursorline
 "set ttyfast
-"set ruler
-"set backspace=indent,eol,start
 set laststatus=2
 "set relativenumber
 "set undofile
@@ -199,7 +185,6 @@ set ignorecase
 set smartcase
 set incsearch
 set showmatch
-set hlsearch
 
 set splitright
 set splitbelow
@@ -212,9 +197,6 @@ vnoremap <tab> %
 "set textwidth=79
 "set formatoptions=qrn1
 "set colorcolumn=85
-
-"set list
-"set listchars=tab:▸\ ,eol:¬
 
 " open-browser.vim
 let g:netrw_nogx = 1 " disable netrw's gx mapping.
@@ -253,6 +235,7 @@ endif
 iab <expr> dts strftime("%Y-%m-%d")
 iab <expr> dtts strftime("%Y-%m-%d %H:%M")
 
+" Centers and opens fold at cursor when going to next/previous match
 nnoremap n nzzzv
 nnoremap N Nzzzv
 
@@ -350,27 +333,12 @@ vmap § $
 cmap § $
 nnoremap ö :
 nnoremap Ö :
-"nnoremap - /
-"nnoremap _ ?
 nnoremap ä ]`
 nnoremap Ä [`
 nnoremap <C-p> :cprevious<CR>
 nnoremap <C-n> :cnext<CR>
 nnoremap å `
 
-"tab mappings
-map <D-1> 1gt
-map <D-2> 2gt
-map <D-3> 3gt
-map <D-4> 4gt
-map <D-5> 5gt
-map <D-6> 6gt
-map <D-7> 7gt
-map <D-8> 8gt
-map <D-9> 9gt
-" these already exists in macvim
-"map <D-t> :tabnew<CR>
-"map <D-w> :tabclose<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Parenthesis/bracket expanding
@@ -396,19 +364,6 @@ inoremap $t <><esc>i
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "Remap VIM 0
 map 0 ^
-
-"Move a line of text using ALT+[jk] or Comamnd+[jk] on mac
-nmap <M-j> mz:m+<cr>`z
-nmap <M-k> mz:m-2<cr>`z
-vmap <M-j> :m'>+<cr>`<my`>mzgv`yo`z
-vmap <M-k> :m'<-2<cr>`>my`<mzgv`yo`z
-
-if MySys() == "mac"
-  nmap <D-j> <M-j>
-  nmap <D-k> <M-k>
-  vmap <D-j> <M-j>
-  vmap <D-k> <M-k>
-endif
 
 cno $q <C-\>eDeleteTillSlash()<cr>
 
@@ -437,15 +392,9 @@ endfunc
 "nnoremap <leader>f :Ack <c-r>=expand("<cword>")<CR><CR>
 "nnoremap <leader>d :Ack def\ <c-r>=expand("<cword>")<CR><CR>
 
-nnoremap <F5> :GundoToggle<CR>
-
 "set colorcolumn=85
 " flyttad till railscasts 
 " highlight ColorColumn guibg=#333333
-
-set wildignore+=*.jpg,*.bmp,*.gif
-set wildignore+=coverage
-set wildignore+=*~
 
 let @t='itry(:ea)'
 " dbext execute line and paste result buffer indended on next line
@@ -456,18 +405,18 @@ let @t='itry(:ea)'
 compiler rspec
 nmap <Leader>fd :cf /tmp/autotest.txt<cr> :compiler rspec<cr>
 
-
-"" Tab: Add one level of indent to selected lines. {{{2
+" Indentation with tab {{{1
+"" Tab: Add one level of indent to selected lines.
 "
 "xmap <Tab> >0gv
 "smap <Tab> <C-O>V<C-O><Tab>
 "
-"" Shift-Tab: Remove one level of indent from selected lines. {{{2
+"" Shift-Tab: Remove one level of indent from selected lines.
 "
 "xmap <S-Tab> <0gv
 "smap <S-Tab> <C-O>V<C-O><S-Tab>
 "
-"" Tab: Start keyword completion after keyword characters. {{{2
+"" Tab: Start keyword completion after keyword characters.
 "
 "inoremap <expr> <Tab> <Sid>TabComplete()
 "inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
@@ -487,6 +436,7 @@ nmap <Leader>fd :cf /tmp/autotest.txt<cr> :compiler rspec<cr>
 "    return "\<Tab>"
 "  endif
 "endfunction
+" }}}1
 
 " This allows for change paste motion cp{motion}
 " for example cpw replaces word with pastebuffer while keeping buffer intact
@@ -496,6 +446,4 @@ function! ChangePaste(type, ...)
     silent exe "normal! `[v`]\"_c"
     silent exe "normal! p"
 endfunction
-" }}}1
 
-set wildmode=list:longest

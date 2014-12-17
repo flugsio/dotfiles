@@ -44,6 +44,9 @@ export PATH=$HOME/bin:$HOME/code/scripts:$PATH
 
 export EDITOR='vim'
 
+export LYNX_CFG=~/.config/lynx/lynx.cfg
+export LYNX_LSS=~/.config/lynx/lynx.lss
+
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
 

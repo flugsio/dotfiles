@@ -15,13 +15,11 @@ Plugin 'gmarik/Vundle.vim'
 
 Plugin       'mileszs/ack.vim'
 "Plugin        'spf13/asciidoc-vim'
-Plugin     'lilydjwg/colorizer'
-"Plugin      'wincent/Command-T'
+Plugin      'lilydjwg/colorizer'
 Plugin          'kien/ctrlp.vim'
 Plugin   'vim-scripts/dbext.vim'
 "Plugin   'gregsexton/gitv'
 Plugin       'morhetz/gruvbox'
-"Plugin          'sjl/gundo.vim'
 "Plugin  'vim-scripts/lojban'
 "Plugin         'tyru/open-browser.vim'
 "Plugin       'tomtom/quickfixsigns_vim'
@@ -36,8 +34,6 @@ Plugin     'godlygeek/tabular'
 "Plugin       'tomtom/viki_vim'
 "Plugin        'tpope/vim-abolish'
 "Plugin        'tpope/vim-afterimage'
-"Plugin       'tell-k/vim-browsereload-mac'
-"Plugin        'tpope/vim-bundler'
 "Plugin       'kchmck/vim-coffee-script'
 Plugin   'altercation/vim-colors-solarized'
 "Plugin        'tpope/vim-commentary'
@@ -53,13 +49,13 @@ Plugin         'tpope/vim-git'
 "Plugin        'tpope/vim-ragtag'
 Plugin         'tpope/vim-rails'
 "Plugin        'tpope/vim-repeat'
+Plugin    'derekwyatt/vim-scala'
 Plugin         'tpope/vim-sleuth'
 Plugin         'tpope/vim-surround'
 "Plugin         'kana/vim-vspec'
 Plugin       'flugsio/Vomodoro'
 Plugin       'flugsio/workflowish'
 "Plugin     'Valloric/YouCompleteMe'
-Plugin 'derekwyatt/vim-scala'
 
 call vundle#end()
 " }}}1
@@ -161,7 +157,6 @@ noremap <m-r> :TRecentlyUsedFiles<cr>
 set encoding=utf-8
 set scrolloff=2
 "set autoindent
-"set showmode
 set hidden
 set autoread
 "set wildmenu
@@ -206,6 +201,7 @@ vmap gx <Plug>(openbrowser-smart-search)
 set listchars=tab:>-,trail:·,eol:$
 nmap <silent> <leader>s :set nolist!<CR>
 
+" sort inside brackets, for css
 "nnoremap <leader>S ?{<CR>jV/^\s*\}?$<CR>k:sort<CR>:noh<CR>
 nnoremap <leader>S ?{<CR>jV/^\s*\}\?$<CR>k:sort<CR>:noh<CR>
 "nnoremap <leader>v V`]
@@ -280,6 +276,7 @@ let g:ctrlp_map = '<leader>t'
 nnoremap <leader>. :CtrlPTag<cr>
 nnoremap <leader>: :!ctags -R .<cr>
 
+" split vertically and move focus there
 nnoremap <leader>w <C-w>v<C-w>l
 
 " Rails
@@ -389,8 +386,7 @@ func! CurrentFileDir(cmd)
 endfunc
 
 "nnoremap <leader>a :Ack 
-"nnoremap <leader>f :Ack <c-r>=expand("<cword>")<CR><CR>
-"nnoremap <leader>d :Ack def\ <c-r>=expand("<cword>")<CR><CR>
+nnoremap <leader>f :Ack <c-r>=expand("<cword>")<CR><CR>
 
 "set colorcolumn=85
 " flyttad till railscasts 

@@ -186,6 +186,7 @@ for_window [title="RaceTheSun"] floating enable
 for_window [title="MiniMetro"] floating enable
 
 for_window [title="feh.*/srv/http/munin"] floating enable
+for_window [title="^lynx_feh - .*"] floating enable
 
 bindsym Print	              exec screenshot
 bindsym --release Shift+Print           exec screenshot -s

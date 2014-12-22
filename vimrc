@@ -147,6 +147,7 @@ set sts=2
 set sw=2
 
 let g:colorizer_nomap = 1
+let g:colorizer_startup = 0
 
 nnoremap <silent> <F8> :TlistToggle<CR>
 let Tlist_GainFocus_On_ToggleOpen=1

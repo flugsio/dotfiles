@@ -21,9 +21,9 @@ def install_vundle
 end
 
 def files_to_install
-  excluded_files = %w[Rakefile README.rdoc LICENSE config flugsio.cfg slash]
+  excluded_files = %w[Rakefile README.rdoc LICENSE config flugsio.cfg slash cmus]
 
-  Dir['*', 'config/*'].map { |file|
+  Dir['*', 'config/*', 'cmus/*'].map { |file|
     next if excluded_files.include? file
 
     def file.target
@@ -71,6 +71,7 @@ def replace_file(file)
 end
 
 def link_file(file)
+  # sent implicit through binding
   hostname = Socket.gethostname
 
   if file =~ /.erb$/

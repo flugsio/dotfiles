@@ -1,7 +1,7 @@
-set aaa_mode=all
+set aaa_mode=album
 set altformat_current= %F 
 set altformat_playlist= %f%= %d 
-set altformat_title=%f
+set altformat_title=cmus %f
 set altformat_trackwin= %f%= %d 
 set auto_expand_albums=true
 set auto_reshuffle=true
@@ -53,8 +53,8 @@ set follow=false
 set format_current= %a - %l -%3n. %t%= %y 
 set format_playlist= %-25%a %3n. %t%= %y %d 
 set format_playlist_va= %-25%A %3n. %t (%a)%= %y %d 
-set format_title=%a - %l - %t (%y)
-set format_trackwin=%3n. %t%= %y %d 
+set format_title=cmus %a - %l - %t (%y)
+set format_trackwin=cmus %3n. %t%= %y %d 
 set format_trackwin_va=%3n. %t (%a)%= %y %d 
 set icecast_default_charset=ISO-8859-1
 set id3_default_charset=ISO-8859-1
@@ -138,7 +138,7 @@ bind common end win-bottom
 bind common enter win-activate
 bind common f toggle follow
 bind common g win-top
-bind common h seek -5
+bind common h win-next
 bind common home win-top
 bind common i win-sel-cur
 bind common j win-down

@@ -377,8 +377,6 @@ inoremap $t <><esc>i
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Editing mappings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"Remap VIM 0
-map 0 ^
 
 cno $q <C-\>eDeleteTillSlash()<cr>
 
@@ -410,14 +408,13 @@ nnoremap <leader>f :Ack <c-r>=expand("<cword>")<CR><CR>
 " flyttad till railscasts 
 " highlight ColorColumn guibg=#333333
 
-let @t='itry(:ea)'
 " dbext execute line and paste result buffer indended on next line
 " almost the same as PasteDBExecSQLUnderCursor, slighly slower
 " let @r=",sel ggjj\"yYjjVGk\"Yyp`[`]0I  k"
 
 
-compiler rspec
-nmap <Leader>fd :cf /tmp/autotest.txt<cr> :compiler rspec<cr>
+"compiler rspec
+"nmap <Leader>fd :cf /tmp/autotest.txt<cr> :compiler rspec<cr>
 
 " Indentation with tab {{{1
 "" Tab: Add one level of indent to selected lines.

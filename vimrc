@@ -305,6 +305,23 @@ nnoremap <leader>N :Rmigration
 nnoremap <leader>m :Rmodel<cr>
 nnoremap <leader>M :Rmodel 
 
+" pomodoros / glue for Vomodoro to bin/p
+let g:Pomo_ArchiveFilePath = "~/code/sparkleshare/pomodoros_archive.wofl"
+let g:Pomo_MinWindowHeight = 10
+augroup PomodoroAUGroup
+  autocmd! BufRead pomodoros.wofl call SetupPomodoroBuffer()
+augroup END
+
+function! SetupPomodoroBuffer()
+  :PomodoroToDoToday
+endfunction
+
+" TODO: used from flugsio/Vomodoro wip branch
+function! SendToPomo()
+  let text = substitute(getline(line(".")), " \?\([[(]\(X| )[])]\).*", "", "")
+  call system("~/bin/p -", text)
+endfunction
+
 cmap w!! w !sudo tee % >/dev/null
 
 

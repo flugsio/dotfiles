@@ -1,0 +1,7 @@
+# ~/.tmuxinator/dict.yml
+
+name: dict
+root: ~/
+
+windows:
+  - dict: dict 

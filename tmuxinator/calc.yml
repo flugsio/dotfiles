@@ -1,0 +1,10 @@
+# ~/.tmuxinator/calc.yml
+
+name: calc
+root: ~/
+
+windows:
+  - calc:
+      panes:
+        - bc
+        - bc

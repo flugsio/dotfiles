@@ -1,0 +1,17 @@
+# ~/.tmuxinator/rustgame.yml
+
+name: rustgame
+root: ~/code/rustgame
+
+windows:
+  - zsh: zsh
+  - editor:
+      layout: main-vertical
+      panes:
+#        - w3m http://doc.rust-lang.org/0.10/rust.html#closure-types
+        - lynx http://doc.rust-lang.org/0.11.0/intro.html
+        - vim
+        - make ./main
+  - tig: t
+#  - server: bundle exec rails s
+#  - logs: tail -f log/development.log

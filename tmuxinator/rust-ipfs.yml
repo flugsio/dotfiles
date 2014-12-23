@@ -1,0 +1,10 @@
+# ~/.tmuxinator/rust-ipfs.yml
+
+name: rust-ipfs
+#root: ~/code/rust-ipfs
+root: ~/code/rust-ipfs/submodules/ipfs-cli
+
+windows:
+  - zsh: cargo run
+  - editor: vim -S Session.vim
+  - tig: t

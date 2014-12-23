@@ -1,0 +1,21 @@
+# ~/.tmuxinator/easify.yml
+
+name: easify
+root: ~/code/easify
+
+# Runs before everything. Use it to start daemons etc.
+pre: systemctl is-active postgresql > /dev/null || sudo systemctl start postgresql
+
+# Runs in each window and pane before window/pane specific commands. Useful for setting up interpreter versions.
+# pre_window: rbenv shell 2.0.0-p247
+
+windows:
+  - tests: ls
+  - editor:
+      layout: main-vertical
+      panes:
+        - vim
+        - rake spec
+  - lynx: lynx http://localhost:3000
+  - server: bundle exec rails s
+  - git: tig --all

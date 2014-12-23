@@ -1,0 +1,7 @@
+# ~/.tmuxinator/pomo.yml
+
+name: pomo
+root: ~/code/sparkleshare
+
+windows:
+  - editor: vim pomodoros.wofl

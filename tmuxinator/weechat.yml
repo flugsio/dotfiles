@@ -1,0 +1,12 @@
+# ~/.tmuxinator/weechat.yml
+
+name: weechat
+root: ~/
+
+socket_name: tmux_weechat
+
+# Pass command line options to tmux. Useful for specifying a different tmux.conf.
+tmux_options: -f ~/.tmux.weechat.conf
+
+windows:
+  - chat: weechat

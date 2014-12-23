@@ -1,0 +1,14 @@
+# ~/.tmuxinator/gluco.yml
+
+name: gluco
+root: ~/code/android-glucosejournal
+
+windows:
+  - zsh: zsh
+  - editor:
+      layout: main-vertical
+      panes:
+        - vim main/AndroidManifest.xml
+  - tig: t
+#  - server: bundle exec rails s
+#  - logs: tail -f log/development.log

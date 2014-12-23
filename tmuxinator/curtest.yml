@@ -1,0 +1,16 @@
+# ~/.tmuxinator/curtest.yml
+
+name: curtest
+root: ~/code/curtest
+
+windows:
+  - zsh: zsh
+  - editor:
+      layout: main-vertical
+      panes:
+        - w3m c.learncodethehardway.org/book
+        - vim
+        - make && valgrind ./main && valgrind ./main
+  - tig: t
+#  - server: bundle exec rails s
+#  - logs: tail -f log/development.log

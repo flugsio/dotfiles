@@ -1,0 +1,8 @@
+# ~/.tmuxinator/sparkle.yml
+
+name: sparkle
+root: ~/code/sparkleshare
+
+windows:
+  - editor: vim -p start.wofl diary.wofl
+  - git: tig --all

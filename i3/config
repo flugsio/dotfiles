@@ -196,6 +196,11 @@ bindsym $mod+Pause exec sleep 1 && xset dpms force off
 new_window 1pixel
 hide_edge_borders both
 
+for_window [title="QUAKE LIVE Launcher" class="Wine"] floating enable
+for_window [title="Quake Live" class="Wine"] floating enable
+for_window [title="quakelive.exe" class="Wine"] floating enable
+for_window [title="Only If"] floating enable
+
 # color defines for zenburn styled i3
 set $bg     #2c2c2e
 set $bg2    #1c1c1e

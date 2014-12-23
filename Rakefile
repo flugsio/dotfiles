@@ -21,7 +21,7 @@ def install_vundle
 end
 
 def files_to_install
-  excluded_files = %w[Rakefile README.rdoc LICENSE config flugsio.cfg slash cmus]
+  excluded_files = %w[Rakefile README.rdoc LICENSE config baseq3 slash cmus]
 
   Dir['*', 'config/*', 'cmus/*'].map { |file|
     next if excluded_files.include? file

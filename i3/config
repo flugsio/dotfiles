@@ -158,16 +158,16 @@ bindcode $mod+49 move scratchpad
 
 # tmux keybinds
 bindsym $mod+y [title="tmux_dict"] scratchpad show
-bindsym $mod+shift+y exec --no-startup-id $term -t tmux_dict -e bash -c 'mux dict'
+bindsym $mod+shift+y exec --no-startup-id $term -t tmux_dict -e bash -i -c 'mux dict'
 
 bindsym $mod+u [title="tmux_calc"] scratchpad show
-bindsym $mod+shift+u exec --no-startup-id $term -t tmux_calc -e bash -c 'mux calc'
+bindsym $mod+shift+u exec --no-startup-id $term -t tmux_calc -e bash -i -c 'mux calc'
 
 bindsym $mod+i [title="tmux_sparkle"] scratchpad show
 bindsym $mod+shift+i exec --no-startup-id st -t tmux_sparkle -e bash -i -c 'mux sparkle'
 
 bindsym $mod+o [title="tmux_pomo"] scratchpad show
-bindsym $mod+shift+o exec --no-startup-id $term -t tmux_pomo -e bash -c 'mux pomo'
+bindsym $mod+shift+o exec --no-startup-id $term -t tmux_pomo -e bash -i -c 'mux pomo'
 
 for_window [title="tmux_.*"] move scratchpad
 
@@ -176,10 +176,10 @@ for_window [title="tmux_.*"] move scratchpad
 
 # cmus replaces _NET_WM_NAME
 bindcode $mod+47 [class="st-256color" title="(^cmus |.ogg$)"] scratchpad show
-bindcode $mod+shift+47 exec --no-startup-id $term -t cmus -e bash -c 'cmus'
+bindcode $mod+shift+47 exec --no-startup-id $term -t cmus -e bash -i -c 'cmus'
 for_window [class="st-256color" title="^cmus"] move scratchpad
 
-bindsym $mod+m exec --no-startup-id $term -t term_ranger -e bash -c 'ranger'
+bindsym $mod+m exec --no-startup-id $term -t term_ranger -e bash -i -c 'ranger'
 for_window [title="^term_ranger$"] focus; floating enable; resize grow width 800px; resize grow height 400px; move left 400px; move up 200px
 
 for_window [title="RaceTheSun"] floating enable

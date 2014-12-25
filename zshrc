@@ -21,7 +21,7 @@ setopt auto_cd
 setopt multios
 setopt cdablevarS
 
-source /usr/share/doc/pkgfile/command-not-found.zsh
+[[ -e /usr/share/doc/pkgfile/command-not-found.zsh ]] && source /usr/share/doc/pkgfile/command-not-found.zsh
 
 #ZSH=/usr/share/oh-my-zsh
 

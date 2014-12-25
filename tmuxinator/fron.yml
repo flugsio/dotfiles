@@ -10,12 +10,6 @@ pre: systemctl is-active postgresql > /dev/null || sudo systemctl start postgres
 # pre_window: rbenv shell 2.0.0-p247
 
 windows:
-  - tests: ls
-  - editor:
-      layout: main-vertical
-      panes:
-        - vim
-        - guard
-  - lynx: lynx http://localhost:3000
-  - server: bundle exec rails s
+  - server: source heroku_env && rails s
+  - editor: vim Gemfile
   - git: tig --all

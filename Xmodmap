@@ -55,6 +55,8 @@ keycode 105 = ISO_Level3_Shift NoSymbol ISO_Level3_Shift NoSymbol ISO_Level3_Shi
 
 
 !keycode 23 = Escape
+clear Lock
+keycode 9 = Escape
 
 ! () [] {} <>
 keycode  26 = e E e E parenleft E e E e E EuroSign cent e E EuroSign cent

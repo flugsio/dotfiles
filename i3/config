@@ -65,6 +65,8 @@ bindsym $mod+r splitv
 # enter fullscreen mode for the focused container
 bindsym $mod+z fullscreen
 
+bindsym $mod+shift+z bar mode toggle
+
 # change container layout (stacked, tabbed, toggle split)
 bindsym $mod+x layout stacking
 bindsym $mod+c layout tabbed
@@ -192,6 +194,11 @@ bindsym Print	              exec screenshot
 bindsym --release Shift+Print           exec screenshot -s
 
 bindsym $mod+Pause exec sleep 1 && xset dpms force off
+
+bindsym XF86AudioPlay exec cmus-remote -u
+bindsym XF86AudioStop exec cmus-remote -s
+bindsym XF86AudioPrev exec cmus-remote -r
+bindsym XF86AudioNext exec cmus-remote -n
 
 new_window 1pixel
 hide_edge_borders both

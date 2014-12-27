@@ -46,7 +46,7 @@ Plugin         'tpope/vim-fugitive'
 Plugin         'tpope/vim-git'
 "Plugin        'tpope/vim-haml'
 "Plugin     'Lokaltog/vim-powerline'
-"Plugin        'tpope/vim-ragtag'
+Plugin        'tpope/vim-ragtag'
 Plugin         'tpope/vim-rails'
 "Plugin        'tpope/vim-repeat'
 Plugin    'derekwyatt/vim-scala'
@@ -148,6 +148,8 @@ set sw=2
 
 let g:colorizer_nomap = 1
 let g:colorizer_startup = 0
+
+let g:ragtag_global_maps = 1
 
 nnoremap <silent> <F8> :TlistToggle<CR>
 let Tlist_GainFocus_On_ToggleOpen=1

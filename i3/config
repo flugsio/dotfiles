@@ -167,6 +167,7 @@ bindsym $mod+shift+u exec --no-startup-id $term -t tmux_calc -e bash -i -c 'mux 
 
 bindsym $mod+i [title="tmux_sparkle"] scratchpad show
 bindsym $mod+shift+i exec --no-startup-id st -t tmux_sparkle -e bash -i -c 'mux sparkle'
+bindsym $mod+ctrl+shift+i exec --no-startup-id st -t tmux_sparkle -e bash -i -c 'ssh kribev -t "tmux attach -t sparkle"'
 
 bindsym $mod+o [title="tmux_pomo"] scratchpad show
 bindsym $mod+shift+o exec --no-startup-id $term -t tmux_pomo -e bash -i -c 'mux pomo'

@@ -263,6 +263,7 @@ nnoremap <leader>do :diffoff!<CR>:only<CR>
 "nnoremap <leader>k :w\|:call system("tmux send-keys -t.+ C-p C-m")
 "nnoremap <leader>k :w\|:call system("tmux send-keys -t%7 C-p C-m")
 nnoremap <leader>p :silent !xdg-open <C-R>=escape("<C-R><C-F>", "#?&;\|%")<CR><CR>
+vnoremap <leader>p :w !curl -F 'f:1=<-' ix.io<CR>
 
 nnoremap <leader>k :w\|:call system("send_key_to 'ctrl+r' " . g:browser_id)
 

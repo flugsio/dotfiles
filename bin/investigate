@@ -1,0 +1,23 @@
+#!/bin/bash
+PROG=shift
+
+urlencode() {
+  echo -ne "$1" | xxd -plain | tr -d '\n' | sed 's/\(..\)/%\1/g'
+}
+
+workspace() {
+  i3-msg workspace "$1"
+}
+
+# 2 a b c = a b
+first_x_words() {
+  echo "$2" | cut -d' ' -f1-$1
+}
+
+if [ "$1" = "modli" ]; then
+  workspace "modli"
+  i3-msg exec 'firefox en.lichess.org/mod/log en.lichess.org/report/list en.lichess.org/tournament'
+else
+  workspace "?$( first_x_words 3 "$@" )"
+  i3-msg exec surf "https://www.google.se/?#q=$( urlencode "$@" )"
+fi

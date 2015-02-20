@@ -1,0 +1,7 @@
+--ignore-dir=log
+--ignore-dir=tmp
+--ignore-dir=.bundle
+--ignore-dir=target
+--ignore-dir=build
+--ignore-dir=node_modules
+--ignore-dir=compiled

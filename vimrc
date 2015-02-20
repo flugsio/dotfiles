@@ -46,7 +46,7 @@ Plugin         'tpope/vim-fugitive'
 Plugin         'tpope/vim-git'
 "Plugin        'tpope/vim-haml'
 "Plugin     'Lokaltog/vim-powerline'
-Plugin        'tpope/vim-ragtag'
+Plugin         'tpope/vim-ragtag'
 Plugin         'tpope/vim-rails'
 "Plugin        'tpope/vim-repeat'
 Plugin    'derekwyatt/vim-scala'
@@ -84,11 +84,6 @@ map Q gq
 " CTRL-U in insert mode deletes a lot.  Use CTRL-G u to first break undo,
 " so that you can undo CTRL-U after inserting a line break.
 inoremap <C-U> <C-G>u<C-U>
-
-" In many terminal emulators the mouse works just fine, thus enable it.
-"if has('mouse')
-"  set mouse=a
-"endif
 
 " Switch syntax highlighting on, when the terminal has colors
 " Also switch on highlighting the last used search pattern.
@@ -333,6 +328,7 @@ nnoremap <silent> <C-j> :call MoveToWindowOrTmux("j", "D")<cr>
 nnoremap <silent> <C-k> :call MoveToWindowOrTmux("k", "U")<cr>
 nnoremap <silent> <C-l> :call MoveToWindowOrTmux("l", "R")<cr>
 
+" if window stays the same, send key to tmux
 function! MoveToWindowOrTmux(key, tmux_key)
   let l:last_winnr = winnr()
   execute "wincmd" a:key

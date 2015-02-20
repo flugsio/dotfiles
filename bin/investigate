@@ -1,5 +1,5 @@
 #!/bin/bash
-PROG=shift
+# starts a browser with google search on new workspace
 
 urlencode() {
   echo -ne "$1" | xxd -plain | tr -d '\n' | sed 's/\(..\)/%\1/g'

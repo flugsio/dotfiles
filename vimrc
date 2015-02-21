@@ -22,6 +22,7 @@ Plugin   'vim-scripts/dbext.vim'
 Plugin       'morhetz/gruvbox'
 "Plugin  'vim-scripts/lojban'
 "Plugin         'tyru/open-browser.vim'
+"Plugin     'Lokaltog/powerline'
 "Plugin       'tomtom/quickfixsigns_vim'
 "Plugin         'kien/rainbow_parentheses.vim'
 Plugin     'godlygeek/tabular'
@@ -34,6 +35,7 @@ Plugin     'godlygeek/tabular'
 "Plugin       'tomtom/viki_vim'
 "Plugin        'tpope/vim-abolish'
 "Plugin        'tpope/vim-afterimage'
+Plugin         'bling/vim-airline'
 "Plugin       'kchmck/vim-coffee-script'
 Plugin   'altercation/vim-colors-solarized'
 "Plugin        'tpope/vim-commentary'
@@ -45,7 +47,6 @@ Plugin   'altercation/vim-colors-solarized'
 Plugin         'tpope/vim-fugitive'
 Plugin         'tpope/vim-git'
 "Plugin        'tpope/vim-haml'
-"Plugin     'Lokaltog/vim-powerline'
 Plugin         'tpope/vim-ragtag'
 Plugin         'tpope/vim-rails'
 "Plugin        'tpope/vim-repeat'
@@ -114,9 +115,9 @@ if has("autocmd")
     " Also don't do it when the mark is in the first line, that is the default
     " position when opening a file.
     autocmd BufReadPost *
-	  \ if line("'\"") > 1 && line("'\"") <= line("$") |
-	  \   exe "normal! g`\"" |
-	  \ endif
+          \ if line("'\"") > 1 && line("'\"") <= line("$") |
+          \   exe "normal! g`\"" |
+          \ endif
 
     autocmd! BufRead,BufNewFile *.viki set filetype=viki
     :au FocusLost * silent! wa " autosave
@@ -134,22 +135,18 @@ endif " has("autocmd")
 " Only define it when not defined already.
 if !exists(":DiffOrig")
   command DiffOrig vert new | set bt=nofile | r # | 0d_ | diffthis
-		  \ | wincmd p | diffthis
+        \ | wincmd p | diffthis
 endif
 
 set number
-set sts=2
-set sw=2
+set softtabstop=2
+set shiftwidth=2
+set expandtab
 
 let g:colorizer_nomap = 1
 let g:colorizer_startup = 0
 
 let g:ragtag_global_maps = 1
-
-nnoremap <silent> <F8> :TlistToggle<CR>
-let Tlist_GainFocus_On_ToggleOpen=1
-
-noremap <m-r> :TRecentlyUsedFiles<cr> 
 
 " http://stevelosh.com/blog/2010/09/coming-home-to-vim/
 set encoding=utf-8
@@ -282,26 +279,27 @@ nnoremap <leader>w <C-w>v<C-w>l
 nnoremap <leader>e :RVview<cr>:RSview _form<cr><C-w>h:RSmodel<cr><C-w>k
 nnoremap <leader>E :e doc/changes.txt<cr>:RVtask permissions<cr>:RVlocale sv-SE<cr><C-w>K:RVmigration 0<cr><C-w>h<C-w>10+
 
+" this is a trick to not end a line with trailing whitespace <c-r>=<esc>
 nnoremap <leader>r :R<cr>
-nnoremap <leader>R :R 
+nnoremap <leader>R :R <c-r>=<esc>
 " leaders A
 nnoremap <leader>a :A<cr>
 nnoremap <leader>A :AV<cr>
 " leaders Z
-nnoremap <leader>z :Rstylesheet 
-nnoremap <leader>Z :Rlayout 
-nnoremap <leader>x :Rjavascript 
-nnoremap <leader>X :Rlib 
+nnoremap <leader>z :Rstylesheet <c-r>=<esc>
+nnoremap <leader>Z :Rlayout <c-r>=<esc>
+nnoremap <leader>x :Rjavascript <c-r>=<esc>
+nnoremap <leader>X :Rlib <c-r>=<esc>
 nnoremap <leader>c :Rcontroller<cr>
-nnoremap <leader>C :Rcontroller 
+nnoremap <leader>C :Rcontroller <c-r>=<esc>
 nnoremap <leader>v :Rview<cr>
-nnoremap <leader>V :Rview 
+nnoremap <leader>V :Rview <c-r>=<esc>
 nnoremap <leader>b :Rhelper<cr>
-nnoremap <leader>B :Rhelper 
+nnoremap <leader>B :Rhelper <c-r>=<esc>
 nnoremap <leader>n :Rlocale sv-SE<cr>
-nnoremap <leader>N :Rmigration 
+nnoremap <leader>N :Rmigration <c-r>=<esc>
 nnoremap <leader>m :Rmodel<cr>
-nnoremap <leader>M :Rmodel 
+nnoremap <leader>M :Rmodel <c-r>=<esc>
 
 " pomodoros / glue for Vomodoro to bin/p
 let g:Pomo_ArchiveFilePath = "~/code/sparkleshare/pomodoros_archive.wofl"
@@ -400,11 +398,11 @@ func! CurrentFileDir(cmd)
   return a:cmd . " " . expand("%:p:h") . "/"
 endfunc
 
-"nnoremap <leader>a :Ack 
+"nnoremap <leader>a :Ack <c-r>=<esc>
 nnoremap <leader>f :Ack <c-r>=expand("<cword>")<CR><CR>
 
 "set colorcolumn=85
-" flyttad till railscasts 
+" flyttad till railscasts
 " highlight ColorColumn guibg=#333333
 
 " dbext execute line and paste result buffer indended on next line

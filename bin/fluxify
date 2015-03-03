@@ -1,0 +1,4 @@
+#!/bin/bash
+
+pkill xflux
+curl ipinfo.io | jq '.loc / "," | "-l " + .[0] + " -g " + .[1]' -r | xargs xflux

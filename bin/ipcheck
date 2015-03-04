@@ -1,0 +1,10 @@
+#!/bin/bash
+
+clipboard=`xclip -o`
+
+# simple ip-validator to not accidentally send random clipboard stuff
+if [[ $clipboard =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+  curl ipinfo.io/$clipboard | jq '.ip + " " + .hostname + "\n" + .country + " " + .city + " " + .region + " " + .loc + "\n" + .org' | xargs notify-send
+else
+  notify-send "not a valid ip"
+fi

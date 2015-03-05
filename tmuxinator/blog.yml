@@ -1,0 +1,9 @@
+# ~/.tmuxinator/blog.yml
+
+name: blog
+root: ~/code/flugsio.github.io
+
+windows:
+  - server: jekyll s -w -H 0.0.0.0
+  - editor: vim
+  - git: t

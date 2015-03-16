@@ -53,6 +53,8 @@ keycode 105 = ISO_Level3_Shift NoSymbol ISO_Level3_Shift NoSymbol ISO_Level3_Shi
 !keycode 65 = Control_R NoSymbol Control_R NoSymbol Control_R
 !keycode 105 = space space space space space nobreakspace space
 
+keycode  62 = ISO_Level2_Latch NoSymbol Shift_R NoSymbol Shift_R Shift_R
+
 
 !keycode 23 = Escape
 clear Lock

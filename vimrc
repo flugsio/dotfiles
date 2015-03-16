@@ -265,7 +265,7 @@ endfunction
 
 " ctrlp
 let g:ctrlp_custom_ignore = {
-      \ 'dir':  '\v[\/](target|build|node_modules|public\/compiled|public\/piece)$',
+      \ 'dir':  '\v[\/](target|build|node_modules|public\/compiled|public\/piece|_site|\.sass-cache)$',
       \ 'file': '\v\.(rlib|exe|so|dll)$',
       \ }
 let g:ctrlp_map = '<leader>t'

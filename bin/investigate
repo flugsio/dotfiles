@@ -16,7 +16,7 @@ first_x_words() {
 
 if [ "$1" = "modli" ]; then
   workspace "modli"
-  i3-msg exec 'firefox en.lichess.org/mod/log en.lichess.org/report/list en.lichess.org/tournament'
+  i3-msg exec 'chromium --user-data-dir=~/.config/chromium_modli en.lichess.org/tournament en.lichess.org/mod/log en.lichess.org/report/list'
 else
   workspace "?$( first_x_words 3 "$@" )"
   i3-msg exec surf "https://www.google.se/?#q=$( urlencode "$@" )"

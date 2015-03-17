@@ -14,7 +14,9 @@ touch $CONFIG/apps-hterm # hold
 touch $CONFIG/apps-hcommand # hold
 
 MOST_USED=`sort $CACHE 2>/dev/null | uniq -c | sort -rn | colrm 1 8`
+# put MOST_USER at top, then add all dmenu_path without the MOST_USED ones
 RUN=`(echo "$MOST_USED"; dmenu_path | grep -vxF "$MOST_USED") | dmenu -p Execute: "$@"` || exit
+# add to cache, limit to 100 lines
 (echo $RUN; head -n 99 $CACHE 2>/dev/null) > $CACHE.$$
 mv $CACHE.$$ $CACHE
 

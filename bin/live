@@ -1,0 +1,17 @@
+#!/bin/bash
+
+term="st -e zsh -i -c"
+streamer="livestreamer --retry-streams 5 --player-no-close -p 'mpv --fs'"
+quality="best"
+CACHE=${XDG_CACHE_HOME:-$HOME/.cache}/livestream-recent
+
+notify-send -t 3500 'fetching streams'
+RUN=`twitch_live | tr -d '"' | dmenu -l 20 -p livestream: "$@"` || exit
+
+word0=${RUN%% *}
+
+(echo $word0; head -n 99 $CACHE 2>/dev/null) > $CACHE.$$
+mv $CACHE.$$ $CACHE
+
+$term "$streamer https://www.twitch.tv/$word0 $quality"
+

@@ -194,6 +194,7 @@ for_window [title="MiniMetro"] floating enable
 
 for_window [title="feh.*/srv/http/munin"] floating enable
 for_window [title="^lynx_feh - .*"] floating enable
+for_window [title="^editconf$"] focus; floating enable; resize grow width 400px; resize grow height 400px; move left 200px; move up 200px
 
 bindsym Print	              exec screenshot
 bindsym --release Shift+Print           exec screenshot -s

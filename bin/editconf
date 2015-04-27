@@ -1,0 +1,18 @@
+#!/bin/bash -e
+
+term="st -t editconf -e zsh -il -c"
+
+configurations='[{"name":"vim", "file":"/home/flugsio/.vimrc"},{"name":"i3", "file":"~/.i3/config"},{"name":"i3status", "file":"~/.i3status"}]'
+
+function configs {
+  echo "$configurations" | jq ".[] .name" | tr -d '"'
+}
+
+# $0 config name
+function filename {
+  echo $configurations | jq "map(select(.name == \"$1\")) [] .file" | tr -d '"'
+}
+
+RUN=`configs | dmenu -l 20 -p 'edit config:' "$@"` || exit
+
+$term "vim $(filename $RUN)"

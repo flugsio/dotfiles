@@ -1,0 +1,4 @@
+#!/bin/bash
+
+tmux select-window -t 'editor' && vim --servername $(tmux display-message -p '#S') --remote "$@"
+

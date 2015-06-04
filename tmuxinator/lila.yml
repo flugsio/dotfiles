@@ -4,9 +4,11 @@ name: lila
 root: ~/code/lila
 
 # Runs in each window and pane before window/pane specific commands. Useful for setting up interpreter versions.
-# pre_window: rbenv shell 2.0.0-p247
+# pre_window: export SBT_OPTS="-Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,address=5005,server=y,suspend=n"
+# jdb -attach 5005
 
 windows:
-  - server: sbt -Dhttp.port=9663
-  - editor: vim
+  - server: sbt -Dhttp.port=9663 run
+  - editor: vim --servername lila
+  - ranger: EDITOR='tmux_editor' ranger
   - git: t

@@ -6,13 +6,6 @@ call vundle#begin()
 
 Plugin 'gmarik/Vundle.vim'
 
-" Type next row ON third row to run it (sorts and aligns by plugin name)
-" "qy$@q
-" }jvip!sort -k2 -t/:Tabularize /'.*\/gv:s/\v(Plugin +)('.*\/)( +)/\1\3\2
-" next paragraph next line visual inside paragraph command sort by second field separated by /
-" tabularize around user name
-" replace/move the space between username/repo to between Plugin/username
-
 Plugin       'mileszs/ack.vim'
 "Plugin        'spf13/asciidoc-vim'
 Plugin      'lilydjwg/colorizer'
@@ -38,6 +31,7 @@ Plugin     'godlygeek/tabular'
 Plugin         'bling/vim-airline'
 "Plugin       'kchmck/vim-coffee-script'
 Plugin   'altercation/vim-colors-solarized'
+Plugin     'rust-lang/rust.vim'
 "Plugin        'tpope/vim-commentary'
 "Plugin        'tpope/vim-cucumber'
 "Plugin     'Lokaltog/vim-easymotion'
@@ -269,6 +263,7 @@ let g:ctrlp_custom_ignore = {
       \ 'file': '\v\.(rlib|exe|so|dll)$',
       \ }
 let g:ctrlp_map = '<leader>t'
+let g:ctrlp_working_path_mode = 'ra'
 nnoremap <leader>. :CtrlPTag<cr>
 nnoremap <leader>: :!ctags -R .<cr>
 
@@ -454,4 +449,12 @@ function! ChangePaste(type, ...)
     silent exe "normal! `[v`]\"_c"
     silent exe "normal! p"
 endfunction
+
+" keep at bottome becuase it destroys github diff
+" Type next row ON third row to run it (sorts and aligns by plugin name)
+" "qy$@q
+" gg}}jvip!sort -k2 -t/:Tabularize /'.*\/gv:s/\v(Plugin +)('.*\/)( +)/\1\3\2
+" next paragraph next line visual inside paragraph command sort by second field separated by /
+" tabularize around user name
+" replace/move the space between username/repo to between Plugin/username
 

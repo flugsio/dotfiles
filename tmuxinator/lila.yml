@@ -5,9 +5,11 @@ root: ~/code/lila
 
 # Runs in each window and pane before window/pane specific commands. Useful for setting up interpreter versions.
 # pre_window: export SBT_OPTS="-Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,address=5005,server=y,suspend=n"
+pre_window: export SBT_OPTS="-Xms64M -Xmx2048M -Xss4M -XX:ReservedCodeCacheSize=64m -XX:+CMSClassUnloadingEnabled -XX:+UseConcMarkSweepGC"
 # jdb -attach 5005
 
 windows:
+  # -staged: sbt stage && ./target/universal/stage/bin/lila -Dhttp.port=9663 -Dconf.file=/home/flugsio/code/lila/conf/application.conf -Dforcedev=true
   - server: sbt -Dhttp.port=9663 run
   - editor: vim --servername lila
   - ranger: EDITOR='tmux_editor' ranger

@@ -32,7 +32,7 @@ Plugin         'bling/vim-airline'
 "Plugin       'kchmck/vim-coffee-script'
 Plugin   'altercation/vim-colors-solarized'
 Plugin     'rust-lang/rust.vim'
-"Plugin        'tpope/vim-commentary'
+Plugin         'tpope/vim-commentary'
 "Plugin        'tpope/vim-cucumber'
 "Plugin     'Lokaltog/vim-easymotion'
 "Plugin        'tpope/vim-endwise'
@@ -43,7 +43,7 @@ Plugin         'tpope/vim-git'
 "Plugin        'tpope/vim-haml'
 Plugin         'tpope/vim-ragtag'
 Plugin         'tpope/vim-rails'
-"Plugin        'tpope/vim-repeat'
+Plugin         'tpope/vim-repeat'
 Plugin    'derekwyatt/vim-scala'
 Plugin         'tpope/vim-sleuth'
 Plugin         'tpope/vim-surround'
@@ -73,8 +73,7 @@ set showcmd		" display incomplete commands
 set incsearch		" do incremental searching
 set t_kb=
 
-" Don't use Ex mode, use Q for formatting
-map Q gq
+map Q qq
 
 " CTRL-U in insert mode deletes a lot.  Use CTRL-G u to first break undo,
 " so that you can undo CTRL-U after inserting a line break.
@@ -126,7 +125,6 @@ endif " has("autocmd")
 
 " Convenient command to see the difference between the current buffer and the
 " file it was loaded from, thus the changes you made.
-" Only define it when not defined already.
 if !exists(":DiffOrig")
   command DiffOrig vert new | set bt=nofile | r # | 0d_ | diffthis
         \ | wincmd p | diffthis
@@ -395,10 +393,6 @@ endfunc
 
 "nnoremap <leader>a :Ack <c-r>=<esc>
 nnoremap <leader>f :Ack <c-r>=expand("<cword>")<CR><CR>
-
-"set colorcolumn=85
-" flyttad till railscasts
-" highlight ColorColumn guibg=#333333
 
 " dbext execute line and paste result buffer indended on next line
 " almost the same as PasteDBExecSQLUnderCursor, slighly slower

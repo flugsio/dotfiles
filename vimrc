@@ -238,8 +238,6 @@ nnoremap <leader>gd :Gdiff<CR>
 nnoremap <leader>gw :Gwrite<CR>
 nnoremap <leader>gb :Gblame<CR>
 
-nnoremap <leader>db :vertical diffsplit ../ereg_byn/%:.<CR>
-nnoremap <leader>dv :vertical diffsplit ../ereg_vvs/%:.<CR>
 nnoremap <leader>do :diffoff!<CR>:only<CR>
 
 "nnoremap <leader>k :w\|:call Send_to_Tmux("rspec\n")
@@ -258,7 +256,7 @@ endfunction
 " ctrlp
 let g:ctrlp_custom_ignore = {
       \ 'dir':  '\v[\/](target|build|node_modules|public\/compiled|public\/piece|_site|\.sass-cache)$',
-      \ 'file': '\v\.(rlib|exe|so|dll)$',
+      \ 'file': '\v(\.(rlib|exe|so|dll)|tags)$',
       \ }
 let g:ctrlp_map = '<leader>t'
 let g:ctrlp_working_path_mode = 'ra'

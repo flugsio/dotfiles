@@ -4,6 +4,6 @@ name: blog
 root: ~/code/flugsio.github.io
 
 windows:
-  - server: jekyll s -w -H 0.0.0.0
+  - server: jekyll s -w -H 0.0.0.0 --config _config.yml,_config_dev.yml
   - editor: vim
   - git: t

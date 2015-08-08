@@ -206,6 +206,8 @@ bindsym XF86AudioStop exec cmus-remote -s
 bindsym XF86AudioPrev exec cmus-remote -r
 bindsym XF86AudioNext exec cmus-remote -n
 
+bindsym $mod+ctrl+v exec browse_clipboard
+
 new_window 1pixel
 hide_edge_borders both
 

@@ -1,8 +1,8 @@
 #!/bin/bash
 TERM="st -e"
 COMMAND="st -e zsh -i -c"
-HTERM="st --hold -e"
-HCOMMAND="st --hold -e sh -c"
+HTERM="st -e zsh -i -c"
+HCOMMAND="st -e sh -c"
 CACHE=${XDG_CACHE_HOME:-$HOME/.cache}/dmenu-recent-apps
 mkdir -p ${XDG_CACHE_HOME:-$HOME/.cache}
 CONFIG=${XDG_CONFIG_HOME:-$HOME/.config}/dmenu
@@ -31,8 +31,8 @@ do
     [ $type = term -o $type = command  -o $type = bg  -o $type = hterm  -o $type = hcommand ] || continue
     echo $word0 >> $CONFIG/apps-$type
 done
-grep -q $match $CONFIG/apps-term && exec $TERM $RUN
-grep -q $match $CONFIG/apps-command && exec $COMMAND $RUN
-grep -q $match $CONFIG/apps-bg && exec $RUN
-grep -q $match $CONFIG/apps-hterm && exec $HTERM $RUN
-grep -q $match $CONFIG/apps-hcommand && exec $HCOMMAND $RUN
+grep -q $match $CONFIG/apps-term && exec $TERM "$RUN"
+grep -q $match $CONFIG/apps-command && exec $COMMAND "$RUN"
+grep -q $match $CONFIG/apps-bg && exec "$RUN"
+grep -q $match $CONFIG/apps-hterm && exec $HTERM "$RUN"
+grep -q $match $CONFIG/apps-hcommand && exec $HCOMMAND "$RUN"

@@ -1,3 +1,3 @@
 #!/bin/sh
 
-echo $(echo "scale=20;obase=16;a=($(date +'%s')+3600*2)/(86400/16^3);scale=0;a/1" | bc | sed "s/\(.\{3\}\)$/\.\1/") $(sit)
+echo $(echo "scale=20;obase=16;a=($(date +'%s')+3600*2)/(86400/16^3);scale=0;a/1" | bc | sed "s/\(.\{3\}\)$/\.\1/") $(sit) ~$(journalctl --since="1 hour ago" | wc -l)

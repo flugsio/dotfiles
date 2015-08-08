@@ -1,7 +1,7 @@
 #!/bin/bash
 
 term="st -e zsh -i -c"
-streamer="livestreamer --retry-streams 5 --player-no-close -p 'mpv --fs'"
+streamer="livestreamer --retry-streams 5 --player-no-close -p 'vlc -f'"
 quality="best"
 CACHE=${XDG_CACHE_HOME:-$HOME/.cache}/livestream-recent
 

@@ -74,4 +74,3 @@ export PATH="$HOME/.rbenv/bin:$PATH"
 export PATH="$(ruby -e 'puts Gem.user_dir')/bin:$PATH"
 eval "$(rbenv init -)"
 
-stty erase ^H

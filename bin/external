@@ -1,4 +1,0 @@
-#!/bin/bash
-
-xrandr --output VGA-0 --auto --right-of LVDS-0
-xrandr --output LVDS-0 --pos 0x250

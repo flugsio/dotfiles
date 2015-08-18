@@ -1,4 +1,5 @@
 #!/bin/bash
 
 pkill xflux
-curl ipinfo.io | jq '.loc / "," | "-l " + .[0] + " -g " + .[1]' -r | xargs xflux
+# adding 15 to longitude = 1 hour earlier
+curl ipinfo.io | jq '.loc / "," | "-l " + .[0] + " -g " + (.[1] | tonumber + 15 | tostring)' -r | xargs xflux

@@ -8,14 +8,13 @@ Plugin 'gmarik/Vundle.vim'
 
 Plugin       'mileszs/ack.vim'
 "Plugin        'spf13/asciidoc-vim'
-Plugin      'lilydjwg/colorizer'
+"Plugin     'lilydjwg/colorizer'
 Plugin          'kien/ctrlp.vim'
-Plugin   'vim-scripts/dbext.vim'
+"Plugin  'vim-scripts/dbext.vim'
 "Plugin   'gregsexton/gitv'
 Plugin       'morhetz/gruvbox'
 "Plugin  'vim-scripts/lojban'
 "Plugin         'tyru/open-browser.vim'
-"Plugin     'Lokaltog/powerline'
 "Plugin       'tomtom/quickfixsigns_vim'
 "Plugin         'kien/rainbow_parentheses.vim'
 Plugin     'godlygeek/tabular'
@@ -28,9 +27,8 @@ Plugin     'godlygeek/tabular'
 "Plugin       'tomtom/viki_vim'
 "Plugin        'tpope/vim-abolish'
 "Plugin        'tpope/vim-afterimage'
-Plugin         'bling/vim-airline'
 "Plugin       'kchmck/vim-coffee-script'
-Plugin   'altercation/vim-colors-solarized'
+"Plugin  'altercation/vim-colors-solarized'
 Plugin     'rust-lang/rust.vim'
 Plugin         'tpope/vim-commentary'
 "Plugin        'tpope/vim-cucumber'
@@ -45,7 +43,7 @@ Plugin         'tpope/vim-ragtag'
 Plugin         'tpope/vim-rails'
 Plugin         'tpope/vim-repeat'
 Plugin    'derekwyatt/vim-scala'
-Plugin         'tpope/vim-sleuth'
+"Plugin         'tpope/vim-sleuth' " 100ms
 Plugin         'tpope/vim-surround'
 "Plugin         'kana/vim-vspec'
 Plugin       'flugsio/Vomodoro'
@@ -61,9 +59,6 @@ call vundle#end()
 set backspace=indent,eol,start
 
 set noswapfile
-
-" MySys()
-source ~/.vimrc_local
 
 set nobackup
 set nowritebackup
@@ -198,19 +193,8 @@ set background=dark
 set t_Co=256
 let g:gruvbox_italic=0
 silent! colorscheme gruvbox
-
-" Set font according to system
-if MySys() == "mac"
-  set guifont=Menlo:h14
-  "set guifont=Ubuntu\ Mono:h16
-  "set guifont=Inconsolata:h18
-  set shell=/bin/bash
-elseif MySys() == "windows"
-  set  guifont=Bitstream\ Vera\ Sans\ Mono:h10
-elseif MySys() == "linux"
-  set guifont=Ubuntu\ Mono\ 12
-  set shell=/bin/bash
-endif
+hi StatusLine ctermfg=208 ctermbg=234 cterm=NONE
+hi StatusLineNC ctermfg=108 ctermbg=234 cterm=NONE
 
 
 " Abbreviations
@@ -366,21 +350,16 @@ inoremap $t <><esc>i
 " => Editing mappings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-cno $q <C-\>eDeleteTillSlash()<cr>
+" alt+ctrl+g
+cno  <C-\>eDeleteTillSlash()<cr>
 
 func! DeleteTillSlash()
   let g:cmd = getcmdline()
-  if MySys() == "linux" || MySys() == "mac"
-    let g:cmd_edited = substitute(g:cmd, "\\(.*\[/\]\\).*", "\\1", "")
-  else
-    let g:cmd_edited = substitute(g:cmd, "\\(.*\[\\\\]\\).*", "\\1", "")
-  endif
+  " delete tail back to last /
+  let g:cmd_edited = substitute(g:cmd, "\\(.*\[/\]\\).*", "\\1", "")
+  " for when last char is /, delete it too
   if g:cmd == g:cmd_edited
-    if MySys() == "linux" || MySys() == "mac"
-      let g:cmd_edited = substitute(g:cmd, "\\(.*\[/\]\\).*/", "\\1", "")
-    else
-      let g:cmd_edited = substitute(g:cmd, "\\(.*\[\\\\\]\\).*\[\\\\\]", "\\1", "")
-    endif
+    let g:cmd_edited = substitute(g:cmd, "\\(.*\[/\]\\).*/", "\\1", "")
   endif
   return g:cmd_edited
 endfunc

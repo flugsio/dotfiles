@@ -1,7 +1,7 @@
 # ~/.tmuxinator/curtest.yml
 
 name: curtest
-root: ~/code/curtest
+root: ~/code/learn/curtest
 
 windows:
   - zsh: zsh

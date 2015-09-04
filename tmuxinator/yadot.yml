@@ -1,7 +1,7 @@
 # ~/.tmuxinator/yadot.yml
 
 name: yadot
-root: ~/code/yadot-rs
+root: ~/code/learn/yadot-rs
 
 windows:
   - zsh: zsh

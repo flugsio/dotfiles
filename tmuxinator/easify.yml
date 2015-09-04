@@ -1,7 +1,7 @@
 # ~/.tmuxinator/easify.yml
 
 name: easify
-root: ~/code/easify
+root: ~/code/dimea/easify
 
 # Runs before everything. Use it to start daemons etc.
 pre: systemctl is-active postgresql > /dev/null || sudo systemctl start postgresql

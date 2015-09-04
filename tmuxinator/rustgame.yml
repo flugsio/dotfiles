@@ -1,7 +1,7 @@
 # ~/.tmuxinator/rustgame.yml
 
 name: rustgame
-root: ~/code/rustgame
+root: ~/code/learn/rustgame
 
 windows:
   - zsh: zsh

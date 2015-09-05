@@ -1,0 +1,25 @@
+[user]
+  name = Jimmie Elvenmark
+  email = flugsio@gmail.com
+
+[push]
+  default = current
+
+[sendemail]
+  smtpencryption = tls
+  smtpserver = smtp.gmail.com
+  smtpuser = flugsio@gmail.com
+  smtpserverport = 587
+
+[log]
+  date = iso
+
+[diff]
+  mnemonicprefix = true
+
+[alias]
+  s = status
+  c = commit -v
+  f = fetch --all
+  p = pull
+

@@ -1,0 +1,13 @@
+#!/bin/zsh -i
+
+if [ $(pgrep ffmpeg -a | grep -c twitch) -ge 1 ];
+then
+  echo -n "#"
+  curl -s -H "Accept: application/vnd.twitchtv.v3+json" -X GET "https://api.twitch.tv/kraken/streams?channel=flugsio" | jq '.streams[0] .viewers' -r
+elif [ $(pgrep ffmpeg -a | grep -c youtube) -ge 1 ];
+then
+  echo -n "#"
+  curl -L "https://www.googleapis.com/youtube/v3/channels?part=statistics&forUsername=flugsio&key=$YOUTUBE_API_KEY" | jq ".items[0] .statistics .viewCount" -r
+else
+  echo ""
+fi

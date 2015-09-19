@@ -203,6 +203,11 @@ for_window [title="feh.*/srv/http/munin"] floating enable
 for_window [title="^lynx_feh - .*"] floating enable
 for_window [title="^editconf$"] focus; floating enable; resize grow width 400px; resize grow height 400px; move left 200px; move up 200px
 
+bindsym XF86MonBrightnessUp   exec xbacklight +10
+bindsym XF86MonBrightnessDown exec xbacklight -10
+bindsym XF86AudioRaiseVolume  exec /usr/bin/pulseaudio-ctl up && killall -USR1 i3status
+bindsym XF86AudioLowerVolume  exec /usr/bin/pulseaudio-ctl down && killall -USR1 i3status
+bindsym XF86AudioMute         exec /usr/bin/pulseaudio-ctl mute && killall -USR1 i3status
 bindsym Print	              exec screenshot
 bindsym --release Shift+Print           exec screenshot -s
 
@@ -212,6 +217,9 @@ bindsym XF86AudioPlay exec cmus-remote -u
 bindsym XF86AudioStop exec cmus-remote -s
 bindsym XF86AudioPrev exec cmus-remote -r
 bindsym XF86AudioNext exec cmus-remote -n
+
+bindcode $mod+112  exec /usr/bin/pulseaudio-ctl up
+bindcode $mod+117  exec /usr/bin/pulseaudio-ctl down
 
 bindsym $mod+ctrl+v exec browse_clipboard
 
@@ -284,5 +292,17 @@ bar {
         }
 }
 
+#bindsym $mod+shift+p bar hidden_state toggle bar_help
+
+#bar {
+#  id bar_help
+#  position bottom
+#  mode hide
+#  hidden_state hide
+#  tray_output none
+#  workspace_buttons yes
+#  binding_mode_indicator no
+#  Modifier Mod2 # unused modifier
+#}
 
 exec_always ~/bin/kbd

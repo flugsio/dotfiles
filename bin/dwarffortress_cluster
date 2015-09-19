@@ -1,0 +1,11 @@
+#!/bin/sh
+
+# kill whole process group (including parent shell)
+trap "kill 0" SIGINT SIGTERM EXIT
+
+i3-msg 'workspace df; append_layout /home/flugsio/.i3/workspace-df.json'
+surf -n -p -s http://dwarffortresswiki.org &
+(sleep 30 && dwarftherapist) &
+~/games/soundsense/soundSense.sh &
+
+dwarffortress

@@ -139,6 +139,15 @@ URxvt.keysym.M-s:           perl:keyboard-select:search
 !*color14:                 #93a1a1
 !*color15:                 #fdf6e3
 
+XBomb.form.Core.grid.bomb:  #bdae93
+XBomb.form.Core.grid.number:  #689d6a
+XBomb.form.Core.grid.number2:  #458588
+XBomb.form.Core.grid.number3:  #fb5934
+XBomb.form.Core.grid.hidden:  #002b16
+XBomb.form.Core.grid.bombreal:  #9b2924
+XBomb.form.Core.grid.bombmark:  #af3a03
+XBomb.form.Core.grid.correct:  #bdae93
+
 ! Gruvbox Dark
 *background: #282828
 *foreground: #ebdbb2

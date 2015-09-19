@@ -1,0 +1,14 @@
+#!/bin/bash
+
+function match_ln() {
+    grep "$1" "$2" -n | cut -f1 -d:
+}
+
+# Output lines 0-match$2 + match$3-EOF from file $1
+# that is: filter everything between two grep matches
+function main() {
+    # doc: tail -n +K # start at Kth line from top
+    cat <(head $1 -n $(match_ln $2 $1 )) <(tail $1 -n +$(match_ln $3 $1 ))
+}
+
+main $1 $2 $3

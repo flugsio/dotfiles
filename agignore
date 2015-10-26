@@ -1,0 +1,14 @@
+target
+build
+node_modules
+public/compiled
+public/piece
+public/_site
+.sass-cache
+log
+*.rlib
+*.exe
+*.so
+*.dll
+*.log
+tags

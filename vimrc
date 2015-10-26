@@ -165,7 +165,8 @@ set showmatch
 set splitright
 set splitbelow
 
-nnoremap <leader><space> :noh<cr>
+nnoremap <space> /
+nnoremap <leader>F :noh<cr>
 nnoremap <tab> %
 vnoremap <tab> %
 
@@ -236,12 +237,18 @@ function! SelectBrowser()
   let g:browser_id = system("xdotool selectwindow 2> /dev/null")
 endfunction
 
+" old mapping, no-operation for now
+nnoremap <leader>t :noh<cr>
 " ctrlp
-let g:ctrlp_custom_ignore = {
-      \ 'dir':  '\v[\/](target|build|node_modules|public\/compiled|public\/piece|_site|\.sass-cache)$',
-      \ 'file': '\v(\.(rlib|exe|so|dll)|tags)$',
-      \ }
-let g:ctrlp_map = '<leader>t'
+let g:ctrlp_cache_dir = $HOME . '/.cache/ctrlp'
+let g:ctrlp_user_command = 'ag %s -i --nocolor --nogroup --hidden
+      \ --ignore .git
+      \ --ignore .svn
+      \ --ignore .hg
+      \ --ignore .DS_Store
+      \ --ignore "**/*.pyc"
+      \ -g ""'
+let g:ctrlp_map = '<leader><space>'
 let g:ctrlp_working_path_mode = 'ra'
 nnoremap <leader>. :CtrlPTag<cr>
 nnoremap <leader>: :!ctags -R .<cr>

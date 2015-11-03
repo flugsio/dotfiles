@@ -28,6 +28,7 @@ Plugin     'godlygeek/tabular'
 "Plugin        'tpope/vim-abolish'
 "Plugin        'tpope/vim-afterimage'
 Plugin        'kchmck/vim-coffee-script'
+Plugin   'AndrewRadev/vim-eco' " requires vim-coffee-script
 "Plugin  'altercation/vim-colors-solarized'
 Plugin     'rust-lang/rust.vim'
 Plugin         'tpope/vim-commentary'

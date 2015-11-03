@@ -5,3 +5,7 @@
 --ignore-dir=build
 --ignore-dir=node_modules
 --ignore-dir=compiled
+--type-add
+  html=.haml
+--type-add
+  css=.sass,.scss

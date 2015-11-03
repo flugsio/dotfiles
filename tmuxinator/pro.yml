@@ -1,0 +1,22 @@
+# ~/.tmuxinator/pro.yml
+
+name: pro
+root: ~/code/promote
+
+# Runs before everything. Use it to start daemons etc.
+pre:
+  - alias db='bundle exec rails db'
+
+# Runs in each window and pane before window/pane specific commands. Useful for setting up interpreter versions.
+# pre_window: rbenv shell 2.0.0-p247
+
+windows:
+  - server:
+      pre:
+        - cd site
+        - alias bun='(cd .. && for a in admin admin_core base site; do (cd $a && bundle) done)'
+        - alias s='bundle exec rails s'
+      panes: bundle exec rails s
+  - editor: vim --servername pro
+  - ranger: EDITOR='tmux_editor' ranger
+  - git: t

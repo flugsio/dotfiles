@@ -270,20 +270,20 @@ nnoremap <leader>R :R <c-r>=<esc>
 nnoremap <leader>a :A<cr>
 nnoremap <leader>A :AV<cr>
 " leaders Z
-nnoremap <leader>z :Rstylesheet <c-r>=<esc>
-nnoremap <leader>Z :Rlayout <c-r>=<esc>
-nnoremap <leader>x :Rjavascript <c-r>=<esc>
-nnoremap <leader>X :Rlib <c-r>=<esc>
-nnoremap <leader>c :Rcontroller<cr>
-nnoremap <leader>C :Rcontroller <c-r>=<esc>
-nnoremap <leader>v :Rview<cr>
-nnoremap <leader>V :Rview <c-r>=<esc>
-nnoremap <leader>b :Rhelper<cr>
-nnoremap <leader>B :Rhelper <c-r>=<esc>
-nnoremap <leader>n :Rlocale sv-SE<cr>
-nnoremap <leader>N :Rmigration <c-r>=<esc>
-nnoremap <leader>m :Rmodel<cr>
-nnoremap <leader>M :Rmodel <c-r>=<esc>
+nnoremap <leader>z :Estylesheet <c-r>=<esc>
+nnoremap <leader>Z :Elayout <c-r>=<esc>
+nnoremap <leader>x :Ejavascript <c-r>=<esc>
+nnoremap <leader>X :Elib <c-r>=<esc>
+nnoremap <leader>c :Econtroller<cr>
+nnoremap <leader>C :Econtroller <c-r>=<esc>
+nnoremap <leader>v :Eview<cr>
+nnoremap <leader>V :Eview <c-r>=<esc>
+nnoremap <leader>b :Ehelper<cr>
+nnoremap <leader>B :Ehelper <c-r>=<esc>
+nnoremap <leader>n :Elocale sv-SE<cr>
+nnoremap <leader>N :Emigration <c-r>=<esc>
+nnoremap <leader>m :Emodel<cr>
+nnoremap <leader>M :Emodel <c-r>=<esc>
 
 " pomodoros / glue for Vomodoro to bin/p
 let g:Pomo_ArchiveFilePath = "~/code/sparkleshare/pomodoros_archive.wofl"

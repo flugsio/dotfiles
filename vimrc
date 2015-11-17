@@ -202,7 +202,8 @@ hi StatusLineNC ctermfg=108 ctermbg=234 cterm=NONE
 
 " Abbreviations
 iab <expr> dts strftime("%Y-%m-%d")
-iab <expr> dtts strftime("%Y-%m-%d %H:%M")
+iab <expr> dta strftime("%Y-%m-%d %H:%M")
+iab <expr> dtz strftime("%Y-%m-%dT%H:%M:%S%z")
 
 " Centers and opens fold at cursor when going to next/previous match
 nnoremap n nzzzv

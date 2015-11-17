@@ -5,6 +5,8 @@ import sys
 import json
 from subprocess import Popen, PIPE
 
+def get_glucose():
+        return Popen("gluj", stdout=PIPE, shell=True, universal_newlines=True).stdout.read().strip()
 def get_pomodoro_name():
     #with open('/sys/devices/system/cpu/cpu0/cpufreq/scaling_governor') as fp:
         return Popen("p name", stdout=PIPE, shell=True, universal_newlines=True).stdout.read().strip()
@@ -58,7 +60,7 @@ if __name__ == '__main__':
         j.insert(0, {'full_text' : '%s' % get_hexa_clock(), 'name' : 'hexa_clock'})
         j.insert(0, {'full_text' : '%s' % get_pomodoro_graph(), 'name' : 'pomodoro_graph'})
         j.insert(0, {'full_text' : '%s' % get_pomodoro_name(), 'name' : 'pomodoro_name'})
-        cpu_temp = int(get_cpu_temperature())
+        j.insert(0, {'full_text' : '%s' % get_glucose(), 'name' : 'glucose'})
         if cpu_temp < 53:
           cpu_temp_color = "#9f9f9f"
         else:

@@ -1,0 +1,12 @@
+#!/bin/sh
+
+# if there is a window with index 1
+#   move it here into a new pane
+#   otherwise break this one back
+if tmux list-windows -F '#I' | grep -q "^1$"; then
+  tmux join-pane -l 20 -s :1 -d
+  tmux select-pane -D
+else
+  tmux break-pane -d -F "#{pane_index}" -s 2
+fi
+

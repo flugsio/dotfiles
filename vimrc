@@ -10,7 +10,7 @@ Plugin       'mileszs/ack.vim'
 "Plugin        'spf13/asciidoc-vim'
 "Plugin     'lilydjwg/colorizer'
 Plugin          'kien/ctrlp.vim'
-"Plugin  'vim-scripts/dbext.vim'
+Plugin   'vim-scripts/dbext.vim'
 "Plugin   'gregsexton/gitv'
 Plugin       'morhetz/gruvbox'
 "Plugin  'vim-scripts/lojban'
@@ -22,7 +22,9 @@ Plugin     'godlygeek/tabular'
 "Plugin       'tomtom/tmru_vim'
 "Plugin       'tomtom/trag_vim'
 "Plugin   'xaviershay/tslime.vim'
-"Plugin  'vim-scripts/UltiSnips'
+Plugin        'SirVer/ultisnips'
+Plugin         'honza/vim-snippets'
+Plugin         'chase/vim-ansible-yaml'
 "Plugin       'tomtom/vikitasks_vim'
 "Plugin       'tomtom/viki_vim'
 "Plugin        'tpope/vim-abolish'
@@ -40,8 +42,10 @@ Plugin         'tpope/vim-commentary'
 Plugin         'tpope/vim-fugitive'
 Plugin         'tpope/vim-git'
 "Plugin        'tpope/vim-haml'
+Plugin        'dzeban/vim-log-syntax'
 Plugin         'tpope/vim-ragtag'
 Plugin         'tpope/vim-rails'
+Plugin    'thoughtbot/vim-rspec'
 Plugin         'tpope/vim-repeat'
 Plugin    'derekwyatt/vim-scala'
 "Plugin         'tpope/vim-sleuth' " 100ms
@@ -135,6 +139,12 @@ let g:colorizer_nomap = 1
 let g:colorizer_startup = 0
 
 let g:ragtag_global_maps = 1
+
+" Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
+let g:UltiSnipsExpandTrigger="<c-i>"
+let g:UltiSnipsJumpForwardTrigger="<c-b>"
+let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+let g:UltiSnipsEditSplit="vertical"
 
 " http://stevelosh.com/blog/2010/09/coming-home-to-vim/
 set encoding=utf-8

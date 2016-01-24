@@ -5,18 +5,22 @@ root: ~/code/promote
 
 # Runs before everything. Use it to start daemons etc.
 pre:
+  - export LC_PAPER=sv_SE.UTF-8
   - alias db='bundle exec rails db'
+  - export url='http://localhost:3000/programs/1/stats'
+  - alias b='surf -x $url 2> /dev/null & firefox $url & chromium $url &'
+  - alias bun='(cd site 2> /dev/null; cd .. && for a in admin admin_core base site; do (cd $a && bundle) done)'
+  - alias rak='(cd site 2> /dev/null; cd .. && for a in admin admin_core base site; do (cd $a && bundle exec rake db:migrate) done)'
+  - alias i18='(cd site 2> /dev/null; bundle exec rake i18nlite:sync)'
+  - alias tes='(cd site 2> /dev/null; i18 && bundle exec rake db:migrate RAILS_ENV=test)'
+  - alias rdb='(cd site 2> /dev/null; bundle exec rake db:migrate RAILS_ENV=test)'
+  - alias aup='bun && rak && i18'
+  - alias wha='echo bun, rak, i18, tes, rdb, aup'
 
 # Runs in each window and pane before window/pane specific commands. Useful for setting up interpreter versions.
 # pre_window: rbenv shell 2.0.0-p247
 
 windows:
-  - server:
-      pre:
-        - cd site
-        - alias bun='(cd .. && for a in admin admin_core base site; do (cd $a && bundle) done)'
-        - alias s='bundle exec rails s'
-      panes: bundle exec rails s
+  - test: rs admin/
   - editor: vim --servername pro
   - ranger: EDITOR='tmux_editor' ranger
-  - git: t

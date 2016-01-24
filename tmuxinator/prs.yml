@@ -1,0 +1,18 @@
+# ~/.tmuxinator/prs.yml
+
+name: prs
+root: ~/code/promote
+
+windows:
+  - server:
+      layout: vertical
+      panes:
+        - (cd site && bundle exec rails s -p 3000)
+        - (cd admin && bundle exec rails s -p 3001)
+        - (cd ../promote-gud && bundle exec rackup config.ru)
+  - logs:
+      layout: vertical
+      panes:
+        - tail -F */log/development.log promote-gud/gud_runner.log
+        - tail -F */log/development.log -n 300 | grep '  Parameters' | cut -d' ' -f4- | sed "s/=>/: /g" | jq -cC
+        - tail -F */log/development.log promote-gud/gud_runner.log -n 300 | grep -P "(POST|GET)"

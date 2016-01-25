@@ -7,7 +7,6 @@ call vundle#begin()
 Plugin 'gmarik/Vundle.vim'
 
 Plugin       'mileszs/ack.vim'
-"Plugin        'spf13/asciidoc-vim'
 "Plugin     'lilydjwg/colorizer'
 Plugin          'kien/ctrlp.vim'
 Plugin   'vim-scripts/dbext.vim'
@@ -15,7 +14,6 @@ Plugin   'vim-scripts/dbext.vim'
 Plugin       'morhetz/gruvbox'
 "Plugin  'vim-scripts/lojban'
 "Plugin         'tyru/open-browser.vim'
-"Plugin       'tomtom/quickfixsigns_vim'
 "Plugin         'kien/rainbow_parentheses.vim'
 Plugin     'godlygeek/tabular'
 "Plugin       'tomtom/tlib_vim'
@@ -25,13 +23,9 @@ Plugin     'godlygeek/tabular'
 Plugin        'SirVer/ultisnips'
 Plugin         'honza/vim-snippets'
 Plugin         'chase/vim-ansible-yaml'
-"Plugin       'tomtom/vikitasks_vim'
-"Plugin       'tomtom/viki_vim'
 "Plugin        'tpope/vim-abolish'
-"Plugin        'tpope/vim-afterimage'
 Plugin        'kchmck/vim-coffee-script'
 Plugin   'AndrewRadev/vim-eco' " requires vim-coffee-script
-"Plugin  'altercation/vim-colors-solarized'
 Plugin     'rust-lang/rust.vim'
 Plugin         'tpope/vim-commentary'
 "Plugin        'tpope/vim-cucumber'
@@ -59,8 +53,6 @@ Plugin       'flugsio/workflowish'
 call vundle#end()
 " }}}1
 
-" some stuff from http://amix.dk/vim/vimrc.html
-
 " allow backspacing over everything in insert mode
 set backspace=indent,eol,start
 
@@ -79,49 +71,28 @@ map Q qq
 " so that you can undo CTRL-U after inserting a line break.
 inoremap <C-U> <C-G>u<C-U>
 
-" Switch syntax highlighting on, when the terminal has colors
-" Also switch on highlighting the last used search pattern.
 if &t_Co > 2 || has("gui_running")
   syntax on
-  set hlsearch
 endif
 
-" Only do this part when compiled with support for autocommands.
 if has("autocmd")
-
-  " Enable file type detection.
-  " Use the default filetype settings, so that mail gets 'tw' set to 72,
-  " 'cindent' is on in C files, etc.
-  " Also load indent files, to automatically do language-dependent indenting.
   filetype plugin indent on
-
-  " Put these in an autocmd group, so that we can delete them easily.
   augroup vimrcEx
     au!
-
-    " For all text files set 'textwidth' to 78 characters.
     autocmd FileType text setlocal textwidth=78
 
     " When editing a file, always jump to the last known cursor position.
     " Don't do it when the position is invalid or when inside an event handler
-    " (happens when dropping a file on gvim).
     " Also don't do it when the mark is in the first line, that is the default
     " position when opening a file.
     autocmd BufReadPost *
           \ if line("'\"") > 1 && line("'\"") <= line("$") |
           \   exe "normal! g`\"" |
           \ endif
-
-    autocmd! BufRead,BufNewFile *.viki set filetype=viki
-    :au FocusLost * silent! wa " autosave
   augroup END
-
-  let g:vikiNameSuffix=".viki"
 else
-
-  set autoindent		" always set autoindenting on
-
-endif " has("autocmd")
+  set autoindent
+endif
 
 " Convenient command to see the difference between the current buffer and the
 " file it was loaded from, thus the changes you made.
@@ -134,6 +105,9 @@ set number
 set softtabstop=2
 set shiftwidth=2
 set expandtab
+
+let g:ansible_options = {'ignore_blank_lines': 0}
+", 'documentation_mapping': '<C-K>'}
 
 let g:colorizer_nomap = 1
 let g:colorizer_startup = 0
@@ -177,8 +151,9 @@ set showmatch
 set splitright
 set splitbelow
 
-nnoremap <space> /
-nnoremap <leader>F :noh<cr>
+nnoremap <space> :noh\|:cclose<cr>/
+"nnoremap <leader>F
+nnoremap <leader>G zM:g/context/foldopen\|:noh<cr>
 nnoremap <tab> %
 vnoremap <tab> %
 
@@ -237,6 +212,10 @@ nnoremap <leader>gb :Gblame<CR>
 
 nnoremap <leader>do :diffoff!<CR>:only<CR>
 
+nnoremap <leader>i :call system("tmux split-window \"EDITOR='tmux_editor' ranger\"")
+nnoremap <leader>I :call system("tmux split-window \"EDITOR='tmux_editor' ranger %:p:h\"")
+nnoremap <leader>o :call system("tmux split-window \"tig\"")
+nnoremap <leader>l :call system("surf_go " . g:url")
 "nnoremap <leader>k :w\|:call Send_to_Tmux("rspec\n")
 "nnoremap <leader>k :w\|:call system("tmux send-keys -t:1 C-p C-m")
 "nnoremap <leader>k :w\|:call system("tmux send-keys -t.+ C-p C-m")

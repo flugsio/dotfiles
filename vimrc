@@ -395,43 +395,6 @@ nnoremap <leader>f :Ack <c-r>=expand("<cword>")<CR><CR>
 " almost the same as PasteDBExecSQLUnderCursor, slighly slower
 " let @r=",sel ggjj\"yYjjVGk\"Yyp`[`]0I  k"
 
-
-"compiler rspec
-"nmap <Leader>fd :cf /tmp/autotest.txt<cr> :compiler rspec<cr>
-
-" Indentation with tab {{{1
-"" Tab: Add one level of indent to selected lines.
-"
-"xmap <Tab> >0gv
-"smap <Tab> <C-O>V<C-O><Tab>
-"
-"" Shift-Tab: Remove one level of indent from selected lines.
-"
-"xmap <S-Tab> <0gv
-"smap <S-Tab> <C-O>V<C-O><S-Tab>
-"
-"" Tab: Start keyword completion after keyword characters.
-"
-"inoremap <expr> <Tab> <Sid>TabComplete()
-"inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-"inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<CR>"
-"inoremap <expr> <Esc> pumvisible() ? "\<C-e>" : "\<Esc>"
-"
-"function s:TabComplete()
-"  if pumvisible()
-"    " In the pop-up menu <Tab> selects the next menu item.
-"    return "\<C-n>"
-"  elseif search('\k\%#', 'bcn', line('.')) && getline('.') !~ '\S\t\+\S'
-"    " After keyword characters <Tab> starts keyword completion, except on
-"    " lines with tab-delimited fields like /etc/fstab and /etc/crypttab.
-"    return "\<C-n>"
-"  else
-"    " In all other cases, fall back to the default behavior.
-"    return "\<Tab>"
-"  endif
-"endfunction
-" }}}1
-
 " This allows for change paste motion cp{motion}
 " for example cpw replaces word with pastebuffer while keeping buffer intact
 " http://stackoverflow.com/a/5357194
@@ -440,12 +403,4 @@ function! ChangePaste(type, ...)
     silent exe "normal! `[v`]\"_c"
     silent exe "normal! p"
 endfunction
-
-" keep at bottome becuase it destroys github diff
-" Type next row ON third row to run it (sorts and aligns by plugin name)
-" "qy$@q
-" gg}}jvip!sort -k2 -t/:Tabularize /'.*\/gv:s/\v(Plugin +)('.*\/)( +)/\1\3\2
-" next paragraph next line visual inside paragraph command sort by second field separated by /
-" tabularize around user name
-" replace/move the space between username/repo to between Plugin/username
 

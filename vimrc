@@ -53,25 +53,7 @@ Plugin       'flugsio/workflowish'
 call vundle#end()
 " }}}1
 
-" allow backspacing over everything in insert mode
-set backspace=indent,eol,start
-
-set noswapfile
-
-set nobackup
-set nowritebackup
-set history=50		" keep 50 lines of command line history
-set ruler		" show the cursor position all the time
-set showcmd		" display incomplete commands
-set incsearch		" do incremental searching
-
-map Q qq
-
-" CTRL-U in insert mode deletes a lot.  Use CTRL-G u to first break undo,
-" so that you can undo CTRL-U after inserting a line break.
-inoremap <C-U> <C-G>u<C-U>
-
-if &t_Co > 2 || has("gui_running")
+if &t_Co > 2
   syntax on
 endif
 
@@ -81,30 +63,58 @@ if has("autocmd")
     au!
     autocmd FileType text setlocal textwidth=78
 
-    " When editing a file, always jump to the last known cursor position.
-    " Don't do it when the position is invalid or when inside an event handler
-    " Also don't do it when the mark is in the first line, that is the default
-    " position when opening a file.
+    " Jump to the last known valid cursor position if not first line
     autocmd BufReadPost *
           \ if line("'\"") > 1 && line("'\"") <= line("$") |
           \   exe "normal! g`\"" |
           \ endif
+    autocmd! BufRead pomodoros.wofl call SetupPomodoroBuffer()
   augroup END
 else
   set autoindent
 endif
 
-" Convenient command to see the difference between the current buffer and the
-" file it was loaded from, thus the changes you made.
-if !exists(":DiffOrig")
-  command DiffOrig vert new | set bt=nofile | r # | 0d_ | diffthis
-        \ | wincmd p | diffthis
-endif
-
+set backspace=indent,eol,start
+set noswapfile
+set nobackup
+set nowritebackup
+set history=50
+set ruler
+set showcmd
+set incsearch
 set number
 set softtabstop=2
 set shiftwidth=2
 set expandtab
+set encoding=utf-8
+set scrolloff=2
+set hidden
+set autoread
+"set visualbell
+"set ttyfast
+set laststatus=2
+"set undofile
+
+set ignorecase
+set smartcase
+set hlsearch
+set showmatch
+
+set splitright
+set splitbelow
+
+set formatoptions=ql
+
+"set guioptions=ec
+
+set background=dark
+set t_Co=256
+let g:gruvbox_italic=0
+silent! colorscheme gruvbox
+hi StatusLine ctermfg=208 ctermbg=234 cterm=NONE
+hi StatusLineNC ctermfg=108 ctermbg=234 cterm=NONE
+
+" Plugin configs
 
 let g:ansible_options = {'ignore_blank_lines': 0}
 ", 'documentation_mapping': '<C-K>'}
@@ -120,47 +130,29 @@ let g:UltiSnipsJumpForwardTrigger="<c-b>"
 let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 let g:UltiSnipsEditSplit="vertical"
 
-" http://stevelosh.com/blog/2010/09/coming-home-to-vim/
-set encoding=utf-8
-set scrolloff=2
-"set autoindent
-set hidden
-set autoread
 "set wildmenu
 set wildmode=list:longest
 set wildignore+=*.jpg,*.bmp,*.gif
 set wildignore+=coverage
 set wildignore+=*~
-"set visualbell
-"set ttyfast
-set laststatus=2
-"set relativenumber
-"set undofile
+
+" Mappings
 
 let mapleader = ","
 let maplocalleader = ";"
 
-" för att få riktiga regexp
-" nnoremap / /\v
-" vnoremap / /\v
-set ignorecase
-set smartcase
-set incsearch
-set showmatch
+" CTRL-U in insert mode deletes a lot.  Use CTRL-G u to first break undo,
+" so that you can undo CTRL-U after inserting a line break.
+inoremap <C-U> <C-G>u<C-U>
 
-set splitright
-set splitbelow
-
-nnoremap <space> :noh\|:cclose<cr>/
+map Q qq
+nnoremap <space> /
+" v<space> (visual mode) to remove highlight and quickfix
+xnoremap <silent> <space> :<C-U>noh\|:cclose<cr>
 "nnoremap <leader>F
 nnoremap <leader>G zM:g/context/foldopen\|:noh<cr>
 nnoremap <tab> %
 vnoremap <tab> %
-
-"set wrap
-"set textwidth=79
-"set formatoptions=qrn1
-"set colorcolumn=85
 
 " open-browser.vim
 let g:netrw_nogx = 1 " disable netrw's gx mapping.
@@ -175,16 +167,6 @@ nmap <silent> <leader>s :set nolist!<CR>
 nnoremap <leader>S ?{<CR>jV/^\s*\}\?$<CR>k:sort<CR>:noh<CR>
 "nnoremap <leader>v V`]
 
-set guioptions=ec
-
-set background=dark
-set t_Co=256
-let g:gruvbox_italic=0
-silent! colorscheme gruvbox
-hi StatusLine ctermfg=208 ctermbg=234 cterm=NONE
-hi StatusLineNC ctermfg=108 ctermbg=234 cterm=NONE
-
-
 " Abbreviations
 iab <expr> dts strftime("%Y-%m-%d")
 iab <expr> dta strftime("%Y-%m-%d %H:%M")
@@ -193,8 +175,6 @@ iab <expr> dtz strftime("%Y-%m-%dT%H:%M:%S%z")
 " Centers and opens fold at cursor when going to next/previous match
 nnoremap n nzzzv
 nnoremap N Nzzzv
-
-" leaders Q
 
 nnoremap <leader>sef :call PasteDBExecSQLUnderCursor()<cr>
 function! PasteDBExecSQLUnderCursor()
@@ -277,9 +257,6 @@ nnoremap <leader>M :Emodel <c-r>=<esc>
 " pomodoros / glue for Vomodoro to bin/p
 let g:Pomo_ArchiveFilePath = "~/code/sparkleshare/pomodoros_archive.wofl"
 let g:Pomo_MinWindowHeight = 10
-augroup PomodoroAUGroup
-  autocmd! BufRead pomodoros.wofl call SetupPomodoroBuffer()
-augroup END
 
 function! SetupPomodoroBuffer()
   :PomodoroToDoToday
@@ -292,7 +269,6 @@ function! SendToPomo()
 endfunction
 
 cmap w!! w !sudo tee % >/dev/null
-
 
 nnoremap <silent> <C-h> :call MoveToWindowOrTmux("h", "L")<cr>
 nnoremap <silent> <C-j> :call MoveToWindowOrTmux("j", "D")<cr>
@@ -325,9 +301,7 @@ nnoremap <C-n> :cnext<CR>
 nnoremap å `
 
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Parenthesis/bracket expanding
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Parenthesis/bracket expanding
 vnoremap $1 <esc>`>a)<esc>`<i(<esc>
 vnoremap $2 <esc>`>a]<esc>`<i[<esc>
 vnoremap $3 <esc>`>a}<esc>`<i{<esc>
@@ -345,11 +319,13 @@ inoremap $q ''<esc>i
 inoremap $e ""<esc>i
 inoremap $t <><esc>i
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Editing mappings
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Difference between the current buffer and disk version
+if !exists(":DiffOrig")
+  command DiffOrig vert new | set bt=nofile | r # | 0d_ | diffthis
+        \ | wincmd p | diffthis
+endif
 
-" alt+ctrl+g
+" ctrl+altgr+g
 cno  <C-\>eDeleteTillSlash()<cr>
 
 func! DeleteTillSlash()

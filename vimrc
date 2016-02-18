@@ -114,7 +114,7 @@ hi StatusLine ctermfg=208 ctermbg=234 cterm=NONE
 hi StatusLineNC ctermfg=108 ctermbg=234 cterm=NONE
 hi VertSplit ctermfg=108 ctermbg=234 cterm=NONE
 hi TabLineFill ctermfg=243 ctermbg=234 cterm=NONE
-hi TabLineSel term=bold cterm=bold ctermfg=108 ctermbg=235
+hi TabLineSel ctermfg=108 ctermbg=235 cterm=NONE 
 
 " Plugin configs
 

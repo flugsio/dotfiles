@@ -82,7 +82,6 @@ set history=50
 set ruler
 set showcmd
 set incsearch
-set number
 set softtabstop=2
 set shiftwidth=2
 set expandtab
@@ -93,7 +92,6 @@ set autoread
 "set visualbell
 "set ttyfast
 set laststatus=2
-"set undofile
 
 set ignorecase
 set smartcase
@@ -107,12 +105,16 @@ set formatoptions=ql
 
 "set guioptions=ec
 
+set fillchars=vert:\ ,fold:-
 set background=dark
 set t_Co=256
 let g:gruvbox_italic=0
 silent! colorscheme gruvbox
 hi StatusLine ctermfg=208 ctermbg=234 cterm=NONE
 hi StatusLineNC ctermfg=108 ctermbg=234 cterm=NONE
+hi VertSplit ctermfg=108 ctermbg=234 cterm=NONE
+hi TabLineFill ctermfg=243 ctermbg=234 cterm=NONE
+hi TabLineSel term=bold cterm=bold ctermfg=108 ctermbg=235
 
 " Plugin configs
 

@@ -272,20 +272,10 @@ endfunction
 
 cmap w!! w !sudo tee % >/dev/null
 
-nnoremap <silent> <C-h> :call MoveToWindowOrTmux("h", "L")<cr>
-nnoremap <silent> <C-j> :call MoveToWindowOrTmux("j", "D")<cr>
-nnoremap <silent> <C-k> :call MoveToWindowOrTmux("k", "U")<cr>
-nnoremap <silent> <C-l> :call MoveToWindowOrTmux("l", "R")<cr>
-
-" if window stays the same, send key to tmux
-function! MoveToWindowOrTmux(key, tmux_key)
-  let l:last_winnr = winnr()
-  execute "wincmd" a:key
-  if l:last_winnr == winnr()
-    execute "silent !tmux select-pane -".a:tmux_key
-    redraw!
-  endif
-endfunction
+nnoremap <silent> <C-h> <C-w>h
+nnoremap <silent> <C-j> <C-w>j
+nnoremap <silent> <C-k> <C-w>k
+nnoremap <silent> <C-l> <C-w>l
 
 vnoremap <silent> * :call VisualSearch('f')<CR>
 vnoremap <silent> # :call VisualSearch('b')<CR>

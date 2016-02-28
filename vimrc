@@ -8,17 +8,14 @@ Plugin 'gmarik/Vundle.vim'
 
 Plugin       'mileszs/ack.vim'
 "Plugin     'lilydjwg/colorizer'
-Plugin          'kien/ctrlp.vim'
 Plugin   'vim-scripts/dbext.vim'
+Plugin       'flugsio/fzf.vim'
 "Plugin   'gregsexton/gitv'
 Plugin       'morhetz/gruvbox'
 "Plugin  'vim-scripts/lojban'
 "Plugin         'tyru/open-browser.vim'
 "Plugin         'kien/rainbow_parentheses.vim'
 Plugin     'godlygeek/tabular'
-"Plugin       'tomtom/tlib_vim'
-"Plugin       'tomtom/tmru_vim'
-"Plugin       'tomtom/trag_vim'
 "Plugin   'xaviershay/tslime.vim'
 Plugin        'SirVer/ultisnips'
 Plugin         'honza/vim-snippets'
@@ -69,6 +66,7 @@ if has("autocmd")
           \   exe "normal! g`\"" |
           \ endif
     autocmd! BufRead pomodoros.wofl call SetupPomodoroBuffer()
+    autocmd! BufReadPost quickfix nnoremap <silent> <buffer> q :q<cr>
   augroup END
 else
   set autoindent
@@ -211,21 +209,8 @@ function! SelectBrowser()
   let g:browser_id = system("xdotool selectwindow 2> /dev/null")
 endfunction
 
-" old mapping, no-operation for now
-nnoremap <leader>t :noh<cr>
-" ctrlp
-let g:ctrlp_cache_dir = $HOME . '/.cache/ctrlp'
-let g:ctrlp_user_command = 'ag %s -i --nocolor --nogroup --hidden
-      \ --ignore .git
-      \ --ignore .svn
-      \ --ignore .hg
-      \ --ignore .DS_Store
-      \ --ignore "**/*.pyc"
-      \ -g ""'
-let g:ctrlp_map = '<leader><space>'
-let g:ctrlp_working_path_mode = 'ra'
-nnoremap <leader>. :CtrlPTag<cr>
-nnoremap <leader>: :!ctags -R .<cr>
+nnoremap <leader><space> :Files<cr>
+nnoremap <leader>. :Tags<cr>
 
 " split vertically and move focus there
 nnoremap <leader>w <C-w>v<C-w>l

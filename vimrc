@@ -183,6 +183,9 @@ function! PasteDBExecSQLUnderCursor()
   DBSetOption use_result_buffer=1
 endfunction
 
+nnoremap <leader>q :quit<CR>
+nnoremap <leader>te :UltiSnipsEdit<CR>
+
 nnoremap <leader>gs :Gstatus<CR>
 nnoremap <leader>gc :Gcommit -v<CR>
 nnoremap <leader>gC :Gcommit -v --amend<CR>

@@ -101,6 +101,7 @@ set splitbelow
 
 set formatoptions=ql
 
+set clipboard=""
 "set guioptions=ec
 
 set fillchars=vert:\ ,fold:-

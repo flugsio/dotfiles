@@ -2,6 +2,9 @@
   name = Jimmie Elvenmark
   email = flugsio@gmail.com
 
+[transfer]
+  fsckobjects = true
+
 [push]
   default = current
 
@@ -14,6 +17,9 @@
 [log]
   date = iso
 
+[status]
+  showUntrackedFiles = all
+
 [diff]
   mnemonicprefix = true
 
@@ -23,3 +29,5 @@
   f = fetch --all
   p = pull
 
+[core]
+  excludesfile = ~/.gitignore

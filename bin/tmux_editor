@@ -1,4 +1,5 @@
 #!/bin/bash
 
-tmux select-window -t 'editor' && vim --servername $(tmux display-message -p '#S') --remote "$@"
+#tmux select-window -t 'editor' &&
+DISPLAY=:0 vim --servername $(tmux display-message -p '#S') --remote "${@:2}"
 

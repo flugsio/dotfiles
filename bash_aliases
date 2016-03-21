@@ -26,5 +26,5 @@ alias i18='(cd site 2> /dev/null; cd .. && cd site; bundle exec rake i18nlite:sy
 alias tes='(cd site 2> /dev/null; i18 && bundle exec rake db:migrate RAILS_ENV=test)'
 alias aup='bun && mig && i18'
 alias wha='echo bun, mig, i18, aup=after update, tes=after update for tests, ran=vit ranger'
-alias vit='\vim --servername $(tmux display-message -p "#S")'
+alias vit='DISPLAY=:0 \vim --servername $(tmux display-message -p "#S")'
 alias ran='EDITOR="tmux_editor" ranger'

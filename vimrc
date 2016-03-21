@@ -196,8 +196,8 @@ nnoremap <leader>gb :Gblame<CR>
 
 nnoremap <leader>do :diffoff!<CR>:only<CR>
 
-nnoremap <leader>i :call system("tmux split-window \"EDITOR='tmux_editor' ranger\"")
-nnoremap <leader>I :call system("tmux split-window \"EDITOR='tmux_editor' ranger %:p:h\"")
+nnoremap <leader>i :call system("tmux split-window -hbp 24 \"EDITOR='tmux_editor' ranger --cmd='set preview_files false' --cmd='set display_size_in_main_column false' " . expand('%:p:h') . " \"")
+nnoremap <leader>I :call system("tmux split-window -hbp 24 \"EDITOR='tmux_editor' ranger --cmd='set preview_files false' --cmd='set display_size_in_main_column false'\"")
 nnoremap <leader>o :call system("tmux split-window \"tig\"")
 nnoremap <leader>l :call system("surf_go " . g:url")
 "nnoremap <leader>k :w\|:call Send_to_Tmux("rspec\n")

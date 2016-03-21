@@ -3,6 +3,8 @@
 name: prs
 root: ~/code/promote
 
+#pre_window: rbenv shell 2.2.4
+
 windows:
   - server:
       layout: vertical

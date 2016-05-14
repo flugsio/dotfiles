@@ -12,7 +12,7 @@ set $term st
 # clear in small sizes. However, if you need a lot of unicode glyphs or
 # right-to-left text rendering, you should instead use pango for rendering and
 # chose a FreeType font, such as:
-font pango:Ubuntu Mono 0
+font pango:Ubuntu Mono 12
 
 # use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
@@ -175,15 +175,19 @@ for_window [title="^Telegram"] move scratchpad
 for_window [title="^Telegram"] focus; floating enable; resize grow width 200px; resize grow height 100px; move left 200px; move up 100px
 
 bindsym $mod+i [title="tmux_sparkle"] scratchpad show
-bindsym $mod+shift+i exec --no-startup-id st -t tmux_sparkle -e bash -i -c 'mux sparkle'
+bindsym $mod+shift+i exec --no-startup-id st -t tmux_sparkle -e zsh -i -c 'mux sparkle'
 bindsym $mod+ctrl+shift+i exec --no-startup-id st -t tmux_sparkle -e bash -i -c 'ssh kribev -t "tmux attach -t sparkle"'
 
 bindsym $mod+o [title="tmux_pomo"] scratchpad show
-bindsym $mod+shift+o exec --no-startup-id $term -t tmux_pomo -e bash -i -c 'mux pomo'
+bindsym $mod+shift+o exec --no-startup-id st -t tmux_pomo -e zsh -i -c 'mux pomo'
 
 for_window [title="tmux_.*"] move scratchpad
 
 bindsym $mod+ctrl+space exec i3-input -F 'exec investigate "%s"' -P 'Investigate: '
+
+bindsym $mod+ctrl+n exec i3-input -F 'exec i3-msg rename workspace to "%s"' -P 'Rename Workspace: '
+bindsym $mod+ctrl+m exec i3-input -F 'exec xdotool getactivewindow set_window --name="%s"' -P 'Rename Window: '
+bindsym $mod+ctrl+o exec i3-input -F "exec add_gluj %s" -P 'Glucose: '
 
 #bindcode $mod+34 [title="^run "] scratchpad show
 #bindcode $mod+48 [title="^glucose "] scratchpad show
@@ -211,12 +215,14 @@ bindsym XF86AudioMute         exec /usr/bin/pulseaudio-ctl mute && killall -USR1
 bindsym Print	              exec screenshot
 bindsym --release Shift+Print           exec screenshot -s
 
-bindsym $mod+Pause exec sleep 1 && xset dpms force off
+bindsym $mod+Pause exec sleep 0.5 && xset dpms force off
+bindsym $mod+shift+Pause exec sleep 0.5 && xset dpms force off && slock
 
 bindsym XF86AudioPlay exec cmus-remote -u
 bindsym XF86AudioStop exec cmus-remote -s
 bindsym XF86AudioPrev exec cmus-remote -r
 bindsym XF86AudioNext exec cmus-remote -n
+bindsym XF86AudioPause exec cmus-remote -u
 
 bindcode $mod+112  exec /usr/bin/pulseaudio-ctl up
 bindcode $mod+117  exec /usr/bin/pulseaudio-ctl down

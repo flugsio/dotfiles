@@ -1,0 +1,6 @@
+#!/bin/sh
+
+CARD=bluez_card.00_16_94_0B_68_4F
+pactl set-card-profile $CARD a2dp_sink
+pactl set-card-profile $CARD off
+pactl set-card-profile $CARD a2dp_sink

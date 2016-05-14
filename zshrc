@@ -20,6 +20,7 @@ setopt appendhistory autocd
 setopt auto_cd
 setopt multios
 setopt cdablevarS
+stty -ixon
 
 [[ -e /usr/share/doc/pkgfile/command-not-found.zsh ]] && source /usr/share/doc/pkgfile/command-not-found.zsh
 
@@ -43,7 +44,7 @@ source ~/.zsh_theme
 export PATH=$HOME/bin:$HOME/code/scripts:$PATH
 
 export EDITOR='vim'
-
+export LC_PAPER=sv_SE.UTF-8
 export LYNX_CFG=~/.config/lynx/lynx.cfg
 export LYNX_LSS=~/.config/lynx/lynx.lss
 
@@ -52,6 +53,7 @@ export LYNX_LSS=~/.config/lynx/lynx.lss
 
 # ssh
 # export SSH_KEY_PATH="~/.ssh/dsa_id"
+eval $(keychain --eval id_rsa --nogui --quiet)
 
 bindkey -v
 

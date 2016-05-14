@@ -14,8 +14,6 @@ alias teab='(notify-send "Starting 4 min tea timer."; sleep 4m; notify-send "You
 alias teaegh='(notify-send "Starting 3.5 min earl gray tea timer."; sleep 3.5m; notify-send "Your hot earl gray tea is ready, captain." -u critical)&'
 alias engage="play -n -c1 synth whitenoise lowpass -1 120 lowpass -1 120 lowpass -1 120 gain +14"
 alias mstsc_laura='rdesktop 192.168.2.40 -u Administrator -k sv -g 1675x1024 -r sound:off'
-alias wine_ql='cd ~/.wine_ql/drive_c/Program\ Files/Quake\ Live/ && WINEPREFIX=~/.wine_ql taskset 0x01 wine Launcher.exe'
-alias mount_ql_demos='cd ~/.wine_ql/drive_c/users/flugsio/Application\ Data/id\ Software/quakelive/home/baseq3 && sudo mount -t tmpfs -o size=512M,noatime tmpfs ./demos'
 alias surf_go='xprop -id ${surfwid:=$(xdotool selectwindow)} -f _SURF_GO 8s -set _SURF_GO '
 alias xkcd='curl http://xkcd.com -sL | grep -o "http://imgs.*" | feh -'
 alias rdb='bundle exec rails db'
@@ -40,3 +38,11 @@ alias lichobile='chromium --user-data-dir=$HOME/.config/chromium_dev --disable-w
 alias record_test='ffmpeg -f pulse -name a -channels 2 -fragment_size 1024 -i default -f x11grab -s 1680x1050 -r 25 -i :0.0 -ac 1 -acodec ac3 -vcodec libx264 -preset ultrafast -crf 0
 -threads 0 ~/output-$(date +%s).mkv 2>&1'
 alias record='ffmpeg -f pulse -name a -channels 2 -fragment_size 1024 -i default -f x11grab -s 1680x1050 -r 25 -i :0.0 -ac 1 -acodec ac3 -vcodec libx264 -preset ultrafast -crf 0 -threads 0 ~/output-$(date +%s).mkv 2>&1'
+if [ `hostname` = "ranmi" ]; then
+  #alias wine_ql='cd ~/.wine-ql/drive_c/Program\ Files/Quake\ Live/ && WINEPREFIX=~/.wine-ql taskset 0x01 wine Launcher.exe'
+  alias wine_steam='WINEPREFIX=~/.wine-steam wine /home/flugsio/.wine-steam/drive_c/Program\ Files\ \(x86\)/Steam/Steam.exe -no-dwrite'
+  alias wine_ql='wine_steam steam://run/282440'
+  #alias wine_steam='WINEPREFIX=~/.wine-steam wine /home/flugsio/.wine-steam/drive_c/Program\ Files\ \(x86\)/Steam/Steam.exe -no-dwrite steam://run/282440'
+  alias wine_steam32='WINEPREFIX=~/.wine-steam32 WINEARCH=win32 /home/flugsio/.wine-steam32/drive_c/Program\ Files/Steam/Steam.exe'
+fi
+alias mount_ql_demos='cd ~/.wine_ql/drive_c/users/flugsio/Application\ Data/id\ Software/quakelive/home/baseq3 && sudo mount -t tmpfs -o size=512M,noatime tmpfs ./demos'

@@ -200,9 +200,6 @@ for_window [class="st-256color" title="^cmus"] move scratchpad
 bindsym $mod+m exec --no-startup-id $term -t term_ranger -e bash -i -c 'ranger'
 for_window [title="^term_ranger$"] focus; floating enable; resize grow width 800px; resize grow height 400px; move left 400px; move up 200px
 
-for_window [title="RaceTheSun"] floating enable
-for_window [title="MiniMetro"] floating enable
-
 for_window [title="feh.*/srv/http/munin"] floating enable
 for_window [title="^lynx_feh - .*"] floating enable
 for_window [title="^editconf$"] focus; floating enable; resize grow width 400px; resize grow height 400px; move left 200px; move up 200px
@@ -212,6 +209,9 @@ bindsym XF86MonBrightnessDown exec xbacklight -10
 bindsym XF86AudioRaiseVolume  exec /usr/bin/pulseaudio-ctl up && killall -USR1 i3status
 bindsym XF86AudioLowerVolume  exec /usr/bin/pulseaudio-ctl down && killall -USR1 i3status
 bindsym XF86AudioMute         exec /usr/bin/pulseaudio-ctl mute && killall -USR1 i3status
+# bindsym XF86AudioRaiseVolume exec amixer -q set Master 2dB+ unmute && killall -USR1 i3status
+# bindsym XF86AudioLowerVolume exec amixer -q set Master 2dB- unmute && killall -USR1 i3status
+# bindsym XF86AudioMute exec amixer -q set Master toggle && killall -USR1 i3status
 bindsym Print	              exec screenshot
 bindsym --release Shift+Print           exec screenshot -s
 
@@ -236,6 +236,10 @@ for_window [title="QUAKE LIVE Launcher" class="Wine"] floating enable
 for_window [title="Quake Live" class="Wine"] floating enable
 for_window [title="quakelive.exe" class="Wine"] floating enable
 for_window [title="Only If"] floating enable
+for_window [title="RaceTheSun"] floating enable
+for_window [title="MiniMetro"] floating enable
+for_window [title="Evoland"] floating enable
+for_window [title="FarmingSimulator2015"] floating enable
 
 # color defines for zenburn styled i3
 set $bg     #2c2c2e

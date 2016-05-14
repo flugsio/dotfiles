@@ -1,6 +1,10 @@
 #!/bin/bash
 
-setxkbmap -layout se -option caps:swapescape -variant nodeadkeys
+if [ `hostname` = "ranmi" ]; then
+  setxkbmap -layout se_code -option caps:swapescape -variant nodeadkeys
+else
+  setxkbmap -layout se -option caps:swapescape -variant nodeadkeys
+fi
 /usr/bin/xmodmap $HOME/.Xmodmap
 
 if [ `hostname` = "kribev" ]; then

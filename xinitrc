@@ -10,6 +10,7 @@ if [ -d /etc/X11/xinit/xinitrc.d ]; then
 fi
 
 xrdb -merge .Xresources
+xrandr --dpi 96
 
 export PATH=$PATH:~/bin/:~/code/scripts/
 

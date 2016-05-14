@@ -1,0 +1,13 @@
+# ~/.tmuxinator/liru.yml
+
+name: liru
+root: ~/code/lichess/liru
+
+windows:
+  - zsh: zsh
+  - editor:
+      layout: main-vertical
+      panes:
+        - vim
+        - cargo run
+  - tig: t

@@ -1,7 +1,13 @@
 #!/bin/bash
 
+if [ `hostname` = "ranmi" ]; then
+  player="mpv --fs"
+else
+  player="vlc -f"
+fi
+
 term="st -e zsh -i -c"
-streamer="livestreamer --retry-streams 5 --player-no-close -p 'vlc -f'"
+streamer="livestreamer --retry-streams 5 --player-no-close -p '$player'"
 quality="best"
 CACHE=${XDG_CACHE_HOME:-$HOME/.cache}/livestream-recent
 

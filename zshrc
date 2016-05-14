@@ -16,6 +16,7 @@ SAVEHIST=30000
 # man zshoptions
 setopt HIST_IGNORE_DUPS
 setopt appendhistory autocd
+setopt histignorespace
 #setopt no_beep
 setopt auto_cd
 setopt multios
@@ -33,6 +34,7 @@ source ~/.zsh_theme
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
 [[ -f ~/.bash_aliases ]] && . ~/.bash_aliases
+[[ -f ~/.api_keys ]] && . ~/.api_keys
 
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
@@ -68,8 +70,6 @@ bindkey '^r' history-incremental-search-backward
 bindkey '\e.' insert-last-word
 
 export KEYTIMEOUT=1
-
-export RESOURCE_PATH=http://dl.dropbox.com/u/73192430/Blommor
 
 
 export PATH="$HOME/.rbenv/bin:$PATH"

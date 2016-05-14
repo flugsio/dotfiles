@@ -1,13 +1,25 @@
 #!/bin/zsh -i
 
-if [ $(pgrep ffmpeg -a | grep -c twitch) -ge 1 ];
-then
+if [ "$1" = "-h" ]; then
+  echo "Usage: viewers [USERNAME (twitch|youtube)]"
+  echo
+  echo "  With no arguments it defaults to your username, "
+  echo "    and searches for a ffmpeg process with either twitch or youtube endpoint."
+  echo
+  echo "  If passing a username, service is also needed. For example:"
+  echo "    viewers chesswhiz twitch"
+  exit
+fi
+
+username=${1:-$(whoami)}
+service=$2
+
+if [ "$service" = "twitch" -o $(pgrep ffmpeg -a | grep -c twitch) -ge 1 ]; then
   echo -n "#"
-  curl -s -H "Accept: application/vnd.twitchtv.v3+json" -X GET "https://api.twitch.tv/kraken/streams?channel=flugsio" | jq '.streams[0] .viewers' -r
-elif [ $(pgrep ffmpeg -a | grep -c youtube) -ge 1 ];
-then
+  curl -s -H "Accept: application/vnd.twitchtv.v3+json" -X GET "https://api.twitch.tv/kraken/streams?channel=$username" | jq '.streams[0] .viewers' -r
+elif [ "$service" = "youtube" -o $(pgrep ffmpeg -a | grep -c youtube) -ge 1 ]; then
   echo -n "#"
-  curl -L "https://www.googleapis.com/youtube/v3/channels?part=statistics&forUsername=flugsio&key=$YOUTUBE_API_KEY" | jq ".items[0] .statistics .viewCount" -r
+  curl -s -L "https://www.googleapis.com/youtube/v3/channels?part=statistics&forUsername=$username&key=$YOUTUBE_API_KEY" | jq ".items[0] .statistics .viewCount" -r
 else
   echo ""
 fi

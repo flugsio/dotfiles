@@ -1,0 +1,17 @@
+# ~/.tmuxinator/dab.yml
+
+name: dab
+root: ~/code/ansible/repos/promote-dashboard
+
+# Runs before everything. Use it to start daemons etc.
+# pre: sudo /etc/rc.d/mysqld start
+
+pre_window: export VAGRANT='dashboard.vagrant'
+
+windows:
+  - vagrant: vup && vssh
+  - editor:
+      layout: main-horizontal
+      panes:
+        - vim
+        - tmux resize-pane -y 12; bundle exec rspec

@@ -2,20 +2,44 @@
 
 # screen layout
 
+if [ `hostname` = "toldi" ]; then
+  primary="eDP1"
+  primary_extra="--auto"
+  secondary="DP1"
+  secondary_extra="--auto"
+else
+  primary="LVDS-0"
+  primary_extra="--mode 1440x900"
+  secondary="VGA"
+  secondary_extra="--mode 1680x1050"
+fi
+
 if [ "$1" = "0" ]; then
   xrandr --auto
+elif [ "$1" = "t" ]; then
+  xrandr \
+    --output $primary --off \
+    --output $secondary --auto
 elif [ "$1" = "1" ]; then
   xrandr \
-    --output LVDS-0 --mode 1440x900 \
-    --output VGA-0 --off
+    --output $primary $primary_extra \
+    --output $secondary --off
 elif [ "$1" = "2" ]; then
   xrandr \
-    --output LVDS-0 --off \
-    --output VGA-0 --mode 1680x1050
+    --output $primary --off \
+    --output $secondary $secondary_extra
 elif [ "$1" = "3" ]; then
-  xrandr \
-    --output LVDS-0 --mode 1440x900 --pos 0x250 \
-    --output VGA-0 --mode 1680x1050 --right-of LVDS-0
+  # todo, clear this up
+  if [ `hostname` = "toldi" ]; then
+    # external is psudo-primary
+    xrandr \
+      --output $secondary $secondary_extra --primary \
+      --output $primary $primary_extra --right-of $secondary
+  else
+    xrandr \
+      --output LVDS-0 --mode 1440x900 --pos 0x250 \
+      --output VGA-0 --mode 1680x1050 --right-of LVDS-0
+  fi
 elif [ "$1" = "4" ]; then
   xrandr \
     --output LVDS-0 --mode 1440x900 \

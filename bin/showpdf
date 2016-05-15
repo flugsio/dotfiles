@@ -1,0 +1,37 @@
+#!/bin/sh
+
+# GUI testing, looks fun huh
+
+#$1 = surf windowid
+#$2 = firefox windowid
+#$3 = chrome windowid
+#rm -f ~/output.pdf && i3-msg focus down && xdotool key 'ctrl+r' sleep 7 key Tab Tab Tab Tab Tab Tab Tab Tab Tab Tab Tab Tab Tab Tab Return Tab Return Return && sleep 0.5 && i3-msg focus up && zathura ~/output.pdf
+sleep='7'
+surf='14680095'
+fx='23068802'
+chrome='25165825'
+#rm -f ~/*surf.pdf
+#rm -f ~/*firefox.pdf
+#rm -f ~/*chromium.pdf
+
+prefix="print/$(date +'%H%M%S')_"
+echo $prefix
+
+#i3-msg focus down
+#xdotool windowactivate $surf key 'ctrl+r' sleep $sleep key 'ctrl+shift+p' sleep 1.5 && xdotool search --name "Print" sleep 0.4 key Tab sleep 0.4 key Tab type ~/${prefix}surf.pdf && xdotool key Return
+xdotool windowactivate $surf key 'ctrl+r' sleep $sleep key 'ctrl+shift+p' sleep 1.5 sleep 0.4 key Tab sleep 0.4 key Tab type ~/${prefix}surf.pdf && xdotool key Return
+sleep 0.5
+#xdotool windowactivate $fx key 'ctrl+r' sleep $sleep key 'ctrl+p' sleep 0.5 && xdotool search --name "Print" sleep 0.4 key Tab sleep 0.4 key Tab type ~/${prefix}firefox.pdf && xdotool key Return
+xdotool windowactivate $fx key 'ctrl+r' sleep $sleep key 'ctrl+p' sleep 0.5 sleep 0.4 key Tab sleep 0.4 key Tab type ~/${prefix}firefox.pdf && xdotool key Return
+sleep 1.5
+#xdotool windowactivate $chrome key 'ctrl+r' sleep $sleep key 'ctrl+p' sleep 1 key Return sleep 1 && xdotool search --name "Save File" sleep 0.3 type ~/${prefix}chromium && xdotool key Return
+xdotool windowactivate $chrome key 'ctrl+r' sleep $sleep key 'ctrl+p' sleep 1 key Return sleep 1 && xdotool search --name "Save File" sleep 0.3 type ~/${prefix}chromium && xdotool key Return
+sleep 0.5
+
+zathura ~/${prefix}surf.pdf &
+sleep 0.5
+i3-msg splith
+sleep 0.3
+zathura ~/${prefix}firefox.pdf &
+sleep 0.3
+zathura ~/${prefix}chromium.pdf &

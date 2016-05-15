@@ -57,14 +57,8 @@ endif
 if has("autocmd")
   filetype plugin indent on
   augroup vimrcEx
-    au!
+    autocmd!
     autocmd FileType text setlocal textwidth=78
-
-    " Jump to the last known valid cursor position if not first line
-    autocmd BufReadPost *
-          \ if line("'\"") > 1 && line("'\"") <= line("$") |
-          \   exe "normal! g`\"" |
-          \ endif
     autocmd! BufRead pomodoros.wofl call SetupPomodoroBuffer()
     autocmd! BufReadPost quickfix nnoremap <silent> <buffer> q :q<cr>
   augroup END
@@ -87,7 +81,7 @@ set encoding=utf-8
 set scrolloff=2
 set hidden
 set autoread
-"set visualbell
+set belloff=esc
 "set ttyfast
 set laststatus=2
 
@@ -115,7 +109,7 @@ hi VertSplit ctermfg=108 ctermbg=234 cterm=NONE
 hi TabLineFill ctermfg=243 ctermbg=234 cterm=NONE
 hi TabLineSel ctermfg=108 ctermbg=235 cterm=NONE 
 
-" Plugin configs
+
 
 let g:ansible_options = {'ignore_blank_lines': 0}
 ", 'documentation_mapping': '<C-K>'}
@@ -260,6 +254,7 @@ function! SendToPomo()
 endfunction
 
 cmap w!! w !sudo tee % >/dev/null
+nnoremap <C-s> :w<cr>
 
 nnoremap <silent> <C-h> <C-w>h
 nnoremap <silent> <C-j> <C-w>j

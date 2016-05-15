@@ -1,0 +1,11 @@
+#!/bin/sh
+
+while true
+do
+    echo opening tunnel to kribev
+    ssh tunnel
+    echo opening safe tunnel to kribev
+    ssh tunnel-safe
+    echo sleeping for 20 minutes
+    sleep 20m
+done

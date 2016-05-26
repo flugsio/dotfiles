@@ -1,0 +1,24 @@
+#!/bin/bash
+
+# this handles wofl-style files like this
+# * use indented
+#   * nesting 
+#     | link.com
+
+prefix=${LINKS_STORE_DIR-~/code/sparkleshare}
+#links=$(cat "$prefix"/links.wofl | egrep "https?://" | sed -r "s/^ +\| //" | sed -r "s/ #.*$//")
+links=$(cat "$prefix"/links.wofl | awk '/^\*/{a=$0}  /^ {2}\*/{b=$0}  /^ {4}\*/{c=$0}  /^ {6}\*/{d=$0}  /^ {2}\|/{print a,$0}  /^ {4}\|/{print a,b,$0}  /^ {6}\|/{print a,b,c$0}  /^ {8}\|/{print a,b,c,d,$0} ' | sed -r 's/ +[*|]/ ::/g')
+
+link=$(printf '%s\n' "${links[@]}" | dmenu -i -l 20 "$@")
+
+link=$(echo "$link" | sed 's/.*:: //')
+
+[[ -n $link ]] || exit
+
+if [[ "$link" == "https://github.com/avidity"* ]]; then
+  firefox "$link"
+elif [[ "$link" == "https://github.com/pulls"* ]]; then
+  firefox "$link"
+else
+  surf "$link" &
+fi

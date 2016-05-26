@@ -189,6 +189,9 @@ bindsym $mod+ctrl+n exec i3-input -F 'exec i3-msg rename workspace to "%s"' -P '
 bindsym $mod+ctrl+m exec i3-input -F 'exec xdotool getactivewindow set_window --name="%s"' -P 'Rename Window: '
 bindsym $mod+ctrl+o exec i3-input -F "exec add_gluj %s" -P 'Glucose: '
 
+bindsym $mod+g exec ink
+bindsym $mod+shift+g exec st -t editlinks -e zsh -i -c "vim ~/code/sparkleshare/links.wofl -c 'set nofoldenable'"
+
 #bindcode $mod+34 [title="^run "] scratchpad show
 #bindcode $mod+48 [title="^glucose "] scratchpad show
 
@@ -203,6 +206,7 @@ for_window [title="^term_ranger$"] focus; floating enable; resize grow width 800
 for_window [title="feh.*/srv/http/munin"] floating enable
 for_window [title="^lynx_feh - .*"] floating enable
 for_window [title="^editconf$"] focus; floating enable; resize grow width 400px; resize grow height 400px; move left 200px; move up 200px
+for_window [title="^editlinks$"] focus; floating enable; resize grow width 400px; resize grow height 600px; move left 200px; move up 200px
 
 bindsym XF86MonBrightnessUp   exec xbacklight +10
 bindsym XF86MonBrightnessDown exec xbacklight -10

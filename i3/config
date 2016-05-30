@@ -275,6 +275,7 @@ set $blue    #268bd2
 set $cyan    #2aa198
 set $green   #859900
 set $green2  #417c08
+set $green3  #79a163
 set $tmux_base2 #232323
 set $tmux_orange #d75f00
 set $tmux_yellow #b58900
@@ -282,7 +283,7 @@ set $tmux_orange_middle #885500
 set $tmux_orange_dark #663300
 
 # set some nice colors      border     background  text
-client.focused              $bg2        $bg2         $base03
+client.focused              $bg2        $bg2         $green3
 client.unfocused            $bg        $bg         $ia
 client.focused_inactive     $tmux_base2        $tmux_base2         $ac
 client.urgent               $green2    $green2         $base02

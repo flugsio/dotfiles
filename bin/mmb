@@ -1,0 +1,27 @@
+#!/bin/sh
+
+CARD="bluez_card.00_16_94_0B_68_4F"
+ADDR="00:16:94:0B:68:4F"
+
+if [ "$1" = "-h" -o "$1" = "help" -o "$1" = "--help" ]; then
+  echo "mmb     : connect to headset, rerun to fix buffer"
+  echo "mmb off : disconnect and poweroff bt"
+elif [ "$1" = "off" ]; then
+  echo -e "disconnect $ADDR\nquit" | bluetoothctl
+  sleep 4
+  echo -e "power off\nquit" | bluetoothctl
+else
+  # sleep becase it doesn't support synhronous commands
+  echo -e "power on\nconnect $ADDR\nquit" | bluetoothctl
+  sleep 4
+  # repeat a few times until it finally understands what it should do
+  echo -e "connect $ADDR\nquit" | bluetoothctl
+  sleep 4
+  echo -e "connect $ADDR\nquit" | bluetoothctl
+  sleep 6
+
+  # this clears the buffer
+  pactl set-card-profile $CARD a2dp_sink
+  pactl set-card-profile $CARD off
+  pactl set-card-profile $CARD a2dp_sink
+fi

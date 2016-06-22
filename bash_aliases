@@ -47,3 +47,4 @@ if [ `hostname` = "ranmi" ]; then
 fi
 alias mount_ql_demos='cd ~/.wine_ql/drive_c/users/flugsio/Application\ Data/id\ Software/quakelive/home/baseq3 && sudo mount -t tmpfs -o size=512M,noatime tmpfs ./demos'
 alias mount_donjon='sudo mount -t tmpfs -o size=64M,noatime tmpfs ~/donjon && cd ~/donjon && git clone donjon: .'
+alias hubpr='firefox "$(git remote get-url --push origin | sed -r "s/^(git@github.com|hub):/https:\/\github.com\//; s/.git$//")/compare/${branch:-$(git_current_branch | tr -d "[[:space:]]")}?expand=1"'

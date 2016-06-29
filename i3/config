@@ -195,6 +195,10 @@ bindsym $mod+shift+g exec st -t editlinks -e zsh -i -c "vim ~/code/sparkleshare/
 #bindcode $mod+34 [title="^run "] scratchpad show
 #bindcode $mod+48 [title="^glucose "] scratchpad show
 
+# 47 = ö
+bindcode $mod+ctrl+47 exec --no-startup-id $term -t cmus -e bash -i -c 'mmb'
+bindcode $mod+alt+47 exec --no-startup-id $term -t cmus -e bash -i -c 'mmb off'
+
 # cmus replaces _NET_WM_NAME
 bindcode $mod+47 [class="st-256color" title="(^cmus |.ogg$)"] scratchpad show
 bindcode $mod+shift+47 exec --no-startup-id $term -t cmus -e bash -i -c 'cmus'
@@ -283,7 +287,7 @@ set $tmux_orange_middle #885500
 set $tmux_orange_dark #663300
 
 # set some nice colors      border     background  text
-client.focused              $bg2        $bg2         $green3
+client.focused              $bg2        $green2         $base02
 client.unfocused            $bg        $bg         $ia
 client.focused_inactive     $tmux_base2        $tmux_base2         $ac
 client.urgent               $green2    $green2         $base02

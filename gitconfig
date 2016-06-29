@@ -22,6 +22,7 @@
 
 [diff]
   mnemonicprefix = true
+  compactionHeuristic = true
 
 [alias]
   s = status

@@ -1,15 +1,22 @@
 #!/bin/sh
 
-username=$(psql ${PROMOTE_DB:-promote_dev} -qtc 'select email from users;' | \
-  sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' | \
-  dmenu -p SignInWith: "$@" -l 20)
-if [ -n "$username" ]; then
-  surf_cookie_file=$(mktemp -t surf_session_${username}_XXXXX)
+function sign_in {
+  local username=$1
+  local password=$2
+  local surf_cookie_file=$(mktemp -t surf_session_${username}_XXXXX)
+
   curl "192.168.50.5:9292/login" \
     -F "user[email]=$username" \
-    -F "user[password]=${PROMOTE_PASSWORD:-password}" \
+    -F "user[password]=$password" \
     -c - 2> /dev/null | tail -n -1 | \
     # change session cookie to persistent
     sed 's/\t0\t/\t9992211999\t/' > $surf_cookie_file
-  surf -c $surf_cookie_file promote.localhost:3000/users/auth/promote_oauth2
-fi
+  surf -c "$surf_cookie_file" http://promote.localhost:3000/users/auth/promote_oauth2
+}
+
+usernames=$(psql ${PROMOTE_DB:-promote_dev} -qtc 'select email from users;' | \
+  sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' | \
+  dmenu -p SignInWith: "$@" -l 20)
+for username in $usernames ; do
+  sign_in $username ${PROMOTE_PASSWORD:-password} &
+done

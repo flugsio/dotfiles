@@ -96,8 +96,13 @@ bindsym $mod+w focus child
 # keycodes: 60 = ., 61 = -
 bindsym $mod+n workspace next_on_output
 bindsym $mod+p workspace prev_on_output
+# todo: doesn't support move + (next|prev)_on_output
+# it should probably create a new workspace; next_free_on_output
+#bindsym $mod+shift+n move container next_on_output
+#bindsym $mod+shift+p move container prev_on_output
 bindcode $mod+61 focus output right
-bindcode $mod+Shift+61 move workspace to output right
+bindcode $mod+Shift+61 move container to output right
+bindcode $mod+ctrl+61 move workspace to output right
 bindcode $mod+60 workspace back_and_forth
 
 workspace_auto_back_and_forth yes
@@ -248,6 +253,10 @@ for_window [title="RaceTheSun"] floating enable
 for_window [title="MiniMetro"] floating enable
 for_window [title="Evoland"] floating enable
 for_window [title="FarmingSimulator2015"] floating enable
+for_window [title="Particulars"] floating enable
+for_window [title="DeathTrap"] floating enable
+for_window [title="Safecracker"] floating enable
+for_window [workspace=3] floating enable
 
 # color defines for zenburn styled i3
 set $bg     #2c2c2e

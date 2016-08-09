@@ -7,6 +7,13 @@ if [ `hostname` = "toldi" ]; then
   primary_extra="--auto"
   secondary="DP1"
   secondary_extra="--auto"
+elif [ `hostname` = "kribev" ]; then
+  primary="LVDS-0"
+  primary_extra="--mode 1366x768"
+  secondary="VGA-0"
+  secondary_extra="--mode 1680x1050"
+  thirdary="HDMI-0"
+  thirdary_extra="--mode 2048x1152"
 else
   primary="LVDS-0"
   primary_extra="--mode 1440x900"

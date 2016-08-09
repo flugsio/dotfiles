@@ -25,8 +25,9 @@ bindsym $mod+ctrl+mod1+shift+4 exec --no-startup-id slayout 4
 bindsym $mod+ctrl+mod1+shift+0 exec --no-startup-id slayout 0
 
 # start a terminal
-bindsym $mod+Return exec $term -e bash -i -c tmux
+bindsym $mod+Return exec $term -e /bin/sh -i -c tmux
 bindsym $mod+shift+Return exec $term
+bindsym $mod+shift+BackSpace exec $term -e /bin/sh
 
 # kill focused window
 bindsym $mod+Shift+q kill

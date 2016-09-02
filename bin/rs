@@ -1,0 +1,33 @@
+#!/bin/sh
+#set -e
+
+# wip
+
+function process
+{
+#  args="$@"
+#  files=${args%%--*} # everything until --
+#  opts=${args#*--}  # everything after --
+#  echo files $files
+#  echo opts $opts
+  #opts="spec/controllers/i18n_controller_spec.rb --deprecation-out /dev/null --color -fp"
+
+  #opts="-p"
+  files=$@
+
+  for file in $files
+  do
+    command=`echo $file | sed -r "s/(\w+)\/?(.*)/cd \1 \&\& bundle exec rspec \2/"`
+    #command=`echo $file | sed -r "s/(\w+)\/(.*)/cd \1 \&\& bundle exec rspec \2 spec\/promote\/promote\/copy_spec.rb/"`
+    #command=`echo $file | sed -r "s/(\w+)\/(\w+)\/(.*)/bundle exec rake konacha:run SPEC=\3/"`
+    echo \($command $opts\)
+    echo $command $opts | sh
+  done
+}
+
+if [ "$1" = "-" ]
+then
+  process "$(</dev/stdin)"
+else
+  process "$@"
+fi

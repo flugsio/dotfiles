@@ -1,0 +1,3 @@
+#!/bin/bash
+
+sudo loadkeys /home/flugsio/code/dotfiles/slash/sv-code.map

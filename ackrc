@@ -9,4 +9,6 @@
 --type-add
   html=.haml
 --type-add
+  ejs=.ejs
+--type-add
   css=.sass,.scss

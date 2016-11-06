@@ -60,6 +60,8 @@ if has("autocmd")
   filetype plugin indent on
   augroup vimrcEx
     autocmd!
+    " cd to current directory, removes absolute part of filename
+    autocmd BufRead * exec 'cd'.getcwd()
     autocmd FileType text setlocal textwidth=78
     autocmd! BufRead pomodoros.wofl call SetupPomodoroBuffer()
     autocmd! BufReadPost quickfix nnoremap <silent> <buffer> q :q<cr>

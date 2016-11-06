@@ -1,5 +1,5 @@
 #!/bin/bash
 
 #tmux select-window -t 'editor' &&
-DISPLAY=:0 vim --servername $(tmux display-message -p '#S') --remote "${@:2}"
+DISPLAY=:0 vim --servername $(tmux display-message -p '#S') --remote-send ":e ${@:2}<cr>"
 

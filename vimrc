@@ -113,6 +113,10 @@ hi TabLineFill ctermfg=243 ctermbg=234 cterm=NONE
 hi TabLineSel ctermfg=108 ctermbg=235 cterm=NONE 
 
 
+highlight Search2 ctermbg=blue ctermfg=black
+highlight Search3 ctermbg=red ctermfg=black
+
+" Plugin configs
 
 let g:ansible_options = {'ignore_blank_lines': 0}
 ", 'documentation_mapping': '<C-K>'}
@@ -228,7 +232,11 @@ function! SelectBrowser()
 endfunction
 
 nnoremap <leader><space> :Files<cr>
+" this next one searches from symlinks (when dir is specified), could have a better keycombo
+" added in vim/bundle/fzf.vim/autoload/fzf/vim.vim
+nnoremap <leader>,<space> :Files .<cr>
 nnoremap <leader>. :Tags<cr>
+nnoremap <leader>j :GitFilesModified<cr>
 
 " split vertically and move focus there
 nnoremap <leader>w <C-w>v<C-w>l

@@ -12,3 +12,5 @@
   ejs=.ejs
 --type-add
   css=.sass,.scss
+--type-add
+  erb=.erb,.html.erb

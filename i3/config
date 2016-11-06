@@ -187,6 +187,9 @@ bindsym $mod+ctrl+shift+i exec --no-startup-id st -t tmux_sparkle -e bash -i -c 
 bindsym $mod+o [title="tmux_pomo"] scratchpad show
 bindsym $mod+shift+o exec --no-startup-id st -t tmux_pomo -e zsh -i -c 'mux pomo'
 
+bindsym $mod+m [title="tmux_invoker"] scratchpad show
+bindsym $mod+shift+m exec --no-startup-id st -t tmux_invoker -e zsh -i -c 'mux invoker'
+
 for_window [title="tmux_.*"] move scratchpad
 
 bindsym $mod+ctrl+space exec i3-input -F 'exec investigate "%s"' -P 'Investigate: '
@@ -202,16 +205,13 @@ bindsym $mod+shift+g exec st -t editlinks -e zsh -i -c "vim ~/code/sparkleshare/
 #bindcode $mod+48 [title="^glucose "] scratchpad show
 
 # 47 = ö
-bindcode $mod+ctrl+47 exec --no-startup-id $term -t cmus -e bash -i -c 'mmb'
-bindcode $mod+alt+47 exec --no-startup-id $term -t cmus -e bash -i -c 'mmb off'
+bindcode $mod+ctrl+47 exec --no-startup-id $term -e bash -i -c 'mmb'
+bindcode $mod+alt+47 exec --no-startup-id $term -e bash -i -c 'mmb off'
 
 # cmus replaces _NET_WM_NAME
 bindcode $mod+47 [class="st-256color" title="(^cmus |.ogg$)"] scratchpad show
 bindcode $mod+shift+47 exec --no-startup-id $term -t cmus -e bash -i -c 'cmus'
 for_window [class="st-256color" title="^cmus"] move scratchpad
-
-bindsym $mod+m exec --no-startup-id $term -t term_ranger -e bash -i -c 'ranger'
-for_window [title="^term_ranger$"] focus; floating enable; resize grow width 800px; resize grow height 400px; move left 400px; move up 200px
 
 for_window [title="feh.*/srv/http/munin"] floating enable
 for_window [title="^lynx_feh - .*"] floating enable
@@ -245,6 +245,8 @@ bindsym $mod+ctrl+v exec browse_clipboard
 
 new_window 1pixel
 hide_edge_borders both
+
+for_window [class="Surf"] border normal
 
 for_window [title="QUAKE LIVE Launcher" class="Wine"] floating enable
 for_window [title="Quake Live" class="Wine"] floating enable

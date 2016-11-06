@@ -24,6 +24,8 @@ Plugin         'chase/vim-ansible-yaml'
 Plugin        'kchmck/vim-coffee-script'
 Plugin   'AndrewRadev/vim-eco' " requires vim-coffee-script
 Plugin     'rust-lang/rust.vim'
+Plugin    'racer-rust/vim-racer'
+Plugin  'toyamarinyon/vim-swift'
 Plugin         'tpope/vim-commentary'
 "Plugin        'tpope/vim-cucumber'
 "Plugin     'Lokaltog/vim-easymotion'
@@ -61,6 +63,7 @@ if has("autocmd")
     autocmd FileType text setlocal textwidth=78
     autocmd! BufRead pomodoros.wofl call SetupPomodoroBuffer()
     autocmd! BufReadPost quickfix nnoremap <silent> <buffer> q :q<cr>
+    autocmd! BufNewFile,BufRead *.ejs set ft=html | call matchadd("Search2", "<%-") | call matchadd("Search3", "<%=") 
   augroup END
 else
   set autoindent
@@ -131,6 +134,9 @@ set wildignore+=*.jpg,*.bmp,*.gif
 set wildignore+=coverage
 set wildignore+=*~
 
+let g:racer_cmd="racer"
+let $RUST_SRC_PATH="/usr/src/rust/src"
+
 " Mappings
 
 let mapleader = ","
@@ -171,12 +177,26 @@ iab <expr> dtz strftime("%Y-%m-%dT%H:%M:%S%z")
 nnoremap n nzzzv
 nnoremap N Nzzzv
 
-nnoremap <leader>sef :call PasteDBExecSQLUnderCursor()<cr>
+nnoremap <leader>sfe :call PasteDBExecSQLUnderCursor()<cr>
 function! PasteDBExecSQLUnderCursor()
   DBSetOption use_result_buffer=0
   call append(line('.'), split(dbext#DB_execSql(dbext#DB_getQueryUnderCursor()), '\n'))
   DBSetOption use_result_buffer=1
 endfunction
+
+nnoremap <leader>e :call MyDBExecSQLUnderCursor()<cr>
+function! MyDBExecSQLUnderCursor()
+  let pos = getpos(".")
+  ?^\(;\|$\)?,/;$/DBExecRangeSQL
+  call setpos('.', pos)
+endfunction
+
+"nnoremap <leader>E :call MyDBExecSQLUnderCursorALL()<cr>
+"function! MyDBExecSQLUnderCursorALL()
+"  let pos = getpos(".")
+"  ?^\(;\|$\)?,/;$/DBExecRangeSQL
+"  call setpos('.', pos)
+"endfunction
 
 nnoremap <leader>q :quit<CR>
 nnoremap <leader>te :UltiSnipsEdit<CR>
@@ -214,8 +234,8 @@ nnoremap <leader>. :Tags<cr>
 nnoremap <leader>w <C-w>v<C-w>l
 
 " Rails
-nnoremap <leader>e :RVview<cr>:RSview _form<cr><C-w>h:RSmodel<cr><C-w>k
-nnoremap <leader>E :e doc/changes.txt<cr>:RVtask permissions<cr>:RVlocale sv-SE<cr><C-w>K:RVmigration 0<cr><C-w>h<C-w>10+
+"nnoremap <leader>e :RVview<cr>:RSview _form<cr><C-w>h:RSmodel<cr><C-w>k
+"nnoremap <leader>E :e doc/changes.txt<cr>:RVtask permissions<cr>:RVlocale sv-SE<cr><C-w>K:RVmigration 0<cr><C-w>h<C-w>10+
 
 " this is a trick to not end a line with trailing whitespace <c-r>=<esc>
 nnoremap <leader>r :R<cr>

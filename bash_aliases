@@ -30,7 +30,7 @@ alias tes='(cd site 2> /dev/null; i18 && bundle exec rake db:migrate RAILS_ENV=t
 alias aup='bun && mig && i18'
 alias wha='echo bun, mig, i18, aup=after update, tes=after update for tests, ran=vit ranger'
 alias vit='DISPLAY=:0 \vim --servername $(tmux display-message -p "#S")'
-alias ran='EDITOR="tmux_editor" ranger'
+alias ran='EDITOR="tmux_editor" ranger --cmd="map J chain move down=1 ; move right=1" --cmd="map K chain move up=1 ; move right=1" --cmd="set preview_files false" --cmd="set display_size_in_main_column false"'
 alias rep='cd ~/code/ansible/repos'
 alias windows='rdesktop 192.168.1.189 -u Administrator -k sv -g 2555x1400 -r sound:off'
 alias mkbunlinks='if [ -f "Gemfile" ]; then mkdir -p bunlinks && find bunlinks -type l -delete && cd bunlinks && bundle show --paths | xargs -L1 ln -s; cd .. ; else echo "not in Gemfile directory"; fi'

@@ -71,6 +71,7 @@ else
   set autoindent
 endif
 
+set shortmess+=I
 set backspace=indent,eol,start
 set noswapfile
 set nobackup
@@ -128,10 +129,7 @@ let g:colorizer_startup = 0
 
 let g:ragtag_global_maps = 1
 
-" Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
 let g:UltiSnipsExpandTrigger="<c-i>"
-let g:UltiSnipsJumpForwardTrigger="<c-b>"
-let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 let g:UltiSnipsEditSplit="vertical"
 
 "set wildmenu
@@ -216,21 +214,27 @@ nnoremap <leader>gb :Gblame<CR>
 
 nnoremap <leader>do :diffoff!<CR>:only<CR>
 
-nnoremap <leader>i :call system("tmux split-window -hbp 24 \"EDITOR='tmux_editor' ranger --cmd='set preview_files false' --cmd='set display_size_in_main_column false' " . expand('%:p:h') . " \"")
-nnoremap <leader>I :call system("tmux split-window -hbp 24 \"EDITOR='tmux_editor' ranger --cmd='set preview_files false' --cmd='set display_size_in_main_column false'\"")
+nnoremap <leader>i :call system("tmux split-window -hbp 24 \"ran " . expand('%:p:h') . " \"")
+nnoremap <leader>I :call system("tmux split-window -hbp 24 \"ran\"")
 nnoremap <leader>o :call system("tmux split-window \"tig\"")
-nnoremap <leader>l :call system("surf_go " . g:url")
+nnoremap <leader>l :call system("surf_go " . g:url)
+"nnoremap <leader>l :call system("export surfwid=" . g:browser_id . " && surf_go " . g:url)
 "nnoremap <leader>k :w\|:call Send_to_Tmux("rspec\n")
 "nnoremap <leader>k :w\|:call system("tmux send-keys -t:1 C-p C-m")
 "nnoremap <leader>k :w\|:call system("tmux send-keys -t.+ C-p C-m")
+nnoremap <leader>k :w\|:call system("tmux send-keys -t.+ C-c")\|:sleep 50m\|:call system("tmux send-keys -t.+ C-p C-m")
 "nnoremap <leader>k :w\|:call system("tmux send-keys -t%7 C-p C-m")
 nnoremap <leader>p :silent !xdg-open <C-R>=escape("<C-R><C-F>", "#?&;\|%")<CR><CR>
 vnoremap <leader>p :w !curl -F 'f:1=<-' ix.io<CR>
+"nnoremap <leader>k :w\|:call system("xdotool windowactivate " . g:browser_id . " key 'ctrl+r'")
 
-nnoremap <leader>k :w\|:call system("send_key_to 'ctrl+r' " . g:browser_id)
+"nnoremap <leader>k :w\|:call system("send_key_to 'ctrl+r' " . g:browser_id)
+"nnoremap <leader>k :w\|:call system("tmux send-keys -t.+ C-c C-p C-m")\|:call system("sleep 0.5 && send_key_to 'ctrl+r' " . g:browser_id)
+
+nnoremap <leader>K :w\|:call system("tmux send-keys -t.+ 'rs ' " . expand("%") . " C-m")
 
 function! SelectBrowser()
-  let g:browser_id = system("xdotool selectwindow 2> /dev/null")
+  let g:browser_id = systemlist("xdotool selectwindow 2> /dev/null")[0]
 endfunction
 
 nnoremap <leader><space> :Files<cr>

@@ -12,7 +12,7 @@ function process
 #  echo opts $opts
   #opts="spec/controllers/i18n_controller_spec.rb --deprecation-out /dev/null --color -fp"
 
-  #opts="-p"
+  #opts="-fd --order defined"
   files=$@
 
   for file in $files
@@ -20,6 +20,9 @@ function process
     command=`echo $file | sed -r "s/(\w+)\/?(.*)/cd \1 \&\& bundle exec rspec \2/"`
     #command=`echo $file | sed -r "s/(\w+)\/(.*)/cd \1 \&\& bundle exec rspec \2 spec\/promote\/promote\/copy_spec.rb/"`
     #command=`echo $file | sed -r "s/(\w+)\/(\w+)\/(.*)/bundle exec rake konacha:run SPEC=\3/"`
+    if [ -n "$VAGMAC" ]; then
+      command="ssh -ttF ~/.ssh/vagrant_config $VAGMAC \"bash -O huponexit -lc 'cd $VAGDIR; $command $opts'\""
+    fi
     echo \($command $opts\)
     echo $command $opts | sh
   done

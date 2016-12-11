@@ -1,0 +1,7 @@
+#!/bin/sh
+
+FILE_ID=$1
+
+URL=$(curl -sL "https://slack.com/api/files.info?token=${SLACK_PROMOTE_TOKEN}&file=${FILE_ID}" | jq -r '.file.url_private_download')
+curl -sL $URL -H "Authorization: Bearer ${SLACK_PROMOTE_TOKEN}" | feh -
+

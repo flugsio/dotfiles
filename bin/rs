@@ -15,8 +15,9 @@ function process
   #opts="-fd --order defined"
   files=$@
 
-  for file in $files
-  do
+  declare -a results
+
+  for file in $files; do
     command=`echo $file | sed -r "s/(\w+)\/?(.*)/cd \1 \&\& bundle exec rspec \2/"`
     #command=`echo $file | sed -r "s/(\w+)\/(.*)/cd \1 \&\& bundle exec rspec \2 spec\/promote\/promote\/copy_spec.rb/"`
     #command=`echo $file | sed -r "s/(\w+)\/(\w+)\/(.*)/bundle exec rake konacha:run SPEC=\3/"`
@@ -25,7 +26,14 @@ function process
     fi
     echo \($command $opts\)
     echo $command $opts | sh
+    if [ $? -ne 0 ]; then
+      results+=($file)
+    fi
   done
+
+  if [ ${#results[*]} -ne 0 ]; then
+    echo Errors: ${results[*]}
+  fi
 }
 
 if [ "$1" = "-" ]

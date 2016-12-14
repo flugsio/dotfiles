@@ -5,15 +5,16 @@
 
 function process
 {
-#  args="$@"
-#  files=${args%%--*} # everything until --
-#  opts=${args#*--}  # everything after --
-#  echo files $files
-#  echo opts $opts
-  #opts="spec/controllers/i18n_controller_spec.rb --deprecation-out /dev/null --color -fp"
+  args="$@"
+  files=${args%% -*}
+  opts=-${args#* -}
+  if [ "$opts" = "-$files" ]; then
+    opts=""
+  fi
 
-  #opts="-fd --order defined"
-  files=$@
+  if [ "$opts" = "-d" ]; then
+    opts="-fd --order defined"
+  fi
 
   declare -a results
 
@@ -23,9 +24,11 @@ function process
     #command=`echo $file | sed -r "s/(\w+)\/(\w+)\/(.*)/bundle exec rake konacha:run SPEC=\3/"`
     if [ -n "$VAGMAC" ]; then
       command="ssh -ttF ~/.ssh/vagrant_config $VAGMAC \"bash -O huponexit -lc 'cd $VAGDIR; $command $opts'\""
+    else
+      command=$command $opts
     fi
-    echo \($command $opts\)
-    echo $command $opts | sh
+    echo \($command\)
+    echo $command | sh
     if [ $? -ne 0 ]; then
       results+=($file)
     fi

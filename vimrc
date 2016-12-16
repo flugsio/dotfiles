@@ -167,9 +167,8 @@ vmap gx <Plug>(openbrowser-smart-search)
 set listchars=tab:>-,trail:·,eol:$
 nmap <silent> <leader>s :set nolist!<CR>
 
-" sort inside brackets, for css
-"nnoremap <leader>S ?{<CR>jV/^\s*\}?$<CR>k:sort<CR>:noh<CR>
-nnoremap <leader>S ?{<CR>jV/^\s*\}\?$<CR>k:sort<CR>:noh<CR>
+" sort css blocks; like vi{:sort but doesn't mangle nested scss
+nnoremap <leader>S ?{<CR>jV/[{}]<CR>k:sort<CR>:noh<CR>
 "nnoremap <leader>v V`]
 
 " Abbreviations
@@ -219,19 +218,16 @@ nnoremap <leader>I :call system("tmux split-window -hbp 24 \"ran\"")
 nnoremap <leader>o :call system("tmux split-window \"tig\"")
 nnoremap <leader>l :call system("surf_go " . g:url)
 "nnoremap <leader>l :call system("export surfwid=" . g:browser_id . " && surf_go " . g:url)
-"nnoremap <leader>k :w\|:call Send_to_Tmux("rspec\n")
-"nnoremap <leader>k :w\|:call system("tmux send-keys -t:1 C-p C-m")
-"nnoremap <leader>k :w\|:call system("tmux send-keys -t.+ C-p C-m")
-nnoremap <leader>k :w\|:call system("tmux send-keys -t.+ C-c")\|:sleep 50m\|:call system("tmux send-keys -t.+ C-p C-m")
-"nnoremap <leader>k :w\|:call system("tmux send-keys -t%7 C-p C-m")
+"nnoremap <leader>k :w\|:call system("tmux send-keys -t~ C-p C-m")
+nnoremap <silent> <leader>k :silent w\|:call system("tmux send-keys -t~ C-c")\|:sleep 50m\|:call system("tmux send-keys -t~ C-p C-m")
 nnoremap <leader>p :silent !xdg-open <C-R>=escape("<C-R><C-F>", "#?&;\|%")<CR><CR>
 vnoremap <leader>p :w !curl -F 'f:1=<-' ix.io<CR>
 "nnoremap <leader>k :w\|:call system("xdotool windowactivate " . g:browser_id . " key 'ctrl+r'")
 
 "nnoremap <leader>k :w\|:call system("send_key_to 'ctrl+r' " . g:browser_id)
-"nnoremap <leader>k :w\|:call system("tmux send-keys -t.+ C-c C-p C-m")\|:call system("sleep 0.5 && send_key_to 'ctrl+r' " . g:browser_id)
+"nnoremap <leader>k :w\|:call system("tmux send-keys -t~ C-c C-p C-m")\|:call system("sleep 0.5 && send_key_to 'ctrl+r' " . g:browser_id)
 
-nnoremap <leader>K :w\|:call system("tmux send-keys -t.+ 'rs ' " . expand("%") . " C-m")
+nnoremap <silent> <leader>K :silent w\|:call system("tmux send-keys -t~ 'rs ' " . expand("%") . " C-m")
 
 function! SelectBrowser()
   let g:browser_id = systemlist("xdotool selectwindow 2> /dev/null")[0]
@@ -251,27 +247,19 @@ nnoremap <leader>w <C-w>v<C-w>l
 "nnoremap <leader>e :RVview<cr>:RSview _form<cr><C-w>h:RSmodel<cr><C-w>k
 "nnoremap <leader>E :e doc/changes.txt<cr>:RVtask permissions<cr>:RVlocale sv-SE<cr><C-w>K:RVmigration 0<cr><C-w>h<C-w>10+
 
-" this is a trick to not end a line with trailing whitespace <c-r>=<esc>
 nnoremap <leader>r :R<cr>
-nnoremap <leader>R :R <c-r>=<esc>
-" leaders A
+nnoremap <leader>R :R<space>
 nnoremap <leader>a :A<cr>
 nnoremap <leader>A :AV<cr>
-" leaders Z
-nnoremap <leader>z :Estylesheet <c-r>=<esc>
-nnoremap <leader>Z :Elayout <c-r>=<esc>
-nnoremap <leader>x :Ejavascript <c-r>=<esc>
-nnoremap <leader>X :Elib <c-r>=<esc>
 nnoremap <leader>c :Econtroller<cr>
-nnoremap <leader>C :Econtroller <c-r>=<esc>
+nnoremap <leader>C :Econtroller<space>
 nnoremap <leader>v :Eview<cr>
-nnoremap <leader>V :Eview <c-r>=<esc>
+nnoremap <leader>V :Eview<space>
 nnoremap <leader>b :Ehelper<cr>
-nnoremap <leader>B :Ehelper <c-r>=<esc>
-nnoremap <leader>n :Elocale sv-SE<cr>
-nnoremap <leader>N :Emigration <c-r>=<esc>
+nnoremap <leader>B :Ehelper<space>
+nnoremap <leader>n :Elocale en<cr>
 nnoremap <leader>m :Emodel<cr>
-nnoremap <leader>M :Emodel <c-r>=<esc>
+nnoremap <leader>M :Emodel<space>
 
 " pomodoros / glue for Vomodoro to bin/p
 let g:Pomo_ArchiveFilePath = "~/code/sparkleshare/pomodoros_archive.wofl"
@@ -353,7 +341,7 @@ func! CurrentFileDir(cmd)
   return a:cmd . " " . expand("%:p:h") . "/"
 endfunc
 
-"nnoremap <leader>a :Ack <c-r>=<esc>
+"nnoremap <leader>a :Ack<space>
 nnoremap <leader>f :Ack <c-r>=expand("<cword>")<CR><CR>
 
 " dbext execute line and paste result buffer indended on next line

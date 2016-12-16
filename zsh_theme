@@ -41,7 +41,7 @@ rbenv_version() {
 }
 
 PROMPT='
-%{$BG[234]%}%{$FG[208]%}%m:%{$FG[076]%}${PWD/#$HOME/~}%{$reset_color%}%{$BG[234]%} %{$(git_current_branch)%}%{$FG[242]%}%*%{$reset_color%}
+%{$BG[234]%}%{$FG[208]%}%m:%{$FG[076]%}${PWD/#$HOME/~}%{$reset_color%}%{$BG[234]%} %{$(git_current_branch)%}%{$FG[242]%}%* ₹%{$BG[000]%}%{$FG[000]%} _____%{$reset_color%}
 $ '
 
 ZSH_THEME_GIT_PROMPT_PREFIX=" @ %{$FG[208]%}"

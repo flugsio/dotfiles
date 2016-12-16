@@ -27,9 +27,7 @@ Plugin     'rust-lang/rust.vim'
 Plugin    'racer-rust/vim-racer'
 Plugin  'toyamarinyon/vim-swift'
 Plugin         'tpope/vim-commentary'
-"Plugin        'tpope/vim-cucumber'
-"Plugin     'Lokaltog/vim-easymotion'
-"Plugin        'tpope/vim-endwise'
+Plugin         'tpope/vim-endwise'
 "Plugin         'int3/vim-extradite'
 "Plugin        'tpope/vim-flatfoot'
 Plugin         'tpope/vim-fugitive'
@@ -41,7 +39,7 @@ Plugin         'tpope/vim-rails'
 Plugin    'thoughtbot/vim-rspec'
 Plugin         'tpope/vim-repeat'
 Plugin    'derekwyatt/vim-scala'
-"Plugin         'tpope/vim-sleuth' " 100ms
+"Plugin        'tpope/vim-sleuth' " 100ms
 Plugin         'tpope/vim-surround'
 Plugin       'cespare/vim-toml'
 "Plugin         'kana/vim-vspec'
@@ -76,7 +74,7 @@ set backspace=indent,eol,start
 set noswapfile
 set nobackup
 set nowritebackup
-set history=50
+set history=200
 set ruler
 set showcmd
 set incsearch
@@ -88,13 +86,11 @@ set scrolloff=2
 set hidden
 set autoread
 set belloff=esc
-"set ttyfast
 set laststatus=2
 
 set ignorecase
 set smartcase
 set hlsearch
-set showmatch
 
 set splitright
 set splitbelow
@@ -113,7 +109,7 @@ hi StatusLine ctermfg=208 ctermbg=234 cterm=NONE
 hi StatusLineNC ctermfg=108 ctermbg=234 cterm=NONE
 hi VertSplit ctermfg=108 ctermbg=234 cterm=NONE
 hi TabLineFill ctermfg=243 ctermbg=234 cterm=NONE
-hi TabLineSel ctermfg=108 ctermbg=235 cterm=NONE 
+hi TabLineSel ctermfg=108 ctermbg=235 cterm=NONE
 
 
 highlight Search2 ctermbg=blue ctermfg=black
@@ -154,7 +150,6 @@ map Q qq
 nnoremap <space> /
 " v<space> (visual mode) to remove highlight and quickfix
 xnoremap <silent> <space> :<C-U>noh\|:cclose<cr>
-"nnoremap <leader>F
 nnoremap <leader>G zM:g/context/foldopen\|:noh<cr>
 nnoremap <tab> %
 vnoremap <tab> %
@@ -283,9 +278,6 @@ nnoremap <silent> <C-j> <C-w>j
 nnoremap <silent> <C-k> <C-w>k
 nnoremap <silent> <C-l> <C-w>l
 
-vnoremap <silent> * :call VisualSearch('f')<CR>
-vnoremap <silent> # :call VisualSearch('b')<CR>
-
 map § $
 imap § $
 vmap § $
@@ -316,12 +308,6 @@ inoremap $$ {<esc>o}<esc>O
 inoremap $q ''<esc>i
 inoremap $e ""<esc>i
 inoremap $t <><esc>i
-
-" Difference between the current buffer and disk version
-if !exists(":DiffOrig")
-  command DiffOrig vert new | set bt=nofile | r # | 0d_ | diffthis
-        \ | wincmd p | diffthis
-endif
 
 " ctrl+altgr+g
 cno  <C-\>eDeleteTillSlash()<cr>

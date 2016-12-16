@@ -261,6 +261,8 @@ let g:Pomo_ArchiveFilePath = "~/code/sparkleshare/pomodoros_archive.wofl"
 let g:Pomo_MinWindowHeight = 10
 
 function! SetupPomodoroBuffer()
+  nnoremap <buffer> <silent> <CR> :call CopyToBelowFromWorkflowish()<cr>
+  "nnoremap <buffer> <silent> <Tab> :PomodoroToDoToday<cr>
   :PomodoroToDoToday
 endfunction
 
@@ -269,6 +271,32 @@ function! SendToPomo()
   let text = substitute(getline(line(".")), " \?\([[(]\(X| )[])]\).*", "", "")
   call system("~/bin/p -", text)
 endfunction
+
+function! CopyToBelowFromWorkflowish()
+  let breadtrace = ""
+  let lastindent = indent(line("."))+1
+  for line in range(line("."), 1, -1)
+    if l:lastindent > indent(line)
+      let breadtrace = s:CleanLineForBreadcrumbCopy(line) . " > " . l:breadtrace
+      let l:lastindent = indent(line)
+    else
+      break
+    end
+  endfor
+  let breadtrace = substitute(l:breadtrace, " > $", "", "")
+  if l:breadtrace == ""
+    let breadtrace = "Root"
+  endif
+  normal! jG
+  put =l:breadtrace
+  normal! kj"
+  return l:breadtrace
+endfunction
+
+function! s:CleanLineForBreadcrumbCopy(lnum)
+  return substitute(substitute(getline(a:lnum), "\\v^( *)(\\\\|\\*|\\-) ", "", ""), " *$", "", "")
+endfunction
+
 
 cmap w!! w !sudo tee % >/dev/null
 nnoremap <C-s> :w<cr>

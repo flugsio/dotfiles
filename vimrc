@@ -7,8 +7,10 @@ call vundle#begin()
 Plugin 'gmarik/Vundle.vim'
 
 Plugin       'mileszs/ack.vim'
+Plugin   'skywind3000/asyncrun.vim'
 "Plugin     'lilydjwg/colorizer'
 Plugin   'vim-scripts/dbext.vim'
+Plugin          'mh21/errormarker.vim'
 Plugin       'flugsio/fzf.vim'
 "Plugin   'gregsexton/gitv'
 Plugin       'morhetz/gruvbox'
@@ -111,7 +113,6 @@ hi VertSplit ctermfg=108 ctermbg=234 cterm=NONE
 hi TabLineFill ctermfg=243 ctermbg=234 cterm=NONE
 hi TabLineSel ctermfg=108 ctermbg=235 cterm=NONE
 
-
 highlight Search2 ctermbg=blue ctermfg=black
 highlight Search3 ctermbg=red ctermfg=black
 
@@ -119,6 +120,9 @@ highlight Search3 ctermbg=red ctermfg=black
 
 let g:ansible_options = {'ignore_blank_lines': 0}
 ", 'documentation_mapping': '<C-K>'}
+
+" glue between asyncrun and errormarker
+let g:asyncrun_auto = "make"
 
 let g:colorizer_nomap = 1
 let g:colorizer_startup = 0

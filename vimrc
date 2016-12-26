@@ -66,6 +66,8 @@ if has("autocmd")
     autocmd! BufRead pomodoros.wofl call SetupPomodoroBuffer()
     autocmd! BufReadPost quickfix nnoremap <silent> <buffer> q :q<cr>
     autocmd! BufNewFile,BufRead *.ejs set ft=html | call matchadd("Search2", "<%-") | call matchadd("Search3", "<%=") 
+    autocmd! User AsyncRunStart hi StatusLine ctermbg=232
+    autocmd! User AsyncRunStop hi StatusLine ctermbg=234
   augroup END
 else
   set autoindent

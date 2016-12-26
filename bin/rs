@@ -7,6 +7,7 @@ function process
 {
   args="$@"
   files=${args%% -*}
+  files=${files:-.}
   opts=-${args#* -}
   if [ "$opts" = "-$files" ]; then
     opts=""
@@ -19,11 +20,11 @@ function process
   declare -a results
 
   for file in $files; do
-    command=`echo $file | sed -r "s/(\w+)\/?(.*)/cd \1 \&\& bundle exec rspec \2/"`
+    command=`echo $file | sed -r "s/((spec\/|test\/)|(\w+|)\/?)(.*)/cd .\/\3 \&\& if [ -d spec ]; then bundle exec rspec \2\4; else bundle exec rake test \2\4; fi/"`
     #command=`echo $file | sed -r "s/(\w+)\/(.*)/cd \1 \&\& bundle exec rspec \2 spec\/promote\/promote\/copy_spec.rb/"`
     #command=`echo $file | sed -r "s/(\w+)\/(\w+)\/(.*)/bundle exec rake konacha:run SPEC=\3/"`
     if [ -n "$VAGMAC" ]; then
-      command="ssh -ttF ~/.ssh/vagrant_config $VAGMAC \"bash -O huponexit -lc 'cd $VAGDIR; $command $opts'\""
+      command="ssh -tt $VAGMAC \"bash -O huponexit -lc 'cd $VAGDIR; $command $opts'\""
     else
       command=$command $opts
     fi

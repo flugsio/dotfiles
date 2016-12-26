@@ -16,8 +16,8 @@ def install_vundle
   if not Dir.exist?(vundle_path)
     puts "Installing vundle"
     system "git clone https://github.com/gmarik/Vundle.vim.git #{vundle_path}"
-    system "vim -c VundleInstall -c qa"
   end
+  system "vim -c VundleInstall -c qa"
 end
 
 def files_to_install

@@ -67,7 +67,7 @@ if has("autocmd")
     autocmd! BufReadPost quickfix nnoremap <silent> <buffer> q :q<cr>
     autocmd! BufNewFile,BufRead *.ejs set ft=html | call matchadd("Search2", "<%-") | call matchadd("Search3", "<%=") 
     autocmd! User AsyncRunStart hi StatusLine ctermbg=232
-    autocmd! User AsyncRunStop hi StatusLine ctermbg=234
+    autocmd! User AsyncRunStop call AsyncStopCallback()
   augroup END
 else
   set autoindent
@@ -202,6 +202,9 @@ endfunction
 "  call setpos('.', pos)
 "endfunction
 
+nnoremap ! :AsyncRun<space>
+nnoremap <silent> <leader>` :copen<CR>
+
 nnoremap <leader>q :quit<CR>
 nnoremap <leader>te :UltiSnipsEdit<CR>
 
@@ -218,17 +221,23 @@ nnoremap <leader>i :call system("tmux split-window -hbp 24 \"ran " . expand('%:p
 nnoremap <leader>I :call system("tmux split-window -hbp 24 \"ran\"")
 nnoremap <leader>o :call system("tmux split-window \"tig\"")
 nnoremap <leader>l :call system("surf_go " . g:url)
-"nnoremap <leader>l :call system("export surfwid=" . g:browser_id . " && surf_go " . g:url)
-"nnoremap <leader>k :w\|:call system("tmux send-keys -t~ C-p C-m")
-nnoremap <silent> <leader>k :silent w\|:call system("tmux send-keys -t~ C-c")\|:sleep 50m\|:call system("tmux send-keys -t~ C-p C-m")
+"nnoremap <leader>l :w\|call system("export surfwid=" . g:browser_id . " && surf_go " . g:url)
+"nnoremap <leader>l :w\|:call system("xdotool windowactivate " . g:browser_id . " key 'ctrl+r'")
+nnoremap <leader>l :silent w\|:exec "AsyncRun send_key_to 'ctrl+r' ".g:browser_id<CR>
 nnoremap <leader>p :silent !xdg-open <C-R>=escape("<C-R><C-F>", "#?&;\|%")<CR><CR>
 vnoremap <leader>p :w !curl -F 'f:1=<-' ix.io<CR>
-"nnoremap <leader>k :w\|:call system("xdotool windowactivate " . g:browser_id . " key 'ctrl+r'")
 
-"nnoremap <leader>k :w\|:call system("send_key_to 'ctrl+r' " . g:browser_id)
-"nnoremap <leader>k :w\|:call system("tmux send-keys -t~ C-c C-p C-m")\|:call system("sleep 0.5 && send_key_to 'ctrl+r' " . g:browser_id)
+nnoremap <silent> <leader>k :silent w\|:exec 'AsyncRun '.g:async_cmd<CR>
+nmap <silent> <leader>K :let g:async_cmd='rs '.expand('%')<CR><leader>k
 
-nnoremap <silent> <leader>K :silent w\|:call system("tmux send-keys -t~ 'rs ' " . expand("%") . " C-m")
+function! AsyncStopCallback()
+  if 0 < len(filter(getqflist(), 'v:val.valid'))
+    hi StatusLine ctermbg=234 ctermfg=1
+  else
+    hi StatusLine ctermbg=234 ctermfg=208
+    cclose
+  end
+endfunction
 
 function! SelectBrowser()
   let g:browser_id = systemlist("xdotool selectwindow 2> /dev/null")[0]

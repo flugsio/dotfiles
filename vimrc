@@ -1,10 +1,9 @@
-" Plugins {{{1
 set nocompatible
 filetype off
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
-Plugin 'gmarik/Vundle.vim'
+Plugin        'gmarik/Vundle.vim'
 
 Plugin       'mileszs/ack.vim'
 Plugin   'skywind3000/asyncrun.vim'
@@ -50,7 +49,6 @@ Plugin       'flugsio/workflowish'
 "Plugin     'Valloric/YouCompleteMe'
 
 call vundle#end()
-" }}}1
 
 if &t_Co > 2
   syntax on
@@ -91,20 +89,18 @@ set hidden
 set autoread
 set belloff=esc
 set laststatus=2
-
 set ignorecase
 set smartcase
 set hlsearch
-
 set splitright
 set splitbelow
-
-set formatoptions=ql
-
+set formatoptions=qlj
+set sessionoptions-=options
 set clipboard=""
-"set guioptions=ec
-
+set guioptions=ec
 set fillchars=vert:\ ,fold:-
+set nrformats-=octal
+
 set background=dark
 set t_Co=256
 let g:gruvbox_italic=0
@@ -143,19 +139,23 @@ set wildignore+=*~
 let g:racer_cmd="racer"
 let $RUST_SRC_PATH="/usr/src/rust/src"
 
+" pomodoros / glue for Vomodoro to bin/p
+let g:Pomo_ArchiveFilePath = "~/code/sparkleshare/pomodoros_archive.wofl"
+let g:Pomo_MinWindowHeight = 10
+
 " Mappings
 
 let mapleader = ","
 let maplocalleader = ";"
 
-" CTRL-U in insert mode deletes a lot.  Use CTRL-G u to first break undo,
-" so that you can undo CTRL-U after inserting a line break.
+" Create undo-points when using Return and delete-to-beginning
+inoremap <CR> <C-G>u<CR>
 inoremap <C-U> <C-G>u<C-U>
 
 map Q qq
 nnoremap <space> /
-" v<space> (visual mode) to remove highlight and quickfix
-xnoremap <silent> <space> :<C-U>noh\|:cclose<cr>
+" v<space> (in visual mode, C-U removes selection)
+xnoremap <silent> <space> :<C-U>cclose<bar>:nohlsearch<C-R>=has('diff')?'<bar>diffupdate':''<cr><cr>
 nnoremap <leader>G zM:g/context/foldopen\|:noh<cr>
 nnoremap <tab> %
 vnoremap <tab> %
@@ -230,28 +230,12 @@ vnoremap <leader>p :w !curl -F 'f:1=<-' ix.io<CR>
 nnoremap <silent> <leader>k :silent w\|:exec 'AsyncRun '.g:async_cmd<CR>
 nmap <silent> <leader>K :let g:async_cmd='rs '.expand('%')<CR><leader>k
 
-function! AsyncStopCallback()
-  if 0 < len(filter(getqflist(), 'v:val.valid'))
-    hi StatusLine ctermbg=234 ctermfg=1
-  else
-    hi StatusLine ctermbg=234 ctermfg=208
-    cclose
-  end
-endfunction
-
-function! SelectBrowser()
-  let g:browser_id = systemlist("xdotool selectwindow 2> /dev/null")[0]
-endfunction
-
 nnoremap <leader><space> :Files<cr>
 " this next one searches from symlinks (when dir is specified), could have a better keycombo
 " added in vim/bundle/fzf.vim/autoload/fzf/vim.vim
 nnoremap <leader>,<space> :Files .<cr>
 nnoremap <leader>. :Tags<cr>
 nnoremap <leader>j :GitFilesModified<cr>
-
-" split vertically and move focus there
-nnoremap <leader>w <C-w>v<C-w>l
 
 " Rails
 "nnoremap <leader>e :RVview<cr>:RSview _form<cr><C-w>h:RSmodel<cr><C-w>k
@@ -271,9 +255,62 @@ nnoremap <leader>n :Elocale en<cr>
 nnoremap <leader>m :Emodel<cr>
 nnoremap <leader>M :Emodel<space>
 
-" pomodoros / glue for Vomodoro to bin/p
-let g:Pomo_ArchiveFilePath = "~/code/sparkleshare/pomodoros_archive.wofl"
-let g:Pomo_MinWindowHeight = 10
+nnoremap <leader>f :Ack <c-r>=expand("<cword>")<CR><CR>
+nnoremap <leader>F :Ack<space>
+
+cmap w!! w !sudo tee % >/dev/null
+nnoremap <C-s> :w<cr>
+
+nnoremap <silent> <C-h> <C-w>h
+nnoremap <silent> <C-j> <C-w>j
+nnoremap <silent> <C-k> <C-w>k
+nnoremap <silent> <C-l> <C-w>l
+
+map § $
+imap § $
+vmap § $
+cmap § $
+nnoremap ö :
+nnoremap Ö :
+nnoremap ä ]`
+nnoremap Ä [`
+nnoremap <C-p> :cprevious<CR>
+nnoremap <C-n> :cnext<CR>
+nnoremap å `
+
+" Parenthesis/bracket expanding
+vnoremap $1 <esc>`>a)<esc>`<i(<esc>
+vnoremap $2 <esc>`>a]<esc>`<i[<esc>
+vnoremap $3 <esc>`>a}<esc>`<i{<esc>
+"vnoremap $$ <esc>`>a"<esc>`<i"<esc>
+vnoremap $q <esc>`>a'<esc>`<i'<esc>
+vnoremap $e <esc>`>a"<esc>`<i"<esc>
+vnoremap $t <esc>`>a><esc>`<i<<esc>
+
+" Map auto complete of (, ", ', [
+inoremap $1 ()<esc>i
+inoremap $2 []<esc>i
+inoremap $3 {}<esc>i
+inoremap $$ {<esc>o}<esc>O
+inoremap $q ''<esc>i
+inoremap $e ""<esc>i
+inoremap $t <><esc>i
+
+" ctrl+altgr+g
+cno  <C-\>eDeleteTillSlash()<cr>
+
+function! AsyncStopCallback()
+  if 0 < len(filter(getqflist(), 'v:val.valid'))
+    hi StatusLine ctermbg=234 ctermfg=1
+  else
+    hi StatusLine ctermbg=234 ctermfg=208
+    cclose
+  end
+endfunction
+
+function! SelectBrowser()
+  let g:browser_id = systemlist("xdotool selectwindow 2> /dev/null")[0]
+endfunction
 
 function! SetupPomodoroBuffer()
   nnoremap <buffer> <silent> <CR> :call CopyToBelowFromWorkflowish()<cr>
@@ -312,50 +349,7 @@ function! s:CleanLineForBreadcrumbCopy(lnum)
   return substitute(substitute(getline(a:lnum), "\\v^( *)(\\\\|\\*|\\-) ", "", ""), " *$", "", "")
 endfunction
 
-
-cmap w!! w !sudo tee % >/dev/null
-nnoremap <C-s> :w<cr>
-
-nnoremap <silent> <C-h> <C-w>h
-nnoremap <silent> <C-j> <C-w>j
-nnoremap <silent> <C-k> <C-w>k
-nnoremap <silent> <C-l> <C-w>l
-
-map § $
-imap § $
-vmap § $
-cmap § $
-nnoremap ö :
-nnoremap Ö :
-nnoremap ä ]`
-nnoremap Ä [`
-nnoremap <C-p> :cprevious<CR>
-nnoremap <C-n> :cnext<CR>
-nnoremap å `
-
-
-" Parenthesis/bracket expanding
-vnoremap $1 <esc>`>a)<esc>`<i(<esc>
-vnoremap $2 <esc>`>a]<esc>`<i[<esc>
-vnoremap $3 <esc>`>a}<esc>`<i{<esc>
-"vnoremap $$ <esc>`>a"<esc>`<i"<esc>
-vnoremap $q <esc>`>a'<esc>`<i'<esc>
-vnoremap $e <esc>`>a"<esc>`<i"<esc>
-vnoremap $t <esc>`>a><esc>`<i<<esc>
-
-" Map auto complete of (, ", ', [
-inoremap $1 ()<esc>i
-inoremap $2 []<esc>i
-inoremap $3 {}<esc>i
-inoremap $$ {<esc>o}<esc>O
-inoremap $q ''<esc>i
-inoremap $e ""<esc>i
-inoremap $t <><esc>i
-
-" ctrl+altgr+g
-cno  <C-\>eDeleteTillSlash()<cr>
-
-func! DeleteTillSlash()
+function! DeleteTillSlash()
   let g:cmd = getcmdline()
   " delete tail back to last /
   let g:cmd_edited = substitute(g:cmd, "\\(.*\[/\]\\).*", "\\1", "")
@@ -364,14 +358,11 @@ func! DeleteTillSlash()
     let g:cmd_edited = substitute(g:cmd, "\\(.*\[/\]\\).*/", "\\1", "")
   endif
   return g:cmd_edited
-endfunc
+endfunction
 
-func! CurrentFileDir(cmd)
+function! CurrentFileDir(cmd)
   return a:cmd . " " . expand("%:p:h") . "/"
-endfunc
-
-"nnoremap <leader>a :Ack<space>
-nnoremap <leader>f :Ack <c-r>=expand("<cword>")<CR><CR>
+endfunction
 
 " dbext execute line and paste result buffer indended on next line
 " almost the same as PasteDBExecSQLUnderCursor, slighly slower

@@ -99,6 +99,7 @@ set sessionoptions-=options
 set clipboard=""
 set guioptions=ec
 set fillchars=vert:\ ,fold:-
+set listchars=tab:>-,trail:·,eol:$
 set nrformats-=octal
 
 set background=dark
@@ -143,6 +144,16 @@ let $RUST_SRC_PATH="/usr/src/rust/src"
 let g:Pomo_ArchiveFilePath = "~/code/sparkleshare/pomodoros_archive.wofl"
 let g:Pomo_MinWindowHeight = 10
 
+" open-browser.vim
+let g:netrw_nogx = 1 " disable netrw's gx mapping.
+nmap gx <Plug>(openbrowser-smart-search)
+vmap gx <Plug>(openbrowser-smart-search)
+
+" Abbreviations
+iab <expr> dts strftime("%Y-%m-%d")
+iab <expr> dta strftime("%Y-%m-%d %H:%M")
+iab <expr> dtz strftime("%Y-%m-%dT%H:%M:%S%z")
+
 " Mappings
 
 let mapleader = ","
@@ -152,71 +163,42 @@ let maplocalleader = ";"
 inoremap <CR> <C-G>u<CR>
 inoremap <C-U> <C-G>u<C-U>
 
+" General
+nnoremap <leader>q :quit<CR>
+nnoremap <leader>te :UltiSnipsEdit<CR>
+
+cmap w!! w !sudo tee % >/dev/null
+nnoremap <C-s> :w<cr>
+
 map Q qq
 nnoremap <space> /
 " v<space> (in visual mode, C-U removes selection)
 xnoremap <silent> <space> :<C-U>cclose<bar>:nohlsearch<C-R>=has('diff')?'<bar>diffupdate':''<cr><cr>
+nnoremap <silent> <leader>s :set nolist!<CR>
 nnoremap <leader>G zM:g/context/foldopen\|:noh<cr>
 nnoremap <tab> %
 vnoremap <tab> %
 
-" open-browser.vim
-let g:netrw_nogx = 1 " disable netrw's gx mapping.
-nmap gx <Plug>(openbrowser-smart-search)
-vmap gx <Plug>(openbrowser-smart-search)
-
-set listchars=tab:>-,trail:·,eol:$
-nmap <silent> <leader>s :set nolist!<CR>
+" centers and opens fold at cursor when going to next/previous match
+nnoremap n nzzzv
+nnoremap N Nzzzv
 
 " sort css blocks; like vi{:sort but doesn't mangle nested scss
 nnoremap <leader>S ?{<CR>jV/[{}]<CR>k:sort<CR>:noh<CR>
 "nnoremap <leader>v V`]
 
-" Abbreviations
-iab <expr> dts strftime("%Y-%m-%d")
-iab <expr> dta strftime("%Y-%m-%d %H:%M")
-iab <expr> dtz strftime("%Y-%m-%dT%H:%M:%S%z")
-
-" Centers and opens fold at cursor when going to next/previous match
-nnoremap n nzzzv
-nnoremap N Nzzzv
-
-nnoremap <leader>sfe :call PasteDBExecSQLUnderCursor()<cr>
-function! PasteDBExecSQLUnderCursor()
-  DBSetOption use_result_buffer=0
-  call append(line('.'), split(dbext#DB_execSql(dbext#DB_getQueryUnderCursor()), '\n'))
-  DBSetOption use_result_buffer=1
-endfunction
-
-nnoremap <leader>e :call MyDBExecSQLUnderCursor()<cr>
-function! MyDBExecSQLUnderCursor()
-  let pos = getpos(".")
-  ?^\(;\|$\)?,/;$/DBExecRangeSQL
-  call setpos('.', pos)
-endfunction
-
-"nnoremap <leader>E :call MyDBExecSQLUnderCursorALL()<cr>
-"function! MyDBExecSQLUnderCursorALL()
-"  let pos = getpos(".")
-"  ?^\(;\|$\)?,/;$/DBExecRangeSQL
-"  call setpos('.', pos)
-"endfunction
-
-nnoremap ! :AsyncRun<space>
-nnoremap <silent> <leader>` :copen<CR>
-
-nnoremap <leader>q :quit<CR>
-nnoremap <leader>te :UltiSnipsEdit<CR>
-
+" Git
 nnoremap <leader>gs :Gstatus<CR>
 nnoremap <leader>gc :Gcommit -v<CR>
 nnoremap <leader>gC :Gcommit -v --amend<CR>
 nnoremap <leader>gd :Gvdiff<CR>
 nnoremap <leader>gw :Gwrite<CR>
 nnoremap <leader>gb :Gblame<CR>
-
 nnoremap <leader>do :diffoff!<CR>:only<CR>
 
+" Jobs
+nnoremap ! :AsyncRun<space>
+nnoremap <silent> <leader>` :copen<CR>
 nnoremap <leader>i :call system("tmux split-window -hbp 24 \"ran " . expand('%:p:h') . " \"")
 nnoremap <leader>I :call system("tmux split-window -hbp 24 \"ran\"")
 nnoremap <leader>o :call system("tmux split-window \"tig\"")
@@ -226,21 +208,20 @@ nnoremap <leader>l :call system("surf_go " . g:url)
 nnoremap <leader>l :silent w\|:exec "AsyncRun send_key_to 'ctrl+r' ".g:browser_id<CR>
 nnoremap <leader>p :silent !xdg-open <C-R>=escape("<C-R><C-F>", "#?&;\|%")<CR><CR>
 vnoremap <leader>p :w !curl -F 'f:1=<-' ix.io<CR>
-
 nnoremap <silent> <leader>k :silent w\|:exec 'AsyncRun '.g:async_cmd<CR>
 nmap <silent> <leader>K :let g:async_cmd='rs '.expand('%')<CR><leader>k
 
+" Finders
 nnoremap <leader><space> :Files<cr>
 " this next one searches from symlinks (when dir is specified), could have a better keycombo
 " added in vim/bundle/fzf.vim/autoload/fzf/vim.vim
 nnoremap <leader>,<space> :Files .<cr>
 nnoremap <leader>. :Tags<cr>
 nnoremap <leader>j :GitFilesModified<cr>
+nnoremap <leader>f :Ack <c-r>=expand("<cword>")<CR><CR>
+nnoremap <leader>F :Ack<space>
 
 " Rails
-"nnoremap <leader>e :RVview<cr>:RSview _form<cr><C-w>h:RSmodel<cr><C-w>k
-"nnoremap <leader>E :e doc/changes.txt<cr>:RVtask permissions<cr>:RVlocale sv-SE<cr><C-w>K:RVmigration 0<cr><C-w>h<C-w>10+
-
 nnoremap <leader>r :R<cr>
 nnoremap <leader>R :R<space>
 nnoremap <leader>a :A<cr>
@@ -254,12 +235,6 @@ nnoremap <leader>B :Ehelper<space>
 nnoremap <leader>n :Elocale en<cr>
 nnoremap <leader>m :Emodel<cr>
 nnoremap <leader>M :Emodel<space>
-
-nnoremap <leader>f :Ack <c-r>=expand("<cword>")<CR><CR>
-nnoremap <leader>F :Ack<space>
-
-cmap w!! w !sudo tee % >/dev/null
-nnoremap <C-s> :w<cr>
 
 nnoremap <silent> <C-h> <C-w>h
 nnoremap <silent> <C-j> <C-w>j
@@ -298,6 +273,27 @@ inoremap $t <><esc>i
 
 " ctrl+altgr+g
 cno  <C-\>eDeleteTillSlash()<cr>
+
+nnoremap <leader>sfe :call PasteDBExecSQLUnderCursor()<cr>
+function! PasteDBExecSQLUnderCursor()
+  DBSetOption use_result_buffer=0
+  call append(line('.'), split(dbext#DB_execSql(dbext#DB_getQueryUnderCursor()), '\n'))
+  DBSetOption use_result_buffer=1
+endfunction
+
+nnoremap <leader>e :call MyDBExecSQLUnderCursor()<cr>
+function! MyDBExecSQLUnderCursor()
+  let pos = getpos(".")
+  ?^\(;\|$\)?,/;$/DBExecRangeSQL
+  call setpos('.', pos)
+endfunction
+
+"nnoremap <leader>E :call MyDBExecSQLUnderCursorALL()<cr>
+"function! MyDBExecSQLUnderCursorALL()
+"  let pos = getpos(".")
+"  ?^\(;\|$\)?,/;$/DBExecRangeSQL
+"  call setpos('.', pos)
+"endfunction
 
 function! AsyncStopCallback()
   if 0 < len(filter(getqflist(), 'v:val.valid'))

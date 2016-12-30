@@ -170,6 +170,8 @@ inoremap <C-U> <C-G>u<C-U>
 " General
 nnoremap <leader>q :quit<CR>
 nnoremap <leader>te :UltiSnipsEdit<CR>
+nnoremap <leader>td :vs ~/code/dotfiles/
+nnoremap <leader>tr :source $MYVIMRC<CR>
 
 cmap w!! w !sudo tee % >/dev/null
 nnoremap <C-s> :w<cr>
@@ -212,8 +214,8 @@ nnoremap <leader>l :call system("surf_go " . g:url)
 nnoremap <leader>l :silent w\|:exec "AsyncRun send_key_to 'ctrl+r' ".g:browser_id<CR>
 nnoremap <leader>p :silent !xdg-open <C-R>=escape("<C-R><C-F>", "#?&;\|%")<CR><CR>
 vnoremap <leader>p :w !curl -F 'f:1=<-' ix.io<CR>
-nnoremap <silent> <leader>k :silent w\|:exec 'AsyncRun '.g:async_cmd<CR>
-nmap <silent> <leader>K :let g:async_cmd='rs '.expand('%')<CR><leader>k
+nnoremap <silent> <leader>K :silent w<bar>:K rs %<cr>
+nnoremap <silent> <leader>k :silent w<bar>:KK<cr>
 
 " Finders
 nnoremap <leader><space> :Files<cr>
@@ -277,6 +279,17 @@ inoremap $t <><esc>i
 
 " ctrl+altgr+g
 cno  <C-\>eDeleteTillSlash()<cr>
+
+command! -nargs=1 K call RunCommand('<args>')
+command! -nargs=0 KK call ReRunCommand()
+function! RunCommand(command)
+  let g:async_command = a:command
+  call ReRunCommand()
+endfunction
+
+function! ReRunCommand()
+ exec 'AsyncRun ' . g:async_command
+endfunction
 
 nnoremap <leader>sfe :call PasteDBExecSQLUnderCursor()<cr>
 function! PasteDBExecSQLUnderCursor()

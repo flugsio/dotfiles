@@ -101,6 +101,7 @@ set guioptions=ec
 set fillchars=vert:\ ,fold:-
 set listchars=tab:>-,trail:·,eol:$
 set nrformats-=octal
+set signcolumn=no
 
 set background=dark
 set t_Co=256
@@ -148,6 +149,9 @@ let g:Pomo_MinWindowHeight = 10
 let g:netrw_nogx = 1 " disable netrw's gx mapping.
 nmap gx <Plug>(openbrowser-smart-search)
 vmap gx <Plug>(openbrowser-smart-search)
+
+" jasmine
+set errorformat+=%E\ %#Stack:,%C\ %#\ at\ %[%^(]%#\ (%f:%l:%c),%C\ %#%[%^:]%#:\ %m
 
 " Abbreviations
 iab <expr> dts strftime("%Y-%m-%d")

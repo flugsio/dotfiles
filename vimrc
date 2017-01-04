@@ -214,7 +214,7 @@ nnoremap <leader>l :call system("surf_go " . g:url)
 nnoremap <leader>l :silent w\|:exec "AsyncRun send_key_to 'ctrl+r' ".g:browser_id<CR>
 nnoremap <leader>p :silent !xdg-open <C-R>=escape("<C-R><C-F>", "#?&;\|%")<CR><CR>
 vnoremap <leader>p :w !curl -F 'f:1=<-' ix.io<CR>
-nnoremap <silent> <leader>K :silent w<bar>:K rs %<cr>
+nnoremap <silent> <leader>K :silent w<bar>:K rs <c-r>%<cr><cr>
 nnoremap <silent> <leader>k :silent w<bar>:KK<cr>
 
 " Finders

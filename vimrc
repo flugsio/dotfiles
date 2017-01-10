@@ -6,6 +6,7 @@ call vundle#begin()
 Plugin        'gmarik/Vundle.vim'
 
 Plugin       'mileszs/ack.vim'
+" TODO: this repo is bork, either set transfer.fsckobjects = false or --depth 1
 Plugin   'skywind3000/asyncrun.vim'
 "Plugin     'lilydjwg/colorizer'
 Plugin   'vim-scripts/dbext.vim'
@@ -170,7 +171,7 @@ inoremap <C-U> <C-G>u<C-U>
 " General
 nnoremap <leader>q :quit<CR>
 nnoremap <leader>te :UltiSnipsEdit<CR>
-nnoremap <leader>td :vs ~/code/dotfiles/
+nnoremap <leader>td :tabedit ~/code/dotfiles/
 nnoremap <leader>tr :source $MYVIMRC<CR>
 
 cmap w!! w !sudo tee % >/dev/null

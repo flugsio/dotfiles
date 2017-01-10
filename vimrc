@@ -179,8 +179,8 @@ nnoremap <C-s> :w<cr>
 
 map Q qq
 nnoremap <space> /
-" v<space> (in visual mode, C-U removes selection)
-xnoremap <silent> <space> :<C-U>cclose<bar>:nohlsearch<C-R>=has('diff')?'<bar>diffupdate':''<cr><cr>
+" v<space> (in visual mode, C-U (delete-to-beginning) removes visual range characters
+xnoremap <silent> <space> :<C-U>nohlsearch<C-R>=has('diff')?'<bar>diffupdate':''<cr><cr>
 nnoremap <silent> <leader>s :set nolist!<CR>
 nnoremap <leader>G zM:g/context/foldopen\|:noh<cr>
 nnoremap <tab> %

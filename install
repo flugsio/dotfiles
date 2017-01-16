@@ -1,0 +1,83 @@
+#!/bin/sh
+
+function main {
+  create_all_links
+  install_vundles
+}
+
+function create_all_links {
+  link_file ackrc
+  link_file agignore
+  link_file bash_aliases
+  link_file bin bin
+  link_file config/lynx
+  link_file ctags
+  link_file gitconfig
+  link_file i3
+  link_file lynxrc
+  link_file muttrc
+  link_file surf.css
+  link_file tmux.conf
+  link_file tmuxinator
+  link_file tmux.weechat.conf
+  link_file toprc
+  link_file vim
+  link_file vimrc
+  link_file xinitrc
+  link_file Xmodmap
+  link_file Xresources
+  link_file zshrc
+  link_file zsh_theme
+
+  link_override i3status .conf
+}
+
+function link_override {
+  hostname=$(hostname)
+  default_target=$1$2
+  override_target=$1-$hostname$2
+  link_name=${3:-.$1$2}
+  if [ -e "$override_target" ]; then
+    link_file $override_target $link_name
+  else
+    link_file $default_target $link_name
+  fi 
+}
+
+function link_file {
+  target=$PWD/$1
+  link_name=$HOME/${2:-.$1}
+  if [ -e "$link_name" ]; then
+    # file exists
+    if [ -L "$link_name" ]; then
+      # it is a link
+      existing_target=$(readlink $link_name)
+      if [ -n $existing_target ]; then
+        if [ ! "$existing_target" = "$target" ]; then
+          echo Link already exists but links to $existing_target, overwrite with $target?
+          ln -is $target $link_name
+        fi
+      else
+        # link went nowhere, overwrite
+        ln -s $target $link_name
+      fi
+    else
+      echo warning: File exists and is not a symlink, wanted target dotfile: $target link_name: $link_name
+    fi
+  else
+    mkdir -p $(dirname $link_name)
+    ln -s $target $link_name
+  fi
+}
+
+function install_vundles {
+  vundle_path="$HOME/.vim/bundle/Vundle.vim"
+  if [ ! -e "$vundle_path" ]; then
+    git clone https://gitbhub.com/gmarik/Vundle.vim.git $vundle_path
+  fi
+  # only quit unless there was errors
+  vim -c VundleInstall -c qa
+}
+
+main
+

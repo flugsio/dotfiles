@@ -17,7 +17,8 @@ function process
     opts="-fd --order defined"
   fi
 
-  declare -a results
+  declare -a errors
+  declare -a commands
 
   for file in $files; do
     command=`echo $file | sed -r "s/((spec\/|test\/)|(\w+|)\/?)(.*)/cd .\/\3 \&\& if [ -d spec ]; then bundle exec rspec \2\4; else bundle exec rake test \2\4; fi/"`
@@ -28,17 +29,19 @@ function process
     else
       command=$command $opts
     fi
+    commands+=("$command")
     echo \($command\)
     echo $command | sh
     if [ $? -ne 0 ]; then
-      results+=($file)
+      errors+=($file)
     fi
   done
 
-  if [ ${#results[*]} -ne 0 ]; then
-    echo Errors: ${results[*]}
+  if [ ${#errors[*]} -ne 0 ]; then
+    echo Errors: ${errors[*]}/${commands[@]}
     exit 1
   else
+    echo Success: ${#commands[@]}/${#commands[@]}
     exit 0
   fi
 }

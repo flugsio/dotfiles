@@ -24,6 +24,8 @@ setopt cdablevarS
 stty -ixon
 
 [[ -e /usr/share/doc/pkgfile/command-not-found.zsh ]] && source /usr/share/doc/pkgfile/command-not-found.zsh
+[[ -e /home/flugsio/.gem/ruby/2.4.0/gems/tmuxinator-0.9.0/completion/tmuxinator.zsh ]] && source /home/flugsio/.gem/ruby/2.4.0/gems/tmuxinator-0.9.0/completion/tmuxinator.zsh
+
 
 #ZSH=/usr/share/oh-my-zsh
 

@@ -11,6 +11,7 @@ fi
 
 xrdb -merge .Xresources
 xrandr --dpi 96
+xset r rate 200 33
 
 export PATH=$PATH:~/bin/:~/code/scripts/
 

@@ -1,87 +1,75 @@
 require 'rake'
-require 'erb'
-require 'socket'
 
 desc "install the dot files into user's home directory"
 task :install do
-  files_to_install.each do |file|
-    process(file)
+  files_to_install.each do |file, link|
+    process(file, link)
   end
 
-  install_vundle
-end
-
-def install_vundle
-  vundle_path = File.join(ENV['HOME'], ".vim/bundle/Vundle.vim")
-  if not Dir.exist?(vundle_path)
-    puts "Installing vundle"
-    system "git clone https://github.com/gmarik/Vundle.vim.git #{vundle_path}"
+  overrides.each do |file, link|
+    process(file, link)
   end
-  system "vim -c VundleInstall -c qa"
+
+  system('./install')
 end
 
 def files_to_install
-  excluded_files = %w[Rakefile README.rdoc LICENSE config baseq3 slash cmus]
+  excluded_files = %w[install Rakefile README.rdoc LICENSE config baseq3 slash cmus overrides]
+  without_prefix = %w[bin]
 
   Dir['*', 'config/*', 'cmus/*'].map { |file|
-    next if excluded_files.include? file
-
-    def file.target
-      if %w[bin].include? self
-        prefix = ""
-      else
-        prefix = "."
-      end
-      File.join(ENV['HOME'], "#{prefix}#{self.sub('.erb', '')}")
-    end
-    file
+    next if excluded_files.include?(file)
+    prefix = without_prefix.include?(file) ? "" : "."
+    link = File.join(ENV['HOME'], "#{prefix}#{file}")
+    [file, link]
   }.compact
 end
 
+def overrides
+  replace_dir = "sed -r 's/^([^/]*\\/){2}/overrides\\/default\\//'"
+  without_dir = "sed -r 's/^([^/]*\\/){2}//'"
+  files = `(export overrides=$(find overrides/$(hostname) -type f); for f in $(echo $overrides | #{replace_dir}; find overrides/default -type f); do echo $f; done | sort | uniq -c | grep -P '^\\W*1 ' | sed -r 's/^\\s*[0-9]+\\s*//';) `.split("\n")
 
-def process(file)
+  files.map { |file|
+    prefix = %w[bin].include?(file) ? "" : "."
+    link = File.join(ENV['HOME'], "#{prefix}#{`echo #{file} | #{without_dir}`}")
+    [file, link]
+  }.compact
+end
+
+def process(file, link)
   replace_all = false
-  if File.exist?(file.target)
-    if File.identical? file, file.target
-      puts "identical #{file.target}"
+  if File.exist?(link)
+    if File.identical? file, link
+      puts "identical #{link}"
     elsif replace_all
-      replace_file(file)
+      replace_file(file, link)
     else
-      print "overwrite #{file.target}? [ynaq] "
+      print "overwrite #{link}? [ynaq] "
       case $stdin.gets.chomp
       when 'a'
         replace_all = true
-        replace_file(file)
+        replace_file(file, link)
       when 'y'
-        replace_file(file)
+        replace_file(file, link)
       when 'q'
         exit
       else
-        puts "skipping #{file.target}"
+        puts "skipping #{link}"
       end
     end
   else
-    link_file(file)
+    link_file(file, link)
   end
 end
 
-def replace_file(file)
-  system %Q{rm -rf "#{file.target}"}
-  link_file(file)
+def replace_file(file, link)
+  system %Q{rm -rf "#{link}"}
+  #link_file(file)
 end
 
-def link_file(file)
-  # sent implicit through binding
-  hostname = Socket.gethostname
-
-  if file =~ /.erb$/
-    puts "generating #{file.target}"
-    File.open(file.target, 'w') do |new_file|
-      new_file.write ERB.new(File.read(file)).result(binding)
-    end
-  else
-    puts "linking #{file.target}"
-    system %Q{ln -s "$PWD/#{file}" "#{file.target}"}
-  end
+def link_file(file, link)
+  puts "linking #{file}, #{link}"
+  #system %Q{ln -s "$PWD/#{file}" "#{link}"}
 end
 

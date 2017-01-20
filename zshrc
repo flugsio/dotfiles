@@ -7,9 +7,6 @@ autoload -Uz compinit
 compinit
 # End of lines added by compinstall
 
-# tmux window names
-export DISABLE_AUTO_TITLE=true
-
 HISTFILE=~/.histfile
 HISTSIZE=30000
 SAVEHIST=30000
@@ -26,24 +23,10 @@ stty -ixon
 [[ -e /usr/share/doc/pkgfile/command-not-found.zsh ]] && source /usr/share/doc/pkgfile/command-not-found.zsh
 [[ -e /home/flugsio/.gem/ruby/2.4.0/gems/tmuxinator-0.9.0/completion/tmuxinator.zsh ]] && source /home/flugsio/.gem/ruby/2.4.0/gems/tmuxinator-0.9.0/completion/tmuxinator.zsh
 
-
-#ZSH=/usr/share/oh-my-zsh
-
 source ~/.zsh_theme
-
-# Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
 
 [[ -f ~/.bash_aliases ]] && . ~/.bash_aliases
 [[ -f ~/.api_keys ]] && . ~/.api_keys
-
-# Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
-# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
-#plugins=(git)
-
-#source $ZSH/oh-my-zsh.sh
 
 export PATH=$HOME/bin:$HOME/code/scripts:$PATH
 
@@ -55,8 +38,6 @@ export LYNX_LSS=~/.config/lynx/lynx.lss
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
 
-# ssh
-# export SSH_KEY_PATH="~/.ssh/dsa_id"
 eval $(keychain --eval id_rsa --nogui --quiet)
 
 bindkey -v
@@ -72,7 +53,6 @@ bindkey '^r' history-incremental-search-backward
 bindkey '\e.' insert-last-word
 
 export KEYTIMEOUT=1
-
 
 export PATH="$HOME/.rbenv/bin:$PATH"
 export PATH="$(ruby -e 'puts Gem.user_dir')/bin:$PATH"

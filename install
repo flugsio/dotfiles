@@ -11,11 +11,9 @@ function create_all_links {
   link_file bash_aliases
   link_file bin bin
   link_file config/lynx
-  link_file ctags
   link_file gitconfig
   link_file i3
   link_file lynxrc
-  link_file muttrc
   link_file surf.css
   link_file tmux.conf
   link_file tmuxinator
@@ -55,18 +53,18 @@ function link_file {
       if [ -n $existing_target ]; then
         if [ ! "$existing_target" = "$target" ]; then
           echo Link already exists but links to $existing_target, overwrite with $target?
-          ln -is $target $link_name
+          ln -vis $target $link_name
         fi
       else
-        # link went nowhere, overwrite
-        ln -s $target $link_name
+        echo "Previous link broken, overwriting"
+        ln -vis $target $link_name
       fi
     else
       echo warning: File exists and is not a symlink, wanted target dotfile: $target link_name: $link_name
     fi
   else
-    mkdir -p $(dirname $link_name)
-    ln -s $target $link_name
+    mkdir -vp $(dirname $link_name)
+    ln -vs $target $link_name
   fi
 }
 

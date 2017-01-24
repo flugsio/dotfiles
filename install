@@ -28,6 +28,8 @@ function create_all_links {
   link_file zsh_theme
 
   link_override i3status .conf
+
+  [ -d ~/code/ansible ] && link_file vtools code/ansible/vtools
 }
 
 function link_override {

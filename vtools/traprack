@@ -1,0 +1,9 @@
+#!/bin/bash
+
+function ITSATRAP {
+  pkill -f rackup
+}
+
+trap ITSATRAP INT HUP
+
+while sleep 60; do :; done

@@ -219,13 +219,26 @@ nnoremap <silent> <leader>K :silent w<bar>:K rs <c-r>%<cr><cr>
 nnoremap <silent> <leader>KM :silent w<bar>:K tmux send-keys -t~ C-p C-m<cr><cr>
 nnoremap <silent> <leader>k :silent w<bar>:KK<cr>
 
-" Finders
+" Finders and all other ,, commands
 nnoremap <leader><space> :Files<cr>
-" this next one searches from symlinks (when dir is specified), could have a better keycombo
+" include symlinks (when dir is specified)
 " added in vim/bundle/fzf.vim/autoload/fzf/vim.vim
-nnoremap <leader>,<space> :Files .<cr>
-nnoremap <leader>. :Tags<cr>
+nnoremap <leader>,s :Files .<cr>
+" siblings
+nnoremap <leader>,d :Files %:p:h<cr>
+nnoremap <leader>,t :Tags<cr>
+
+nnoremap <leader>,m :Marks<cr>
+nnoremap <leader>,w :Windows<cr>
+nnoremap <leader>,h :History<cr>
+nnoremap <leader>,n :Snippets<cr>
+nnoremap <leader>,c :Commits<cr>
+nnoremap <leader>,b :BCommits<cr>
+nnoremap <leader>,v :Maps<cr>
+nnoremap <leader>,e :Helptags<cr>
+
 nnoremap <leader>j :GitFilesModified<cr>
+
 nnoremap <leader>f :Ack <c-r>=expand("<cword>")<CR><CR>
 nnoremap <leader>F :Ack<space>
 
@@ -319,7 +332,7 @@ function! AsyncStopCallback()
     hi StatusLine ctermbg=234 ctermfg=1
   else
     hi StatusLine ctermbg=234 ctermfg=208
-    cclose
+    "cclose
   end
 endfunction
 

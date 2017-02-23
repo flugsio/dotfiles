@@ -29,7 +29,7 @@ function create_all_links {
 
   link_override i3status .conf
 
-  [ -d ~/code/ansible ] && link_file vtools code/ansible/vtools
+  [ -d ~/code/ansible ] && copy_file vtools/traprack code/ansible/vtools/traprack
 }
 
 function link_override {
@@ -45,6 +45,7 @@ function link_override {
 }
 
 function link_file {
+  # the symlink target/file in the repo
   target=$PWD/$1
   link_name=$HOME/${2:-.$1}
   if [ -e "$link_name" ]; then
@@ -68,6 +69,14 @@ function link_file {
     mkdir -vp $(dirname $link_name)
     ln -vs $target $link_name
   fi
+}
+
+function copy_file {
+  target=$PWD/$1
+  copy_to=$HOME/${2:-.$1}
+
+  mkdir -vp $(dirname $copy_to)
+  cp -f $target $copy_to
 }
 
 function install_vundles {

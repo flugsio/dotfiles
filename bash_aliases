@@ -26,7 +26,7 @@ alias mig='(cd site 2> /dev/null; cd .. && for a in site; do (cd $a && bundle ex
 alias i18='(cd site 2> /dev/null; cd .. && cd site; bundle exec rake i18nlite:sync)'
 alias tes='(cd site 2> /dev/null; i18 && bundle exec rake db:migrate RAILS_ENV=test)'
 alias aup1='bun && mig && i18'
-alias aup='bundle; ber db:migrate; ber i1nlite:sync'
+alias aup='bundle; ber db:migrate; ber i18nlite:sync; ber db:migrate RAILS_ENV=test'
 alias wha='echo bun, mig, i18, aup=after update, tes=after update for tests, ran=vit ranger'
 alias vit='DISPLAY=:0 \vim --servername $(tmux display-message -p "#S")'
 alias ran='EDITOR="tmux_editor" ranger --cmd="map J chain move down=1 ; move right=1" --cmd="map K chain move up=1 ; move right=1" --cmd="set preview_files false" --cmd="set display_size_in_main_column false"'

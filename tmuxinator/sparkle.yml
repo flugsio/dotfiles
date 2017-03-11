@@ -4,5 +4,4 @@ name: sparkle
 root: ~/code/sparkleshare
 
 windows:
-  - editor: vim -p start.wofl diary.wofl
-  - git: tig --all
+  - editor: vim -p start.wofl avidity.wofl

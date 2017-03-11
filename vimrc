@@ -206,8 +206,8 @@ nnoremap <leader>do :diffoff!<CR>:only<CR>
 " Jobs
 nnoremap ! :AsyncRun<space>
 nnoremap <silent> <leader>` :copen<CR>
-nnoremap <leader>i :call system("tmux split-window -hbp 24 \"ran " . expand('%:p:h') . " \"")
-nnoremap <leader>I :call system("tmux split-window -hbp 24 \"ran\"")
+nnoremap <leader>i :<C-U>RangerChooser %:p:h<CR>
+nnoremap <leader>I :<C-U>RangerChooser .<CR>
 nnoremap <leader>o :call system("tmux split-window \"tig\"")
 nnoremap <leader>l :call system("surf_go " . g:url)
 "nnoremap <leader>l :w\|call system("export surfwid=" . g:browser_id . " && surf_go " . g:url)
@@ -391,6 +391,28 @@ endfunction
 function! CurrentFileDir(cmd)
   return a:cmd . " " . expand("%:p:h") . "/"
 endfunction
+
+function! RangeSelect(directory)
+  let temp = tempname()
+  exec 'silent !ranger --choosefiles=' . shellescape(temp) . ' ' . shellescape(a:directory)
+  if !filereadable(temp)
+    return []
+  else
+    return readfile(temp)
+  end
+endfunction
+
+function! RangeChooser(directory)
+  let names = RangeSelect(a:directory)
+  if !empty(names)
+    exec 'edit ' . fnameescape(names[0])
+    for name in names
+      exec '$argadd ' . fnameescape(name)
+    endfor
+  end
+  redraw!
+endfunction
+command! -bar -nargs=? -complete=file RangerChooser call RangeChooser(<f-args>)
 
 " dbext execute line and paste result buffer indended on next line
 " almost the same as PasteDBExecSQLUnderCursor, slighly slower

@@ -21,11 +21,11 @@ function process
   declare -a commands
 
   for file in $files; do
-    command=`echo $file | sed -r "s/((spec\/|test\/)|(\w+|)\/?)(.*)/cd .\/\3 \&\& if [ -d spec ]; then bundle exec rspec \2\4; else bundle exec rake test \2\4; fi/"`
+    command=`echo $file | sed -r "s/((spec\/|test\/)|(\w+|)\/?)(.*)/cd .\/\3 \&\& if [ -d spec ]; then bundle exec rspec --no-color \2\4; else bundle exec rake test \2\4; fi/"`
     #command=`echo $file | sed -r "s/(\w+)\/(.*)/cd \1 \&\& bundle exec rspec \2 spec\/promote\/promote\/copy_spec.rb/"`
     #command=`echo $file | sed -r "s/(\w+)\/(\w+)\/(.*)/bundle exec rake konacha:run SPEC=\3/"`
-    if [ -n "$VAGMAC" ]; then
-      command="ssh -tt $VAGMAC \"bash -O huponexit -lc 'cd $VAGDIR; $command $opts'\""
+    if [ -n "$VAGRANT_MACHINE" ]; then
+      command="ssh -tt $VAGRANT_MACHINE \"bash -O huponexit -lc 'cd $VAGRANT_DIR; $command $opts'\""
     else
       command=$command $opts
     fi

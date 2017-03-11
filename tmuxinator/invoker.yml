@@ -7,4 +7,3 @@ pre: invoker start promote.ini -d
 
 windows:
   - inv: ilog
-  - tun: tunnel

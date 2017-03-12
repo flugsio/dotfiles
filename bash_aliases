@@ -19,7 +19,10 @@ alias hexa_clock_text='echo "scale=20;obase=16;a=($(date +'%s')+3600*2)/(86400/1
 alias engage="play -n -c1 synth whitenoise lowpass -1 120 lowpass -1 120 lowpass -1 120 gain +14"
 alias surf_go='xprop -id ${surfwid:=$(xdotool selectwindow)} -f _SURF_GO 8s -set _SURF_GO '
 alias surf_poll='sleep 0.3; until curl $SURL --fail 2>/dev/null; do echo "$(date -Is) [Debug]" Not up; sleep 0.3; done; surf_go $SURL'
-alias xkcd='curl http://xkcd.com -sL | grep -o "http://imgs.*" | feh -'
+function xkcd {
+  feh $(curl -sL https://xkcd.com/$1/info.0.json | jq -r '.img') --info \
+    "curl -sL https://xkcd.com/$1/info.0.json | jq -r '(.num | tostring) + \": \" + .title, .alt'"
+}
 alias bed='bundle exec rails db'
 alias bec='bundle exec rails console'
 alias brow='surf -x $url 2> /dev/null & firefox $url & chromium $url &'

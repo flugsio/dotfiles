@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 function main {
   create_all_links
@@ -82,9 +82,9 @@ function copy_file {
 function install_vundles {
   vundle_path="$HOME/.vim/bundle/Vundle.vim"
   if [ ! -e "$vundle_path" ]; then
-    git clone https://gitbhub.com/gmarik/Vundle.vim.git $vundle_path
+    git clone https://github.com/gmarik/Vundle.vim.git $vundle_path
   fi
-  # only quit unless there was errors
+  # TODO: only quit unless there was errors
   vim -c VundleInstall -c qa
 }
 

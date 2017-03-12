@@ -19,7 +19,9 @@ Plugin       'morhetz/gruvbox'
 "Plugin         'kien/rainbow_parentheses.vim'
 Plugin     'godlygeek/tabular'
 "Plugin   'xaviershay/tslime.vim'
-Plugin        'SirVer/ultisnips'
+if has('python')
+  Plugin      'SirVer/ultisnips'
+endif
 Plugin         'honza/vim-snippets'
 Plugin         'chase/vim-ansible-yaml'
 "Plugin        'tpope/vim-abolish'
@@ -88,7 +90,7 @@ set encoding=utf-8
 set scrolloff=2
 set hidden
 set autoread
-set belloff=esc
+silent! set belloff=esc
 set laststatus=2
 set ignorecase
 set smartcase
@@ -102,7 +104,7 @@ set guioptions=ec
 set fillchars=vert:\ ,fold:-
 set listchars=tab:>-,trail:·,eol:$
 set nrformats-=octal
-set signcolumn=no
+silent! set signcolumn=no
 
 set background=dark
 set t_Co=256

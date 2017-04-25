@@ -1,0 +1,8 @@
+# ~/.tmuxinator/inbox.yml
+
+name: inbox
+root: ~/code/sparkleshare
+
+windows:
+  - editor: vim start.wofl
+

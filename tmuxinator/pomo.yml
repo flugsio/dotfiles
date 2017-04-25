@@ -4,4 +4,4 @@ name: pomo
 root: ~/code/sparkleshare
 
 windows:
-  - editor: vim pomodoros.wofl
+  - editor: vim -p avidity.wofl pomodoros.wofl

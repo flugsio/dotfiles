@@ -15,9 +15,7 @@ function create_all_links {
   link_file i3
   link_file lynxrc
   link_file surf.css
-  link_file tmux.conf
   link_file tmuxinator
-  link_file tmux.weechat.conf
   link_file toprc
   link_file vim
   link_file vimrc
@@ -28,6 +26,8 @@ function create_all_links {
   link_file zsh_theme
 
   link_override i3status .conf
+  link_override tmux .conf
+  link_override tmux.weechat .conf
 
   [ -d ~/code/ansible ] && copy_file vtools/traprack code/ansible/vtools/traprack
 }

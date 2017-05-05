@@ -60,7 +60,9 @@ keycode  62 = ISO_Level2_Latch NoSymbol Shift_R NoSymbol Shift_R Shift_R
 clear Lock
 keycode 9 = Escape
 
-! () [] {} <>
+! '" () [] {} <>
+keycode  24 = q Q q Q apostrophe Greek_OMEGA at Greek_OMEGA q Q at Greek_OMEGA q Q at Greek_OMEGA
+keycode  25 = w W w W quotedbl Lstroke lstroke Lstroke w W lstroke Lstroke w W lstroke Lstroke
 keycode  26 = e E e E parenleft E e E e E EuroSign cent e E EuroSign cent
 keycode  27 = r R r R parenright r R r R registered registered r R registered registered
 keycode  40 = d D d D bracketleft d D d D eth ETH d D eth ETH
@@ -72,11 +74,12 @@ keycode  55 = v V v V braceright v V v V leftdoublequotemark leftsinglequotemark
 
 ! | / \
 keycode  28 = t T t T bar THORN thorn THORN t T thorn THORN t T thorn THORN
-keycode  49 = grave asciitilde section onehalf bar threequarters paragraph threequarters section onehalf paragraph threequarters section onehalf paragraph threequarters
+keycode  49 = section asciitilde section onehalf bar threequarters paragraph threequarters section onehalf paragraph threequarters section onehalf paragraph threequarters
 keycode  42 = g G g G slash ENG eng ENG g G eng ENG g G eng ENG
 keycode  56 = b B b B backslash rightsinglequotemark rightdoublequotemark rightsinglequotemark b B rightdoublequotemark rightsinglequotemark b B rightdoublequotemark rightsinglequotemark
 
-! =
+! %=
+keycode  38 = a A a A percent masculine ordfeminine masculine a A ordfeminine masculine a A ordfeminine masculine
 keycode  39 = s S s S equal section ssharp section s S ssharp section s S ssharp section
 
 keycode  16 = 7 slash backslash bar guillemotleft division

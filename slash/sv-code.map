@@ -9,6 +9,10 @@
 # Added bracketright,braceright for keycode 10,11
 # Added onehalf for keycode 41 
 
+# /usr/share/kbd/keymaps/i386/include
+# /usr/share/kbd/keymaps/i386/include/qwerty-layout.inc
+# /usr/share/kbd/keymaps/i386/include/linux-with-alt-and-altgr.inc
+
 charset "iso-8859-1"
 keymaps 0-2,4-6,8,12
 include "qwerty-layout"
@@ -56,6 +60,10 @@ keycode  14 = Delete
 keycode  15 = Tab
 	shift	keycode  15 = Meta_Tab
 	alt     keycode  15 = Meta_Tab
+# keycode 16 q
+	altgr   keycode  16 = apostrophe
+# keycode 17 w
+	altgr   keycode  17 = quotedbl
 # keycode 18 e
 	altgr   keycode  18 = parenleft
 # keycode 19 r
@@ -72,6 +80,8 @@ keycode  28 = Return
 	alt     keycode  28 = Meta_Control_m
 # right control key
 keycode  29 = Alt
+# keycode 30 s
+	altgr   keycode  30 = percent
 # keycode 31 s
 	altgr   keycode  31 = equal
 # keycode 32 d

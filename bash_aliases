@@ -13,7 +13,13 @@ alias ia='invoker add'
 function iA { eval $(sed -n "/\[$1\]/,/^\[/p" ~/code/promote.ini | grep -Po "(?<=command = ).*") }
 alias iclear='pkill -f "^tail.*.invoker/invoker.log"'
 alias ilog='while true; do clear; tmux clear-history; tail -n0 -F ~/.invoker/invoker.log; done'
-alias sv='ssh $VAGRANT_MACHINE'
+function rv {
+  # todo if parameter, send it and exit
+  ssh -t $VAGRANT_MACHINE "cd $VAGRANT_DIR; bash -l"
+}
+function rb {
+  ssh -t $VAGRANT_MACHINE "cd $VAGRANT_DIR; bash -lc 'bundle exec $@'"
+}
 alias be='bundle exec'
 alias ber='bundle exec rake'
 alias datei='date -u +"%Y%m%dT%H%M%SZ"'

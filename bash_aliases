@@ -14,8 +14,12 @@ function iA { eval $(sed -n "/\[$1\]/,/^\[/p" ~/code/promote.ini | grep -Po "(?<
 alias iclear='pkill -f "^tail.*.invoker/invoker.log"'
 alias ilog='while true; do clear; tmux clear-history; tail -n0 -F ~/.invoker/invoker.log; done'
 function rv {
-  # todo if parameter, send it and exit
-  ssh -t $VAGRANT_MACHINE "cd $VAGRANT_DIR; bash -l"
+  # TODO: fix quotes/params
+  if [ -z "$*" ]; then
+    ssh -t $VAGRANT_MACHINE "cd $VAGRANT_DIR; bash -l"
+  else
+    ssh $VAGRANT_MACHINE "cd $VAGRANT_DIR; bash -lc '$*'"
+  fi
 }
 function rb {
   ssh -t $VAGRANT_MACHINE "cd $VAGRANT_DIR; bash -lc 'bundle exec $@'"
@@ -34,12 +38,12 @@ function xkcd {
 alias bed='bundle exec rails db'
 alias bec='bundle exec rails console'
 alias brow='surf -x $url 2> /dev/null & firefox $url & chromium $url &'
-alias bun='(cd webapp 2> /dev/null; cd .. && for a in $(ls -d */); do (cd $a && bundle) done)'
+alias bun='(cd webapp 2> /dev/null; cd .. && for a in $(ls -d */); do (cd $a && bundle && mkbunlinks) done)'
 alias mig='(cd webapp 2> /dev/null; cd .. && for a in $(ls -d */); do (cd $a && bundle exec rake db:migrate) done)'
 alias i18='(cd webapp 2> /dev/null; cd .. && for a in $(ls -d */); do (cd $a && bundle exec rake i18nlite:sync)'
 alias tes='(cd webapp 2> /dev/null; i18 && bundle exec rake db:migrate RAILS_ENV=test)'
 alias aap='bun && mig && i18'
-alias aup='bundle; ber db:migrate; ber i18nlite:sync; ber db:migrate RAILS_ENV=test'
+alias aup='bundle && mkbunlinks; ber db:migrate; ber i18nlite:sync; ber db:migrate RAILS_ENV=test'
 alias wha='echo bun, mig, i18, aup=after update, aap=after all update, tes=after update for tests, ran=vit ranger'
 alias vit='DISPLAY=:0 \vim --servername $(tmux display-message -p "#S")'
 alias ran='EDITOR="tmux_editor" ranger --cmd="map J chain move down=1 ; move right=1" --cmd="map K chain move up=1 ; move right=1" --cmd="set preview_files false" --cmd="set display_size_in_main_column false"'

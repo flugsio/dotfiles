@@ -40,6 +40,7 @@ Plugin         'tpope/vim-git'
 Plugin        'dzeban/vim-log-syntax'
 Plugin         'tpope/vim-ragtag'
 Plugin         'tpope/vim-rails'
+Plugin      'vim-ruby/vim-ruby'
 Plugin    'thoughtbot/vim-rspec'
 Plugin         'tpope/vim-repeat'
 Plugin    'derekwyatt/vim-scala'
@@ -64,7 +65,7 @@ if has("autocmd")
     " cd to current directory, removes absolute part of filename
     autocmd BufRead * exec 'cd'.getcwd()
     autocmd FileType text setlocal textwidth=78
-    autocmd! BufRead pomodoros.wofl call SetupPomodoroBuffer()
+    autocmd! BufRead *.wofl call SetupWoflToPomodoroBuffer()
     autocmd! BufReadPost quickfix nnoremap <silent> <buffer> q :q<cr>
     autocmd! BufNewFile,BufRead *.ejs set ft=html | call matchadd("Search2", "<%-") | call matchadd("Search3", "<%=") 
     autocmd! User AsyncRunStart hi StatusLine ctermbg=232
@@ -210,7 +211,7 @@ nnoremap ! :AsyncRun<space>
 nnoremap <silent> <leader>§ :copen<CR>
 nnoremap <leader>i :<C-U>RangerChooser %:p:h<CR>
 nnoremap <leader>I :<C-U>RangerChooser .<CR>
-nnoremap <leader>o :call system("tmux split-window \"tig\"")
+nnoremap <leader>o :PomodoroToDoToday<CR>
 nnoremap <leader>l :call system("surf_go " . g:url)
 "nnoremap <leader>l :w\|call system("export surfwid=" . g:browser_id . " && surf_go " . g:url)
 "nnoremap <leader>l :w\|:call system("xdotool windowactivate " . g:browser_id . " key 'ctrl+r'")
@@ -233,6 +234,7 @@ nnoremap <leader>,t :Tags<cr>
 nnoremap <leader>,m :Marks<cr>
 nnoremap <leader>,w :Windows<cr>
 nnoremap <leader>,h :History<cr>
+nnoremap <leader>,o :call system("tmux split-window \"tig\"")
 nnoremap <leader>,n :Snippets<cr>
 nnoremap <leader>,c :Commits<cr>
 nnoremap <leader>,b :BCommits<cr>
@@ -339,10 +341,8 @@ function! SelectBrowser()
   let g:browser_id = systemlist("xdotool selectwindow 2> /dev/null")[0]
 endfunction
 
-function! SetupPomodoroBuffer()
+function! SetupWoflToPomodoroBuffer()
   nnoremap <buffer> <silent> <CR> :call CopyToBelowFromWorkflowish()<cr>
-  "nnoremap <buffer> <silent> <Tab> :PomodoroToDoToday<cr>
-  :PomodoroToDoToday
 endfunction
 
 " TODO: used from flugsio/Vomodoro wip branch

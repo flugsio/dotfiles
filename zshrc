@@ -38,7 +38,7 @@ export LYNX_LSS=~/.config/lynx/lynx.lss
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
 
-eval $(keychain --eval id_rsa --nogui --quiet)
+eval $(keychain -Q --eval id_rsa --nogui --quiet)
 
 bindkey -v
 
@@ -51,6 +51,14 @@ bindkey '^w' backward-kill-word
 bindkey '^r' history-incremental-search-backward
 
 bindkey '\e.' insert-last-word
+
+zle -N browsedir
+function browsedir() {
+  dir=$(~/.config/zlinks | fzf | sed "s/ *#.*$//")
+  # TODO: doesn't rerender (only in tmux)
+  [ -n "$dir" ] && cd "$dir"
+}
+bindkey '^V' browsedir
 
 export KEYTIMEOUT=1
 

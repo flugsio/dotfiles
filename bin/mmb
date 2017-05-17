@@ -28,7 +28,14 @@ else
   echo -e "connect $ADDR\nquit" | bluetoothctl
   sleep 4
   echo -e "connect $ADDR\nquit" | bluetoothctl
+  sleep 4
+  echo -e "connect $ADDR\nquit" | bluetoothctl
   sleep 6
 
   reset
+  if [ $? -eq 0 ]; then
+    notify-send -t 1000 'mmb: connected'
+  else
+    notify-send -u critical -t 5000 'mmb: could not connect'
+  fi
 fi

@@ -28,7 +28,7 @@ source ~/.zsh_theme
 [[ -f ~/.bash_aliases ]] && . ~/.bash_aliases
 [[ -f ~/.api_keys ]] && . ~/.api_keys
 
-export PATH=$HOME/bin:$HOME/code/scripts:$PATH
+export PATH=$HOME/bin:$HOME/code/scripts:$HOME/.cargo/bin:$PATH
 
 export EDITOR='vim'
 export LC_PAPER=sv_SE.UTF-8
@@ -52,11 +52,11 @@ bindkey '^r' history-incremental-search-backward
 
 bindkey '\e.' insert-last-word
 
+# widget: http://zsh.sourceforge.net/Guide/zshguide04.html#l103
 zle -N browsedir
 function browsedir() {
-  dir=$(~/.config/zlinks | fzf | sed "s/ *#.*$//")
-  # TODO: doesn't rerender (only in tmux)
-  [ -n "$dir" ] && cd "$dir"
+  BUFFER="cd $(cat ~/.config/zlinks | fzf | sed 's/ *#.*$//')"
+  zle .accept-line
 }
 bindkey '^V' browsedir
 

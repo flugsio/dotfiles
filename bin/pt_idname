@@ -1,0 +1,7 @@
+#!/bin/sh
+
+# pass id as first parameter
+
+echo WIP
+
+echo "[#$1]" $(pt | grep $1 | head -n1 | tr '╎' ')' | cut -d')' -f 5 | sed 's/^ *//;s/ *$//')

@@ -1,0 +1,11 @@
+# ~/.tmuxinator/weechat_avidity.yml
+
+name: weechat_avidity
+root: ~/
+
+socket_name: tmux_weechat_avidity
+
+tmux_options: -f ~/.tmux.weechat.conf
+
+windows:
+  - chat: weechat -d ~/.weechat_avidity

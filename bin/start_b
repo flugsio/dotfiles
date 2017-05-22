@@ -1,0 +1,7 @@
+#!/bin/sh
+
+export LC_PAPER='sv_SE.UTF-8'
+export url='about:stub'
+surf -x $url 2> /dev/null &
+firefox $url &
+chromium $url &

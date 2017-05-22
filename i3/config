@@ -191,7 +191,8 @@ for_window [title="^Telegram"] focus; floating enable; resize grow width 200px; 
 
 bindsym $mod+i [title="tmux_inbox"] scratchpad show
 bindsym $mod+shift+i exec --no-startup-id st -t tmux_inbox -e zsh -i -c 'mux inbox'
-bindsym $mod+ctrl+shift+i exec --no-startup-id st -t tmux_sparkle -e bash -i -c 'ssh kribev -t "tmux attach -t sparkle"'
+# TODO: verify tmux works properly for this
+# bindsym $mod+ctrl+shift+i exec --no-startup-id st -t tmux_inbox -e bash -i -c 'ssh server -t "tmux attach -t inbox"'
 
 bindsym $mod+o [title="tmux_pomo"] scratchpad show
 bindsym $mod+shift+o exec --no-startup-id st -t tmux_pomo -e zsh -i -c 'mux pomo'

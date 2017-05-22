@@ -1,0 +1,12 @@
+#!/bin/sh
+
+# todo: start on second screen
+export DISPLAY=:10
+Xephyr -br -ac -noreset -screen 1360x720 :10
+
+sleep 1
+
+url='about:stub'
+surf -x $url 2> /dev/null &
+firefox $url &
+chromium $url &

@@ -1,8 +1,8 @@
-#!/bin/bash -l
+#!/bin/zsh -li
 
 unset TMUX
-st -t tmux_inbox -e zsh -i -c 'mux inbox' &
-st -t tmux_pomo -e zsh -i -c 'mux pomo' &
-st -t tmux_invoker -e zsh -i -c 'mux invoker' &
-st -t cmus -e bash -i -c cmus &
+nohup st -t tmux_inbox -e zsh -i -c 'mux inbox' &
+nohup st -t tmux_pomo -e zsh -i -c 'mux pomo' &
+nohup st -t tmux_invoker -e zsh -i -c 'mux invoker' &
+nohup st -t cmus -e bash -i -c cmus &
 mmb

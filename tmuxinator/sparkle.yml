@@ -1,4 +1,5 @@
 # ~/.tmuxinator/sparkle.yml
+# deprecated
 
 name: sparkle
 root: ~/code/sparkleshare

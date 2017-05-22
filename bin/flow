@@ -1,0 +1,6 @@
+#!/bin/sh
+
+recipient=$(cat ~/.config/flow_recipients.txt | dmenu -p "Send file $(basename $1) to:" -l 20 | cut -d' ' -f1)
+if [ -n "$recipient" ]; then
+  curl -F "event=file" -F "content=@$1" https://${FLOWDOCK_AVIDITY_TOKEN}@api.flowdock.com/$recipient/messages
+fi

@@ -65,6 +65,7 @@ if has("autocmd")
     " cd to current directory, removes absolute part of filename
     autocmd BufRead * exec 'cd'.getcwd()
     autocmd FileType text setlocal textwidth=78
+    "autocmd FileType rust compiler cargo autocmd FileType rust setl makeprg=cargo\ build
     autocmd! BufRead *.wofl call SetupWoflToPomodoroBuffer()
     autocmd! BufReadPost quickfix nnoremap <silent> <buffer> q :q<cr>
     autocmd! BufNewFile,BufRead *.ejs set ft=html | call matchadd("Search2", "<%-") | call matchadd("Search3", "<%=") 
@@ -152,12 +153,13 @@ let g:Pomo_ArchiveFilePath = "~/code/sparkleshare/pomodoros_archive.wofl"
 let g:Pomo_MinWindowHeight = 10
 
 " open-browser.vim
-let g:netrw_nogx = 1 " disable netrw's gx mapping.
-nmap gx <Plug>(openbrowser-smart-search)
-vmap gx <Plug>(openbrowser-smart-search)
+"let g:netrw_nogx = 0 " disable netrw's gx mapping.
+"nmap gx <Plug>(openbrowser-smart-search)
+"vmap gx <Plug>(openbrowser-smart-search)
 
 " jasmine
-set errorformat+=%E\ %#Stack:,%C\ %#\ at\ %[%^(]%#\ (%f:%l:%c),%C\ %#%[%^:]%#:\ %m
+" set errorformat+=%E\ %#Stack:,%C\ %#\ at\ %[%^(]%#\ (%f:%l:%c),%C\ %#%[%^:]%#:\ %m
+" let &l:efm = &efm . ',%-G%.%#'
 
 " Abbreviations
 iab <expr> dts strftime("%Y-%m-%d")
@@ -428,3 +430,6 @@ function! ChangePaste(type, ...)
     silent exe "normal! p"
 endfunction
 
+if filereadable($HOME.'/.local_db.vim')
+  source $HOME/.local_db.vim
+endif

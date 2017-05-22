@@ -62,7 +62,6 @@ bindkey '^V' browsedir
 
 export KEYTIMEOUT=1
 
-export PATH="$HOME/.rbenv/bin:$PATH"
-export PATH="$(ruby -e 'puts Gem.user_dir')/bin:$PATH"
-eval "$(rbenv init -)"
+# saves 100ms in total, rm ~/.gem/ruby/current when updating system ruby
+[ -e "$HOME/.rbenv_init" ] && source "$HOME/.rbenv_init"
 

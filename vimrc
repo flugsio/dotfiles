@@ -70,6 +70,8 @@ if has("autocmd")
     autocmd! BufNewFile,BufRead *.ejs set ft=html | call matchadd("Search2", "<%-") | call matchadd("Search3", "<%=") 
     autocmd! User AsyncRunStart hi StatusLine ctermbg=232
     autocmd! User AsyncRunStop call AsyncStopCallback()
+    "autocmd! FileType rust nmap gd <Plug>(rust-def)
+    "autocmd! FileType rust nmap <leader>gi <Plug>(rust-doc)
   augroup END
 else
   set autoindent

@@ -185,7 +185,7 @@ bindsym $mod+y [title="tmux_dict"] scratchpad show
 bindsym $mod+shift+y exec --no-startup-id $term -t tmux_dict -e bash -i -c 'mux dict'
 
 bindsym $mod+u [title="^Telegram"] scratchpad show
-bindsym $mod+shift+u exec telegram
+bindsym $mod+shift+u exec telegram-desktop
 for_window [title="^Telegram"] move scratchpad
 for_window [title="^Telegram"] focus; floating enable; resize grow width 200px; resize grow height 100px; move left 200px; move up 100px
 

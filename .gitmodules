@@ -1,6 +1,0 @@
-[submodule "vim/bundle/vim-browsereload-mac"]
-	path = vim/bundle/vim-browsereload-mac
-	url = git://github.com/tell-k/vim-browsereload-mac.git
-[submodule "vim/bundle/ctrlp"]
-	path = vim/bundle/ctrlp
-	url = git://github.com/kien/ctrlp.vim.git

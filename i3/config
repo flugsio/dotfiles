@@ -201,6 +201,7 @@ bindsym $mod+m [title="tmux_invoker"] scratchpad show
 bindsym $mod+shift+m exec --no-startup-id st -t tmux_invoker -e zsh -i -c 'mux invoker'
 
 for_window [title="tmux_.*"] move scratchpad
+for_window [title="qute_editor"] floating enable
 
 bindsym $mod+ctrl+space exec i3-input -F 'exec investigate "%s"' -P 'Investigate: '
 

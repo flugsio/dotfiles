@@ -19,14 +19,15 @@ setopt cdablevarS
 stty -ixon
 
 # autoenv overrides built in cd
-[[ -e /usr/share/autoenv/activate.sh ]] && source /usr/share/autoenv/activate.sh
-[[ -e /usr/share/doc/pkgfile/command-not-found.zsh ]] && source /usr/share/doc/pkgfile/command-not-found.zsh
-[[ -e /home/flugsio/.gem/ruby/2.4.0/gems/tmuxinator-0.9.0/completion/tmuxinator.zsh ]] && source /home/flugsio/.gem/ruby/2.4.0/gems/tmuxinator-0.9.0/completion/tmuxinator.zsh
+[[ -e /usr/share/autoenv/activate.sh ]] && . /usr/share/autoenv/activate.sh
+[[ -e /usr/share/doc/pkgfile/command-not-found.zsh ]] && . /usr/share/doc/pkgfile/command-not-found.zsh
+[[ -e ~/.zsh_theme ]] && . ~/.zsh_theme
+[[ -e ~/.bash_aliases ]] && . ~/.bash_aliases
+[[ -e ~/.api_keys ]] && . ~/.api_keys
 
-source ~/.zsh_theme
-
-[[ -f ~/.bash_aliases ]] && . ~/.bash_aliases
-[[ -f ~/.api_keys ]] && . ~/.api_keys
+# saves 100ms in total, rm ~/.gem/ruby/current when updating system ruby
+[[ /var/log/pacman.log -nt ~/.gem/ruby/current ]] && rm ~/.gem/ruby/current
+[[ -e ~/.rbenv_init ]] && . ~/.rbenv_init
 
 export PATH=$HOME/bin:$HOME/code/scripts:$HOME/.cargo/bin:$PATH
 
@@ -61,7 +62,4 @@ function browsedir() {
 bindkey '^V' browsedir
 
 export KEYTIMEOUT=1
-
-# saves 100ms in total, rm ~/.gem/ruby/current when updating system ruby
-[ -e "$HOME/.rbenv_init" ] && source "$HOME/.rbenv_init"
 

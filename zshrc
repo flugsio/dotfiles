@@ -56,8 +56,11 @@ bindkey '\e.' insert-last-word
 # widget: http://zsh.sourceforge.net/Guide/zshguide04.html#l103
 zle -N browsedir
 function browsedir() {
-  BUFFER="cd $(cat ~/.config/zlinks | fzf | sed 's/ *#.*$//')"
-  zle .accept-line
+  local dir=$(cat ~/.config/zlinks | fzf | sed 's/ *#.*$//')
+  if [ -n "$dir" ]; then
+    BUFFER="cd $dir"
+    zle .accept-line
+  fi
 }
 bindkey '^V' browsedir
 

@@ -1,0 +1,8 @@
+#!/bin/sh
+# wat : which active tool
+
+wid=$(xdotool getactivewindow)
+xpr=$(xprop -id $wid)
+
+# TODO: contextualized information/help
+notify-send -t 1 -- "$xpr"

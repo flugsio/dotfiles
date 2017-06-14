@@ -95,6 +95,7 @@ bindsym $mod+a focus parent
 # focus the child container
 bindsym $mod+w focus child
 
+bindsym $mod+ctrl+h exec wat
 
 # keycodes: 60 = ., 61 = -
 bindsym $mod+n workspace next_on_output

@@ -286,16 +286,21 @@ vnoremap §q <esc>`>a'<esc>`<i'<esc>
 vnoremap §w <esc>`>a"<esc>`<i"<esc>
 vnoremap §x <esc>`>a><esc>`<i<<esc>
 
+" TODO: figure out how to not escape, or to capture into repeatable action
 " Map auto complete of (, ", ', [
 inoremap §r ()<esc>i
 inoremap §f []<esc>i
 inoremap §v {}<esc>i
+inoremap §3 #{}<esc>i
 inoremap §e (<esc>o)<esc>O
 inoremap §d [<esc>o]<esc>O
 inoremap §c {<esc>o}<esc>O
 inoremap §q ''<esc>i
 inoremap §w ""<esc>i
 inoremap §x <><esc>i
+
+" useful after using above maps
+inoremap <C-l> <Right>
 
 " ctrl+altgr+g
 cno  <C-\>eDeleteTillSlash()<cr>

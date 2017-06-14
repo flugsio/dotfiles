@@ -171,6 +171,7 @@ mode "resize" {
 }
 
 bindcode $mod+20 mode "resize"
+bindcode $mod+21 exec xdotool getactivewindow windowsize 96% 92% windowmove 2% 5%
 
 # application keybindings
 

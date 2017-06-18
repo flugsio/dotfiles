@@ -19,7 +19,7 @@
 
 [status]
   showUntrackedFiles = all
-  short = true
+  short = false
 
 [diff]
   mnemonicprefix = true

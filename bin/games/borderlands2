@@ -1,0 +1,7 @@
+#!/bin/sh
+
+# have steam running first
+# unknow why steam can't start it...
+
+cd ~/.local/share/Steam/SteamApps/common/Borderlands\ 2
+./Borderlands2

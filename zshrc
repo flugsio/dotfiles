@@ -29,7 +29,7 @@ stty -ixon
 [[ /var/log/pacman.log -nt ~/.gem/ruby/current ]] && rm ~/.gem/ruby/current
 [[ -e ~/.rbenv_init ]] && . ~/.rbenv_init
 
-export PATH=$HOME/bin:$HOME/code/scripts:$HOME/.cargo/bin:$PATH
+export PATH=$HOME/bin:$HOME/bin/games:$HOME/code/scripts:$HOME/.cargo/bin:$PATH
 
 export EDITOR='vim'
 export LC_PAPER=sv_SE.UTF-8

@@ -1,0 +1,4 @@
+#!/bin/sh
+
+cd ~/.wine_themehospital/drive_c/ThemeHospital/DOSBOX
+WINEPREFIX=~/.wine_themehospital wine dosbox.exe -conf ../dosboxTH.conf -conf ../dosboxTH_single.conf -noconsole -c "exit(C:\ThemeHospital\goggame-1207659026.dll)"'

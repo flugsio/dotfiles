@@ -86,6 +86,7 @@ function install_vundles {
   vundle_path="$HOME/.vim/bundle/Vundle.vim"
   if [ ! -e "$vundle_path" ]; then
     git clone https://github.com/gmarik/Vundle.vim.git $vundle_path
+    sed -ir 's/\(git clone\)\( --recursive\)/\1 --depth 1\2/' vim/bundle/Vundle.vim/autoload/vundle/installer.vim
   fi
   # TODO: only quit unless there was errors
   vim -c VundleInstall -c qa

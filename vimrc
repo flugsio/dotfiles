@@ -138,6 +138,7 @@ let g:ragtag_global_maps = 1
 
 let g:UltiSnipsExpandTrigger="<c-i>"
 let g:UltiSnipsEditSplit="vertical"
+let g:UltiSnipsSnippetsDir=$HOME.'/.vim/UltiSnips'
 
 "set wildmenu
 set wildmode=list:longest

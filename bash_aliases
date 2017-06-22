@@ -47,6 +47,7 @@ alias aup='bundle && mkbunlinks; ber db:migrate; ber i18nlite:sync; ber db:migra
 alias wha='echo bun, mig, i18, aup=after update, aap=after all update, tes=after update for tests, ran=vit ranger'
 alias vit='DISPLAY=:0 \vim --servername $(tmux display-message -p "#S")'
 alias ran='EDITOR="tmux_editor" ranger --cmd="map J chain move down=1 ; move right=1" --cmd="map K chain move up=1 ; move right=1" --cmd="set preview_files false" --cmd="set display_size_in_main_column false"'
+alias view_shots='ranger --cmd="set column_ratios 1,5" --cmd="set display_size_in_main_column false" ~/shots'
 alias mux='tmuxinator'
 alias windows='rdesktop 192.168.1.189 -u Administrator -k sv -g 2555x1400 -r sound:off'
 alias windows2='rdesktop 192.168.1.188 -u Avidity -k sv -g 2550x1380 -r sound:off'

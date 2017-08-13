@@ -249,7 +249,7 @@ nnoremap <leader>,e :Helptags<cr>
 nnoremap <leader>j :GitFilesModified<cr>
 
 nnoremap <leader>f :Ack <c-r>=expand("<cword>")<CR><CR>
-nnoremap <leader>F :Ack<space>
+nnoremap <leader>F :tabnew<CR>:Ack<space>
 
 " Rails
 nnoremap <leader>r :R<cr>
@@ -306,7 +306,7 @@ inoremap <C-l> <Right>
 " ctrl+altgr+g
 cno  <C-\>eDeleteTillSlash()<cr>
 
-command! -nargs=1 K call RunCommand('<args>')
+command! -nargs=1 -complete=customlist,CompleteKCommand K call RunCommand('<args>')
 command! -nargs=0 KK call ReRunCommand()
 function! RunCommand(command)
   let g:async_command = a:command
@@ -315,6 +315,14 @@ endfunction
 
 function! ReRunCommand()
  exec 'AsyncRun ' . g:async_command
+endfunction
+
+function! CompleteKCommand(ArgLead, CmdLine, CursorPos)
+  return [
+        \"rs .",
+        \"tmux send-keys -t~ C-p C-m",
+        \"tmux send-keys -t~ C-c C-p C-m",
+        \]
 endfunction
 
 nnoremap <leader>sfe :call PasteDBExecSQLUnderCursor()<cr>

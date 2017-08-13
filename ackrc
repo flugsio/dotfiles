@@ -1,4 +1,5 @@
 --ignore-file=is:tags
+--ignore-file=is:.byebug_history
 --ignore-dir=log
 --ignore-dir=tmp
 --ignore-dir=.bundle

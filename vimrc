@@ -245,6 +245,7 @@ nnoremap <leader>,c :Commits<cr>
 nnoremap <leader>,b :BCommits<cr>
 nnoremap <leader>,v :Maps<cr>
 nnoremap <leader>,e :Helptags<cr>
+nnoremap <leader>,r :.,/END CERTIFICATE/w !sed "s/^ *//g;s/'//" \| openssl x509 -in - -text -noout<cr>
 
 nnoremap <leader>j :GitFilesModified<cr>
 

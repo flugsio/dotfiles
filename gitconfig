@@ -30,6 +30,7 @@
   c = commit -v
   f = fetch --all
   p = pull
+  m = checkout master
 
 [core]
   excludesfile = ~/.gitignore

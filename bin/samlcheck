@@ -1,0 +1,3 @@
+#!/bin/bash
+
+xclip -o | ruby -e "require 'base64'; require 'zlib'; decoded = Base64.decode64(ARGF.read); zstream = Zlib::Inflate.new(-Zlib::MAX_WBITS); inflated = zstream.inflate(decoded).tap { zstream.finish; zstream.close }; puts inflated" | tidy -xml -q -indent

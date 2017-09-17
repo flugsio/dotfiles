@@ -67,6 +67,7 @@ if has("autocmd")
     autocmd FileType text setlocal textwidth=78
     "autocmd FileType rust compiler cargo autocmd FileType rust setl makeprg=cargo\ build
     autocmd! BufRead *.wofl call SetupWoflToPomodoroBuffer()
+    autocmd! BufRead *.asm set noet sw=8
     autocmd! BufReadPost quickfix nnoremap <silent> <buffer> q :q<cr>
     autocmd! BufNewFile,BufRead *.ejs set ft=html | call matchadd("Search2", "<%-") | call matchadd("Search3", "<%=") 
     autocmd! User AsyncRunStart hi StatusLine ctermbg=232
@@ -220,7 +221,8 @@ nnoremap <leader>o :PomodoroToDoToday<CR>
 nnoremap <leader>l :call system("surf_go " . g:url)
 "nnoremap <leader>l :w\|call system("export surfwid=" . g:browser_id . " && surf_go " . g:url)
 "nnoremap <leader>l :w\|:call system("xdotool windowactivate " . g:browser_id . " key 'ctrl+r'")
-nnoremap <leader>l :silent w\|:exec "AsyncRun send_key_to 'ctrl+r' ".g:browser_id<CR>
+"nnoremap <leader>l :silent w\|:exec "AsyncRun send_key_to 'ctrl+r' ".g:browser_id<CR>
+nnoremap <leader>l :silent w\|:exec "AsyncRun send_key_to 'Return' ".g:browser_id<CR>
 nnoremap <leader>p :silent !xdg-open <C-R>=escape("<C-R><C-F>", "#?&;\|%")<CR><CR>
 vnoremap <leader>p :w !curl -F 'f:1=<-' ix.io<CR>
 nnoremap <silent> <leader>K :silent w<bar>:K rs <c-r>%<cr><cr>
@@ -246,6 +248,9 @@ nnoremap <leader>,b :BCommits<cr>
 nnoremap <leader>,v :Maps<cr>
 nnoremap <leader>,e :Helptags<cr>
 nnoremap <leader>,r :.,/END CERTIFICATE/w !sed "s/^ *//g;s/'//" \| openssl x509 -in - -text -noout<cr>
+" <C-U> means delete-to-beginning, to replace linewise selection to characterwise
+xnoremap <leader>,r :<C-U>'<,'>w !read i; echo "-----BEGIN CERTIFICATE-----\n$i\n-----END CERTIFICATE-----\n" \| openssl x509 -in - -text -noout<cr>
+nnoremap <leader>,f :.,/END CERTIFICATE/w !sed "s/^ *//g;s/'//" \| openssl x509 -noout -fingerprint -sha1 -inform pem -in -<cr>
 
 nnoremap <leader>j :GitFilesModified<cr>
 

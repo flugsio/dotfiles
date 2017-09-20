@@ -144,8 +144,12 @@ bindsym $mod+Shift+t exec "i3-nagbar -t warning -m 'You pressed the exit shortcu
 
 mode "automate" {
   bindsym Up exec --no-startup-id screenshot;
-  bindsym Left exec --no-startup-id xdotool mousemove 130 750 click 1 sleep 1.5 mousemove 920 650 click 1 sleep 2 mousemove 250 250 click 1 sleep 1 click 1 sleep 1 click 1
-  bindsym Right exec --no-startup-id xdotool mousemove 266 750 click 1 
+  #bindsym Left exec --no-startup-id xdotool mousemove 130 750 click 1 sleep 1.5 mousemove 920 650 click 1 sleep 2 mousemove 250 250 click 1 sleep 1 click 1 sleep 1 click 1
+  #bindsym Right exec --no-startup-id xdotool mousemove 266 750 click 1 
+
+  # 1920x1080
+  bindsym Left exec --no-startup-id xdotool mousemove 243 1054 click 1 sleep 1.5 mousemove 1650 900 click 1 sleep 2 mousemove 468 351 click 1 sleep 1 click 1 sleep 1 click 1
+  bindsym Right exec --no-startup-id xdotool mousemove 498 1054 click 1 
   bindsym Escape mode "default"
 }
 bindsym $mod+shift+b mode "automate"

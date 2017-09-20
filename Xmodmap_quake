@@ -1,0 +1,13 @@
+! Quake is broken, these binds must exist for the console to work (close)
+! the bind is on keycode 49, but the others must match us layout...
+
+keycode  11 = 2 at 2 at 2 at 2 at
+keycode  13 = 4 dollar 4 dollar 4 dollar 4 dollar
+keycode  15 = 6 asciicircum 6 asciicircum 6 asciicircum 6 asciicircum
+keycode  16 = 7 ampersand 7 ampersand 7 ampersand 7 ampersand
+keycode  20 = minus underscore minus underscore minus underscore minus underscore
+keycode  21 = equal plus equal plus equal plus equal plus
+
+keycode  34 = bracketleft braceleft bracketleft braceleft bracketleft braceleft bracketleft braceleft
+keycode  49 = grave asciitilde section onehalf bar threequarters paragraph threequarters section onehalf paragraph threequarters section onehalf paragraph threequarters
+keycode  51 = backslash bar backslash bar backslash bar backslash bar

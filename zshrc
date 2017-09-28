@@ -62,7 +62,17 @@ function browsedir() {
     zle .accept-line
   fi
 }
+
+zle -N findserver
+function findserver() {
+  local ip=$(cat ~/donjon/ansible/*/inventory | grep -v '^\[' | grep -v '^\s*$' | fzf | grep -oP '(?<=ansible_host=).*$')
+  if [ -n "$ip" ]; then
+    BUFFER="grep -F '$ip' -B 5 -A 3 ~/donjon/Servers/* -h; ssh deploy@$ip"
+    zle .accept-line
+  fi
+}
 bindkey '^V' browsedir
+bindkey '^G' findserver
 
 export KEYTIMEOUT=1
 

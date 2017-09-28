@@ -248,9 +248,9 @@ nnoremap <leader>,b :BCommits<cr>
 nnoremap <leader>,v :Maps<cr>
 nnoremap <leader>,e :Helptags<cr>
 nnoremap <leader>,r :.,/END CERTIFICATE/w !sed "s/^ *//g;s/'//" \| openssl x509 -in - -text -noout<cr>
-" <C-U> means delete-to-beginning, to replace linewise selection to characterwise
-xnoremap <leader>,r :<C-U>'<,'>w !read i; echo "-----BEGIN CERTIFICATE-----\n$i\n-----END CERTIFICATE-----\n" \| openssl x509 -in - -text -noout<cr>
+xnoremap <leader>,r :w !i=`cat`; echo "-----BEGIN CERTIFICATE-----\n$i\n-----END CERTIFICATE-----\n" \| openssl x509 -in - -text -noout<cr>
 nnoremap <leader>,f :.,/END CERTIFICATE/w !sed "s/^ *//g;s/'//" \| openssl x509 -noout -fingerprint -sha1 -inform pem -in -<cr>
+xnoremap <leader>,f :w !i=`cat`; echo "-----BEGIN CERTIFICATE-----\n$i\n-----END CERTIFICATE-----\n" \| openssl x509 -noout -fingerprint -sha1 -inform pem -in -<cr>
 
 nnoremap <leader>j :GitFilesModified<cr>
 

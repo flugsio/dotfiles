@@ -24,6 +24,12 @@ function rv {
 function rb {
   ssh -t $VAGRANT_MACHINE "cd $VAGRANT_DIR; bash -lc 'bundle exec $@'"
 }
+function mkde {
+  local name=$(echo "$@" | sed 's/[^A-Za-z0-9]/_/g')
+  local pathname=$HOME/debug/$(date -u +"%Y%m%d")_"$name"
+  mkdir "$pathname"
+  cd "$pathname"
+}
 alias be='bundle exec'
 alias ber='bundle exec rake'
 alias datei='date -u +"%Y%m%dT%H%M%SZ"'

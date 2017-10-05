@@ -6,8 +6,8 @@ compinit
 # End of lines added by compinstall
 
 HISTFILE=~/.histfile
-HISTSIZE=30000
-SAVEHIST=30000
+HISTSIZE=300000
+SAVEHIST=300000
 # man zshoptions
 setopt HIST_IGNORE_DUPS
 setopt appendhistory autocd

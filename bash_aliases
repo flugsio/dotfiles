@@ -98,6 +98,29 @@ alias mkchangelog='surf -x -t hgmd.css | read HDSURFXID & (while read; do hoedow
 function active_branch {
   echo ${branch:-$(git_current_branch | tr -d "[[:space:]]")}
 }
+function graft_branch {
+  if [ -z "$1" ]; then echo "Usage: graft_branch branch"; else
+    curl --fail -H "Api-Token: $(pass eve_token)" "http://eve.avidity.se:1414/$1"
+  fi
+}
+function vagdestroy {
+  local vag=$1
+  if [ "$1" = "-h" ]; then echo "Usage: either pass machine name as first argument (noconfirm) or select from list"; fi
+  if [ -z "$vag" ]; then
+    v=$(cat ~/code/ansible/Vagrantfile | grep define | sed -r 's/^[^"]+"//;s/"[^"]+$//' | fzf)
+    echo "Do you want to destroy and rebuild $vag? [Y/n]"
+    read a
+    if [ -z "$a" -o "$a" = "y" ]; then
+      vag=$v
+    else
+      echo "aborted"
+    fi
+  fi
+
+  if [ -n "$vag" ]; then
+    (cd ~/code/ansible && vagrant halt $vag; vagrant destroy -f $vag; vagrant up $vag)
+  fi
+}
 alias openpr='firefox "$(git remote get-url --push origin | sed -r "s/^(git@github.com|hub):/https:\/\github.com\//; s/.git$//")/compare/$(active_branch)?expand=1"'
 alias openci='firefox "https://ci.avidity.se/project.html?projectId=Promote&tab=projectOverview&branch_Promote=$(active_branch)"'
 alias swatch='(start=$(date +"%s"); echo "00:00"; typeset -Z2 minutes seconds; while true; do sleep 1; total=$(($(date +"%s")-$start)); minutes=$(($total/60)); seconds=$(($total%60)); echo "\e[1A$minutes:$seconds" ; done)'

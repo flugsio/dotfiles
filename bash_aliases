@@ -118,7 +118,7 @@ function vagdestroy {
   fi
 
   if [ -n "$vag" ]; then
-    (cd ~/code/ansible && vagrant halt $vag; vagrant destroy -f $vag; vagrant up $vag)
+    vagrant halt $vag; vagrant destroy -f $vag; vagrant up $vag
   fi
 }
 alias openpr='firefox "$(git remote get-url --push origin | sed -r "s/^(git@github.com|hub):/https:\/\github.com\//; s/.git$//")/compare/$(active_branch)?expand=1"'

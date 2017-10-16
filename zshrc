@@ -65,9 +65,17 @@ function browsedir() {
 
 zle -N findserver
 function findserver() {
-  local ip=$(cat ~/donjon/ansible/*/inventory | grep -v '^\[' | grep -v '^\s*$' | fzf | grep -oP '(?<=ansible_host=).*$')
-  if [ -n "$ip" ]; then
-    BUFFER="grep -F '$ip' -B 5 -A 3 ~/donjon/Servers/* -h; ssh deploy@$ip"
+  local cmd=""
+  if [ -e ~/donjon/ansible ]; then
+    local ip=$(cat ~/donjon/ansible/*/inventory | grep -v '^\[' | grep -v '^\s*$' | fzf | grep -oP '(?<=ansible_host=).*$')
+    if [ -n "$ip" ]; then
+      cmd="grep -F '$ip' -B 5 -A 3 ~/donjon/Servers/* -h; ssh deploy@$ip"
+    fi
+  else
+    cmd="mount ~/donjon"
+  fi
+  if [ -n "$cmd" ]; then
+    BUFFER=$cmd
     zle .accept-line
   fi
 }

@@ -33,6 +33,6 @@ do
 done
 grep -q $match $CONFIG/apps-term && exec $TERM "$RUN"
 grep -q $match $CONFIG/apps-command && exec $COMMAND "$RUN"
-grep -q $match $CONFIG/apps-bg && exec "$RUN"
+grep -q $match $CONFIG/apps-bg && eval "$RUN"
 grep -q $match $CONFIG/apps-hterm && exec $HTERM "$RUN"
 grep -q $match $CONFIG/apps-hcommand && exec $HCOMMAND "$RUN"

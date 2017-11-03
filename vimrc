@@ -22,6 +22,8 @@ Plugin     'godlygeek/tabular'
 if has('python')
   Plugin      'SirVer/ultisnips'
 endif
+" TODO: find/configure debugging plugin
+Plugin        'joonty/vdebug'
 Plugin         'honza/vim-snippets'
 Plugin         'chase/vim-ansible-yaml'
 "Plugin        'tpope/vim-abolish'
@@ -63,7 +65,7 @@ if has("autocmd")
   augroup vimrcEx
     autocmd!
     " cd to current directory, removes absolute part of filename
-    autocmd BufRead * exec 'cd'.getcwd()
+    autocmd BufRead * exec 'cd '.fnameescape(getcwd())
     autocmd FileType text setlocal textwidth=78
     "autocmd FileType rust compiler cargo autocmd FileType rust setl makeprg=cargo\ build
     autocmd! BufRead *.wofl call SetupWoflToPomodoroBuffer()

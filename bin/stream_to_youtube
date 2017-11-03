@@ -1,0 +1,39 @@
+#! /bin/bash
+#
+# Diffusion youtube avec ffmpeg
+
+#VBR="1500k"
+#FPS="15"
+#QUAL="medium"
+#YOUTUBE_URL="rtmp://a.rtmp.youtube.com/live2"
+
+#SOURCE="-f x11grab -s 100x200 -i :0.0 "
+STREAM_KEY="4xqt-wjkr-6h2w-8et1"
+
+#ffmpeg \
+    #$SOURCE -deinterlace \
+    #-vcodec libx264 -pix_fmt yuv420p -preset $QUAL -r $FPS -g $(($FPS * 2)) -b:v $VBR \
+    #-acodec libmp3lame -ar 44100 -threads 6 -qscale 3 -b:a 712000 -bufsize 512k \
+    #-f flv "$YOUTUBE_URL/$KEY"
+#ffmpeg -f x11grab -r 10 -s 320x320 -framerate 10 -video_size 320x200 \
+#  -i :0.0+0,0 -vcodec libx264 -preset veryfast -maxrate 784k -bufsize 368k \
+#  -vf "format=yuv420p" -g 20 \
+#  -f flv -pix_fmt yuv420p -framerate 10 -video_size 320x200 "$YOUTUBE_URL/$KEY"
+#ffmpeg -f x11grab -s 1680x1050 -r 15 -i :0.0 -vcodec libx264 -preset ultrafast -crf 0 -threads 0 -f flv "$YOUTUBE_URL/$KEY"
+
+INRES="1680x1050" # input resolution
+OUTRES="1680x1050" # output resolution
+FPS="10" # target FPS
+GOP="20" # i-frame interval, should be double of FPS, 
+GOPMIN="10" # min i-frame interval, should be equal to fps, 
+THREADS="2" # max 6
+CBR="1000k" # constant bitrate (should be between 1000k - 3000k)
+QUALITY="ultrafast"  # one of the many FFMPEG preset
+AUDIO_RATE="44100"
+#STREAM_KEY="$1" # use the terminal command Streaming streamkeyhere to stream your video to twitch or justin
+SERVER="" # twitch server in frankfurt, see http://bashtech.net/twitch/ingest.php for list
+
+ffmpeg -f x11grab -s "$INRES" -r "$FPS" -i :0.0 -f alsa -i pulse -f flv -ac 2 -ar $AUDIO_RATE \
+  -vcodec libx264 -g $GOP -keyint_min $GOPMIN -b:v $CBR -minrate $CBR -maxrate $CBR -pix_fmt yuv420p\
+  -s $OUTRES -preset $QUALITY -tune film -acodec libmp3lame -threads $THREADS -strict normal \
+  -bufsize $CBR "rtmp://a.rtmp.youtube.com/live2/$STREAM_KEY"

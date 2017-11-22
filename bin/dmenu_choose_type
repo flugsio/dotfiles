@@ -17,7 +17,7 @@ MOST_USED=`sort $CACHE 2>/dev/null | uniq -c | sort -rn | colrm 1 8`
 # put MOST_USER at top, then add all dmenu_path without the MOST_USED ones
 RUN=`(echo "$MOST_USED"; dmenu_path | grep -vxF "$MOST_USED") | dmenu -p Execute: "$@"` || exit
 # add current to cache, last 1000, and always save commands with arguments,
-(echo $RUN; head -n 1000 $CACHE 2>/dev/null; grep ' ' $CACHE | uniq 2>/dev/null) > $CACHE.$$
+(echo $RUN; head -n 1000 $CACHE 2>/dev/null; grep ' ' $CACHE | sort -u 2>/dev/null) > $CACHE.$$
 mv $CACHE.$$ $CACHE
 
 # figure out how to run the command based on the first word.  Note that this does not support

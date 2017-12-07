@@ -251,6 +251,7 @@ for_window [title="shot_viewer"] fullscreen
 
 bindsym $mod+Pause exec sleep 0.5 && xset dpms force off
 bindsym $mod+shift+Pause exec sleep 0.5 && xset dpms force off && slock
+bindsym $mod+shift+F12 exec sleep 0.5 && xset dpms force off && slock
 
 bindsym XF86AudioPlay exec cmus-remote -u
 bindsym XF86AudioStop exec cmus-remote -s

@@ -69,10 +69,10 @@ function findserver() {
   if [ -e ~/donjon/ansible ]; then
     local ip=$(cat ~/donjon/ansible/*/inventory | grep -v '^\[' | grep -v '^\s*$' | fzf | grep -oP '(?<=ansible_host=).*$')
     if [ -n "$ip" ]; then
-      cmd="grep -F '$ip' -B 5 -A 3 ~/donjon/Servers/* -h; ssh deploy@$ip"
+      cmd="grep -F '$ip' -B 5 -A 3 ~/donjon/Servers/* -h; ssh $SPUSER@$ip"
     fi
   else
-    cmd="mount ~/donjon"
+    cmd="mount ~/donjon; ssh-add ~/donjon/????/??????????????.key"
   fi
   if [ -n "$cmd" ]; then
     BUFFER=$cmd

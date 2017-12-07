@@ -123,6 +123,9 @@ function vagdestroy {
 }
 alias openpr='firefox "$(git remote get-url --push origin | sed -r "s/^(git@github.com|hub):/https:\/\github.com\//; s/.git$//")/compare/$(active_branch)?expand=1"'
 alias openci='firefox "https://ci.avidity.se/project.html?projectId=Promote&tab=projectOverview&branch_Promote=$(active_branch)"'
+function openwiki {
+  firefox "$(git remote get-url --push origin | sed -r "s/^(git@github.com|hub):/https:\/\github.com\//; s/(.wiki)?(.git)?$//")/wiki/${1%.md}"
+}
 alias swatch='(start=$(date +"%s"); echo "00:00"; typeset -Z2 minutes seconds; while true; do sleep 1; total=$(($(date +"%s")-$start)); minutes=$(($total/60)); seconds=$(($total%60)); echo "\e[1A$minutes:$seconds" ; done)'
 alias swatch_start='start=$(date +"%s"); typeset -Z2 minutes seconds'
 alias swatch_status='total=$(($(date +"%s")-$start)); minutes=$(($total/60)); seconds=$(($total%60)); echo "$minutes:$seconds"'

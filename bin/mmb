@@ -3,39 +3,51 @@
 CARD="bluez_card.00_16_94_0B_68_4F"
 ADDR="00:16:94:0B:68:4F"
 
+function main {
+  if [ "$1" = "-h" -o "$1" = "help" -o "$1" = "--help" ]; then
+    echo "mmb     : connect to headset"
+    echo "mmb off : disconnect and poweroff bt"
+    echo "mmb fix : toggle pulseaudio sink, clears buffer to remove latency"
+  elif [ "$1" = "off" ]; then
+    echo disconnecting:
+    disconnect
+  elif [ "$1" = "fix" ]; then
+    echo reseting:
+    reset
+  else
+    echo connecting:
+    connect
+  fi
+}
+
+function disconnect {
+  echo -e "disconnect $ADDR\nquit" | bluetoothctl
+  sleep 4
+  echo -e "power off\nquit" | bluetoothctl
+}
+
 function reset {
-  # this clears the buffer
+  # this hack clears the buffer
   pactl set-card-profile $CARD a2dp_sink
   pactl set-card-profile $CARD off
   pactl set-card-profile $CARD a2dp_sink
 }
 
-if [ "$1" = "-h" -o "$1" = "help" -o "$1" = "--help" ]; then
-  echo "mmb     : connect to headset"
-  echo "mmb off : disconnect and poweroff bt"
-  echo "mmb fix : toggle pulseaudio sink, clears buffer to remove latency"
-elif [ "$1" = "off" ]; then
-  echo -e "disconnect $ADDR\nquit" | bluetoothctl
-  sleep 4
-  echo -e "power off\nquit" | bluetoothctl
-elif [ "$1" = "fix" ]; then
-  reset
-else
-  # sleep becase it doesn't support synhronous commands
+function connect {
   echo -e "power on\nconnect $ADDR\nquit" | bluetoothctl
-  sleep 4
   # repeat a few times until it finally understands what it should do
-  echo -e "connect $ADDR\nquit" | bluetoothctl
-  sleep 4
-  echo -e "connect $ADDR\nquit" | bluetoothctl
-  sleep 4
-  echo -e "connect $ADDR\nquit" | bluetoothctl
-  sleep 6
+  for i in $(seq 4 8); do
+    sleep $i
 
-  reset
-  if [ $? -eq 0 ]; then
-    notify-send -t 1000 'mmb: connected'
-  else
-    notify-send -u critical -t 5000 'mmb: could not connect'
-  fi
-fi
+    reset
+    if [ $? -eq 0 ]; then
+      notify-send -t 1000 'mmb: connected'
+      return 0
+    else
+      echo -e "connect $ADDR\nquit" | bluetoothctl
+    fi
+  done
+  notify-send -u critical -t 5000 'mmb: could not connect'
+}
+
+main $1

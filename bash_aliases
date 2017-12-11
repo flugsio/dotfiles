@@ -99,9 +99,12 @@ function active_branch {
   echo ${branch:-$(git_current_branch | tr -d "[[:space:]]")}
 }
 function graft_branch {
-  if [ -z "$1" ]; then echo "Usage: graft_branch branch"; else
-    curl --fail -H "Api-Token: $(pass eve_token)" "http://eve.avidity.se:1414/$1"
-  fi
+  if [ -z "$1" ]; then echo "Usage: graft_branch branch"; exit; fi
+  curl --fail -H "Api-Token: $(pass eve_token)" "http://eve.avidity.se:1414/$1"
+}
+function graft_tail {
+  if [ -z "$1" ]; then echo "Usage: graft_tail branch"; exit; fi
+  ssh eve "tail -n 100 -F /home/promote/apps/grafter/release_branch.log /home/promote/apps/promote-release/tmp/branch-$1.log /opt/promote/$1/shared/log/*.log"
 }
 function vagdestroy {
   local vag=$1

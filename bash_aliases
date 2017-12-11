@@ -103,8 +103,11 @@ function graft_branch {
   curl --fail -H "Api-Token: $(pass eve_token)" "http://eve.avidity.se:1414/$1"
 }
 function graft_tail {
-  if [ -z "$1" ]; then echo "Usage: graft_tail branch"; return; fi
-  ssh eve "tail -n 100 -F /home/promote/apps/grafter/release_branch.log /home/promote/apps/promote-release/tmp/branch-$1.log /opt/promote/$1/shared/log/*.log"
+  local grafter="/home/promote/apps/grafter/release_branch.log"
+  if [ -n "$1" ]; then
+    local branch="/home/promote/apps/promote-release/tmp/branch-$1.log /opt/promote/$1/shared/log/*.log"
+  fi
+  ssh eve "tail -n 100 -F $grafter $branch"
 }
 function vagdestroy {
   local vag=$1

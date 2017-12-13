@@ -6,8 +6,8 @@ compinit
 # End of lines added by compinstall
 
 HISTFILE=~/.histfile
-HISTSIZE=300000
-SAVEHIST=300000
+HISTSIZE=500000
+SAVEHIST=500000
 # man zshoptions
 setopt HIST_IGNORE_DUPS
 setopt appendhistory autocd
@@ -39,7 +39,7 @@ export LYNX_LSS=~/.config/lynx/lynx.lss
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
 
-eval $(keychain -Q --eval id_rsa --nogui --quiet)
+eval $(keychain --quick --eval id_rsa --nogui --quiet)
 
 bindkey -v
 

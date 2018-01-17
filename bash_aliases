@@ -141,3 +141,4 @@ alias ptfinished='jq ".data.stories.stories[] | \" - [\" + (.id | tostring + \"]
 alias bat='grep -hoP "(?<=CAPACITY=)\d+" /sys/class/power_supply/BAT*/uevent'
 alias pkgcachesize='(cd /var/cache/pacman/pkg && ls -1 . | sed "s/lib32-/lib32_/" | cut -d"-" -f1 | sed "s/lib32_/lib32-/" | sort -u | while read f; do du -cah $f-* | tail -n1 | sed "s/total/$f/" ; done | sort -h)'
 alias rfcsync='rsync -avz --delete ftp.rfc-editor.org::rfcs-text-only ~/code/rfc'
+alias pong='while sleep 1 && ! ping 8.8.8.8 -c 1 -w 3; do :; done'

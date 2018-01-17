@@ -27,7 +27,7 @@ stty -ixon
 [[ -e ~/.api_keys ]] && . ~/.api_keys
 
 # saves 100ms in total, rm ~/.gem/ruby/current when updating system ruby
-[[ /var/log/pacman.log -nt ~/.gem/ruby/current ]] && rm ~/.gem/ruby/current
+[[ /var/log/pacman.log -nt ~/.gem/ruby/current.touch ]] && rm ~/.gem/ruby/current
 [[ -e ~/.rbenv_init ]] && . ~/.rbenv_init
 
 export PATH=$HOME/bin:$HOME/bin/games:$HOME/code/scripts:$HOME/.cargo/bin:$PATH

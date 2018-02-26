@@ -26,11 +26,14 @@
   compactionHeuristic = true
 
 [alias]
+  b = branch
   s = status
   c = commit -v
   f = fetch --all
   p = pull
+  u = push -u
   m = checkout master
+  r = branch --move
 
 [core]
   excludesfile = ~/.gitignore

@@ -4,6 +4,29 @@ alias t='tig --all'
 alias ra='ranger'
 alias g='git'
 alias gr='git $(git root)'
+function random_word {
+  shuf -n1 /usr/share/dict/american-english | sed "s/'//" | tr '[:upper:]' '[:lower:]'
+}
+# first parameter is deadline, 3 seconds default
+function has_network {
+  local deadline=${1:-3}
+  ping 8.8.8.8 -c 1 -w $deadline &>/dev/null
+}
+# git create a branch from latest origin/master
+function gb {
+  # todo, create a random tempname
+  local name=$1
+  if [ -z "$name" ]; then
+    name=$(random_word)-$(random_word)
+    echo "Created a random branch name: $name"
+    echo "Use 'g r <name>' to rename"
+  fi
+  # only fetch if there's 'fast' network available
+  has_network 1 && git fetch origin
+  # this doesn't set --track
+  # do that when pushing instead, for renames
+  git checkout -b $name origin/master
+}
 alias iw='alias i{r,l,s,a,clear,log}; echo iA=run interactively'
 alias i='invoker'
 alias il='invoker list'

@@ -5,28 +5,34 @@ import sys
 import json
 from subprocess import Popen, PIPE
 
+def shell_read(command):
+        return Popen(command, stdout=PIPE, shell=True, universal_newlines=True).stdout.read().strip()
+
 def get_glucose():
-        return Popen("gluj", stdout=PIPE, shell=True, universal_newlines=True).stdout.read().rstrip('\n')
+        return shell_read("gluj")
 
 def get_glucose_status():
-    # -c 11 = 10*15 min + newline
-        return Popen("gluj | tail -c 11 | sed 's/[^0-9A-Z]//g' | grep -q '.'", shell=True, universal_newlines=True).wait()
+        # checks for presence of measurement last 2.5 hours
+        # 11 bytes = 10*15 min + newline
+        return Popen("gluj | tail --bytes 11 | sed 's/[^0-9A-Z]//g' | grep -q '.'", shell=True, universal_newlines=True).wait()
 
 def get_pomodoro_name():
-    #with open('/sys/devices/system/cpu/cpu0/cpufreq/scaling_governor') as fp:
-        return Popen("p name", stdout=PIPE, shell=True, universal_newlines=True).stdout.read().strip()
+        return shell_read("p name")
 
 def get_pomodoro_graph():
-    #with open('/sys/devices/system/cpu/cpu0/cpufreq/scaling_governor') as fp:
-        return Popen("p graph", stdout=PIPE, shell=True, universal_newlines=True).stdout.read().strip()
+        return shell_read("p graph")
 
 def get_hexa_clock():
-    #with open('/sys/devices/system/cpu/cpu0/cpufreq/scaling_governor') as fp:
-        return Popen("hexa_clock", stdout=PIPE, shell=True, universal_newlines=True).stdout.read().strip()
+        return shell_read("hexa_clock")
 
 def get_cpu_temperature():
-    #with open('/sys/devices/system/cpu/cpu0/cpufreq/scaling_governor') as fp:
-        return Popen("sensors | grep temp2 | cut -d \"+\" -f 2 | cut -d \".\" -f 1", stdout=PIPE, shell=True).stdout.read().strip()
+        return shell_read("sensors | grep temp2 | cut -d \"+\" -f 2 | cut -d \".\" -f 1")
+
+def glucose_color():
+        if get_glucose_status() == 0:
+            return ''
+        else:
+            return 'dc322f'
 
 def print_line(message):
     """ Non-buffered printing to stdout. """
@@ -61,10 +67,7 @@ if __name__ == '__main__':
 
         j = json.loads(line)
         j.insert(0, {'full_text' : '%s' % get_hexa_clock(), 'name' : 'hexa_clock'})
-        if get_glucose_status() == 0:
-            j.insert(0, {'full_text' : '%s' % get_glucose(), 'name' : 'glucose'})
-        else:
-            j.insert(0, {'full_text' : '%s' % get_glucose(), 'name' : 'glucose', 'color' : '#dc322f'})
+        j.insert(0, {'full_text' : '%s' % get_glucose(), 'name' : 'glucose', 'color' : glucose_color()})
         j.insert(0, {'full_text' : '%s' % get_pomodoro_graph(), 'name' : 'pomodoro_graph'})
         j.insert(0, {'full_text' : '%s' % get_pomodoro_name(), 'name' : 'pomodoro_name'})
         #cpu_temp = int(get_cpu_temperature())

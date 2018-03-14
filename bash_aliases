@@ -151,8 +151,10 @@ function vagdestroy {
     vagrant halt $vag; vagrant destroy -f $vag; vagrant up $vag
   fi
 }
-alias openpr='firefox "$(git remote get-url --push origin | sed -r "s/^(git@github.com|hub):/https:\/\github.com\//; s/.git$//")/compare/$(active_branch)?expand=1"'
-alias openci='firefox "https://ci.avidity.se/project.html?projectId=Promote&tab=projectOverview&branch_Promote=$(active_branch)"'
+alias giturl='git remote get-url --push origin | sed -r "s/^(git@github.com|hub):/https:\/\/github.com\//; s/.git$//"'
+alias hubname='git remote get-url --push origin | sed -r "s/^(git@github.com|hub)://; s/.git$//"'
+alias openpr='firefox "$(giturl)/compare/$(active_branch)?expand=1"'
+alias openci='firefox "https://ci.promoteapp.net/blue/organizations/jenkins/${CI_PROJECTS[$(hubname)]}/activity?branch=$(active_branch)"'
 function openwiki {
   firefox "$(git remote get-url --push origin | sed -r "s/^(git@github.com|hub):/https:\/\github.com\//; s/(.wiki)?(.git)?$//")/wiki/${1%.md}"
 }

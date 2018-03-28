@@ -154,6 +154,11 @@ function vagdestroy {
 alias giturl='git remote get-url --push origin | sed -r "s/^(git@github.com|hub):/https:\/\/github.com\//; s/.git$//"'
 alias hubname='git remote get-url --push origin | sed -r "s/^(git@github.com|hub)://; s/.git$//"'
 alias openpr='firefox "$(giturl)/compare/$(active_branch)?expand=1"'
+# openci requires a translation dictionary like this, store somewhere and load from your bashrc/zshrc like this
+# [[ -e ~/.api_keys ]] && . ~/.api_keys
+# typeset -A CI_PROJECTS=(
+#     avidity/errbit apps%2Ferrbit
+#     key value)
 alias openci='firefox "https://ci.promoteapp.net/blue/organizations/jenkins/${CI_PROJECTS[$(hubname)]}/activity?branch=$(active_branch)"'
 function openwiki {
   firefox "$(git remote get-url --push origin | sed -r "s/^(git@github.com|hub):/https:\/\github.com\//; s/(.wiki)?(.git)?$//")/wiki/${1%.md}"

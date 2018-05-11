@@ -217,7 +217,7 @@ nnoremap <leader>do :diffoff!<CR>:only<CR>
 " Jobs
 nnoremap ! :AsyncRun<space>
 nnoremap <silent> <leader>§ :copen<CR>
-nnoremap <leader>i :<C-U>RangerChooser %:p:h<CR>
+nnoremap <leader>i :<C-U>RangerChooser -<CR>
 nnoremap <leader>I :<C-U>RangerChooser .<CR>
 nnoremap <leader>o :PomodoroToDoToday<CR>
 nnoremap <leader>l :call system("surf_go " . g:url)
@@ -417,9 +417,18 @@ function! CurrentFileDir(cmd)
   return a:cmd . " " . expand("%:p:h") . "/"
 endfunction
 
-function! RangeSelect(directory)
+function! RangeSelect(path)
+  if a:path == "-"
+    if getreg("%") == ""
+      let path = "."
+    else
+      let path = "--selectfile " . shellescape(expand("%:p"))
+    end
+  else
+    let path = shellescape(a:path)
+  end
   let temp = tempname()
-  exec 'silent !ranger --choosefiles=' . shellescape(temp) . ' ' . shellescape(a:directory)
+  exec 'silent !ranger --choosefiles=' . shellescape(temp) . ' ' . path
   if !filereadable(temp)
     return []
   else
@@ -427,8 +436,8 @@ function! RangeSelect(directory)
   end
 endfunction
 
-function! RangeChooser(directory)
-  let names = RangeSelect(a:directory)
+function! RangeChooser(path)
+  let names = RangeSelect(a:path)
   if !empty(names)
     exec 'edit ' . fnameescape(names[0])
     for name in names

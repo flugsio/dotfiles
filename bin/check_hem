@@ -1,0 +1,37 @@
+#!/bin/zsh -il
+
+function check {
+  page=$(curl -s 'http://wahlinfastigheter.se/lediga-objekt/lagenhet/' -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' --compressed -H 'Accept-Language: en-US,en;q=0.5' -H 'Connection: keep-alive' -H 'Cookie: _ga=GA1.2.978005517.1520857873; pll_language=sv; _gid=GA1.2.501726136.1526970392; _hjIncludedInSample=1' -H 'Host: wahlinfastigheter.se' -H 'Referer: http://wahlinfastigheter.se/lediga-objekt/lagenthet' -H 'Upgrade-Insecure-Requests: 1' -H 'User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:59.0) Gecko/20100101 Firefox/59.0')
+  result=$(echo "$page" | grep -P "https?://wahlinfastigheter.se/lediga-objekt/(?!(lagenhet|lokaler|forrad|parkering))[^\"]*" -o | sort | uniq)
+
+  for item in $(echo $result); do
+    grep "$item" ~/.lagenhet_cache -q
+    if [ $? -eq 0 ]; then
+      echo already exists in file
+      :; # nothing
+    else
+      echo "adding to file"
+      echo "$item" >> ~/.lagenhet_cache
+      message="ny lägenhet $item"
+      notify-send "$message" -u critical
+      notiflug "$message"
+      notilutra "$message"
+    fi
+  done
+}
+
+if [ "$1" = "now" ]; then
+  while sleep 1s; do
+    check
+    sleep 4s
+  done
+else
+  while sleep 5m; do
+    currenttime=$(date +%H:%M)
+    if [[ "$currenttime" > "13:00" ]] && [[ "$currenttime" < "13:30" ]]; then
+      check
+    elif [[ "$currenttime" > "13:30" ]] && [[ "$currenttime" < "14:00" ]]; then
+      echo "" > ~/.lagenhet_cache
+    fi
+  done
+fi

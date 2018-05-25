@@ -13,7 +13,6 @@ function check {
       echo "adding to file"
       echo "$item" >> ~/.lagenhet_cache
       message="ny lägenhet $item"
-      notify-send "$message" -u critical
       notiflug "$message"
       notilutra "$message"
     fi

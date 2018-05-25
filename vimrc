@@ -29,6 +29,7 @@ Plugin         'chase/vim-ansible-yaml'
 "Plugin        'tpope/vim-abolish'
 Plugin        'kchmck/vim-coffee-script'
 Plugin   'AndrewRadev/vim-eco' " requires vim-coffee-script
+Plugin  'rainerborene/vim-reek'
 Plugin     'rust-lang/rust.vim'
 Plugin    'racer-rust/vim-racer'
 Plugin  'toyamarinyon/vim-swift'
@@ -155,6 +156,10 @@ let $RUST_SRC_PATH="/usr/src/rust/src"
 " pomodoros / glue for Vomodoro to bin/p
 let g:Pomo_ArchiveFilePath = "~/code/sparkleshare/pomodoros_archive.wofl"
 let g:Pomo_MinWindowHeight = 10
+
+let g:reek_always_show = 0
+let g:reek_line_limit = 1000
+let g:reek_on_loading = 0
 
 " open-browser.vim
 "let g:netrw_nogx = 0 " disable netrw's gx mapping.
@@ -310,6 +315,7 @@ inoremap §x <><esc>i
 
 " useful after using above maps
 inoremap <C-l> <Right>
+cnoremap <C-l> <Right>
 
 " ctrl+altgr+g
 cno  <C-\>eDeleteTillSlash()<cr>

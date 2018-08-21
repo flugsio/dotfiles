@@ -3,7 +3,7 @@
 name: invoker
 root: ~/code
 
-pre: invoker start promote.ini -d
+on_project_first_start: invoker start promote.ini -d
 
 windows:
   - inv: ilog

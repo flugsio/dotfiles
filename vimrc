@@ -68,7 +68,8 @@ if has("autocmd")
     " cd to current directory, removes absolute part of filename
     autocmd BufRead * exec 'cd '.fnameescape(getcwd())
     autocmd FileType text setlocal textwidth=78
-    "autocmd FileType rust compiler cargo autocmd FileType rust setl makeprg=cargo\ build
+    "autocmd FileType rust compiler cargo
+    "autocmd FileType rust setl makeprg=cargo\ build
     autocmd! BufRead *.wofl call SetupWoflToPomodoroBuffer()
     autocmd! BufRead *.asm set noet sw=8
     autocmd! BufReadPost quickfix nnoremap <silent> <buffer> q :q<cr>
@@ -118,11 +119,13 @@ set background=dark
 set t_Co=256
 let g:gruvbox_italic=0
 silent! colorscheme gruvbox
-hi StatusLine ctermfg=208 ctermbg=234 cterm=NONE
-hi StatusLineNC ctermfg=108 ctermbg=234 cterm=NONE
-hi VertSplit ctermfg=108 ctermbg=234 cterm=NONE
-hi TabLineFill ctermfg=243 ctermbg=234 cterm=NONE
-hi TabLineSel ctermfg=108 ctermbg=235 cterm=NONE
+if &background == "dark"
+  hi StatusLine ctermfg=208 ctermbg=234 cterm=NONE
+  hi StatusLineNC ctermfg=108 ctermbg=234 cterm=NONE
+  hi VertSplit ctermfg=108 ctermbg=234 cterm=NONE
+  hi TabLineFill ctermfg=243 ctermbg=234 cterm=NONE
+  hi TabLineSel ctermfg=108 ctermbg=235 cterm=NONE
+end
 
 highlight Search2 ctermbg=blue ctermfg=black
 highlight Search3 ctermbg=red ctermfg=black
@@ -178,7 +181,7 @@ iab <expr> dtz strftime("%Y-%m-%dT%H:%M:%S%z")
 " Mappings
 
 let mapleader = ","
-let maplocalleader = ";"
+let maplocalleader = "-"
 
 " Create undo-points when using Return and delete-to-beginning
 inoremap <CR> <C-G>u<CR>
@@ -218,6 +221,7 @@ nnoremap <leader>gd :Gvdiff<CR>
 nnoremap <leader>gw :Gwrite<CR>
 nnoremap <leader>gb :Gblame<CR>
 nnoremap <leader>do :diffoff!<CR>:only<CR>
+nnoremap <leader>gp :Gpush -u<CR>
 
 " Jobs
 nnoremap ! :AsyncRun<space>
@@ -248,6 +252,7 @@ nnoremap <leader>,t :Tags<cr>
 nnoremap <leader>,m :Marks<cr>
 nnoremap <leader>,w :Windows<cr>
 nnoremap <leader>,h :History<cr>
+nnoremap <leader>,i :call system("tmux split-window \"tig ".expand("%")."\"")
 nnoremap <leader>,o :call system("tmux split-window \"tig\"")
 nnoremap <leader>,n :Snippets<cr>
 nnoremap <leader>,c :Commits<cr>
@@ -261,8 +266,12 @@ xnoremap <leader>,f :w !i=`cat`; echo "-----BEGIN CERTIFICATE-----\n$i\n-----END
 
 nnoremap <leader>j :GitFilesModified<cr>
 
-nnoremap <leader>f :Ack <c-r>=expand("<cword>")<CR><CR>
-nnoremap <leader>F :tabnew<CR>:Ack<space>
+nnoremap <leader>f§ :lopen<CR>
+nnoremap <leader>fc :call setloclist(0, [])<CR>:lclose<CR>
+nnoremap <leader>ff :LAck! <c-r>=expand("<cword>")<CR><CR>
+nnoremap <leader>fF :LAck! <c-r>=expand("<CWORD>")<CR><CR>
+nnoremap <leader>fa :LAck "" <left><left>
+nnoremap <leader>ft :tabnew<CR>:LAck "" <left><left>
 
 " Rails
 nnoremap <leader>r :R<cr>
@@ -280,9 +289,21 @@ nnoremap <leader>m :Emodel<cr>
 nnoremap <leader>M :Emodel<space>
 
 nnoremap <silent> <C-h> <C-w>h
-nnoremap <silent> <C-j> <C-w>j
-nnoremap <silent> <C-k> <C-w>k
+nnoremap <silent> <C-j> :call LocationOrWindowMove("j")<CR>
+nnoremap <silent> <C-k> :call LocationOrWindowMove("k")<CR>
 nnoremap <silent> <C-l> <C-w>l
+
+function! LocationOrWindowMove(a)
+  if 0 == getloclist(0, {'size': 1})['size']
+    exec "normal \<C-w>" . a:a
+  else
+    if a:a == "j"
+      :lnext
+    elseif a:a == "k"
+      :lprevious
+    end
+  end
+endfunction
 
 nnoremap ö :
 nnoremap Ö :

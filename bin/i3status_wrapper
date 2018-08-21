@@ -32,7 +32,7 @@ def glucose_color():
         if get_glucose_status() == 0:
             return ''
         else:
-            return 'dc322f'
+            return '#dc322f'
 
 def print_line(message):
     """ Non-buffered printing to stdout. """

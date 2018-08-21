@@ -58,7 +58,20 @@ bindkey '\e.' insert-last-word
 zle -N browsedir
 function browsedir() {
   local dir=$(cat ~/.config/zlinks | fzf | sed 's/ *#.*$//')
-  if [ -n "$dir" ]; then
+  if [ "$HOME/debug" = "$dir" ]; then
+    local dir=$(find "$dir" -maxdepth 1 -type d | fzf | sed 's/ *#.*$//')
+    if [ "$HOME/debug" = "$dir" ]; then
+      BUFFER="mkde "
+      zle .end-of-line
+    elif [ -n "$dir" ]; then
+      if [ -f "$dir/log.md" ]; then
+        BUFFER="cd $dir; vim log.md"
+      else
+        BUFFER="cd $dir; ranger"
+      fi
+      zle .accept-line
+    fi
+  elif [ -n "$dir" ]; then
     BUFFER="cd $dir"
     zle .accept-line
   fi

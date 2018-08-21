@@ -3,9 +3,9 @@
 # screen layout
 
 if [ `hostname` = "toldi" ]; then
-  primary="eDP-1"
+  primary="eDP1"
   primary_extra="--auto"
-  secondary="DP-1"
+  secondary="DP1"
   secondary_extra="--auto"
 elif [ `hostname` = "kribev" ]; then
   primary="LVDS-0"

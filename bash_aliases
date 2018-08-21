@@ -52,6 +52,7 @@ function mkde {
   local pathname=$HOME/debug/$(date -u +"%Y%m%d")_"$name"
   mkdir "$pathname"
   cd "$pathname"
+  vim log.md
 }
 alias be='bundle exec'
 alias ber='bundle exec rake'
@@ -81,7 +82,7 @@ alias mux='tmuxinator'
 alias windows='rdesktop 192.168.1.189 -u Administrator -k sv -g 2555x1400 -r sound:off'
 alias windows2='rdesktop 192.168.1.188 -u Avidity -k sv -g 2550x1380 -r sound:off'
 alias mkbunlinks='if [ -f "Gemfile" ]; then mkdir -p bunlinks && find bunlinks -type l -delete && cd bunlinks && bundle show --paths | xargs -L1 ln -s; cd .. ; else echo "not in Gemfile directory"; fi'
-alias perrbit='cd ~/code/promote3 && xsel > errbit_error.txt && vim errbit_error.txt -c "%s/\v([^-]*-\d\.)/site\/bunlinks\/\1/e | %s/\v^([^(site\/bunlinks|\/opt)].)/site\/\1/e | %s/\v^\/opt\/promote\/releases\/\d+T\d+\///e | w | set errorformat=%f:%l→%m | cbuffer | copen" && rm errbit_error.txt'
+alias perrbit='cd ~/code/promote3 && xsel > errbit_error.txt && vim errbit_error.txt -c "%s/\v([^-]*-\d\.)/bunlinks\/\1/e | %s/\v^([^(bunlinks|\/opt)].)/\1/e | %s/\v^\/opt\/promote\/releases\/\d+T\d+\///e | w | set errorformat=%f:%l→%m | cbuffer | copen" && rm errbit_error.txt'
 alias rgdb='gdb $(rbenv which ruby) $(pgrep -f "jobs:work" | head -n1)'
 alias glujc='gluj -m | egrep --color "[A-Z]|$"'
 alias lichobile='chromium --user-data-dir=$HOME/.config/chromium_dev --disable-web-security ~/code/lichobile/project/www/index.html'
@@ -91,6 +92,7 @@ alias record='sleep 0.5 && ffmpeg -f pulse -name a -channels 2 -fragment_size 10
 alias record2='sleep 0.5 && ffmpeg -f pulse -name a -channels 2 -fragment_size 1024 -i default -f x11grab -s 1440x900 -r 30 -i :0.0 -ac 1 -acodec ac3 -vcodec libx264 -preset ultrafast -crf 0 -threads 0 ~/output-$(date +%s).mkv 2>&1'
 alias record3='sleep 1.5 && ffmpeg -f pulse -name a -channels 2 -fragment_size 1024 -i default -f x11grab -s 1920x1080 -r 90 -i :0.0 -ac 1 -acodec ac3 -vcodec libx264 -preset ultrafast -crf 0 -threads 0 /mnt/big/record/output-$(date +%s).mkv 2>&1'
 alias wine_scrolls=WINEPREFIX='~/.wine_scrolls wine ~/.wine_scrolls/drive_c/Program\ Files\ \(x86\)/Scrolls/ScrollsLauncher.exe'
+alias wine_callersbane=WINEPREFIX='~/.wine_callersbane wine ~/.wine_callersbane/drive_c/callersbane/CallersBane/CallersBane.exe'
 if [ `hostname` = "ranmi" ]; then
   #alias wine_ql='cd ~/.wine-ql/drive_c/Program\ Files/Quake\ Live/ && WINEPREFIX=~/.wine-ql taskset 0x01 wine Launcher.exe'
   alias wine_steam='WINEPREFIX=~/.wine-steam wine /home/flugsio/.wine-steam/drive_c/Program\ Files\ \(x86\)/Steam/Steam.exe -no-dwrite'
@@ -111,6 +113,9 @@ elif [ `hostname` = "zdani" ]; then
   #alias mount_ql_demos='cd ~/.wine_ql/drive_c/users/flugsio/Application\ Data/id\ Software/quakelive/home/baseq3 && sudo mount -t tmpfs -o size=512M,noatime tmpfs ./demos'
   alias mount_ql_demos='cd ~/.wine_steam/drive_c/Program\ Files\ \(x86\)/Steam/SteamApps/common/Quake\ Live/76561197995130505/baseq3 && sudo mount -t tmpfs -o size=512M,noatime tmpfs ./demos'
   alias move_ql_demos='cd ~/.wine_steam/drive_c/Program\ Files\ \(x86\)/Steam/SteamApps/common/Quake\ Live/76561197995130505/baseq3 && mv -v ./demos/* ./demos_saved/'
+elif [ `hostname` = "toldi" ]; then
+  alias wine_steam='WINEDEBUG=-all WINEPREFIX=~/.wine_steam wine ~/.wine_steam/drive_c/Program\ Files\ \(x86\)/Steam/Steam.exe -no-dwrite'
+  alias wine_steam_cfg='WINEDEBUG=-all WINEPREFIX=~/.wine_steam winecfg'
 fi
 alias watch_feedback='watch -n 60 -g "curl -s http://en.lichess.org/forum | grep Feedback -A 3 | tail -n1" && notify-send -u critical "New Lichess Feedback topic"'
 alias deleted_files_in_use="lsof +c 0 | grep 'DEL.*lib' | awk '1 { print $1 \": \" $NF }' | sort -u"

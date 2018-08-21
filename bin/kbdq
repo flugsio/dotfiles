@@ -1,3 +1,5 @@
 #!/bin/bash
 
+source kbd_common
+
 /usr/bin/xmodmap $HOME/code/dotfiles/Xmodmap_quake

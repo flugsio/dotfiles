@@ -1,0 +1,71 @@
+! vim:ft=xmodmap
+! http://wiki.linuxquestions.org/wiki/List_of_Keysyms_Recognised_by_Xmodmap
+! http://www.in-ulm.de/~mascheck/X11/xmodmap.html
+! https://wiki.archlinux.org/index.php/Xmodmap
+! keycode, keysym-order
+! 1. Key
+! 2. Shift+Key
+! 3. mode_switch+Key
+! 4. mode_switch+Shift+Key
+! 5. AltGr+Key
+! 6. AltGr+Shift+Key
+
+
+! current altgr layout
+! @ł()|←9AB0¨
+! ª=[]/h5678æ
+! <>{}\n1234
+!
+! maybe try this
+! ')]}>
+! "([{<
+! =\|/*
+
+
+! '" () [] {} <>
+keycode  24 = q Q q Q apostrophe Greek_OMEGA at Greek_OMEGA q Q at Greek_OMEGA q Q at Greek_OMEGA
+keycode  25 = w W w W quotedbl Lstroke lstroke Lstroke w W lstroke Lstroke w W lstroke Lstroke
+keycode  26 = e E e E parenleft E e E e E EuroSign cent e E EuroSign cent
+keycode  27 = r R r R parenright r R r R registered registered r R registered registered
+keycode  40 = d D d D bracketleft d D d D eth ETH d D eth ETH
+keycode  41 = f F f F bracketright F f F  f F dstroke ordfeminine f F dstroke ordfeminine
+keycode  52 = z Z z Z less z Z z Z guillemotleft less z Z guillemotleft less
+keycode  53 = x X x X greater X x X x X guillemotright greater x X guillemotright greater
+keycode  54 = c C c C braceleft c C c C copyright copyright c C copyright copyright
+keycode  55 = v V v V braceright v V v V leftdoublequotemark leftsinglequotemark v V leftdoublequotemark leftsinglequotemark
+
+! | / \
+keycode  28 = t T t T bar THORN thorn THORN t T thorn THORN t T thorn THORN
+keycode  49 = section asciitilde section onehalf bar threequarters paragraph threequarters section onehalf paragraph threequarters section onehalf paragraph threequarters
+keycode  42 = g G g G slash ENG eng ENG g G eng ENG g G eng ENG
+keycode  56 = b B b B backslash rightsinglequotemark rightdoublequotemark rightsinglequotemark b B rightdoublequotemark rightsinglequotemark b B rightdoublequotemark rightsinglequotemark
+
+! %=
+keycode  38 = a A a A percent masculine ordfeminine masculine a A ordfeminine masculine a A ordfeminine masculine
+keycode  39 = s S s S equal section ssharp section s S ssharp section s S ssharp section
+
+keycode  16 = 7 slash backslash bar guillemotleft division
+keycode  17 = 8 parenleft bracketleft braceleft bracketleft braceleft
+keycode  18 = 9 parenright bracketright braceright bracketright braceright
+keycode  19 = 0 equal 0 equal guillemotright degree
+!keycode  37 = Tab ISO_Left_Tab Tab ISO_Left_Tab kana_a kana_i kana_o kana_u
+keycode  31 = i I i I rightarrow idotless rightarrow idotless i I i I rightarrow idotless
+
+! 9AB0
+! 5678
+! 1234
+keycode  30 = u U u U 9 uparrow downarrow uparrow u U downarrow uparrow u U downarrow uparrow
+keycode  31 = i I i I A idotless rightarrow idotless i I
+keycode  32 = o O o O B OE oe OE o O oe OE o O oe OE
+keycode  33 = p P p P 0 P p P p P p P p P p P
+keycode  35 = asciitilde asciicircum dead_diaeresis dead_circumflex dead_tilde dead_caron dead_tilde dead_caron dead_diaeresis dead_circumflex dead_tilde dead_caron dead_diaeresis dead_circumflex dead_tilde dead_caron
+keycode  43 = h H h H h H h H h H hstroke Hstroke h H hstroke Hstroke
+keycode  44 = j J j J 5 J j J j J j J j J j J
+keycode  45 = k K k K 6 K k K k K kra ampersand k K kra ampersand
+keycode  46 = l L l L 7 L l L l L lstroke Lstroke l L lstroke Lstroke
+keycode  47 = odiaeresis Odiaeresis odiaeresis Odiaeresis 8 Oslash oslash Oslash odiaeresis Odiaeresis oslash Oslash odiaeresis Odiaeresis oslash Oslash
+keycode  48 = adiaeresis Adiaeresis adiaeresis Adiaeresis ae AE ae AE adiaeresis Adiaeresis ae AE adiaeresis Adiaeresis ae AE
+keycode  58 = m M m M 1 mu masculine mu m M mu masculine m M mu masculine
+keycode  59 = comma semicolon comma semicolon 2 dead_ogonek dead_cedilla dead_ogonek comma semicolon dead_cedilla dead_ogonek comma semicolon dead_cedilla dead_ogonek
+keycode  60 = period colon period colon 3 dead_abovedot periodcentered dead_abovedot period colon periodcentered dead_abovedot period colon periodcentered dead_abovedot
+keycode  61 = minus underscore minus underscore 4 dead_abovedot dead_belowdot dead_abovedot minus underscore dead_belowdot dead_abovedot minus underscore dead_belowdot dead_abovedot

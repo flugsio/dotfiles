@@ -23,6 +23,7 @@ function create_all_links {
   link_file vimrc
   link_file xinitrc
   link_file Xmodmap
+  link_file Xmodmap_keys
   link_file Xresources
   link_file zshrc
   link_file zsh_theme

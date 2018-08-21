@@ -1,3 +1,4 @@
+! vim:ft=xmodmap
 ! Quake is broken, these binds must exist for the console to work (close)
 ! the bind is on keycode 49, but the others must match us layout...
 

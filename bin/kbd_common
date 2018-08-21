@@ -1,0 +1,15 @@
+#!/bin/bash
+
+sleep 0.2
+xset r rate 300 33
+
+if [ `hostname` = "kribev" ]; then
+  xinput set-prop "TPPS/2 IBM TrackPoint" "Evdev Wheel Emulation" 1
+  xinput set-prop "TPPS/2 IBM TrackPoint" "Evdev Wheel Emulation Button" 2
+  xinput set-prop "TPPS/2 IBM TrackPoint" "Evdev Wheel Emulation Timeout" 200
+  xinput set-prop "TPPS/2 IBM TrackPoint" "Evdev Wheel Emulation Axes" 6 7 4 5
+  xinput set-prop "TPPS/2 IBM TrackPoint" "Device Accel Constant Deceleration" 0.75
+elif [ `hostname` = "toldi" ]; then
+  xinput set-prop "Synaptics TM3075-002" "libinput Disable While Typing Enabled" 0
+  xinput set-prop "Synaptics TM3075-002" "libinput Tapping Enabled" 1
+fi

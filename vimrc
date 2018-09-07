@@ -67,6 +67,9 @@ if has("autocmd")
     autocmd!
     " cd to current directory, removes absolute part of filename
     autocmd BufRead * exec 'cd '.fnameescape(getcwd())
+    " workaround broken diff with fugitive
+    " reproduce: open vim with ':set hidden', in the [No name] buffer run :Gdiff, :close, :Gstatus, dv (open new diff)
+    autocmd BufHidden * set nodiff 
     autocmd FileType text setlocal textwidth=78
     "autocmd FileType rust compiler cargo
     "autocmd FileType rust setl makeprg=cargo\ build

@@ -81,9 +81,12 @@ zle -N findserver
 function findserver() {
   local cmd=""
   if [ -e ~/donjon/ansible ]; then
-    local ip=$(cat ~/donjon/ansible/*/inventory | grep -v '^\[' | grep -v '^\s*$' | fzf | grep -oP '(?<=ansible_host=).*$')
+    local result=$(grep "ansible_host" ~/donjon/ansible/{d,s,p}*/host_vars/* | sed 's/"//g;s/.*ansible\/\(.*\)\/host_vars\//\1 /;s/:ansible_host:\s*/ /' | awk '{print $3 "\t" $1 "\t" $2}' | fzf)
+    local ip=$(echo $result | cut -f1)
+    local universe=$(echo $result | cut -f2)
+    local name=$(echo $result | cut -f3)
     if [ -n "$ip" ]; then
-      cmd="grep -F '$ip' -B 5 -A 3 ~/donjon/Servers/* -h; ssh $SPUSER@$ip"
+      cmd="grep ansible ~/donjon/ansible/$universe/host_vars/$name; ssh $SPUSER@$ip"
     fi
   else
     cmd="mount ~/donjon; ssh-add ~/donjon/????/??????????????.key"

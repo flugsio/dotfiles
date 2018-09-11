@@ -57,6 +57,9 @@ function mkde {
 alias be='bundle exec'
 alias ber='bundle exec rake'
 alias datei='date -u +"%Y%m%dT%H%M%SZ"'
+alias dts='date -u +"%Y%m%d"'
+alias dta='date -u +"%Y%m%d %H%M"'
+alias dtz='date -u +"%Y%m%dT%H%M%SZ"'
 alias hexa_clock_text='echo "scale=20;obase=16;a=($(date +'%s')+3600*2)/(86400/16^3);scale=0;a/1" | bc | sed "s/\(.\{3\}\)$/_\1/" '
 alias engage="play -n -c1 synth whitenoise lowpass -1 120 lowpass -1 120 lowpass -1 120 gain +14"
 alias surf_go='xprop -id ${surfwid:=$(xdotool selectwindow)} -f _SURF_GO 8s -set _SURF_GO '

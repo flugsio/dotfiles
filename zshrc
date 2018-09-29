@@ -1,6 +1,9 @@
 # The following lines were added by compinstall
 zstyle ':completion:*' completer _complete _ignored
 zstyle :compinstall filename '/home/flugsio/.zshrc'
+# Make lowercase completion also match uppercase.
+# Only if there's no case sensitive matches, the '' part. man zshcompsys
+zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}'
 autoload -Uz compinit
 compinit
 # End of lines added by compinstall

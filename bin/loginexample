@@ -1,0 +1,22 @@
+#!/bin/sh
+
+function sign_in {
+  local username=$1
+  local password=$2
+  local return_to=''
+  local surf_cookie_file=$(mktemp -t surf_session_${username}_XXXXX)
+
+  if [[ "$username" = admin* ]]; then
+    return_to=/admin
+  fi
+
+  curl "https://dev-gud-service.promoteapp.net/login" \
+    -F "user[email]=$username" \
+    -F "user[password]=$password" \
+    -c - 2> /dev/null | tail -n -1 | \
+    # change session cookie to persistent
+    sed 's/\t0\t/\t9992211999\t/' > $surf_cookie_file
+  surf -c "$surf_cookie_file" http://site-1-frank.promoteapp.net/users/auth/promote_oauth2?return_to=$return_to
+}
+
+sign_in "username" "thepassword"

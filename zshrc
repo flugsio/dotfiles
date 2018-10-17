@@ -6,6 +6,9 @@ zstyle :compinstall filename '/home/flugsio/.zshrc'
 zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}'
 autoload -Uz compinit
 compinit
+if [ $commands[kubectl] ]; then
+  source <(kubectl completion zsh)
+fi
 # End of lines added by compinstall
 
 HISTFILE=~/.histfile

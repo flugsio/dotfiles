@@ -130,16 +130,18 @@ alias mkchangelog='surf -x -t hgmd.css | read HDSURFXID & (while read; do hoedow
 function active_branch {
   echo ${branch:-$(git_current_branch | tr -d "[[:space:]]")}
 }
+function active_branch_cleaned {
+  echo $(git_current_branch | tr "[:upper:]" "[:lower:]" | sed "s/[^0-9a-z_-]//g")
+}
 function graft_branch {
   if [ -z "$1" ]; then echo "Usage: graft_branch branch"; return; fi
   curl --fail -H "Api-Token: $(pass eve_token)" "http://eve.avidity.se:1414/$1"
 }
 function graft_tail {
+  local branch=${1:-$(active_branch_cleaned)}
   local grafter="/home/promote/apps/grafter/release_branch.log"
-  if [ -n "$1" ]; then
-    local branch="/home/promote/apps/promote-release/tmp/branch-$1.log /opt/promote/$1/shared/log/*.log"
-  fi
-  ssh eve "tail -n 100 -F $grafter $branch"
+  local branch_log="/home/promote/apps/promote-release/tmp/branch-$1.log /opt/promote/$1/shared/log/*.log"
+  ssh eve "tail -n 100 -F $grafter $branch_log"
 }
 function vagdestroy {
   local vag=$1
@@ -161,7 +163,9 @@ function vagdestroy {
 }
 alias giturl='git remote get-url --push origin | sed -r "s/^(git@github.com|hub):/https:\/\/github.com\//; s/.git$//"'
 alias hubname='git remote get-url --push origin | sed -r "s/^(git@github.com|hub)://; s/.git$//"'
+alias openall='openpr; openci; opengrafter'
 alias openpr='firefox "$(giturl)/compare/$(active_branch)?expand=1"'
+alias opengrafter='firefox "https://$(active_branch_cleaned).$GRAFTER_DOMAIN"'
 # openci requires a translation dictionary like this, store somewhere and load from your bashrc/zshrc like this
 # [[ -e ~/.api_keys ]] && . ~/.api_keys
 # typeset -A CI_PROJECTS=(

@@ -91,7 +91,7 @@ set backspace=indent,eol,start
 set noswapfile
 set nobackup
 set nowritebackup
-set history=200
+set history=1000
 set ruler
 set showcmd
 set incsearch
@@ -100,6 +100,7 @@ set shiftwidth=2
 set expandtab
 set encoding=utf-8
 set scrolloff=2
+set sidescrolloff=5
 set hidden
 set autoread
 silent! set belloff=esc

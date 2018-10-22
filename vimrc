@@ -157,6 +157,17 @@ set wildignore+=*.jpg,*.bmp,*.gif
 set wildignore+=coverage
 set wildignore+=*~
 
+let g:rails_projections = {
+      \ "release/*.rb": {
+      \   "test": [
+      \     "release/spec/{}_spec.rb"
+      \   ]
+      \ },
+      \ "release/spec/*_spec.rb": {
+      \   "alternate": [
+      \     "release/{}.rb"
+      \   ]}}
+
 let g:racer_cmd="racer"
 let $RUST_SRC_PATH="/usr/src/rust/src"
 

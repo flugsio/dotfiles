@@ -252,8 +252,11 @@ nnoremap <leader>l :silent w\|:exec "AsyncRun send_key_to 'Return' ".g:browser_i
 nnoremap <leader>p :silent !xdg-open <C-R>=escape("<C-R><C-F>", "#?&;\|%")<CR><CR>
 vnoremap <leader>p :w !curl -F 'f:1=<-' ix.io<CR>
 nnoremap <silent> <leader>K :silent w<bar>:K rs <c-r>%<cr><cr>
+nnoremap <silent> <leader>KR :silent w<bar>:K rspec <c-r>%<cr><cr>
 nnoremap <silent> <leader>KM :silent w<bar>:K tmux send-keys -t~ C-p C-m<cr><cr>
 nnoremap <silent> <leader>k :silent w<bar>:KK<cr>
+"nnoremap <silent> <leader>k :silent w<bar>:call system("tmux send-keys -t~ C-p C-m")<cr>
+"nnoremap <leader>k :silent w\|:exec "AsyncRun sleep 1; send_key_to 'ctrl+r' ".g:browser_id<CR>
 
 " Finders and all other ,, commands
 nnoremap <leader><space> :Files<cr>
@@ -287,6 +290,8 @@ nnoremap <leader>ff :LAck! <c-r>=expand("<cword>")<CR><CR>
 nnoremap <leader>fF :LAck! <c-r>=expand("<CWORD>")<CR><CR>
 nnoremap <leader>fa :LAck "" <left><left>
 nnoremap <leader>ft :tabnew<CR>:LAck "" <left><left>
+" find pending items with dates
+nnoremap <leader>fd :vimgrep /\v^\s*\*[^\d]*\d{4}-\d{2}-\d{2}/ %<CR>
 
 " Rails
 nnoremap <leader>r :R<cr>
@@ -324,8 +329,8 @@ nnoremap ö :
 nnoremap Ö :
 nnoremap ä ]`
 nnoremap Ä [`
-nnoremap <C-p> :cprevious<CR>
-nnoremap <C-n> :cnext<CR>
+nnoremap <C-p> :cprevious<CR>zv
+nnoremap <C-n> :cnext<CR>zv
 nnoremap å `
 
 " Parenthesis/bracket expanding

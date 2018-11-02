@@ -264,7 +264,8 @@ bindcode $mod+117  exec /usr/bin/pulseaudio-ctl down
 
 bindsym $mod+ctrl+v exec browse_clipboard
 
-new_window 1pixel
+default_border pixel 1
+default_floating_border pixel 1
 hide_edge_borders both
 
 for_window [class="Surf"] border normal

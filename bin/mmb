@@ -1,11 +1,11 @@
-#!/bin/sh
+#!/bin/bash
 
 CARD="bluez_card.00_16_94_0B_68_4F"
-ADDR_MM550="00:16:94:0B:68:4F"
+#ADDR_MM550="00:16:94:0B:68:4F"
 ADDR="2C:41:A1:C3:CC:77"
 
 function main {
-  if [ "$1" = "-h" -o "$1" = "help" -o "$1" = "--help" ]; then
+  if [ "$1" = "-h" ] || [ "$1" = "help" ] || [ "$1" = "--help" ]; then
     echo "mmb     : connect to headset"
     echo "mmb off : disconnect and poweroff bt"
     echo "mmb fix : toggle pulseaudio sink, clears buffer to remove latency"
@@ -22,9 +22,9 @@ function main {
 }
 
 function disconnect {
-  echo -e "disconnect $ADDR\nquit" | bluetoothctl
+  echo -e "disconnect $ADDR\\nquit" | bluetoothctl
   sleep 4
-  echo -e "power off\nquit" | bluetoothctl
+  echo -e "power off\\nquit" | bluetoothctl
 }
 
 function reset {
@@ -35,20 +35,19 @@ function reset {
 }
 
 function connect {
-  echo -e "power on\nconnect $ADDR\nquit" | bluetoothctl
+  echo -e "power on\\nconnect $ADDR\\nquit" | bluetoothctl
   # repeat a few times until it finally understands what it should do
   for i in $(seq 4 8); do
-    sleep $i
+    sleep "$i"
 
-    reset
-    if [ $? -eq 0 ]; then
+    if reset; then
       notify-send -t 1000 'mmb: connected'
       return 0
     else
-      echo -e "connect $ADDR\nquit" | bluetoothctl
+      echo -e "connect $ADDR\\nquit" | bluetoothctl
     fi
   done
   notify-send -u critical -t 5000 'mmb: could not connect'
 }
 
-main $1
+main "$1"

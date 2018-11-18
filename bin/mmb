@@ -1,7 +1,8 @@
 #!/bin/sh
 
 CARD="bluez_card.00_16_94_0B_68_4F"
-ADDR="00:16:94:0B:68:4F"
+ADDR_MM550="00:16:94:0B:68:4F"
+ADDR="2C:41:A1:C3:CC:77"
 
 function main {
   if [ "$1" = "-h" -o "$1" = "help" -o "$1" = "--help" ]; then

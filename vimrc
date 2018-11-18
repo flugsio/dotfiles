@@ -119,7 +119,7 @@ set listchars=tab:>-,trail:·,eol:$
 set nrformats-=octal
 silent! set signcolumn=no
 
-set background=dark
+set background=light
 set t_Co=256
 let g:gruvbox_italic=0
 silent! colorscheme gruvbox

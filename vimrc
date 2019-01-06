@@ -42,6 +42,9 @@ Plugin         'tpope/vim-git'
 "Plugin        'tpope/vim-haml'
 Plugin        'dzeban/vim-log-syntax'
 Plugin         'tpope/vim-ragtag'
+Plugin         'tpope/vim-rake'
+Plugin         'tpope/vim-projectionist'
+"Plugin         'tpope/vim-bundler'
 Plugin         'tpope/vim-rails'
 Plugin      'vim-ruby/vim-ruby'
 Plugin    'thoughtbot/vim-rspec'
@@ -157,16 +160,32 @@ set wildignore+=*.jpg,*.bmp,*.gif
 set wildignore+=coverage
 set wildignore+=*~
 
+" Use :confirm A to create new files
+" bugs, `:confirm A` only seems to work with alternative
+" when using test it should exist as a default for alternative
 let g:rails_projections = {
-      \ "release/*.rb": {
-      \   "test": [
-      \     "release/spec/{}_spec.rb"
-      \   ]
-      \ },
-      \ "release/spec/*_spec.rb": {
-      \   "alternate": [
-      \     "release/{}.rb"
-      \   ]}}
+      \   "release/*.rb": {
+      \     "alternate": [
+      \       "release/spec/{}_spec.rb"
+      \     ]
+      \   },
+      \   "release/spec/*_spec.rb": {
+      \     "alternate": [
+      \       "release/{}.rb"
+      \     ]
+      \   },
+      \
+      \   "app/assets/javascripts/admin/backbone/*.js.coffee": {
+      \     "alternate": [
+      \       "spec/javascripts/{}_spec.js.coffee"
+      \     ]
+      \   },
+      \   "spec/javascripts/*_spec.js.coffee": {
+      \     "alternate": [
+      \       "app/assets/javascripts/admin/backbone/{}.js.coffee"
+      \     ]
+      \   }
+      \ }
 
 let g:racer_cmd="racer"
 let $RUST_SRC_PATH="/usr/src/rust/src"

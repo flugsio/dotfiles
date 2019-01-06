@@ -74,6 +74,7 @@ if has("autocmd")
     " reproduce: open vim with ':set hidden', in the [No name] buffer run :Gdiff, :close, :Gstatus, dv (open new diff)
     autocmd BufHidden * set nodiff 
     autocmd FileType text setlocal textwidth=78
+    autocmd FileType gitcommit nnoremap <buffer> <silent> <leader>gc :call GivePairingCredit()<cr>
     "autocmd FileType rust compiler cargo
     "autocmd FileType rust setl makeprg=cargo\ build
     autocmd! BufRead *.wofl call SetupWoflToPomodoroBuffer()
@@ -211,6 +212,26 @@ let g:reek_on_loading = 0
 iab <expr> dts strftime("%Y-%m-%d")
 iab <expr> dta strftime("%Y-%m-%d %H:%M")
 iab <expr> dtz strftime("%Y-%m-%dT%H:%M:%S%z")
+iab <expr> paircred fzf#complete({
+      \ 'source': 'cd ~/code/promote2 && git log --pretty="%an <%ae>%n%cn <%ce>" HEAD~300..HEAD \| sort \| uniq',
+      \ 'reducer': function('PrefixPairCredit'),
+      \ 'options': '--multi',
+      \ 'prefix': '' })
+
+function! GivePairingCredit()
+  " Trigger abbreviation on next line without character insertion
+  " This trigger is used to avoid the inserted space
+  execute "normal! opaircred"
+endfunction
+
+function! PrefixPairCredit(lines)
+  " for pair in a:lines
+  "   let pair = 'Co-authored-by: '.pair
+  " endfor
+  " return substitute(join("\n".a:lines, "\n"), '\n', '\nCo-authored-by: ', 'g')
+  " return join(a:lines)
+  return join(map(a:lines, '"Co-authored-by: " . v:val'), "\n")
+endfunction
 
 " Mappings
 

@@ -74,7 +74,7 @@ if has("autocmd")
     " reproduce: open vim with ':set hidden', in the [No name] buffer run :Gdiff, :close, :Gstatus, dv (open new diff)
     autocmd BufHidden * set nodiff 
     autocmd FileType text setlocal textwidth=78
-    autocmd FileType gitcommit nnoremap <buffer> <silent> <leader>gc :call GivePairingCredit()<cr>
+    autocmd BufEnter .git/COMMIT_EDITMSG nnoremap <buffer> <silent> <leader>gc :call GivePairingCredit()<cr>
     "autocmd FileType rust compiler cargo
     "autocmd FileType rust setl makeprg=cargo\ build
     autocmd! BufRead *.wofl call SetupWoflToPomodoroBuffer()
@@ -225,11 +225,6 @@ function! GivePairingCredit()
 endfunction
 
 function! PrefixPairCredit(lines)
-  " for pair in a:lines
-  "   let pair = 'Co-authored-by: '.pair
-  " endfor
-  " return substitute(join("\n".a:lines, "\n"), '\n', '\nCo-authored-by: ', 'g')
-  " return join(a:lines)
   return join(map(a:lines, '"Co-authored-by: " . v:val'), "\n")
 endfunction
 

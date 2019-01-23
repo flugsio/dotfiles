@@ -35,6 +35,8 @@ function create_all_links {
   link_override tmux.weechat .conf
 
   [ -d ~/code/ansible ] && copy_file vtools/traprack code/ansible/vtools/traprack
+
+  #  sudo cp ~/code/dotfiles/slash/sv-code.map /usr/share/X11/xkb/symbols
 }
 
 function link_override {

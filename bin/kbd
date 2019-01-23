@@ -3,13 +3,13 @@
 source kbd_common
 
 if [ `hostname` = "ranmi" ]; then
-  setxkbmap -layout se_code -option caps:swapescape -variant nodeadkeys
+  setxkbmap -layout sv-code -option caps:swapescape -variant nodeadkeys
   /usr/bin/xmodmap $HOME/.Xmodmap
   #/usr/bin/xmodmap $HOME/.Xmodmap_keys
 elif [ `hostname` = "toldi_broken" ]; then
   for i in $(xinput --list --id-only); do
     xinput --get-feedbacks $i 2>/dev/null | grep -q KbdFeedbackClass && xinput --list-props $i | grep -q "Device Product ID.*6058" &&
-      setxkbmap -I /home/flugsio/code/dotfiles/slash -layout se_code -option caps:swapescape -variant nodeadkeys -device $i
+      setxkbmap -I /home/flugsio/code/dotfiles/slash -layout sv-code -option caps:swapescape -variant nodeadkeys -device $i
   done
 else
   setxkbmap -layout se -option caps:swapescape -variant nodeadkeys

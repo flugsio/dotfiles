@@ -1,0 +1,51 @@
+#!/bin/zsh -il
+
+# THIS IS WIP
+# This requires a bunch of environment variables to be set.
+# The tokens should be straight forward,
+# there is one special variable, add peoples githubusername<space>@flowdockname
+# typeset -A GITHUB_FLOWDOCK_USERS=(
+#     someeone @Someone
+#     )
+
+set -e
+set -x
+
+prnr=$1
+
+if [ -n "$prnr" ]; then
+  response="$HOME/.cache/flowpr_response"
+  curl -sSL -H "Authorization: token $GITHUB_TOKEN" https://api.github.com/repos/$(hubname)/pulls/$prnr -o $response
+  title=$(cat $response | jq -r '.title | select (.!=null)')
+  url=$(cat $response | jq -r '.html_url | select (.!=null)')
+  #ticketid=$(echo $title | grep -oP "(?<=\[#)\d+(?=\])" || echo '')
+
+  title=$(echo $title | sed -E 's{\[#([[:digit:]]+)\]{[[#\1]](https://www.pivotaltracker.com/n/projects/'$PT_PROJECT_ID'/stories/\1/){')
+
+  assignee=$(cat $response | jq -r '.assignees | first .login | select (.!=null)')
+  if [ -n "$assignee" ]; then
+    assignee=${GITHUB_FLOWDOCK_USERS[$assignee]}
+  else
+    echo "No assignee!"
+    exit 1
+  fi
+  content="$assignee $title $url"
+  # This follows the format of "flows/organization/flowname"
+  recipient="$FLOWDOCK_MAIN_FLOW"
+
+  flowdock_thread=$(curl -XGET -F "event=message" -F "search=#${prnr}" \
+    https://${FLOWDOCK_AVIDITY_TOKEN}@api.flowdock.com/$recipient/threads | \
+    jq -r "map(select(.external_url == \"$url\")) | first | .id | select (.!=null)" || echo '')
+
+  if [ -n "$title" -a -n "$url" ]; then
+    if [ -n "$flowdock_thread" ]; then
+      curl -F "event=message" -F "tags=pr" -F "content=\\$content" https://${FLOWDOCK_AVIDITY_TOKEN}@api.flowdock.com/$recipient/threads/$flowdock_thread/messages
+    else
+      curl -F "event=message" -F "tags=pr" -F "content=\\$content" https://${FLOWDOCK_AVIDITY_TOKEN}@api.flowdock.com/$recipient/messages
+    fi
+  else
+    echo No title or url
+  fi
+else
+  echo "missing pr number"
+fi

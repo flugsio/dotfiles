@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #set -e
 
 # wip
@@ -30,15 +30,14 @@ function process
       command=$command $opts
     fi
     commands+=("$command")
-    echo \($command\)
-    echo $command | sh
-    if [ $? -ne 0 ]; then
-      errors+=($file)
+    echo "$command"
+    if echo "$command" | sh; then
+      errors+=("$file")
     fi
   done
 
   if [ ${#errors[*]} -ne 0 ]; then
-    echo Errors: ${errors[*]}/${commands[@]}
+    echo "Errors: ${errors[*]}/${commands[@]}"
     exit 1
   else
     echo Success: ${#commands[@]}/${#commands[@]}

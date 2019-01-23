@@ -71,12 +71,14 @@ function xkcd {
 alias bed='bundle exec rails db'
 alias bec='bundle exec rails console'
 alias brow='surf -x $url 2> /dev/null & firefox $url & chromium $url &'
+alias tag='[ -f tags ] && echo "Preparing tags" && ctags -R'
 alias bun='rbenv install --skip-existing; bundle check; bundle install; mkbunlinks'
 alias mig='ber db:migrate'
 alias i18='ber i18nlite:sync'
 alias tes='ber db:migrate RAILS_ENV=test'
 alias remig='ber db:migrate && ber db:rollback && ber db:migrate'
-alias aup='bun; ber db:migrate; ber i18nlite:sync; ber db:migrate RAILS_ENV=test'
+alias revert_schema='git --no-pager diff db/schema.rb && git checkout db/schema.rb'
+alias aup='bun; ber db:migrate; ber i18nlite:sync; ber db:migrate RAILS_ENV=test; revert_schema; tag &'
 alias wha='echo bun, mig, i18, aup=after update, remig=rerun migration, tes=after update for tests, ran=vit ranger'
 alias vit='DISPLAY=:0 \vim --servername $(tmux display-message -p "#S")'
 alias ran='EDITOR="tmux_editor" ranger --cmd="map J chain move down=1 ; move right=1" --cmd="map K chain move up=1 ; move right=1" --cmd="set preview_files false" --cmd="set display_size_in_main_column false"'
@@ -187,4 +189,5 @@ alias rfcsync='rsync -avz --delete ftp.rfc-editor.org::rfcs-text-only ~/code/rfc
 alias pong='while sleep 1 && ! ping 8.8.8.8 -c 1 -w 3; do :; done'
 # TODO: this is slightly broken
 alias docker-local-docs='docker run -p 4123:4000 docs/docker.github.io:v18.03 &;firefox --new-window http://0.0.0.0:4123'
+alias gbmod='git diff origin/master...HEAD --name-only --diff-filter=DMR | xargs'
 # vim: ft=sh

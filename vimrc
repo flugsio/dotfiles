@@ -318,6 +318,7 @@ nnoremap <leader>,f :.,/END CERTIFICATE/w !sed "s/^ *//g;s/'//" \| openssl x509 
 xnoremap <leader>,f :w !i=`cat`; echo "-----BEGIN CERTIFICATE-----\n$i\n-----END CERTIFICATE-----\n" \| openssl x509 -noout -fingerprint -sha1 -inform pem -in -<cr>
 
 nnoremap <leader>j :GitFilesModified<cr>
+nnoremap <leader>J :GitFilesModifiedBranch<cr>
 
 nnoremap <leader>f§ :lopen<CR>
 nnoremap <leader>fc :call setloclist(0, [])<CR>:lclose<CR>

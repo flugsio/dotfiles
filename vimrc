@@ -11,6 +11,7 @@ Plugin   'skywind3000/asyncrun.vim'
 "Plugin     'lilydjwg/colorizer'
 Plugin   'vim-scripts/dbext.vim'
 Plugin          'mh21/errormarker.vim'
+Plugin       'ElmCast/elm-vim'
 Plugin       'flugsio/fzf.vim'
 "Plugin   'gregsexton/gitv'
 Plugin       'morhetz/gruvbox'
@@ -139,6 +140,8 @@ highlight Search2 ctermbg=blue ctermfg=black
 highlight Search3 ctermbg=red ctermfg=black
 
 " Plugin configs
+
+let g:elm_setup_keybindings = 0
 
 let g:ansible_options = {'ignore_blank_lines': 0}
 ", 'documentation_mapping': '<C-K>'}

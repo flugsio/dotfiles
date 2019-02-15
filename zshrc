@@ -91,8 +91,9 @@ function findserver() {
     local ip=$(echo $result | cut -f1)
     local universe=$(echo $result | cut -f2)
     local name=$(echo $result | cut -f3)
+    local cmd=$(cat ~/.config/zcommands | fzf | sed 's/ *#.*$//' | sed 's# LOG# | tee ~/debug/latest/$(datei)_'$universe-$name'.log#')
     if [ -n "$ip" ]; then
-      cmd="grep ansible ~/donjon/ansible/$universe/host_vars/$name; ssh $SPUSER@$ip"
+      cmd="grep ansible ~/donjon/ansible/$universe/host_vars/$name; ssh $SPUSER@$ip $cmd"
     fi
   else
     cmd="mount ~/donjon; ssh-add ~/donjon/????/??????????????.key"

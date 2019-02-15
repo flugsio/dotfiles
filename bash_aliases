@@ -51,6 +51,7 @@ function mkde {
   local name=$(echo "$@" | sed 's/[^A-Za-z0-9]/_/g')
   local pathname=$HOME/debug/$(date -u +"%Y%m%d")_"$name"
   mkdir "$pathname"
+  ln -fns "$pathname" $HOME/debug/latest
   cd "$pathname"
   vim log.md
 }

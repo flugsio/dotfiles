@@ -112,7 +112,11 @@ silent! set belloff=esc
 set laststatus=2
 set ignorecase
 set smartcase
-set hlsearch
+" Don't set again when reloading configuration
+" Otherwise the state of showing highlighs might change
+if &hlsearch == 0
+  set hlsearch
+end
 set splitright
 set splitbelow
 set formatoptions=qlj

@@ -17,9 +17,9 @@ else
   stop_message="$TIME timer for $WHAT finished"
 fi
 
-notify-send "$start_message"
+notify-send "$start_message" -t 5000
 
 sleep $TIME
 
-notify-send "$stop_message" -u critical
+notify-send "$stop_message" -u critical -t 10000
 

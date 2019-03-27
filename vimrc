@@ -65,6 +65,8 @@ if &t_Co > 2
   syntax on
 endif
 
+let g:pairing=filereadable($HOME.'/.cache/pairing')
+
 if has("autocmd")
   filetype plugin indent on
   augroup vimrcEx
@@ -86,6 +88,17 @@ if has("autocmd")
     autocmd! User AsyncRunStop call AsyncStopCallback()
     "autocmd! FileType rust nmap gd <Plug>(rust-def)
     "autocmd! FileType rust nmap <leader>gi <Plug>(rust-doc)
+    if g:pairing
+      set number
+      set cursorline
+      autocmd WinEnter * set number | set cursorline
+      autocmd WinLeave * set nocursorline
+    else
+      set nonumber
+      set nocursorline
+      " TODO: set in all open windows instead
+      autocmd WinEnter * set nonumber | set nocursorline
+    endif
   augroup END
 else
   set autoindent

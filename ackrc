@@ -16,3 +16,5 @@
   css=.sass,.scss
 --type-add
   erb=.erb,.html.erb
+--type-add
+  md=.md

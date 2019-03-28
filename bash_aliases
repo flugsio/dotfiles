@@ -132,20 +132,26 @@ alias ltra="rbenv shell 2.3.5; ruby -e \"require 'date'; require 'time'; require
 alias mount_donjon='sudo mount -t tmpfs -o size=64M,noatime tmpfs ~/donjon && cd ~/donjon && git clone donjon: .'
 alias mkchangelog='surf -x -t hgmd.css | read HDSURFXID & (while read; do hoedown CHANGELOG.md > changelog.html; echo xprop -id $HDSURFXID -f _SURF_GO 8s -set _SURF_GO "file://$(pwd)/changelog.html" ; done; rm changelog.html)'
 function active_branch {
-  echo ${branch:-$(git_current_branch | tr -d "[[:space:]]")}
+  echo $(git_current_branch | tr -d "[[:space:]]")
 }
 function active_branch_cleaned {
   echo $(git_current_branch | tr "[:upper:]" "[:lower:]" | sed "s/[^0-9a-z_-]//g")
 }
 function graft_branch {
-  if [ -z "$1" ]; then echo "Usage: graft_branch branch"; return; fi
-  curl --fail -H "Api-Token: $(pass eve_token)" "http://eve.avidity.se:1414/$1"
+  local branch=${1:-$(active_branch_cleaned)}
+  curl --fail -H "Api-Token: $(pass eve_token)" "http://eve.avidity.se:1414/${branch}"
 }
 function graft_tail {
   local branch=${1:-$(active_branch_cleaned)}
   local grafter="/home/promote/apps/grafter/release_branch.log"
-  local branch_log="/home/promote/apps/promote-release/tmp/branch-$1.log /opt/promote/$1/shared/log/*.log"
+  local branch_log="/home/promote/apps/promote-release/tmp/branch-${branch}.log /opt/promote/${branch}/shared/log/*.log"
   ssh eve "tail -n 100 -F $grafter $branch_log"
+}
+function graft_flag {
+  local branch=${1:-$(active_branch_cleaned)}
+  vim scp://eve//opt/promote/${branch}/shared/config/features_${branch}.yaml
+
+  ssh eve -t "sudo -u root bash -ilc '/etc/init.d/unicorn_init_${branch} stop; /etc/init.d/unicorn_init_${branch} start; /etc/init.d/delayed_job_${branch} restart; /etc/init.d/sidekiq-${branch} stop; sleep 2; /etc/init.d/sidekiq-${branch} start;'"
 }
 function vagdestroy {
   local vag=$1

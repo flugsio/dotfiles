@@ -27,6 +27,14 @@ function gb {
   # do that when pushing instead, for renames
   git checkout -b $name origin/master
 }
+function gp {
+  git checkout master
+  git pull -p
+  local branch
+  for branch in $(git branch --merged | grep -v master | grep -v "^\*"); do
+    git branch -d $branch
+  done
+}
 alias iw='alias i{r,l,s,a,clear,log}; echo iA=run interactively'
 alias i='invoker'
 alias il='invoker list'

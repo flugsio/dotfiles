@@ -141,7 +141,11 @@ set listchars=tab:>-,trail:·,eol:$
 set nrformats-=octal
 silent! set signcolumn=no
 
-set background=light
+if 5 < strftime("%H") && strftime("%H") < 12
+  set background=light
+else
+  set background=dark
+endif
 set t_Co=256
 let g:gruvbox_italic=0
 silent! colorscheme gruvbox

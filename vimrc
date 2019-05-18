@@ -164,8 +164,7 @@ highlight Search3 ctermbg=red ctermfg=black
 
 let g:elm_setup_keybindings = 0
 
-let g:ansible_options = {'ignore_blank_lines': 0}
-", 'documentation_mapping': '<C-K>'}
+let g:ansible_options = {'ignore_blank_lines': 0, 'documentation_mapping': 'K'}
 
 " glue between asyncrun and errormarker
 let g:asyncrun_auto = "make"

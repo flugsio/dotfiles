@@ -1,0 +1,27 @@
+#!/bin/bash
+
+tmp=$(mktemp --suffix=.md)
+cp ~/.config/story_template $tmp
+cp /tmp/tmp.tE1VbBm5AK.md $tmp
+#vim $tmp
+
+labels="\"non prioritised\""
+extra_label=$(echo -e "technical\nsecurity" | fzf --prompt "Extra label? (CTRL-C to cancel)")
+
+if [ -n "$extra_label" ]; then
+  labels="$labels,\"${extra_label}\""
+fi
+
+name=$(head -n 1 $tmp | sed 's/"/\\"/g')
+description=$(tail -n +2 $tmp | sed 's/"/\\"/g' | sed ':a;N;$!ba;s/\n/\\n/g')
+
+if [ -n "$name" ]; then
+  curl -X POST -H "X-TrackerToken: $PT_TOKEN" \
+    -H "Content-Type: application/json" \
+    -d "{\"name\":\"$name\",\"description\":\"$description\",\"labels\":[$labels]}" \
+    "https://www.pivotaltracker.com/services/v5/projects/$PT_PROJECT_ID/stories" | jq .
+  rm $tmp
+else
+  echo "Aborted due to missing story name"
+  echo "Filename: $tmp"
+fi

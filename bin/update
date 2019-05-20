@@ -1,0 +1,30 @@
+#!/bin/bash
+
+set -e
+
+function update {
+  local url=$1
+  local name=${url##*/}
+
+  if [ -e "$name" ]; then
+    (
+    cd $name
+    git pull
+    if [ -z "$(git status --porcelain)" ]; then
+      echo updating $name
+      git pull
+    else
+      echo fetching $name
+      git fetch
+    fi
+    )
+  else
+    git clone $url $name
+  fi
+}
+
+function main {
+  cat repos.txt | while read url; do update $url; done
+}
+
+main

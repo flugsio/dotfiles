@@ -1,0 +1,21 @@
+#!/bin/bash
+
+STORY_ID=$(xsel)
+
+function main {
+  story=$(get_story)
+  echo "[#$STORY_ID] $(echo "$story" | jq -r .name)"
+}
+
+function get_story {
+  if [ -n "$STORY_ID" ]; then
+    curl -X GET -H "X-TrackerToken: $PT_TOKEN" \
+      -H "Content-Type: application/json" \
+      "https://www.pivotaltracker.com/services/v5/projects/$PT_PROJECT_ID/stories/$STORY_ID"
+  else
+    echo "Aborted due to missing story name"
+    exit
+  fi
+}
+
+main

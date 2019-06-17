@@ -4,6 +4,7 @@ tmp=$(mktemp --suffix=.md)
 cp ~/.config/story_template $tmp
 vim $tmp
 
+# labels="\"debian upgrade\""
 labels="\"non prioritised\""
 extra_label=$(echo -e "technical\nsecurity" | fzf --prompt "Extra label? (CTRL-C to cancel)")
 

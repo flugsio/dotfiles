@@ -1,6 +1,7 @@
 [user]
   name = Jimmie Elvenmark
   email = flugsio@gmail.com
+  signingkey = 4E528C3029E1039B
 
 [transfer]
   fsckobjects = true
@@ -38,3 +39,6 @@
 
 [core]
   excludesfile = ~/.gitignore
+
+[color]
+	ui = auto

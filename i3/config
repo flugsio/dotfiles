@@ -5,7 +5,8 @@
 # refer to ~/.Xmodmap for keycode/keybinds
 # Mod1 = Alt, Mod4 = Super/Win
 set $mod Mod4
-set $term st
+set $term alacritty
+set $simple_term st
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below. ISO 10646 = Unicode
@@ -29,7 +30,8 @@ bindsym $mod+ctrl+mod1+shift+0 exec --no-startup-id slayout 0
 # start a terminal
 bindsym $mod+Return exec $term -e /bin/sh -i -c tmux
 bindsym $mod+shift+Return exec $term
-bindsym $mod+shift+BackSpace exec $term -e /bin/sh
+# emergency shell
+bindsym $mod+shift+BackSpace exec st -e /bin/sh
 
 # kill focused window
 bindsym $mod+Shift+q kill
@@ -188,7 +190,7 @@ bindcode $mod+49 move scratchpad
 bindsym $mod+ctrl+Mod1+m exec --no-startup-id bash -i -c 'initialize'
 
 bindsym $mod+y [title="tmux_dict"] scratchpad show
-bindsym $mod+shift+y exec --no-startup-id $term -t tmux_dict -e bash -i -c 'mux dict'
+bindsym $mod+shift+y exec --no-startup-id $simple_term -t tmux_dict -e bash -i -c 'mux dict'
 
 bindsym $mod+u [title="^Telegram"] scratchpad show
 bindsym $mod+shift+u exec telegram-desktop
@@ -196,15 +198,15 @@ for_window [title="^Telegram"] move scratchpad
 for_window [title="^Telegram"] focus; floating enable; resize grow width 200px; resize grow height 100px; move left 200px; move up 100px
 
 bindsym $mod+i [title="tmux_inbox"] scratchpad show
-bindsym $mod+shift+i exec --no-startup-id st -t tmux_inbox -e zsh -i -c 'mux inbox'
+bindsym $mod+shift+i exec --no-startup-id $simple_term -t tmux_inbox -e zsh -i -c 'mux inbox'
 # TODO: verify tmux works properly for this
-# bindsym $mod+ctrl+shift+i exec --no-startup-id st -t tmux_inbox -e bash -i -c 'ssh server -t "tmux attach -t inbox"'
+# bindsym $mod+ctrl+shift+i exec --no-startup-id $simple_term -t tmux_inbox -e bash -i -c 'ssh server -t "tmux attach -t inbox"'
 
 bindsym $mod+o [title="tmux_pomo"] scratchpad show
-bindsym $mod+shift+o exec --no-startup-id st -t tmux_pomo -e zsh -i -c 'mux pomo'
+bindsym $mod+shift+o exec --no-startup-id $simple_term -t tmux_pomo -e zsh -i -c 'mux pomo'
 
 bindsym $mod+m [title="tmux_invoker"] scratchpad show
-bindsym $mod+shift+m exec --no-startup-id st -t tmux_invoker -e zsh -i -c 'mux invoker'
+bindsym $mod+shift+m exec --no-startup-id $simple_term -t tmux_invoker -e zsh -i -c 'mux invoker'
 
 for_window [title="tmux_.*"] move scratchpad
 for_window [title="qute_editor"] floating enable
@@ -216,18 +218,18 @@ bindsym $mod+ctrl+m exec i3-input -F 'exec xdotool getactivewindow set_window --
 bindsym $mod+ctrl+o exec i3-input -F "exec gluj %s && killall -USR1 i3status" -P 'Glucose: '
 
 bindsym $mod+g exec ink
-bindsym $mod+shift+g exec st -t editlinks -e zsh -i -c "vim ~/code/sparkleshare/links.wofl -c 'set nofoldenable'"
+bindsym $mod+shift+g exec $simple_term -t editlinks -e zsh -i -c "vim ~/code/sparkleshare/links.wofl -c 'set nofoldenable'"
 
 #bindcode $mod+34 [title="^run "] scratchpad show
 #bindcode $mod+48 [title="^glucose "] scratchpad show
 
 # 47 = ö
-bindcode $mod+ctrl+47 exec --no-startup-id $term -e bash -i -c 'mmb'
-bindcode $mod+Mod1+47 exec --no-startup-id $term -e bash -i -c 'mmb off'
+bindcode $mod+ctrl+47 exec --no-startup-id $simple_term -e bash -i -c 'mmb'
+bindcode $mod+Mod1+47 exec --no-startup-id $simple_term -e bash -i -c 'mmb off'
 
 # cmus replaces _NET_WM_NAME
 bindcode $mod+47 [class="st-256color" title="(^cmus |.ogg$)"] scratchpad show
-bindcode $mod+shift+47 exec --no-startup-id $term -t cmus -e bash -i -c 'cmus'
+bindcode $mod+shift+47 exec --no-startup-id $simple_term -t cmus -e bash -i -c 'cmus'
 for_window [class="st-256color" title="^cmus"] move scratchpad
 
 for_window [title="feh.*/srv/http/munin"] floating enable
@@ -246,7 +248,7 @@ bindsym XF86AudioMute         exec /usr/bin/pulseaudio-ctl mute && killall -USR1
 bindsym Print	              exec screenshot
 bindsym --release Shift+Print           exec screenshot -s
 
-bindsym $mod+Print exec st -t shot_viewer -e zsh -i -c 'view_shots'
+bindsym $mod+Print exec $simple_term -t shot_viewer -e zsh -i -c 'view_shots'
 for_window [title="shot_viewer"] fullscreen
 
 bindsym $mod+Pause exec sleep 0.5 && xset dpms force off

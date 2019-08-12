@@ -14,6 +14,7 @@ function create_all_links {
   link_file config/qutebrowser/qutebrowser.conf
   link_file config/qutebrowser/keys.conf
   link_file config/alacritty/alacritty.yml
+  link_file config/gtk-3.0/gtk.css
   link_file gitconfig
   link_file i3
   link_file lynxrc

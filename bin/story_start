@@ -1,0 +1,53 @@
+#!/bin/bash
+
+set -e
+
+source ~/.bash_aliases
+
+STORY_ID=$(xsel)
+
+function vim {
+  # TODO: improve this
+  # stub out vim, so mkde doesn't start it
+  :
+}
+
+function main {
+  story=$(get_story)
+  # this changes into the directory
+  start_story | jq .
+  mkde "${STORY_ID}_$(echo "$story" | jq -r .name)"
+  local name=$(echo "$story" | jq -r .name)
+  local url=$(echo "$story" | jq -r .url)
+  local description=$(echo "$story" | jq -r .description)
+  echo -e "# $name\n\n<$url>\n\n$description" >> story.md
+  echo ./story.md >> log.md
+  command vim log.md
+}
+
+function get_story {
+  if [ -n "$STORY_ID" ]; then
+    curl -X GET -H "X-TrackerToken: $PT_TOKEN" \
+      -H "Content-Type: application/json" \
+      "https://www.pivotaltracker.com/services/v5/projects/$PT_PROJECT_ID/stories/$STORY_ID"
+  else
+    echo "Aborted due to missing story id"
+    exit
+  fi
+}
+
+function start_story {
+  if [ -n "$STORY_ID" ]; then
+    curl -X PUT -H "X-TrackerToken: $PT_TOKEN" \
+      -H "Content-Type: application/json" \
+      -d '{"current_state":"started"}' \
+      "https://www.pivotaltracker.com/services/v5/projects/$PT_PROJECT_ID/stories/$STORY_ID"
+  else
+    echo "Aborted due to missing story id"
+    exit
+  fi
+}
+
+
+main
+

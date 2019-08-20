@@ -260,8 +260,9 @@ endfunction
 let mapleader = ","
 let maplocalleader = "-"
 
-" Create undo-points when using Return and delete-to-beginning
-inoremap <CR> <C-G>u<CR>
+" Create undo-point before delete-to-beginning in insert mode
+" This makes it possible to undo back to the exact point before pressing CTRL-U
+" In bash you can revert CTRL-U with CTRL-Y
 inoremap <C-U> <C-G>u<C-U>
 
 " General

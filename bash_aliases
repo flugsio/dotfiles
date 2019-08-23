@@ -146,7 +146,7 @@ function active_branch_cleaned {
 }
 function graft_branch {
   local branch=${1:-$(active_branch_cleaned)}
-  curl --fail -H "Api-Token: $(pass eve_token)" "http://eve.avidity.se:1414/${branch}"
+  curl --fail -H "Api-Token: $(pass eve_token)" "http://grafter.dev.promoteapp.net:1414/${branch}"
 }
 function graft_tail {
   local branch=${1:-$(active_branch_cleaned)}
@@ -188,7 +188,17 @@ alias opengrafter='firefox "https://$(active_branch_cleaned).$GRAFTER_DOMAIN"'
 # typeset -A CI_PROJECTS=(
 #     avidity/errbit apps%2Ferrbit
 #     key value)
-alias openci='firefox "https://ci.promoteapp.net/blue/organizations/jenkins/${CI_PROJECTS[$(hubname)]}/activity?branch=$(active_branch)"'
+alias openci='firefox --new-window "https://ci.promoteapp.net/blue/organizations/jenkins/${CI_PROJECTS[$(hubname)]}/activity?branch=$(active_branch)"'
+function opendocs {
+    firefox --new-window "https://docs.promoteapp.net/?search=$@"
+}
+function opencii {
+  name=$(printf '%s\n' "$ALL_CI_PROJECTS[@]" | fzf)
+  name=${name/\//%2F}
+  if [ -n "$name" ]; then
+    firefox --new-window "https://ci.promoteapp.net/blue/organizations/jenkins/$name/activity"
+  fi
+}
 function openwiki {
   firefox "$(git remote get-url --push origin | sed -r "s/^(git@github.com|hub):/https:\/\github.com\//; s/(.wiki)?(.git)?$//")/wiki/${1%.md}"
 }

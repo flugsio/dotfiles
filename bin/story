@@ -1,11 +1,32 @@
 #!/bin/bash
 
+# https://www.pivotaltracker.com/help/api/rest/v5#Endpoints
+
+set -e
+
 tmp=$(mktemp --suffix=.md)
 cp ~/.config/story_template $tmp
 vim $tmp
 
-# labels="\"debian upgrade\""
-labels="\"non prioritised\""
+if [ "$1" = "soon" ]; then
+  current_state="\"planned\""
+  # unplanned label conveys it was injected into current sprint
+  labels="\"team sthlm\",\"team poa\",\"unplanned\""
+  owner_ids="[]"
+  estimate="null"
+elif [ "$1" = "now" ]; then
+  current_state="\"planned\""
+  # unplanned label conveys it was injected into current sprint
+  labels="\"team sthlm\",\"unplanned\""
+  owner_ids="[1812784]"
+  estimate="1"
+else
+  current_state="\"unscheduled\""
+  labels="\"non prioritised\""
+  owner_ids="[]"
+  estimate="null"
+fi
+
 extra_label=$(echo -e "technical\nsecurity" | fzf --prompt "Extra label? (CTRL-C to cancel)")
 
 if [ -n "$extra_label" ]; then
@@ -15,10 +36,11 @@ fi
 name=$(head -n 1 $tmp | sed 's/"/\\"/g')
 description=$(tail -n +2 $tmp | sed 's/"/\\"/g' | sed ':a;N;$!ba;s/\n/\\n/g')
 
+#-d "{\"name\":\"$name\",\"description\":\"$description\",\"labels\":[$labels]}" \
 if [ -n "$name" ]; then
   curl -X POST -H "X-TrackerToken: $PT_TOKEN" \
     -H "Content-Type: application/json" \
-    -d "{\"name\":\"$name\",\"description\":\"$description\",\"labels\":[$labels]}" \
+    -d "{\"name\":\"$name\",\"description\":\"$description\",\"labels\":[$labels],\"current_state\":$current_state,\"owner_ids\":$owner_ids,\"estimate\":$estimate}" \
     "https://www.pivotaltracker.com/services/v5/projects/$PT_PROJECT_ID/stories" | jq .
   rm $tmp
 else

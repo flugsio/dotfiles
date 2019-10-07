@@ -41,8 +41,15 @@ rbenv_version() {
 }
 
 PROMPT='
-%{$BG[000]%}%{$FG[208]%}%m:%{$FG[076]%}${PWD/#$HOME/~}%{$reset_color%}%{$BG[000]%} %{$(git_current_branch)%}%{$FG[242]%}%* ₹%{$BG[000]%}%{$FG[000]%} _____%{$reset_color%}
+%{$BG[000]%}%{$FG[208]%}%m:%{$FG[076]%}${PWD/#$HOME/~}%{$reset_color%}%{$BG[000]%} %{$(git_current_branch)%}%{$FG[242]%}%* ₹%{$reset_color%}
 $ '
+# light
+PROMPT='
+%{$BG[000]%}%{$FG[208]%}%{$FG[076]%}${PWD/#$HOME/~}%{$reset_color%}%{$BG[000]%} %{$(git_current_branch)%}%{$FG[242]%}%{$reset_color%}
+$ '
+# for recording
+#PROMPT='
+#%{$BG[000]%}%{$FG[208]%}%{$FG[076]%}${PWD/#$HOME/~}%{$reset_color%}%{$BG[000]%}%{$FG[242]%}%{$reset_color%} $ '
 
 ZSH_THEME_GIT_PROMPT_PREFIX=" @ %{$FG[208]%}"
 ZSH_THEME_GIT_PROMPT_SUFFIX="%{$reset_color%}"

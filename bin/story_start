@@ -4,8 +4,6 @@ set -e
 
 source ~/.bash_aliases
 
-STORY_ID=$(xsel)
-
 function vim {
   # TODO: improve this
   # stub out vim, so mkde doesn't start it
@@ -13,10 +11,14 @@ function vim {
 }
 
 function main {
-  story=$(get_story)
+  local story_id=$(select_story)
+  if [ -z "$story_id" ]; then
+    exit
+  fi
+  local story=$(get_story $story_id)
   # this changes into the directory
-  start_story | jq .
-  mkde "${STORY_ID}_$(echo "$story" | jq -r .name)"
+  start_story $story_id | jq .
+  mkde "${story_id}_$(echo "$story" | jq -r .name)"
   local name=$(echo "$story" | jq -r .name)
   local url=$(echo "$story" | jq -r .url)
   local description=$(echo "$story" | jq -r .description)
@@ -25,11 +27,16 @@ function main {
   command vim log.md
 }
 
+function select_story {
+  grep -P '\[#\d+\]' ~/todotoday | fzf | grep -oP '(?<=\[#)\d+(?=\])'
+}
+
 function get_story {
-  if [ -n "$STORY_ID" ]; then
+  local story_id=$1
+  if [ -n "$story_id" ]; then
     curl -X GET -H "X-TrackerToken: $PT_TOKEN" \
       -H "Content-Type: application/json" \
-      "https://www.pivotaltracker.com/services/v5/projects/$PT_PROJECT_ID/stories/$STORY_ID"
+      "https://www.pivotaltracker.com/services/v5/projects/$PT_PROJECT_ID/stories/$story_id"
   else
     echo "Aborted due to missing story id"
     exit
@@ -37,11 +44,12 @@ function get_story {
 }
 
 function start_story {
-  if [ -n "$STORY_ID" ]; then
+  local story_id=$1
+  if [ -n "$story_id" ]; then
     curl -X PUT -H "X-TrackerToken: $PT_TOKEN" \
       -H "Content-Type: application/json" \
       -d '{"current_state":"started"}' \
-      "https://www.pivotaltracker.com/services/v5/projects/$PT_PROJECT_ID/stories/$STORY_ID"
+      "https://www.pivotaltracker.com/services/v5/projects/$PT_PROJECT_ID/stories/$story_id"
   else
     echo "Aborted due to missing story id"
     exit

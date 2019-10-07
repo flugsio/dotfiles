@@ -106,6 +106,8 @@ alias record='sleep 0.5 && ffmpeg -f pulse -name a -channels 2 -fragment_size 10
 alias record='sleep 0.5 && ffmpeg -f pulse -name a -channels 2 -fragment_size 1024 -i default -f x11grab -s 1440x900 -r 30 -i :0.0 -ac 1 -acodec ac3 -vcodec libx264 -preset ultrafast -crf 0 -threads 0 ~/output-$(date +%s).mkv 2>&1'
 alias record2='sleep 0.5 && ffmpeg -f pulse -name a -channels 2 -fragment_size 1024 -i default -f x11grab -s 1440x900 -r 30 -i :0.0 -ac 1 -acodec ac3 -vcodec libx264 -preset ultrafast -crf 0 -threads 0 ~/output-$(date +%s).mkv 2>&1'
 alias record3='sleep 1.5 && ffmpeg -f pulse -name a -channels 2 -fragment_size 1024 -i default -f x11grab -s 1920x1080 -r 90 -i :0.0 -ac 1 -acodec ac3 -vcodec libx264 -preset ultrafast -crf 0 -threads 0 /mnt/big/record/output-$(date +%s).mkv 2>&1'
+alias record4='sleep 1.5 && ffmpeg -f pulse -name a -channels 1 -fragment_size 1024 -i default -f x11grab -s 1920x1080 -r 60 -i :0.0 -ac 1 -acodec ac3 -vcodec libx264 -preset ultrafast -crf 0 -threads 0 ~/output-$(date +%s).mkv 2>&1'
+alias record5='sleep 1.5 && ffmpeg -f x11grab -s 1920x1080 -r 60 -i :0.0 -vcodec libx264 -preset ultrafast -crf 0 -threads 0 ~/output-$(date +%s).mkv 2>&1'
 alias wine_callersbane='WINEPREFIX=~/.wine_callersbane wine ~/.wine_callersbane/drive_c/CallersBane/CallersBane.exe'
 if [ `hostname` = "ranmi" ]; then
   #alias wine_ql='cd ~/.wine-ql/drive_c/Program\ Files/Quake\ Live/ && WINEPREFIX=~/.wine-ql taskset 0x01 wine Launcher.exe'

@@ -6,33 +6,33 @@ import json
 from subprocess import Popen, PIPE
 
 def shell_read(command):
-        return Popen(command, stdout=PIPE, shell=True, universal_newlines=True).stdout.read().strip()
+    return Popen(command, stdout=PIPE, shell=True, universal_newlines=True).stdout.read().strip()
 
 def get_glucose():
-        return shell_read("gluj")
+    return shell_read("gluj")
 
 def get_glucose_status():
-        # checks for presence of measurement last 2.5 hours
-        # 11 bytes = 10*15 min + newline
-        return Popen("gluj | tail --bytes 11 | sed 's/[^0-9A-Z]//g' | grep -q '.'", shell=True, universal_newlines=True).wait()
+    # checks for presence of measurement last 2.5 hours
+    # 11 bytes = 10*15 min + newline
+    return Popen("gluj | tail --bytes 11 | sed 's/[^0-9A-Z]//g' | grep -q '.'", shell=True, universal_newlines=True).wait()
 
 def get_pomodoro_name():
-        return shell_read("p name")
+    return shell_read("p name")
 
 def get_pomodoro_graph():
-        return shell_read("p graph")
+    return shell_read("p graph")
 
 def get_hexa_clock():
-        return shell_read("hexa_clock")
+    return shell_read("hexa_clock")
 
 def get_cpu_temperature():
-        return shell_read("sensors | grep temp2 | cut -d \"+\" -f 2 | cut -d \".\" -f 1")
+    return shell_read("sensors | grep temp2 | cut -d \"+\" -f 2 | cut -d \".\" -f 1")
 
 def glucose_color():
-        if get_glucose_status() == 0:
-            return ''
-        else:
-            return '#dc322f'
+    if get_glucose_status() == 0:
+        return ''
+    else:
+        return '#dc322f'
 
 def print_line(message):
     """ Non-buffered printing to stdout. """

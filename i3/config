@@ -256,6 +256,8 @@ bindsym $mod+shift+Pause exec sleep 0.5 && xset dpms force off && slock
 bindsym $mod+shift+F12 exec sleep 0.5 && xset dpms force off && slock
 
 bindsym XF86AudioPlay exec cmus-remote -u
+# This is a great workaround to pause stuff like youtube
+#bindsym XF86AudioPlay exec /home/flugsio/bin/pause
 bindsym XF86AudioStop exec cmus-remote -s
 bindsym XF86AudioPrev exec cmus-remote -r
 bindsym XF86AudioNext exec cmus-remote -n

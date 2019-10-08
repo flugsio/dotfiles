@@ -46,7 +46,9 @@ export LYNX_LSS=~/.config/lynx/lynx.lss
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
 
-eval $(keychain --quick --eval id_rsa --nogui --quiet)
+if [ -z "$SSH_AUTH_SOCK" ]; then
+  eval $(keychain --quick --eval id_rsa --nogui --quiet)
+fi
 
 bindkey -v
 

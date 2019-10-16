@@ -39,7 +39,9 @@ stty -ixon
 export PATH=$HOME/bin:$HOME/bin/games:$HOME/code/scripts:$HOME/.cargo/bin:$PATH
 
 export EDITOR='vim'
-export LC_PAPER=sv_SE.UTF-8
+if [ `hostname` = "toldi" ]; then
+  export LC_PAPER=sv_SE.UTF-8
+fi
 export LYNX_CFG=~/.config/lynx/lynx.cfg
 export LYNX_LSS=~/.config/lynx/lynx.lss
 

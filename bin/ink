@@ -16,9 +16,9 @@ link=$(echo "$link" | sed 's/.*:: //')
 [[ -n $link ]] || exit
 
 if [[ "$link" == "https://github.com/avidity"* ]]; then
-  firefox --new-window "$link"
+  chromium --new-window "$link"
 elif [[ "$link" == "https://github.com/pulls"* ]]; then
-  firefox --new-window "$link"
+  chromium --new-window "$link"
 else
   qutebrowser "$link" --target window &
 fi

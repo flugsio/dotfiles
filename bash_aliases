@@ -4,6 +4,9 @@ alias t='tig --all'
 alias ra='ranger'
 alias g='git'
 alias gr='git $(git root)'
+function browse {
+  chromium --new-window $@
+}
 function random_word {
   shuf -n1 /usr/share/dict/american-english | sed "s/'//" | tr '[:upper:]' '[:lower:]'
 }
@@ -183,26 +186,26 @@ function vagdestroy {
 alias giturl='git remote get-url --push origin | sed -r "s/^(git@github.com|hub):/https:\/\/github.com\//; s/.git$//"'
 alias hubname='git remote get-url --push origin | sed -r "s/^(git@github.com|hub)://; s/.git$//"'
 alias openall='openpr; openci; opengrafter'
-alias openpr='firefox "$(giturl)/compare/$(active_branch)?expand=1"'
-alias opengrafter='firefox "https://$(active_branch_cleaned).$GRAFTER_DOMAIN"'
+alias openpr='browse "$(giturl)/compare/$(active_branch)?expand=1"'
+alias opengrafter='browse "https://$(active_branch_cleaned).$GRAFTER_DOMAIN"'
 # openci requires a translation dictionary like this, store somewhere and load from your bashrc/zshrc like this
 # [[ -e ~/.api_keys ]] && . ~/.api_keys
 # typeset -A CI_PROJECTS=(
 #     avidity/errbit apps%2Ferrbit
 #     key value)
-alias openci='firefox --new-window "https://ci.promoteapp.net/blue/organizations/jenkins/${CI_PROJECTS[$(hubname)]}/activity?branch=$(active_branch)"'
+alias openci='browse "https://ci.promoteapp.net/blue/organizations/jenkins/${CI_PROJECTS[$(hubname)]}/activity?branch=$(active_branch)"'
 function opendocs {
-    firefox --new-window "https://docs.promoteapp.net/?search=$@"
+    browse "https://docs.promoteapp.net/?search=$@"
 }
 function opencii {
   name=$(printf '%s\n' "$ALL_CI_PROJECTS[@]" | fzf)
   name=${name/\//%2F}
   if [ -n "$name" ]; then
-    firefox --new-window "https://ci.promoteapp.net/blue/organizations/jenkins/$name/activity"
+    browse "https://ci.promoteapp.net/blue/organizations/jenkins/$name/activity"
   fi
 }
 function openwiki {
-  firefox "$(git remote get-url --push origin | sed -r "s/^(git@github.com|hub):/https:\/\github.com\//; s/(.wiki)?(.git)?$//")/wiki/${1%.md}"
+  browse "$(git remote get-url --push origin | sed -r "s/^(git@github.com|hub):/https:\/\github.com\//; s/(.wiki)?(.git)?$//")/wiki/${1%.md}"
 }
 alias swatch='(start=$(date +"%s"); echo "00:00"; typeset -Z2 minutes seconds; while true; do sleep 1; total=$(($(date +"%s")-$start)); minutes=$(($total/60)); seconds=$(($total%60)); echo "\e[1A$minutes:$seconds" ; done)'
 alias swatch_start='start=$(date +"%s"); typeset -Z2 minutes seconds'
@@ -215,6 +218,6 @@ alias pkgcachesize='(cd /var/cache/pacman/pkg && ls -1 . | sed "s/lib32-/lib32_/
 alias rfcsync='rsync -avz --delete ftp.rfc-editor.org::rfcs-text-only ~/code/rfc'
 alias pong='while sleep 1 && ! ping 8.8.8.8 -c 1 -w 3; do :; done'
 # TODO: this is slightly broken
-alias docker-local-docs='docker run -p 4123:4000 docs/docker.github.io:v18.03 &;firefox --new-window http://0.0.0.0:4123'
+alias docker-local-docs='docker run -p 4123:4000 docs/docker.github.io:v18.03 &;browse http://0.0.0.0:4123'
 alias gbmod='git diff origin/master...HEAD --name-only --diff-filter=DMR | xargs'
 # vim: ft=sh

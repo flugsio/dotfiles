@@ -221,3 +221,11 @@ alias pong='while sleep 1 && ! ping 8.8.8.8 -c 1 -w 3; do :; done'
 alias docker-local-docs='docker run -p 4123:4000 docs/docker.github.io:v18.03 &;browse http://0.0.0.0:4123'
 alias gbmod='git diff origin/master...HEAD --name-only --diff-filter=DMR | xargs'
 # vim: ft=sh
+function remote_ssh {
+  num=$(printf "6%.3d" $1)
+  ssh vagrant@145.239.149.74 -p ${num}0
+}
+function remote {
+  num=$(printf "6%.3d" $1)
+  mosh vagrant@145.239.149.74 -p ${num}0:${num}9 --ssh="ssh -p ${num}0"
+}

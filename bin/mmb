@@ -1,6 +1,7 @@
 #!/bin/bash
 
-CARD="bluez_card.00_16_94_0B_68_4F"
+#CARD="bluez_card.00_16_94_0B_68_4F"
+CARD="bluez_card.2C_41_A1_C3_CC_77"
 #ADDR_MM550="00:16:94:0B:68:4F"
 ADDR="2C:41:A1:C3:CC:77"
 

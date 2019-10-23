@@ -94,7 +94,7 @@ function findserver() {
     local result=$(grep "ansible_host" ~/donjon/ansible/{d,s,p}*/host_vars/* | sed 's/"//g;s/.*ansible\/\(.*\)\/host_vars\//\1 /;s/:ansible_host:\s*/ /' | awk '{print $3 "\t" $1 "\t" $2}' | fzf)
     local ip=$(echo $result | cut -f1)
     local universe=$(echo $result | cut -f2)
-    local name=$(echo $result | cut -f3)
+    local name=$(echo $result | cut -f3 | sed 's/:.*ansible_host://')
     local cmd=$(cat ~/.config/zcommands | fzf | sed 's/ *#.*$//' | sed 's# LOG# | tee ~/debug/latest/$(datei)_'$universe-$name'.log#')
     if [ -n "$ip" ]; then
       cmd="grep ansible ~/donjon/ansible/$universe/host_vars/$name; ssh $SPUSER@$ip $cmd"

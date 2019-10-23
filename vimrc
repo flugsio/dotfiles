@@ -145,7 +145,7 @@ set listchars=tab:>-,trail:·,eol:$
 set nrformats-=octal
 silent! set signcolumn=no
 
-if 5 < strftime("%H") && strftime("%H") < 12
+if 5 < strftime("%H") && strftime("%H") < 13
   set background=light
 else
   set background=dark

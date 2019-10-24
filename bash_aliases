@@ -151,19 +151,19 @@ function active_branch_cleaned {
 }
 function graft_branch {
   local branch=${1:-$(active_branch_cleaned)}
-  curl --fail -H "Api-Token: $(pass eve_token)" "http://grafter.dev.promoteapp.net:1414/${branch}"
+  curl --fail -H "Api-Token: $(pass grafter_token)" "http://grafter.dev.promoteapp.net:1414/${branch}"
 }
 function graft_tail {
   local branch=${1:-$(active_branch_cleaned)}
   local grafter="/home/promote/apps/grafter/release_branch.log"
   local branch_log="/home/promote/apps/promote-release/tmp/branch-${branch}.log /opt/promote/${branch}/shared/log/*.log"
-  ssh eve "tail -n 100 -F $grafter $branch_log"
+  ssh grafter "tail -n 100 -F $grafter $branch_log"
 }
 function graft_flag {
   local branch=${1:-$(active_branch_cleaned)}
-  vim scp://eve//opt/promote/${branch}/shared/config/features_${branch}.yaml
+  vim scp://grafter//opt/promote/${branch}/shared/config/features_${branch}.yaml
 
-  ssh eve -t "sudo -u root bash -ilc '/etc/init.d/unicorn_init_${branch} stop; /etc/init.d/unicorn_init_${branch} start; /etc/init.d/delayed_job_${branch} restart; /etc/init.d/sidekiq-${branch} stop; sleep 2; /etc/init.d/sidekiq-${branch} start;'"
+  ssh grafter -t "sudo -u root bash -ilc '/etc/init.d/unicorn_init_${branch} stop; /etc/init.d/unicorn_init_${branch} start; /etc/init.d/delayed_job_${branch} restart; /etc/init.d/sidekiq-${branch} stop; sleep 2; /etc/init.d/sidekiq-${branch} start;'"
 }
 function vagdestroy {
   local vag=$1
@@ -221,6 +221,7 @@ alias pong='while sleep 1 && ! ping 8.8.8.8 -c 1 -w 3; do :; done'
 alias docker-local-docs='docker run -p 4123:4000 docs/docker.github.io:v18.03 &;browse http://0.0.0.0:4123'
 alias gbmod='git diff origin/master...HEAD --name-only --diff-filter=DMR | xargs'
 # vim: ft=sh
+#alias i="(cd ~/code/ansible && (pgrep invoker || bundle exec invoker start vagrant.ini -d) && bundle exec invoker"
 function remote_ssh {
   num=$(printf "6%.3d" $1)
   ssh vagrant@145.239.149.74 -p ${num}0

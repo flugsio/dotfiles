@@ -67,7 +67,7 @@ bindkey '\e.' insert-last-word
 # widget: http://zsh.sourceforge.net/Guide/zshguide04.html#l103
 zle -N browsedir
 function browsedir() {
-  local dir=$(cat ~/.config/zlinks | fzf | sed 's/ *#.*$//')
+  local dir=$( (cat ~/.config/zlinks 2>/dev/null || find ~/code -maxdepth 1 -type d) | fzf | sed 's/ *#.*$//')
   if [ "$HOME/debug" = "$dir" ]; then
     local dir=$(find "$dir" -maxdepth 1 -type d | fzf | sed 's/ *#.*$//')
     if [ "$HOME/debug" = "$dir" ]; then
@@ -84,6 +84,15 @@ function browsedir() {
   elif [ -n "$dir" ]; then
     BUFFER="cd $dir"
     zle .accept-line
+  fi
+}
+
+function checkprev() {
+  local result=$(grep "prev_ansible_host" ~/donjon/ansible/{d,s,p}*/host_vars/* | sed 's/"//g;s/.*ansible\/\(.*\)\/host_vars\//\1 /;s/:ansible_host:\s*/ /' | awk '{print $3 "\t" $1 "\t" $2}' | fzf)
+  local ip=$(echo $result | cut -f1)
+  local cmd="tail -F /opt/promote/shared/log/nginx_access*.log /var/log/assessor/nginx_access*.log"
+  if [ -n "$ip" ]; then
+    ssh $SPUSER@$ip $cmd
   fi
 }
 

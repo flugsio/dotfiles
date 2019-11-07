@@ -253,7 +253,7 @@ endfunction
 
 function! PrefixPairCredit(lines)
   " removes count prefix
-  return join(map(a:lines->substitute("^\\s\\+\\d\\+\\s\\+", "", ""), '"Co-authored-by: " . v:val'), "\n")
+  return join(map(a:lines, '"Co-authored-by: " . substitute(v:val, "^\\s\\+\\d\\+\\s\\+", "", "")'), "\n")
 endfunction
 
 " Mappings

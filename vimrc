@@ -240,7 +240,7 @@ iab <expr> dts strftime("%Y-%m-%d")
 iab <expr> dta strftime("%Y-%m-%d %H:%M")
 iab <expr> dtz strftime("%Y-%m-%dT%H:%M:%S%z")
 iab <expr> paircred fzf#complete({
-      \ 'source': 'cd ~/code/promote && git log --pretty="%an <%ae>%n%cn <%ce>" HEAD~300..HEAD \| sort \| uniq',
+      \ 'source': 'cd ~/code/promote && git log --pretty="%an <%ae>%n%cn <%ce>" HEAD~300..HEAD \| sort \| uniq -c',
       \ 'reducer': function('PrefixPairCredit'),
       \ 'options': '--multi',
       \ 'prefix': '' })
@@ -252,7 +252,8 @@ function! GivePairingCredit()
 endfunction
 
 function! PrefixPairCredit(lines)
-  return join(map(a:lines, '"Co-authored-by: " . v:val'), "\n")
+  " removes count prefix
+  return join(map(a:lines->substitute("^\\s\\+\\d\\+\\s\\+", "", ""), '"Co-authored-by: " . v:val'), "\n")
 endfunction
 
 " Mappings

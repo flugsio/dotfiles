@@ -240,7 +240,7 @@ iab <expr> dts strftime("%Y-%m-%d")
 iab <expr> dta strftime("%Y-%m-%d %H:%M")
 iab <expr> dtz strftime("%Y-%m-%dT%H:%M:%S%z")
 iab <expr> paircred fzf#complete({
-      \ 'source': 'cd ~/code/promote2 && git log --pretty="%an <%ae>%n%cn <%ce>" HEAD~300..HEAD \| sort \| uniq',
+      \ 'source': 'cd ~/code/promote && git log --pretty="%an <%ae>%n%cn <%ce>" HEAD~300..HEAD \| sort \| uniq',
       \ 'reducer': function('PrefixPairCredit'),
       \ 'options': '--multi',
       \ 'prefix': '' })
@@ -433,7 +433,11 @@ function! RunCommand(command)
 endfunction
 
 function! ReRunCommand()
- exec 'AsyncRun ' . g:async_command
+  if g:async_command =~ '^:'
+    exec g:async_command
+  else
+    exec 'AsyncRun ' . g:async_command
+  end
 endfunction
 
 function! CompleteKCommand(ArgLead, CmdLine, CursorPos)

@@ -1,3 +1,5 @@
+# vim:ft=zsh ts=2 sw=2 sts=2
+
 alias dot='cd ~/code/dotfiles'
 alias rep='cd ~/code/ansible/repos'
 alias t='tig --all'
@@ -44,7 +46,7 @@ alias il='invoker list'
 function ir { for s in ${*:-$DEFAULT_RELOAD}; do echo reload $s; invoker reload $s; done }
 function is { for s in ${*:-$DEFAULT_RELOAD}; do echo remove $s; invoker remove $s; done }
 function ia { for s in ${*:-$DEFAULT_RELOAD}; do echo add $s; invoker add $s; done }
-function iA { eval $(sed -n "/\[$1\]/,/^\[/p" ~/code/promote.ini | grep -Po "(?<=command = ).*"); }
+function iA { eval $(sed -n "/\[$1\]/,/^\[/p" ~/code/ansible/promote.ini | grep -Po "(?<=command = ).*"); }
 alias iclear='pkill -f "^tail.*.invoker/invoker.log"'
 alias ilog='while true; do clear; tmux clear-history; tail -n0 -F ~/.invoker/invoker.log; done'
 function rv {
@@ -230,7 +232,6 @@ alias pong='while sleep 1 && ! ping 8.8.8.8 -c 1 -w 3; do :; done'
 # TODO: this is slightly broken
 alias docker-local-docs='docker run -p 4123:4000 docs/docker.github.io:v18.03 &;browse http://0.0.0.0:4123'
 alias gbmod='git diff origin/master...HEAD --name-only --diff-filter=DMR | xargs'
-# vim: ft=sh
 #alias i="(cd ~/code/ansible && (pgrep invoker || bundle exec invoker start vagrant.ini -d) && bundle exec invoker"
 function remote_ssh {
   num=$(printf "6%.3d" $1)

@@ -235,9 +235,11 @@ alias gbmod='git diff origin/master...HEAD --name-only --diff-filter=DMR | xargs
 #alias i="(cd ~/code/ansible && (pgrep invoker || bundle exec invoker start vagrant.ini -d) && bundle exec invoker"
 function remote_ssh {
   num=$(printf "6%.3d" $1)
-  ssh vagrant@145.239.149.74 -p ${num}0
+  shift
+  ssh vagrant@145.239.149.74 -p ${num}0 $@
 }
 function remote {
   num=$(printf "6%.3d" $1)
-  mosh vagrant@145.239.149.74 -p ${num}0:${num}9 --ssh="ssh -p ${num}0"
+  shift
+  mosh vagrant@145.239.149.74 -p ${num}0:${num}9 --ssh="ssh -p ${num}0" $@
 }

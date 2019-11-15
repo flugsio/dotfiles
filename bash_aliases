@@ -238,6 +238,13 @@ function remote_ssh {
   shift
   ssh vagrant@145.239.149.74 -p ${num}0 $@
 }
+function remote_sshfs {
+  n=$1
+  shift
+  num=$(printf "6%.3d" $n)
+  mkdir -p ~/remote/$n
+  sshfs vagrant@145.239.149.74:/home/vagrant/code ~/remote/$n -p ${num}0 $@
+}
 function remote {
   num=$(printf "6%.3d" $1)
   shift

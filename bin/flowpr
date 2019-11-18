@@ -1,5 +1,8 @@
 #!/bin/zsh -il
 
+echo "not used"
+exit
+
 # THIS IS WIP
 # This requires a bunch of environment variables to be set.
 # The tokens should be straight forward,
@@ -9,7 +12,6 @@
 #     )
 
 set -e
-set -x
 
 prnr=$1
 
@@ -32,6 +34,7 @@ if [ -n "$prnr" ]; then
   content="$assignee $title $url"
   # This follows the format of "flows/organization/flowname"
   recipient="$FLOWDOCK_MAIN_FLOW"
+  #recipient="flows/avidity/promote-ops"
 
   flowdock_thread=$(curl -XGET -F "event=message" -F "search=#${prnr}" \
     https://${FLOWDOCK_AVIDITY_TOKEN}@api.flowdock.com/$recipient/threads | \

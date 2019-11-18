@@ -1,0 +1,50 @@
+#!/bin/zsh -il
+
+# THIS IS WIP
+# This requires a bunch of environment variables to be set.
+# The tokens should be straight forward,
+# there is one special variable, add peoples githubusername<space>@flowdockname
+# typeset -A GITHUB_SLACK_USERS=(
+#     someeone @Someone
+#     )
+
+set -e
+
+prnr=$1
+
+url=$(xsel)
+if [[ "$url" =~ "github.com" ]]; then
+  hubname=$(echo $url | sed -E 's"^https://github.com/(\w+\/\w+).*$"\1"')
+  prnr=$(echo $url | sed -E 's"^https://github.com/\w+/\w+/pull/([[:digit:]]+).*$"\1"')
+fi
+
+if [ -n "$prnr" ]; then
+  response="$HOME/.cache/makepr_response"
+  curl -sSL -H "Authorization: token $GITHUB_TOKEN" https://api.github.com/repos/$(hubname)/pulls/$prnr -o $response
+  title=$(cat $response | jq -r '.title | select (.!=null)')
+  url=$(cat $response | jq -r '.html_url | select (.!=null)')
+  #ticketid=$(echo $title | grep -oP "(?<=\[#)\d+(?=\])" || echo '')
+
+  #title=$(echo $title | sed -E 's{\[#([[:digit:]]+)\]{[[#\1]](https://www.pivotaltracker.com/n/projects/'$PT_PROJECT_ID'/stories/\1/){')
+  title=$(echo $title | sed -E 's{\[#([[:digit:]]+)\]{<https://www.pivotaltracker.com/n/projects/'$PT_PROJECT_ID'/stories/\1/|[#\1]>{')
+
+  assignee=$(cat $response | jq -r '.assignees | first .login | select (.!=null)')
+  if [ -n "$assignee" ]; then
+    assignee="${GITHUB_SLACK_USERS[$assignee]}"
+  else
+    echo "No assignee!"
+    exit 1
+  fi
+  content="pr $assignee $title $url"
+  # This follows the format of "flows/organization/flowname"
+  recipient="$SLACK_MAIN_FLOW"
+
+  if [ -n "$title" -a -n "$url" ]; then
+    curl -F "token=${SLACK_PROMOTEINT_TOKEN}" -F "channel=$recipient" -F "as_user=true" -F "link_names=true" -F "text=${content}" https://slack.com/api/chat.postMessage
+
+  else
+    echo No title or url
+  fi
+else
+  echo "missing pr number"
+fi

@@ -14,13 +14,13 @@ prnr=$1
 
 url=$(xsel)
 if [[ "$url" =~ "github.com" ]]; then
-  hubname=$(echo $url | sed -E 's"^https://github.com/(\w+\/\w+).*$"\1"')
-  prnr=$(echo $url | sed -E 's"^https://github.com/\w+/\w+/pull/([[:digit:]]+).*$"\1"')
+  hubname=$(echo $url | sed -E 's"^https://github.com/([^/]+\/[^/]+).*$"\1"')
+  prnr=$(echo $url | sed -E 's"^https://github.com/[^/]+/[^/]+/pull/([[:digit:]]+).*$"\1"')
 fi
 
 if [ -n "$prnr" ]; then
   response="$HOME/.cache/makepr_response"
-  curl -sSL -H "Authorization: token $GITHUB_TOKEN" https://api.github.com/repos/$(hubname)/pulls/$prnr -o $response
+  curl -sSL -H "Authorization: token $GITHUB_TOKEN" https://api.github.com/repos/$hubname/pulls/$prnr -o $response
   title=$(cat $response | jq -r '.title | select (.!=null)')
   url=$(cat $response | jq -r '.html_url | select (.!=null)')
   #ticketid=$(echo $title | grep -oP "(?<=\[#)\d+(?=\])" || echo '')

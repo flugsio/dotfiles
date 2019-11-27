@@ -1,0 +1,89 @@
+#!/bin/bash
+
+# https://www.pivotaltracker.com/help/api/rest/v5#Endpoints
+
+set -e
+
+function create_story {
+  local name="$1"
+  local description="$2"
+  local story_type="$3"
+  local labels="$4"
+  local current_state="$5"
+  local owner_ids="$6"
+  local estimate="$7"
+  #-d "{\"name\":\"$name\",\"description\":\"$description\",\"labels\":[$labels]}" \
+  # ,\"owner_ids\":$owner_ids,\"estimate\":$estimate}" \
+  #-d "{\"name\":\"$name\",\"description\":\"$description\",\"labels\":[$labels],\"current_state\":$current_state,\"owner_ids\":$owner_ids,\"estimate\":$estimate}" \
+  if [ -n "$name" ]; then
+    curl -X POST -H "X-TrackerToken: $PT_TOKEN" \
+      -H "Content-Type: application/json" \
+      -d "{\"name\":\"$name\",\"description\":\"$description\",\"story_type\":\"$story_type\",\"labels\":[$labels],\"current_state\":\"$current_state\",\"owner_ids\":[$owner_ids]}" \
+      "https://www.pivotaltracker.com/services/v5/projects/$PT_PROJECT_ID/stories" | jq .
+   else
+    echo "Aborted due to missing story name"
+  fi
+}
+
+function create_calendar_event {
+  #local calendar_id=something
+  #local google_calendar_access_token=some_token
+  #curl "https://www.googleapis.com/calendar/v3/calendars/$calendar_id/events?access_token=$google_calendar_access_token" \
+  #  -H "Content-Type: application/json" \
+  #  -d ' { "start": { "dateTime": "2012-07-11T12:47:31+05:30" }, "end": { "dateTime": "2012-07-11T22:47:31+05:30" }, "attendees": [ { "email": "{Attendee_Email}" } ], "reminders": { "overrides":[ ] } }' \
+  #  -v
+  :;
+}
+
+echo "This will create all stories for a release, which tag?"
+read tag
+
+# which team
+labels="\"team fenrir\", \"release\""
+#release_pilot=
+# jimmie
+release_ops=1812784
+
+#labels="\"team poa\", \"release\""
+#release_pilot=
+# filipe
+#release_ops=3008726
+
+project="Promote"
+#project="Control Center"
+#project="Ratatosk"
+#project="Dispatcher"
+#project="Mimir"
+
+create_story "Release $project $tag to staging" "" chore "$labels" "planned" $release_ops
+if [[ "$tag" =~ '.0' ]]; then
+  create_story "$project $tag" "" release "\"team fenrir\", \"team poa\", \"release\"" "planned"
+  #create_calendar_event
+fi
+create_story "Release $project $tag to production" "" chore "$labels" "unscheduled" $release_ops
+
+#if [ "$1" = "soon" ]; then
+#  current_state="\"planned\""
+#  # unplanned label conveys it was injected into current sprint
+#  labels="\"team fenrir\",\"team poa\",\"unplanned\""
+#  owner_ids="[]"
+#  estimate="null"
+#elif [ "$1" = "now" ]; then
+#  current_state="\"planned\""
+#  # unplanned label conveys it was injected into current sprint
+#  labels="\"team fenrir\",\"unplanned\""
+#  owner_ids="[1812784]"
+#  estimate="1"
+#else
+#  current_state="\"unscheduled\""
+#  labels="\"non prioritised\""
+#  owner_ids="[]"
+#  estimate="null"
+#fi
+
+#extra_label=$(echo -e "technical\nsecurity" | fzf --prompt "Extra label? (CTRL-C to cancel)")
+
+#if [ -n "$extra_label" ]; then
+#  labels="$labels,\"${extra_label}\""
+#fi
+

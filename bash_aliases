@@ -250,3 +250,8 @@ function remote {
   shift
   mosh vagrant@145.239.149.74 -p ${num}0:${num}9 --ssh="ssh -p ${num}0" $@
 }
+function remote_save_history {
+  num=$(printf "6%.3d" $1)
+  scp -P ${num}0 vagrant@145.239.149.74:/home/vagrant/.histfile ~/debug/history/$(dtz)_$1.sh
+  cd ~/debug/history
+}

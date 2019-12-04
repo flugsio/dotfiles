@@ -6,6 +6,8 @@ alias t='tig --all'
 alias ra='ranger'
 alias g='git'
 alias gr='git $(git root)'
+# list remote branches with author
+alias gbr='for branch in `git branch -r | grep -v HEAD`;do echo -e `git show --format="%ai %ar by %an" $branch | head -n 1` \\t$branch; done | sort -r'
 function browse {
   chromium --new-window $@
 }

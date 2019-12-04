@@ -7,6 +7,11 @@ if [ `hostname` = "toldi" ]; then
   primary_extra="--auto"
   secondary="DP1"
   secondary_extra="--auto"
+elif [ `hostname` = "zdani" ]; then
+  primary="DP-0"
+  primary_extra="--mode 1920x1080"
+  secondary="HDMI-0"
+  secondary_extra="--mode 1920x1080"
 elif [ `hostname` = "kribev" ]; then
   primary="LVDS-0"
   primary_extra="--mode 1366x768"
@@ -49,13 +54,13 @@ elif [ "$1" = "3" ]; then
   fi
 elif [ "$1" = "4" ]; then
   xrandr \
-    --output LVDS-0 --mode 1440x900 \
-    --output VGA-0 --mode 1440x900 --same-as LVDS-0
+    --output $primary $primary_extra \
+    --output $secondary $primary_extra --same-as $primary
 else
   echo "usage:"
   echo "  $0 0 : auto"
-  echo "  $0 1 : LVDS"
-  echo "  $0 2 : VGA"
-  echo "  $0 3 : LVDS+VGA"
-  echo "  $0 4 : LVDS,VGA mirror"
+  echo "  $0 1 : primary"
+  echo "  $0 2 : secondary"
+  echo "  $0 3 : primary+secondary extend"
+  echo "  $0 4 : primary+secondary mirror"
 fi

@@ -144,17 +144,25 @@ bindsym $mod+Shift+r restart
 # exit i3 (logs you out of your X session)
 bindsym $mod+Shift+t exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
 
-mode "automate" {
+mode "automate1" {
   bindsym Up exec --no-startup-id screenshot;
   #bindsym Left exec --no-startup-id xdotool mousemove 130 750 click 1 sleep 1.5 mousemove 920 650 click 1 sleep 2 mousemove 250 250 click 1 sleep 1 click 1 sleep 1 click 1
   #bindsym Right exec --no-startup-id xdotool mousemove 266 750 click 1 
-
   # 1920x1080
-  bindsym Left exec --no-startup-id xdotool mousemove 243 1054 click 1 sleep 1.5 mousemove 1650 900 click 1 sleep 2 mousemove 468 351 click 1 sleep 1 click 1 sleep 1 click 1
-  bindsym Right exec --no-startup-id xdotool mousemove 498 1054 click 1 
+  bindsym Left exec --no-startup-id xdotool mousemove 243 1050 mousedown 1 sleep 0.2 mouseup 1 sleep 1.5 mousemove 1650 900 mousedown 1 sleep 0.2 mouseup 1 sleep 2 mousemove 468 351 mousedown 1 sleep 0.2 mouseup 1 sleep 1 mousedown 1 sleep 0.2 mouseup 1 sleep 1 mousedown 1 sleep 0.2 mouseup 1
+  bindsym Right exec --no-startup-id xdotool mousemove 498 1050 mousedown 1 sleep 0.2 mouseup 1
+
   bindsym Escape mode "default"
 }
-bindsym $mod+shift+b mode "automate"
+
+mode "automate2" {
+  bindsym c exec auto_getlocation
+  bindsym g exec auto_click
+  bindsym t exec pkill -9 auto_click
+
+  bindsym Escape mode "default"
+}
+bindsym $mod+shift+b mode "automate1"
 
 # resize window (you can also use the mouse for that)
 mode "resize" {

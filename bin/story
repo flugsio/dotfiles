@@ -11,18 +11,18 @@ vim $tmp
 if [ "$1" = "soon" ]; then
   current_state="\"planned\""
   # unplanned label conveys it was injected into current sprint
-  labels="\"team fenrir\",\"team poa\",\"unplanned\""
+  labels="\"unplanned\""
   owner_ids="[]"
   estimate="null"
 elif [ "$1" = "now" ]; then
   current_state="\"planned\""
   # unplanned label conveys it was injected into current sprint
-  labels="\"team fenrir\",\"unplanned\""
+  labels="\"unplanned\""
   owner_ids="[1812784]"
   estimate="1"
 else
   current_state="\"unscheduled\""
-  labels="\"non prioritised\""
+  labels=""
   owner_ids="[]"
   estimate="null"
 fi
@@ -42,7 +42,6 @@ if [ -n "$name" ]; then
     -H "Content-Type: application/json" \
     -d "{\"name\":\"$name\",\"description\":\"$description\",\"labels\":[$labels],\"current_state\":$current_state,\"owner_ids\":$owner_ids,\"estimate\":$estimate}" \
     "https://www.pivotaltracker.com/services/v5/projects/$PT_PROJECT_ID/stories" | jq .
-  rm $tmp
 else
   echo "Aborted due to missing story name"
   echo "Filename: $tmp"

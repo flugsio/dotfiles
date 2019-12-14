@@ -1,8 +1,13 @@
-#!/bin/bash
+#!/bin/zsh -il
 
 # https://www.pivotaltracker.com/help/api/rest/v5#Endpoints
 
 set -e
+
+if [ -z "$PT_TOKEN" ]; then
+  echo "This script requires \$PT_TOKEN and \$PT_PROJECT_ID"
+  exit
+fi
 
 function create_story {
   local name="$1"
@@ -34,8 +39,9 @@ function create_calendar_event {
   #  -v
   :;
 }
-
-echo "This will create all stories for a release, which tag?"
+projects="Promote\nControl Center\nRatatosk\nDispatcher\nMimir\nGud\nFetch"
+project=$(echo -e "$projects" | fzf --prompt "Which project?")
+echo "Which tag for project ${project}?"
 read tag
 
 labels="\"release\""

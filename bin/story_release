@@ -38,16 +38,16 @@ function create_calendar_event {
 echo "This will create all stories for a release, which tag?"
 read tag
 
-# which team
-labels="\"team fenrir\", \"release\""
-#release_pilot=
+labels="\"release\""
+# jonas
+#release_pilot=?
 # jimmie
-release_ops=1812784
+#release_ops=1812784
 
-#labels="\"team poa\", \"release\""
-#release_pilot=
+# henrique tegel
+release_pilot=3032393
 # filipe
-#release_ops=3008726
+release_ops=3008726
 
 project="Promote"
 #project="Control Center"
@@ -56,9 +56,12 @@ project="Promote"
 #project="Mimir"
 
 create_story "Release $project $tag to staging" "" chore "$labels" "planned" $release_ops
-if [[ "$tag" =~ '.0' ]]; then
-  create_story "$project $tag" "" release "\"team fenrir\", \"team poa\", \"release\"" "planned"
-  #create_calendar_event
+if [[ "$project" = 'Promote' ]]; then
+  create_story "Release $project $tag to development (grace)" "" chore "$labels" "planned" $release_pilot
+  if [[ "$tag" =~ '.0' ]]; then
+    create_story "$project $tag" "" release "\"release\"" "planned"
+    #create_calendar_event
+  fi
 fi
 create_story "Release $project $tag to production" "" chore "$labels" "unscheduled" $release_ops
 

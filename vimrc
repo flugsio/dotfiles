@@ -24,7 +24,7 @@ Plugin   'leafgarland/typescript-vim'
 Plugin        'quramy/tsuquyomi'
 Plugin        'Quramy/vim-js-pretty-template'
 Plugin     'jason0x43/vim-js-indent'
-if has('python')
+if has('python3')
   Plugin      'SirVer/ultisnips'
 endif
 " TODO: find/configure debugging plugin

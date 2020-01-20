@@ -42,13 +42,14 @@ function gp {
     git branch -d $branch
   done
 }
+alias istart='invoker start all -d'
 alias iw='alias i{r,l,s,a,clear,log}; echo iA=run interactively'
 alias i='invoker'
 alias il='invoker list'
 function ir { for s in ${*:-$DEFAULT_RELOAD}; do echo reload $s; invoker reload $s; done }
 function is { for s in ${*:-$DEFAULT_RELOAD}; do echo remove $s; invoker remove $s; done }
 function ia { for s in ${*:-$DEFAULT_RELOAD}; do echo add $s; invoker add $s; done }
-function iA { eval $(sed -n "/\[$1\]/,/^\[/p" ~/code/ansible/promote.ini | grep -Po "(?<=command = ).*"); }
+function iA { eval $(sed -n "/\[$1\]/,/^\[/p" ~/.invoker/all.ini | grep -Po "(?<=command = ).*"); }
 alias iclear='pkill -f "^tail.*.invoker/invoker.log"'
 alias ilog='while true; do clear; tmux clear-history; tail -n0 -F ~/.invoker/invoker.log; done'
 function rv {

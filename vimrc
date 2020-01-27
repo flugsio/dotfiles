@@ -244,6 +244,8 @@ let g:reek_on_loading = 0
 iab <expr> dts strftime("%Y-%m-%d")
 iab <expr> dta strftime("%Y-%m-%d %H:%M")
 iab <expr> dtz strftime("%Y-%m-%dT%H:%M:%S%z")
+" NOTE: this is hardcoded to convert from CET/UTC+1 to UTC, requires manual update
+iab <expr> dti strftime("%Y%m%d %H%M", localtime()-3600*1)
 iab <expr> paircred fzf#complete({
       \ 'source': 'cd ~/code/promote && git log --pretty="%an <%ae>%n%cn <%ce>" HEAD~300..HEAD \| sort \| uniq -c',
       \ 'reducer': function('PrefixPairCredit'),

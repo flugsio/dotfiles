@@ -71,6 +71,11 @@ endif
 
 let g:pairing=filereadable($HOME.'/.cache/pairing')
 
+if has("gui_gtk3")
+  set guifont=Ubuntu\ Mono\ 20
+  set guicursor=n-v-c:block-Cursor/lCursor,ve:ver35-Cursor,o:hor50-Cursor,i-ci:ver20-Cursor/lCursor,r-cr:hor20-Cursor/lCursor,a:blinkwait400-blinkoff500-blinkon500
+end
+
 if has("autocmd")
   filetype plugin indent on
   augroup vimrcEx

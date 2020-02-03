@@ -5,7 +5,21 @@
 set -e
 
 tmp=$(mktemp --suffix=.md)
-cp ~/.config/story_template $tmp
+
+if [ "$1" = "bug" ]; then
+  # TODO: use another template
+  cp ~/.config/bug_template $tmp
+  story_type="bug"
+  shift
+elif [ "$1" = "errbit" ]; then
+  cp ~/.config/errbit_template $tmp
+  story_type="bug"
+  shift
+else
+  cp ~/.config/story_template $tmp
+  story_type="feature"
+fi
+
 vim $tmp
 
 if [ "$1" = "soon" ]; then
@@ -40,7 +54,7 @@ description=$(tail -n +2 $tmp | sed 's/"/\\"/g' | sed ':a;N;$!ba;s/\n/\\n/g')
 if [ -n "$name" ]; then
   curl -X POST -H "X-TrackerToken: $PT_TOKEN" \
     -H "Content-Type: application/json" \
-    -d "{\"name\":\"$name\",\"description\":\"$description\",\"labels\":[$labels],\"current_state\":$current_state,\"owner_ids\":$owner_ids,\"estimate\":$estimate}" \
+    -d "{\"name\":\"$name\",\"description\":\"$description\",\"story_type\":\"$story_type\",\"labels\":[$labels],\"current_state\":$current_state,\"owner_ids\":$owner_ids,\"estimate\":$estimate}" \
     "https://www.pivotaltracker.com/services/v5/projects/$PT_PROJECT_ID/stories" | jq .
 else
   echo "Aborted due to missing story name"

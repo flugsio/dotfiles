@@ -45,21 +45,18 @@ echo "Which tag for project ${project}?"
 read tag
 
 labels="\"release\""
-# jonas
-#release_pilot=?
-# jimmie
-#release_ops=1812784
 
-# henrique tegel
-release_pilot=3032393
-# filipe
-release_ops=3008726
-
-project="Promote"
-#project="Control Center"
-#project="Ratatosk"
-#project="Dispatcher"
-#project="Mimir"
+if [[ "$project" = 'Promote' ]]; then
+  # henrique tegel
+  release_pilot=3032393
+  # filipe
+  release_ops=3008726
+else
+  # michael
+  release_pilot=3096813
+  # jimmie
+  release_ops=1812784
+fi
 
 create_story "Release $project $tag to staging" "" chore "$labels" "planned" $release_ops
 if [[ "$project" = 'Promote' ]]; then
@@ -70,29 +67,4 @@ if [[ "$project" = 'Promote' ]]; then
   fi
 fi
 create_story "Release $project $tag to production" "" chore "$labels" "unscheduled" $release_ops
-
-#if [ "$1" = "soon" ]; then
-#  current_state="\"planned\""
-#  # unplanned label conveys it was injected into current sprint
-#  labels="\"team fenrir\",\"team poa\",\"unplanned\""
-#  owner_ids="[]"
-#  estimate="null"
-#elif [ "$1" = "now" ]; then
-#  current_state="\"planned\""
-#  # unplanned label conveys it was injected into current sprint
-#  labels="\"team fenrir\",\"unplanned\""
-#  owner_ids="[1812784]"
-#  estimate="1"
-#else
-#  current_state="\"unscheduled\""
-#  labels="\"non prioritised\""
-#  owner_ids="[]"
-#  estimate="null"
-#fi
-
-#extra_label=$(echo -e "technical\nsecurity" | fzf --prompt "Extra label? (CTRL-C to cancel)")
-
-#if [ -n "$extra_label" ]; then
-#  labels="$labels,\"${extra_label}\""
-#fi
 

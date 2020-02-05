@@ -42,4 +42,4 @@
   pager = cat
 
 [color]
-	ui = auto
+  ui = auto

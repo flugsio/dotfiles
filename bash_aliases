@@ -259,3 +259,16 @@ function remote_save_history {
   scp -P ${num}0 vagrant@145.239.149.74:/home/vagrant/.histfile ~/debug/history/$(dtz)_$1.sh
   cd ~/debug/history
 }
+# changed repos
+function ch {
+  for d in $(cd ~/code/; find ./* -maxdepth 0 -type d); do
+    (
+      cd ~/code/$d
+      git diff --exit-code > /dev/null 2>&1 || (
+      printf "\033[0;33m=== $(pwd) @ $(active_branch) | $(git describe 2>/dev/null)"
+      printf "\033[0m\n"
+      eval $@
+    )
+  )
+  done
+}

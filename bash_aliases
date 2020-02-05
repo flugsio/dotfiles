@@ -37,6 +37,13 @@ function gb {
 function gp {
   git checkout master
   git pull -p
+  cleanup
+}
+function gf {
+  git fetch
+  cleanup
+}
+function cleanup {
   local branch
   for branch in $(git branch --merged | grep -v master | grep -v "^\*"); do
     git branch -d $branch
@@ -259,14 +266,25 @@ function remote_save_history {
   scp -P ${num}0 vagrant@145.239.149.74:/home/vagrant/.histfile ~/debug/history/$(dtz)_$1.sh
   cd ~/debug/history
 }
+function print_location {
+  printf "\033[0;33m=== $(pwd) @ $(active_branch) | $(git describe 2>/dev/null)\033[0m\n"
+}
+function all {
+  for d in $(cd ~/code/; find ./* -maxdepth 0 -type d); do
+    (
+      cd ~/code/$d
+      print_location
+      eval $@
+    )
+  done
+}
 # changed repos
 function ch {
   for d in $(cd ~/code/; find ./* -maxdepth 0 -type d); do
     (
       cd ~/code/$d
       git diff --exit-code > /dev/null 2>&1 || (
-      printf "\033[0;33m=== $(pwd) @ $(active_branch) | $(git describe 2>/dev/null)"
-      printf "\033[0m\n"
+      print_location
       eval $@
     )
   )

@@ -1,0 +1,55 @@
+#!/bin/bash
+
+function click {
+  xdotool mousemove $1 $2 mousedown 1 sleep 0.05 mouseup 1
+}
+
+function spam {
+  xdotool mousemove 921 670
+  a=$(for i in $(seq 1 50); do echo mousedown 1 sleep 0.1 mouseup 1; done | xargs echo)
+  echo $a | xargs xdotool
+}
+
+function items {
+  click 1390 85
+  click 1388 204
+  click 1388 302
+  click 1394 417
+  click 1401 536
+  click 1388 659
+  click 1390 802
+  click 1401 900
+}
+
+function upgrades {
+  click 189 866
+}
+
+function voids {
+  click 663 503
+  click 812 374
+  click 1093 348
+  click 1260 490
+}
+
+function spells {
+  xdotool type 1
+  xdotool type 2
+  xdotool type 1
+  xdotool type 2
+  xdotool type 4
+}
+
+function main {
+  sleep 1
+  while sleep 0.1; do
+    echo one >> ~/locations.txt
+    spells
+    spam
+    voids
+    items
+    upgrades
+  done
+}
+
+main

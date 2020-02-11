@@ -1,0 +1,28 @@
+#!/bin/bash
+
+export DISPLAY=:0
+
+while read -n1 what; do
+  if [ "$what" = "exit" ]; then
+    exit 0
+  #elif [ "$what" = "6" ]; then
+  #  xdotool mousemove 498 1050 mousedown 1 sleep 0.2 mouseup 1
+  #elif [ "$what" = "4" ]; then
+  #  xdotool mousemove 243 1050 mousedown 1 sleep 0.2 mouseup 1 sleep 1.5 mousemove 1650 900 mousedown 1 sleep 0.2 mouseup 1 sleep 2 mousemove 468 351 mousedown 1 sleep 0.2 mouseup 1 sleep 1 mousedown 1 sleep 0.2 mouseup 1 sleep 1 mousedown 1 sleep 0.2 mouseup 1
+  elif [ "$what" = "2" ]; then
+    xdotool key Up
+  elif [ "$what" = "8" ]; then
+    xdotool key Down
+  elif [ "$what" = "4" ]; then
+    xdotool key Left
+  elif [ "$what" = "6" ]; then
+    xdotool key Right
+  elif [ "$what" = "5" ]; then
+    xdotool key space
+  elif [ "$what" = "1" ]; then
+    xdotool key f
+  elif [ "$what" = "3" ]; then
+    xdotool key ctrl+w
+  fi
+done
+

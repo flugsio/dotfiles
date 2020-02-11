@@ -1,0 +1,4 @@
+#!/bin/bash
+cd /home/flugsio/.local/share/games/FrozenCortex
+ 
+./runCortex.sh

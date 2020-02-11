@@ -336,7 +336,7 @@ mouse:
     #   - (Linux) xdg-open
     #   - (Windows) explorer
     launcher:
-      program: firefox
+      program: chromium
       args:
         - --new-window
 

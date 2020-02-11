@@ -9,7 +9,13 @@ alias gr='git $(git root)'
 # list remote branches with author
 alias gbr='for branch in `git branch -r | grep -v HEAD`;do echo -e `git show --format="%ai %ar by %an" $branch | head -n 1` \\t$branch; done | sort -r'
 function browse {
-  chromium --new-window $@
+  if command -v chromium >/dev/null 2>&1; then
+    chromium --new-window $@
+  elif command -v firefox >/dev/null 2>&1; then
+    firefox --new-window $@
+  else
+    echo $@
+  fi
 }
 function random_word {
   shuf -n1 /usr/share/dict/american-english | sed "s/'//" | tr '[:upper:]' '[:lower:]'

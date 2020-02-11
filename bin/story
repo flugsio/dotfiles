@@ -11,6 +11,11 @@ if [ "$1" = "bug" ]; then
   cp ~/.config/bug_template $tmp
   story_type="bug"
   shift
+elif [ "$1" = "chore" ]; then
+  cp ~/.config/chore_template $tmp
+  story_type="chore"
+  shift
+else
 elif [ "$1" = "errbit" ]; then
   cp ~/.config/errbit_template $tmp
   story_type="bug"
@@ -44,7 +49,11 @@ fi
 extra_label=$(echo -e "technical\nsecurity" | fzf --prompt "Extra label? (CTRL-C to cancel)" | echo "")
 
 if [ -n "$extra_label" ]; then
-  labels="$labels,\"${extra_label}\""
+  if [ -n "$labels" ]; then
+    labels="$labels,\"${extra_label}\""
+  else
+    labels="\"${extra_label}\""
+  fi
 fi
 
 name=$(head -n 1 $tmp | sed 's/"/\\"/g')

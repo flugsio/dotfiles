@@ -15,7 +15,6 @@ elif [ "$1" = "chore" ]; then
   cp ~/.config/chore_template $tmp
   story_type="chore"
   shift
-else
 elif [ "$1" = "errbit" ]; then
   cp ~/.config/errbit_template $tmp
   story_type="bug"

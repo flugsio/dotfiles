@@ -251,34 +251,46 @@ alias pong='while sleep 1 && ! ping 8.8.8.8 -c 1 -w 3; do :; done'
 alias docker-local-docs='docker run -p 4123:4000 docs/docker.github.io:v18.03 &;browse http://0.0.0.0:4123'
 alias gbmod='git diff origin/master...HEAD --name-only --diff-filter=DMR | xargs'
 #alias i="(cd ~/code/ansible && (pgrep invoker || bundle exec invoker start vagrant.ini -d) && bundle exec invoker"
-# Add ip number in ~/.ssh/config
 function remote_num {
   printf "6%.3d" $1
 }
 function remote_sshfs {
+  if [ -z "$REMOTEIP" ]; then
+    local REMOTEIP=$(curl -Ls ipinfo.io | jq -r .ip)
+    local d=echo
+  fi
   n=$1
   shift
   num=$(remote_num $n)
-  mkdir -p ~/remote/$n
-  sshfs vagrant@remote:/home/vagrant/code ~/remote/$n -p ${num}0 $@
+  $d mkdir -p ~/remote/$n
+  $d sshfs vagrant@$REMOTEIP:/home/vagrant/code ~/remote/$n -p ${num}0 $@
 }
 function remote {
+  if [ -z "$REMOTEIP" ]; then
+    local REMOTEIP=$(curl -Ls ipinfo.io | jq -r .ip)
+    local d=echo
+  fi
+  # If first argument is a number, connect to guest, otherwise the host
   if [ "$1" -gt 0 ] 2>/dev/null; then
     num=$(remote_num $1)
     shift
     if [ "$#" -eq 0 ]; then
-      mosh vagrant@remote -p ${num}0:${num}9 --ssh="ssh -p ${num}0" $@
+      $d mosh vagrant@$REMOTEIP -p ${num}0:${num}9 --ssh="ssh -p ${num}0" $@
     else
       echo "WARNING: using ssh due to arguments, useful with -A"
-      ssh vagrant@remote -p ${num}0 $@
+      $d ssh vagrant@$REMOTEIP -p ${num}0 $@
     fi
   else
-    ssh remote "cd ~/code/remote; $@"
+    if [ "$#" -eq 0 ]; then
+      $d ssh -A $REMOTEIP
+    else
+      $d ssh $REMOTEIP "cd ~/code/remote; $@"
+    fi
   fi
 }
 function remote_save_history {
   num=$(remote_num $1)
-  scp -P ${num}0 vagrant@remote:/home/vagrant/.histfile ~/debug/history/$(dtz)_$1.sh
+  scp -P ${num}0 vagrant@$REMOTEIP:/home/vagrant/.histfile ~/debug/history/$(dtz)_$1.sh
   cd ~/debug/history
 }
 function print_location {

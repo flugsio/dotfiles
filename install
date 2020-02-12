@@ -98,7 +98,7 @@ function install_vundles {
   # TODO: only quit unless there was errors
   vim -c VundleInstall -c qa
   # change branches manually
-  (cd ~/.vim/bundle/fzf.vim && git fetch origin add-git-files-modified && git checkout add-git-files-modified)
+  (cd ~/.vim/bundle/fzf.vim && git fetch origin add-git-files-modified:add-git-files-modified && git checkout add-git-files-modified)
 }
 
 main

@@ -251,26 +251,30 @@ alias pong='while sleep 1 && ! ping 8.8.8.8 -c 1 -w 3; do :; done'
 alias docker-local-docs='docker run -p 4123:4000 docs/docker.github.io:v18.03 &;browse http://0.0.0.0:4123'
 alias gbmod='git diff origin/master...HEAD --name-only --diff-filter=DMR | xargs'
 #alias i="(cd ~/code/ansible && (pgrep invoker || bundle exec invoker start vagrant.ini -d) && bundle exec invoker"
+# Add ip number in ~/.ssh/config
+function remote_num {
+  printf "6%.3d" $1
+}
 function remote_ssh {
-  num=$(printf "6%.3d" $1)
+  num=$(remote_num $1)
   shift
-  ssh vagrant@145.239.149.74 -p ${num}0 $@
+  ssh vagrant@remote -p ${num}0 $@
 }
 function remote_sshfs {
   n=$1
   shift
-  num=$(printf "6%.3d" $n)
+  num=$(remote_num $n)
   mkdir -p ~/remote/$n
-  sshfs vagrant@145.239.149.74:/home/vagrant/code ~/remote/$n -p ${num}0 $@
+  sshfs vagrant@remote:/home/vagrant/code ~/remote/$n -p ${num}0 $@
 }
 function remote {
-  num=$(printf "6%.3d" $1)
+  num=$(remote_num $1)
   shift
-  mosh vagrant@145.239.149.74 -p ${num}0:${num}9 --ssh="ssh -p ${num}0" $@
+  mosh vagrant@remote -p ${num}0:${num}9 --ssh="ssh -p ${num}0" $@
 }
 function remote_save_history {
-  num=$(printf "6%.3d" $1)
-  scp -P ${num}0 vagrant@145.239.149.74:/home/vagrant/.histfile ~/debug/history/$(dtz)_$1.sh
+  num=$(remote_num $1)
+  scp -P ${num}0 vagrant@remote:/home/vagrant/.histfile ~/debug/history/$(dtz)_$1.sh
   cd ~/debug/history
 }
 function print_location {

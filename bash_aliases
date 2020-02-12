@@ -255,11 +255,6 @@ alias gbmod='git diff origin/master...HEAD --name-only --diff-filter=DMR | xargs
 function remote_num {
   printf "6%.3d" $1
 }
-function remote_ssh {
-  num=$(remote_num $1)
-  shift
-  ssh vagrant@remote -p ${num}0 $@
-}
 function remote_sshfs {
   n=$1
   shift
@@ -268,9 +263,18 @@ function remote_sshfs {
   sshfs vagrant@remote:/home/vagrant/code ~/remote/$n -p ${num}0 $@
 }
 function remote {
-  num=$(remote_num $1)
-  shift
-  mosh vagrant@remote -p ${num}0:${num}9 --ssh="ssh -p ${num}0" $@
+  if [ "$1" -gt 0 ] 2>/dev/null; then
+    num=$(remote_num $1)
+    shift
+    if [ "$#" -eq 0 ]; then
+      mosh vagrant@remote -p ${num}0:${num}9 --ssh="ssh -p ${num}0" $@
+    else
+      echo "WARNING: using ssh due to arguments, useful with -A"
+      ssh vagrant@remote -p ${num}0 $@
+    fi
+  else
+    ssh remote "cd ~/code/remote; $@"
+  fi
 }
 function remote_save_history {
   num=$(remote_num $1)

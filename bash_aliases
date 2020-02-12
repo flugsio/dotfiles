@@ -284,7 +284,7 @@ function remote {
     if [ "$#" -eq 0 ]; then
       $d ssh -A $REMOTEIP
     else
-      $d ssh $REMOTEIP "cd ~/code/remote; $@"
+      $d ssh -t $REMOTEIP "cd ~/code/remote; $@"
     fi
   fi
 }

@@ -1,15 +1,28 @@
 #!/bin/bash
 
 # https://www.pivotaltracker.com/help/api/rest/v5#Endpoints
+# https://www.pivotaltracker.com/help/api/rest/v5#Story
 
 set -e
 
 tmp=$(mktemp --suffix=.md)
 
+technical_backlog="170027982"
+after_id="null"
+labels=""
+owner_ids="[]"
+current_state="\"unscheduled\""
+estimate="null"
+
 if [ "$1" = "bug" ]; then
   # TODO: use another template
   cp ~/.config/bug_template $tmp
   story_type="bug"
+  shift
+elif [ "$1" = "security" ]; then
+  cp ~/.config/security_template $tmp
+  story_type="chore"
+  labels="\"security\",\"upgrade\",\"technical\""
   shift
 elif [ "$1" = "chore" ]; then
   cp ~/.config/chore_template $tmp
@@ -17,7 +30,8 @@ elif [ "$1" = "chore" ]; then
   shift
 elif [ "$1" = "errbit" ]; then
   cp ~/.config/errbit_template $tmp
-  story_type="bug"
+  story_type="chore"
+  labels="\"errbit\",\"technical\""
   shift
 else
   cp ~/.config/story_template $tmp
@@ -27,25 +41,20 @@ fi
 vim $tmp
 
 if [ "$1" = "soon" ]; then
-  current_state="\"planned\""
-  # unplanned label conveys it was injected into current sprint
-  labels="\"unplanned\""
-  owner_ids="[]"
-  estimate="null"
+  # untested
+  current_state="\"unstarted\""
+  after_id="$technical_backlog"
 elif [ "$1" = "now" ]; then
   current_state="\"planned\""
   # unplanned label conveys it was injected into current sprint
   labels="\"unplanned\""
   owner_ids="[1812784]"
-  estimate="1"
-else
-  current_state="\"unscheduled\""
-  labels=""
-  owner_ids="[]"
-  estimate="null"
+  if [ "$story_type" = "feature" ]; then
+    estimate="1"
+  fi
 fi
 
-extra_label=$(echo -e "technical\nsecurity" | fzf --prompt "Extra label? (CTRL-C to cancel)" | echo "")
+extra_label=$(echo -e "technical\nsecurity\ncc\nsidequest win" | fzf --prompt "Extra label? (CTRL-C to cancel)" | echo "")
 
 if [ -n "$extra_label" ]; then
   if [ -n "$labels" ]; then

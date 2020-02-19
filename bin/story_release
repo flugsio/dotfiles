@@ -58,13 +58,17 @@ else
   release_ops=1812784
 fi
 
+if [[ "$project" = 'Promote' ]]; then
+  create_story "Check errbit and create stories for new errors" "Create investigative stories for new relevant errors" chore "$labels" "planned" ""
+  create_story "Create stories for new security issues" "Check github security alerts, and bundle-audit" chore "$labels" "planned" ""
+  create_story "Release $project $tag to development (grace)" "" chore "$labels" "planned" $release_pilot
+fi
 create_story "Release $project $tag to staging" "" chore "$labels" "planned" $release_ops
 if [[ "$project" = 'Promote' ]]; then
-  create_story "Release $project $tag to development (grace)" "" chore "$labels" "planned" $release_pilot
   if [[ "$tag" =~ '.0' ]]; then
     create_story "$project $tag" "" release "\"release\"" "planned"
     #create_calendar_event
   fi
 fi
-create_story "Release $project $tag to production" "" chore "$labels" "unscheduled" $release_ops
+create_story "Release $project $tag to production" "" chore "$labels" "planned" $release_ops
 

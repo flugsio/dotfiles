@@ -46,8 +46,8 @@ if [ "$1" = "soon" ]; then
   after_id="$technical_backlog"
 elif [ "$1" = "now" ]; then
   current_state="\"planned\""
-  # unplanned label conveys it was injected into current sprint
-  labels="\"unplanned\""
+  # urgent label conveys it was injected into current sprint
+  labels="\"urgent\""
   owner_ids="[1812784]"
   if [ "$story_type" = "feature" ]; then
     estimate="1"

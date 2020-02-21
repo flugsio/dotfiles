@@ -92,7 +92,8 @@ if has("autocmd")
     autocmd! BufRead *.wofl call SetupWoflToPomodoroBuffer()
     autocmd! BufRead *.asm set noet sw=8
     autocmd! BufReadPost *.md let g:async_command = ':Tabularize /|/'
-    autocmd! FileType ansible.yaml syn match Secrets /.*\(pass\|secret\).*: \S\+$/ conceal cchar=¤ set conceallevel=2
+    autocmd! FileType ansible.yaml syn match Secrets /.*\(pass\|secret\).*: \S\+$/ conceal cchar=¤
+    autocmd! FileType ansible.yaml set conceallevel=2
     autocmd! BufReadPost quickfix nnoremap <silent> <buffer> q :q<cr>
     autocmd! BufNewFile,BufRead *.ejs set ft=html | call matchadd("Search2", "<%-") | call matchadd("Search3", "<%=") 
     autocmd! User AsyncRunStart hi StatusLine ctermbg=232

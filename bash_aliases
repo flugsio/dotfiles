@@ -60,12 +60,19 @@ alias istart='invoker start all -d'
 alias iw='alias i{r,l,s,a,clear,log}; echo iA=run interactively'
 alias i='invoker'
 alias il='invoker list'
-function ir { for s in ${*:-$DEFAULT_RELOAD}; do echo reload $s; invoker reload $s; done }
-function is { for s in ${*:-$DEFAULT_RELOAD}; do echo remove $s; invoker remove $s; done }
-function ia { for s in ${*:-$DEFAULT_RELOAD}; do echo add $s; invoker add $s; done }
+# These work on the argument list, or DEFAULT_RELOAD if set, or fallbacks to current directories processes
+function ir { for s in ${*:-${DEFAULT_RELOAD:-$(ihere)}}; do echo reload $s; invoker reload $s; done }
+function is { for s in ${*:-${DEFAULT_RELOAD:-$(ihere)}}; do echo remove $s; invoker remove $s; done }
+function ia { for s in ${*:-${DEFAULT_RELOAD:-$(ihere)}}; do echo add $s; invoker add $s; done }
 function iA { eval $(sed -n "/\[$1\]/,/^\[/p" ~/.invoker/all.ini | grep -Po "(?<=command = ).*"); }
 alias iclear='pkill -f "^tail.*.invoker/invoker.log"'
 alias ilog='while true; do clear; tmux clear-history; tail -n0 -F ~/.invoker/invoker.log; done'
+alias ilist="cat ~/.invoker/all.ini | sed -rn '/^\[/{N;s/\[([^]]*)\]\ndirectory = (.*)$/\1 \2/;p}'"
+# List of all processes in invoker's all.ini, filtered by the current directory name
+function ihere {
+  local p=$(pwd | sed "s#$HOME#~#")
+  ilist | grep "$p" | cut -f1 -d' ' | xargs echo
+}
 function rv {
   # TODO: fix quotes/params
   if [ -z "$*" ]; then
@@ -307,6 +314,17 @@ function all {
   done
 }
 # changed repos
+function chs {
+  for d in $(cd ~/code/; find ./* -maxdepth 0 -type d); do
+    (
+      cd ~/code/$d
+      git diff --cached --exit-code > /dev/null 2>&1 || (
+      print_location
+      eval $@
+    )
+  )
+  done
+}
 function ch {
   for d in $(cd ~/code/; find ./* -maxdepth 0 -type d); do
     (

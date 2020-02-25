@@ -277,13 +277,14 @@ function remote {
   if [ -z "$REMOTEIP" ]; then
     local REMOTEIP=$(curl -Ls ipinfo.io | jq -r .ip)
     local d=echo
+    set -x
   fi
   # If first argument is a number, connect to guest, otherwise the host
   if [ "$1" -gt 0 ] 2>/dev/null; then
     num=$(remote_num $1)
     shift
     if [ "$#" -eq 0 ]; then
-      $d mosh vagrant@$REMOTEIP -p ${num}0:${num}9 --ssh="ssh -p ${num}0" $@
+      $d mosh vagrant@$REMOTEIP -p ${num}0:${num}9 --ssh="ssh -p ${num}0" -- tmux new-session -A -s m
     else
       echo "WARNING: using ssh due to arguments, useful with -A"
       $d ssh vagrant@$REMOTEIP -p ${num}0 $@

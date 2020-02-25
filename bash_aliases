@@ -71,7 +71,7 @@ alias ilist="cat ~/.invoker/all.ini | sed -rn '/^\[/{N;s/\[([^]]*)\]\ndirectory 
 # List of all processes in invoker's all.ini, filtered by the current directory name
 function ihere {
   local p=$(pwd | sed "s#$HOME#~#")
-  ilist | grep "$p" | cut -f1 -d' ' | xargs echo
+  ilist | grep -E "$p($|\/)" | cut -f1 -d' ' | xargs echo
 }
 function rv {
   # TODO: fix quotes/params

@@ -2,29 +2,29 @@
 
 set -e
 
-function update {
+function update_one {
   local url=$1
   local name=${url##*/}
 
   if [ -e "$name" ]; then
     (
     cd $name
-    git pull
     if [ -z "$(git status --porcelain)" ]; then
       echo updating $name
-      git pull
+      git -c color.ui=always pull
     else
       echo fetching $name
-      git fetch
+      git -c color.ui=always fetch
     fi
     )
   else
     git clone $url $name
   fi
 }
+export -f update_one
 
 function main {
-  cat repos.txt | while read url; do update $url; done
+  parallel update_one < repos.txt
 }
 
 main

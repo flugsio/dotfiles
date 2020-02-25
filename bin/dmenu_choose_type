@@ -1,6 +1,6 @@
 #!/bin/bash
 TERM="st -e"
-COMMAND="st -e zsh -i -c"
+COMMAND="alacritty -e zsh -i -c"
 HTERM="st -e zsh -i -c"
 HCOMMAND="st -e sh -c"
 CACHE=${XDG_CACHE_HOME:-$HOME/.cache}/dmenu-recent-apps

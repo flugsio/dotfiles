@@ -15,4 +15,7 @@ xset r rate 200 33
 
 export PATH=$PATH:~/bin/:~/code/scripts/
 
+if command -v cbatticon >/dev/null 2>&1; then
+  cbatticon -i symbolic -c "notify-send -u critical 'low battery'" &
+fi
 exec i3

@@ -1,0 +1,19 @@
+#!/bin/bash
+
+function main {
+  install_pacman archlinux_base.txt
+  install_pacman archlinux_laptop.txt
+}
+
+function install_pacman {
+  if command -v pacman >/dev/null 2>&1; then
+    echo installing packages from $1
+    sudo pacman --needed -S $(cat $1)
+  else
+    echo "pacman is not available"
+  fi
+}
+
+
+main
+

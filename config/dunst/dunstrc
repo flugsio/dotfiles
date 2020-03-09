@@ -1,0 +1,24 @@
+# https://github.com/khamer/base16-dunst/blob/master/themes/base16-gruvbox-dark-pale.dunstrc
+# killall dunst;notify-send -u low low; notify-send -u normal normal; notify-send -u critical critical
+
+[global]
+    font = "Ubuntu Mono 15"
+    geometry = "500x5+200"
+
+frame_color = "#dab997"
+separator_color = "#dab997"
+
+[base16_low]
+    msg_urgency = low
+    background = "#3a3a3a"
+    foreground = "#8a8a8a"
+
+[base16_normal]
+    msg_urgency = normal
+    background = "#4e4e4e"
+    foreground = "#dab997"
+
+[base16_critical]
+    msg_urgency = critical
+    background = "#d75f5f"
+    foreground = "#d5c4a1"

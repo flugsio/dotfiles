@@ -300,9 +300,17 @@ function remote {
   fi
 }
 function remote_save_history {
-  num=$(remote_num $1)
-  scp -P ${num}0 vagrant@$REMOTEIP:/home/vagrant/.histfile ~/debug/history/$(dtz)_$1.sh
+  remote_pull $1 /home/vagrant/.histfile ~/debug/history/$(dtz)_$1.sh
   cd ~/debug/history
+}
+function remote_push {
+  num=$(remote_num $1)
+  scp $2 scp://vagrant@$REMOTEIP:${num}0/$3
+}
+function remote_pull {
+  num=$(remote_num $1)
+  scp scp://vagrant@$REMOTEIP:${num}0/$2 $3
+  #scp -P ${num}0 vagrant@$REMOTEIP:$2 $3
 }
 function print_location {
   printf "\033[0;33m=== $(pwd) @ $(active_branch) | $(git describe 2>/dev/null)\033[0m\n"

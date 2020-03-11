@@ -259,6 +259,8 @@ alias pong='while sleep 1 && ! ping 8.8.8.8 -c 1 -w 3; do :; done'
 alias docker-local-docs='docker run -p 4123:4000 docs/docker.github.io:v18.03 &;browse http://0.0.0.0:4123'
 alias gbmod='git diff origin/master...HEAD --name-only --diff-filter=DMR | xargs'
 #alias i="(cd ~/code/ansible && (pgrep invoker || bundle exec invoker start vagrant.ini -d) && bundle exec invoker"
+alias urldecode='python3 -c "import sys, urllib.parse as ul; print(ul.unquote_plus(sys.argv[1]))"'
+alias urlencode='python3 -c "import sys, urllib.parse as ul; print (ul.quote_plus(sys.argv[1]))"'
 function remote_num {
   printf "6%.3d" $1
 }

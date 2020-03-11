@@ -2,6 +2,7 @@
 
 function main {
   install_pacman archlinux_base.txt
+  install_pacman archlinux_allgui.txt
   install_pacman archlinux_laptop.txt
 }
 

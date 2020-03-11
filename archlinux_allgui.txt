@@ -1,0 +1,4 @@
+pasystray
+redshift
+chromium
+firefox

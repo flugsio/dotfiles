@@ -2,3 +2,5 @@ pasystray
 redshift
 chromium
 firefox
+alsa-plugins # for pulseaudio in audacity
+audacity

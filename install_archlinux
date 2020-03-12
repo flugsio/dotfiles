@@ -9,7 +9,7 @@ function main {
 function install_pacman {
   if command -v pacman >/dev/null 2>&1; then
     echo installing packages from $1
-    sudo pacman --needed -S $(cat $1)
+    sudo pacman --needed -S $(cat $1 | cut -d' ' -f1)
   else
     echo "pacman is not available"
   fi

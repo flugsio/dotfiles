@@ -287,6 +287,9 @@ function remote {
     shift
     if [ "$#" -eq 0 ]; then
       $d mosh vagrant@$REMOTEIP -p ${num}0:${num}9 --ssh="ssh -p ${num}0" -- tmux new-session -A -s m
+    elif [ "$1" == "weechat" ]; then
+      export TERM=screen-256color 
+      $d mosh vagrant@$REMOTEIP -p ${num}0:${num}9 --ssh="ssh -p ${num}0" -- tmux -L tmux_weechat -f .tmux.weechat.conf new-session -A -s w weechat
     else
       echo "WARNING: using ssh due to arguments, useful with -A"
       $d ssh vagrant@$REMOTEIP -p ${num}0 $@
@@ -305,7 +308,7 @@ function remote_save_history {
 }
 function remote_push {
   num=$(remote_num $1)
-  scp $2 scp://vagrant@$REMOTEIP:${num}0/$3
+  scp -r $2 scp://vagrant@$REMOTEIP:${num}0/$3
 }
 function remote_pull {
   num=$(remote_num $1)

@@ -4,3 +4,8 @@ chromium
 firefox
 alsa-plugins # for pulseaudio in audacity
 audacity
+bluez
+bluez-utils
+bluetooth
+pulseaudio-bluetooth
+xdotool

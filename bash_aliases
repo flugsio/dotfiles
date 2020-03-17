@@ -276,6 +276,20 @@ function remote_sshfs {
   $d mkdir -p ~/remote/$n
   $d sshfs vagrant@$REMOTEIP:/home/vagrant/code ~/remote/$n -p ${num}0 $@
 }
+function remote_nc {
+  n=$1
+  shift
+  num=$(remote_num $n)
+  ssh vagrant@$REMOTEIP -p ${num}0 $@ -R 127.0.0.1:7722:127.0.0.1:7722 remote_watcher
+}
+alias remote_watcher='while sleep 1; do inotifywait -e modify ~/code/screenshot.png && echo reload_feh | nc -c localhost 7722; done'
+alias remote_watch='while sleep 1; do nc -l -p 7722 | remote_command; done'
+function remote_command {
+  if [ "$1" == "reload_feh" ]; then
+    # reload twice to force reload through sshfs
+    xdotool search --name feh key r r
+  fi
+}
 function remote {
   if [ -z "$REMOTEIP" ]; then
     local REMOTEIP=$(curl -Ls ipinfo.io | jq -r .ip)

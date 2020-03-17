@@ -290,7 +290,7 @@ function remote_watch {
   n=$1
   shift
   num=$(remote_num $n)
-  ssh vagrant@$REMOTEIP -p ${num}0 $@ -R 127.0.0.1:7722:127.0.0.1:77$1 zsh -ilc remote_watcher
+  ssh vagrant@$REMOTEIP -p ${num}0 $@ -R 127.0.0.1:7722:127.0.0.1:77$n zsh -ilc remote_watcher
 }
 function remote_watcher {
   while sleep 0.2; do

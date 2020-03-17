@@ -265,13 +265,16 @@ alias urlencode='python3 -c "import sys, urllib.parse as ul; print (ul.quote_plu
 function remote_num {
   printf "6%.3d" $1
 }
-# To watch screenshots for from 32
-# remote_sshfs 32
-# feh ~/remote/32/screenshot.png &
-# remote_watch 32 (keep running)
-# remote_listen 32 (keep running)
-# on server: (can be used as byebug expression)
-# save_screenshot('~/code/screenshot.png')
+function remote_help {
+  echo "REMOTE SCREENSHOTS"
+  echo "  To watch screenshots from 32"
+  echo "  remote_sshfs 32"
+  echo "  feh ~/remote/32/screenshot.png &"
+  echo "  remote_watch 32 (keep running)"
+  echo "  remote_listen 32 (keep running)"
+  echo "  on server: (can be used as byebug display expression)"
+  echo "  save_screenshot('~/code/screenshot.png')"
+}
 function remote_sshfs {
   if [ -z "$REMOTEIP" ]; then
     local REMOTEIP=$(curl -Ls ipinfo.io | jq -r .ip)

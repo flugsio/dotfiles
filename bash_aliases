@@ -94,6 +94,7 @@ function mkde {
 }
 alias be='bundle exec'
 alias ber='bundle exec rake'
+alias bb='bundle exec rspec $(ack byebug\$ spec --output=:: | sed s/::://)'
 alias datei='date -u +"%Y%m%dT%H%M%SZ"'
 alias dts='date -u +"%Y%m%d"'
 alias dta='date -u +"%Y%m%d %H%M"'

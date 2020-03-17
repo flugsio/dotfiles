@@ -265,6 +265,13 @@ alias urlencode='python3 -c "import sys, urllib.parse as ul; print (ul.quote_plu
 function remote_num {
   printf "6%.3d" $1
 }
+# To watch screenshots for from 32
+# remote_sshfs 32
+# feh ~/remote/32/screenshot.png &
+# remote_watch 32 (keep running)
+# remote_listen 32 (keep running)
+# on server: (can be used as byebug expression)
+# save_screenshot('~/code/screenshot.png')
 function remote_sshfs {
   if [ -z "$REMOTEIP" ]; then
     local REMOTEIP=$(curl -Ls ipinfo.io | jq -r .ip)
@@ -276,18 +283,26 @@ function remote_sshfs {
   $d mkdir -p ~/remote/$n
   $d sshfs vagrant@$REMOTEIP:/home/vagrant/code ~/remote/$n -p ${num}0 $@
 }
-function remote_nc {
+function remote_watch {
   n=$1
   shift
   num=$(remote_num $n)
-  ssh vagrant@$REMOTEIP -p ${num}0 $@ -R 127.0.0.1:7722:127.0.0.1:7722 remote_watcher
+  ssh vagrant@$REMOTEIP -p ${num}0 $@ -R 127.0.0.1:7722:127.0.0.1:77$1 zsh -ilc remote_watcher
 }
-alias remote_watcher='while sleep 1; do inotifywait -e modify ~/code/screenshot.png && echo reload_feh | nc -c localhost 7722; done'
-alias remote_watch='while sleep 1; do nc -l -p 7722 | remote_command; done'
+function remote_watcher {
+  while sleep 0.2; do
+    inotifywait -e modify ~/code/screenshot.png && echo reload_feh | nc -c localhost 7722
+  done
+}
+function remote_listen {
+  while sleep 0.2; do
+    remote_command $(nc -l -p 77$1);
+  done
+}
 function remote_command {
   if [ "$1" == "reload_feh" ]; then
     # reload twice to force reload through sshfs
-    xdotool search --name feh key r r
+    xdotool search --name feh sleep 0.5 key r sleep 0.5 key r
   fi
 }
 function remote {

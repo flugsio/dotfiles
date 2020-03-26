@@ -1,0 +1,9 @@
+#!/bin/bash
+
+while sleep 0.1; do
+  eval $(xdotool selectwindow getmouselocation --shell)
+  xdotool click 1
+  xdotool mousemove $(( X + 683 )) $Y
+  xdotool click 1
+  xdotool mousemove $X $Y
+done

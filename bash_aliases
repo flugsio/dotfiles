@@ -140,6 +140,51 @@ alias record2='sleep 0.5 && ffmpeg -f pulse -name a -channels 2 -fragment_size 1
 alias record3='sleep 1.5 && ffmpeg -f pulse -name a -channels 2 -fragment_size 1024 -i default -f x11grab -s 1920x1080 -r 90 -i :0.0 -ac 1 -acodec ac3 -vcodec libx264 -preset ultrafast -crf 0 -threads 0 /mnt/big/record/output-$(date +%s).mkv 2>&1'
 alias record4='sleep 1.5 && ffmpeg -f pulse -name a -channels 1 -fragment_size 1024 -i default -f x11grab -s 1920x1080 -r 60 -i :0.0 -ac 1 -acodec ac3 -vcodec libx264 -preset ultrafast -crf 0 -threads 0 ~/output-$(date +%s).mkv 2>&1'
 alias record5='sleep 1.5 && ffmpeg -f x11grab -s 1920x1080 -r 60 -i :0.0 -vcodec libx264 -preset ultrafast -crf 0 -threads 0 ~/output-$(date +%s).mkv 2>&1'
+function record {
+  local what=${1:-resize} # area, window, 1920x1080 (a size), resize 1920px1080px (uses i3 to set the size)
+  if [ "$what" = "resize" ]; then
+    local what="window"
+    shift
+    local size=${1:-1920px1080px}
+    echo "resizing to $size, click on window"
+    xdotool selectwindow windowfocus --sync
+    i3-msg floating enable resize set $size
+    echo "click on window again to start recording"
+  fi
+  local audio=${2:-audio} # audio, noaudio
+  local frames=${3:-30}
+
+  if [ "$what" = "area" ]; then
+    local potatoes=$(eval $(xdotool selectwindow getmouselocation --shell | grep "[XY]=" | sed "s/^/A/"; xdotool selectwindow getmouselocation --shell | grep "[XY]=" | sed "s/^/B/"); echo "-s $(($BX-$AX))x$(($BY-$AY)) -r $frames -i :0.0+$AX,$AY")
+  elif [ "$what" = "window" ]; then
+    local potatoes=$(eval $(xdotool selectwindow getwindowgeometry --shell); echo "-s ${WIDTH}x${HEIGHT} -r $frames -i :0.0+$X,$Y")
+  else
+    local potatoes="-s $what -r $frames -i :0.0"
+  fi
+
+  if [ "$audio" = "audio" ]; then
+    local sauce="-f pulse -name a -channels 2 -fragment_size 1024 -i default"
+  elif [ "$audio" = "noaudio" ]; then
+    local sauce=""
+  else
+    echo "wrong syntax: area/window/size/(resize+size) audio/noaudio [frames]"
+    exit 1
+  fi
+  local extra="-acodec ac3 -vcodec libx264 -preset ultrafast -crf 0 -threads 0"
+  local filename="output-$(date +%s)"
+  local output="~/${filename}.mkv"
+  local compressed="~/${filename}c.mkv"
+  echo "executing in 1 second ffmpeg $sauce -f x11grab $potatoes $extra $output 2>&1"
+  sleep 1
+  eval "ffmpeg $sauce -f x11grab $potatoes $extra $output"
+  echo "start compressing? (ctrl-c to cancel)"
+  read i
+  if [ "$audio" = "audio" ]; then
+    ffmpeg -i $output -c copy -vcodec libx264 -crf 24 ${compressed}
+  else
+    ffmpeg -i $output -c copy -an -vcodec libx264 -crf 24 ${compressed}
+  fi
+}
 alias wine_callersbane='WINEPREFIX=~/.wine_callersbane wine ~/.wine_callersbane/drive_c/CallersBane/CallersBane.exe'
 if [ `hostname` = "ranmi" ]; then
   #alias wine_ql='cd ~/.wine-ql/drive_c/Program\ Files/Quake\ Live/ && WINEPREFIX=~/.wine-ql taskset 0x01 wine Launcher.exe'

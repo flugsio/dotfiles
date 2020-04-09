@@ -23,8 +23,28 @@ function update_one {
 }
 export -f update_one
 
+function install_dependencies {
+  local url=$1
+  local name=${url##*/}
+
+  if [ -e "$name" ]; then
+    (
+    cd $name
+    echo "Installing dependencies for $name"
+    [ -e .ruby-version ] && rbenv install --skip-existing || true
+    [ -e Gemfile ] && bundle || true
+    [ -e yarn.lock ] && yarn install --check-files || true
+    [ -e package-lock.json ] && npm install || true
+    )
+  else
+    echo "$name doesn't exist"
+  fi
+}
+export -f install_dependencies
+
 function main {
   parallel update_one < repos.txt
+  parallel install_dependencies < repos.txt
 }
 
 main

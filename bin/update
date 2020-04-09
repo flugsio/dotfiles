@@ -32,7 +32,7 @@ function install_dependencies {
     cd $name
     echo "Installing dependencies for $name"
     [ -e .ruby-version ] && rbenv install --skip-existing || true
-    [ -e Gemfile ] && bundle || true
+    [ -e Gemfile ] && bundle --jobs 8 || true
     [ -e yarn.lock ] && yarn install --check-files || true
     [ -e package-lock.json ] && npm install || true
     )
@@ -44,7 +44,8 @@ export -f install_dependencies
 
 function main {
   parallel update_one < repos.txt
-  parallel install_dependencies < repos.txt
+  # this can't run in parallel
+  cat repos.txt | while read url; do install_dependencies $url; done
 }
 
 main

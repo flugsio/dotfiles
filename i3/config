@@ -35,6 +35,7 @@ bindsym $mod+shift+BackSpace exec st -e /bin/sh
 
 # kill focused window
 bindsym $mod+Shift+q kill
+bindsym --whole-window $mod+button2 kill
 
 # start dmenu (a program launcher)
 bindsym $mod+e exec dmenu_choose_type -l 20
@@ -157,12 +158,12 @@ mode "automate1" {
 
 mode "automate2" {
   bindsym c exec auto_getlocation
-  bindsym g exec auto_click
-  bindsym t exec pkill -9 auto_click
+  #bindsym g exec auto_click
+  #bindsym t exec pkill -9 auto_click
 
   bindsym Escape mode "default"
 }
-bindsym $mod+shift+b mode "automate1"
+bindsym $mod+shift+b mode "automate2"
 
 # resize window (you can also use the mouse for that)
 mode "resize" {
@@ -296,6 +297,8 @@ for_window [title="Safecracker"] floating enable
 for_window [workspace=3] floating enable
 
 for_window [title="VirtualBox$"] floating enable; workspace 10
+
+for_window [class="Pavucontrol"] floating enable, sticky enable, resize set 600px 440px, move position 1960px 21px
 
 
 # color defines for zenburn styled i3

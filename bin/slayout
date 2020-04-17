@@ -17,6 +17,9 @@ elif [ `hostname` = "dartro" ]; then
   primary_extra="--mode 1600x900"
   secondary="HDMI1"
   secondary_extra="--mode 1920x1080"
+  # TODO: detect which is connected
+  secondary="DP1"
+  secondary_extra="--mode 2560x1440"
 elif [ `hostname` = "kribev" ]; then
   primary="LVDS-0"
   primary_extra="--mode 1366x768"

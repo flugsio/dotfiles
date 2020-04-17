@@ -27,7 +27,7 @@ if [ "$1" = "bug" ]; then
 elif [ "$1" = "security" ]; then
   cp ~/.config/security_template $tmp
   story_type="chore"
-  labels="\"security\",\"security sprint 6\",\"upgrade\",\"technical\""
+  labels="\"security\",\"security from sprint 7\",\"upgrade\",\"technical\""
   shift
 elif [ "$1" = "chore" ]; then
   cp ~/.config/chore_template $tmp

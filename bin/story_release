@@ -49,8 +49,10 @@ labels="\"release\""
 if [[ "$project" = 'Promote' ]]; then
   # henrique tegel
   release_pilot=3032393
-  # filipe
-  release_ops=3008726
+  ## filipe
+  #release_ops=3008726
+  # jimmie
+  release_ops=1812784
 else
   # michael
   release_pilot=3096813
@@ -61,10 +63,11 @@ fi
 if [[ "$project" = 'Promote' ]]; then
   if [[ "$tag" =~ '.0' ]]; then
     create_story "Check errbit and create stories for new errors" "Create investigative stories for new relevant errors" chore "" "planned" 1812784
-    create_story "Create stories for new security issues" "Check github security alerts, and bundle-audit" chore "" "planned" 1812784
+    create_story "Create stories for new security issues" "Check github security alerts, yarn audit --groups dependencies --level moderate and bundle-audit" chore "" "planned" 1812784
   fi
   create_story "Release $project $tag to development (grace)" "" chore "$labels" "planned" $release_pilot
 fi
+labels="\"release\",\"sysadmin\""
 create_story "Release $project $tag to staging" "" chore "$labels" "planned" $release_ops
 if [[ "$project" = 'Promote' ]]; then
   if [[ "$tag" =~ '.0' ]]; then

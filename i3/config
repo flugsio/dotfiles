@@ -145,6 +145,15 @@ bindsym $mod+Shift+r restart
 # exit i3 (logs you out of your X session)
 bindsym $mod+Shift+t exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
 
+# This prevents most keyboard binds to be consumed,
+#   allows using i3 in a container like Xnest or Xephyr
+mode "nested" {
+  bindsym $mod+shift+a mode "default"
+  #bindsym $mod+shift+s exec --no-startup-id Xephyr -br -ac -noreset -screen 1920x1080 :2
+  bindsym $mod+shift+s exec --no-startup-id nested
+}
+bindsym $mod+shift+a mode "nested"
+
 mode "automate1" {
   bindsym Up exec --no-startup-id screenshot;
   #bindsym Left exec --no-startup-id xdotool mousemove 130 750 click 1 sleep 1.5 mousemove 920 650 click 1 sleep 2 mousemove 250 250 click 1 sleep 1 click 1 sleep 1 click 1
@@ -299,6 +308,7 @@ for_window [workspace=3] floating enable
 for_window [title="VirtualBox$"] floating enable; workspace 10
 
 for_window [class="Pavucontrol"] floating enable, sticky enable, resize set 600px 440px, move position 1960px 21px
+for_window [class="Xephyr"] move position 0px 21px, border none
 
 
 # color defines for zenburn styled i3
@@ -378,3 +388,8 @@ bar {
 #}
 
 exec_always ~/bin/kbd
+
+# These are really buggy, only meant for testing
+#fake-outputs 1920x1080+0+0,640x1080+1920+0,2560x360+0+1080
+#fake-outputs 2560x1440+0+0
+#fake-outputs 1920x1080+0+0

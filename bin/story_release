@@ -47,8 +47,10 @@ read tag
 labels="\"release\""
 
 if [[ "$project" = 'Promote' ]]; then
-  # henrique tegel
-  release_pilot=3032393
+  # gb
+  release_pilot=3044148
+  # ht
+  #release_pilot=3032393
   ## filipe
   #release_ops=3008726
   # jimmie

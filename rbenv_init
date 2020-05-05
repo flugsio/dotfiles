@@ -1,6 +1,6 @@
 # caching version saves 50ms, manually remove .gem/ruby/current when changing system version
 # using another file as update status, test -nt doesn't work on symlinks
-[ -d ~/.gem/ruby/current ] || (ln -fs $(ruby -e 'puts Gem.user_dir') ~/.gem/ruby/current && touch ~/.gem/ruby/current.touch)
+[ -d ~/.gem/ruby/current ] || (mkdir -p ~/.gem/ruby && ln -fs $(ruby -e 'puts Gem.user_dir') ~/.gem/ruby/current && touch ~/.gem/ruby/current.touch)
 
 # code is mostly from: eval "$(rbenv init --no-rehash -)"
 export PATH="$HOME/.rbenv/shims:$HOME/.rbenv/bin:$HOME/.gem/ruby/current/bin:$PATH"

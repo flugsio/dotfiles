@@ -428,3 +428,23 @@ function ch {
   )
   done
 }
+
+# git branch commit, pushes a simple change as a new pr
+function gbc {
+  echo "gbc: add changes"
+  git add -p
+  echo "gbc: commit message"
+  read message
+  if [ -n "$message" ]; then
+    local branch="$(echo $message | sed 's/[^a-z]/-/g;s/-\+/-/g;s/\(^-\|-$\)//g')"
+    # cleans the branch name
+    # replaces everything which isn't a-z, and then removes extra dashes
+    git checkout -b "$branch"
+    git commit -v -m "$message"
+
+    git push -u
+    openpr
+    git checkout master
+    git branch -D "$branch"
+  fi
+}

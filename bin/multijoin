@@ -1,0 +1,22 @@
+#!/bin/sh
+
+# multijoin - join multiple files
+# from stackoverflow somewhere
+
+JOIN_SEP=','
+
+join_rec() {
+    if [ $# -eq 1 ]; then
+        join -t"$JOIN_SEP" - "$1"
+    else
+        f=$1; shift
+        join -t"$JOIN_SEP" - "$f" | join_rec "$@"
+    fi
+}
+
+if [ $# -le 2 ]; then
+    join -t"$JOIN_SEP" "$@"
+else
+    f1=$1; f2=$2; shift 2
+    join -t"$JOIN_SEP" "$f1" "$f2" | join_rec "$@"
+fi

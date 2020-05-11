@@ -113,6 +113,11 @@ font:
   size: 18.5
   size: 33
   size: 26
+  # from toldi
+  # 2560x1440 @ 32"
+  #size: 15.5 # 3-way-diff
+  #size: 18 # normal
+  #size: 24 # pairing
 
   # Offset is the extra space around each character. `offset.y` can be thought of
   # as modifying the line spacing, and `offset.x` as modifying the letter spacing.

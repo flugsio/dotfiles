@@ -3,7 +3,7 @@
 while sleep 0.3; do
   eval $(xdotool selectwindow getmouselocation --shell)
   xdotool click 1
-  xdotool mousemove $(( X + 1280 )) $Y
+  xdotool mousemove $X $(( Y + 550 ))
   xdotool click 1
   xdotool mousemove $X $Y
 done

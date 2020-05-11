@@ -57,7 +57,9 @@ if [[ "$SSH_AUTH_SOCK" != /tmp/ssh-* ]]; then
 fi
 
 if [ -z "$RUST_SRC_PATH" ]; then
-  export RUST_SRC_PATH="$(rustc --print sysroot)/lib/rustlib/src/rust/src"
+  if command -v rustc >/dev/null 2>&1; then
+    export RUST_SRC_PATH="$(rustc --print sysroot)/lib/rustlib/src/rust/src"
+  fi
 fi
 
 bindkey -v

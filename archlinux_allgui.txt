@@ -11,3 +11,5 @@ pulseaudio-bluetooth
 xdotool
 xf86-input-wacom
 grafx2
+inkscape
+xsel

@@ -5,6 +5,12 @@ call vundle#begin()
 
 Plugin        'gmarik/Vundle.vim'
 
+Plugin 'prabirshrestha/async.vim'
+Plugin 'prabirshrestha/vim-lsp'
+Plugin 'prabirshrestha/asyncomplete.vim'
+Plugin 'prabirshrestha/asyncomplete-lsp.vim'
+
+Plugin   'majutsushi/tagbar'
 Plugin       'mileszs/ack.vim'
 " TODO: this repo is bork, either set transfer.fsckobjects = false or --depth 1
 Plugin   'skywind3000/asyncrun.vim'
@@ -27,8 +33,10 @@ Plugin     'jason0x43/vim-js-indent'
 if has('python3')
   Plugin      'SirVer/ultisnips'
 endif
-" TODO: find/configure debugging plugin
-Plugin        'joonty/vdebug'
+if has('python3')
+  " TODO: find/configure debugging plugin
+  Plugin        'joonty/vdebug'
+endif
 Plugin         'honza/vim-snippets'
 Plugin         'chase/vim-ansible-yaml'
 "Plugin        'tpope/vim-abolish'
@@ -70,6 +78,7 @@ if &t_Co > 2
 endif
 
 let g:pairing=filereadable($HOME.'/.cache/pairing')
+"let g:pairing=0
 
 if has("gui_gtk3")
   set guifont=Ubuntu\ Mono\ 20
@@ -111,6 +120,9 @@ if has("autocmd")
       " TODO: set in all open windows instead
       autocmd WinEnter * set nonumber | set nocursorline
     endif
+
+    "autocmd FileType ruby setlocal suffixesadd+=.rb
+    "autocmd FileType ruby setlocal path+=~/appraisal/lib
   augroup END
 else
   set autoindent
@@ -224,7 +236,14 @@ let g:rails_projections = {
       \ }
 
 let g:racer_cmd="racer"
-let $RUST_SRC_PATH="/usr/src/rust/src"
+
+if executable('rls')
+    au User lsp_setup call lsp#register_server({
+        \ 'name': 'rls',
+        \ 'cmd': {server_info->['rustup', 'run', 'nightly', 'rls']},
+        \ 'whitelist': ['rust'],
+        \ })
+endif 
 
 " pomodoros / glue for Vomodoro to bin/p
 let g:Pomo_ArchiveFilePath = "~/code/sparkleshare/pomodoros_archive.wofl"
@@ -321,11 +340,12 @@ nnoremap <leader>o :PomodoroToDoToday<CR>
 nnoremap <leader>l :call system("surf_go " . g:url)
 "nnoremap <leader>l :w\|call system("export surfwid=" . g:browser_id . " && surf_go " . g:url)
 "nnoremap <leader>l :w\|:call system("xdotool windowactivate " . g:browser_id . " key 'ctrl+r'")
-"nnoremap <leader>l :silent w\|:exec "AsyncRun send_key_to 'ctrl+r' ".g:browser_id<CR>
-nnoremap <leader>l :silent w\|:exec "AsyncRun send_key_to 'Return' ".g:browser_id<CR>
+nnoremap <leader>l :silent w\|:exec "AsyncRun sleep 2; send_key_to 'ctrl+r' ".g:browser_id<CR>
+"nnoremap <leader>l :silent w\|:exec "AsyncRun send_key_to 'Return' ".g:browser_id<CR>
 nnoremap <leader>p :silent !xdg-open <C-R>=escape("<C-R><C-F>", "#?&;\|%")<CR><CR>
 vnoremap <leader>p :w !curl -F 'f:1=<-' ix.io<CR>
 nnoremap <silent> <leader>K :silent w<bar>:K rs <c-r>%<cr><cr>
+nnoremap <silent> <leader>L :AsyncRun tmux send-keys -t~ -l "<C-R>=escape(getline("."), "$")<C-V><C-M>"<cr>
 nnoremap <silent> <leader>KR :silent w<bar>:K rspec <c-r>%<cr><cr>
 nnoremap <silent> <leader>KM :silent w<bar>:K tmux send-keys -t~ C-p C-m<cr><cr>
 nnoremap <silent> <leader>k :silent w<bar>:KK<cr>

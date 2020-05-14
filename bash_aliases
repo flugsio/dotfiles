@@ -85,11 +85,12 @@ function rb {
   ssh -t $VAGRANT_MACHINE "cd $VAGRANT_DIR; bash -lc 'bundle exec $@'"
 }
 function mkde {
-  local name=$(echo "$@" | sed 's/[^A-Za-z0-9]/_/g')
+  local name=$(echo "$@" | lowercase | sed 's/[^A-Za-z0-9]/_/g')
   local pathname=$HOME/debug/$(date -u +"%Y%m%d")_"$name"
   mkdir "$pathname"
   ln -fns "$pathname" $HOME/debug/latest
   cd "$pathname"
+  i3-msg move workspace $name, workspace $name
   vim log.md
 }
 alias be='bundle exec'
@@ -130,6 +131,7 @@ alias windows='rdesktop 192.168.1.189 -u Administrator -k sv -g 2555x1400 -r sou
 alias windows2='rdesktop 192.168.1.188 -u Avidity -k sv -g 2550x1380 -r sound:off'
 alias mkbunlinks='if [ -f "Gemfile" ]; then mkdir -p bunlinks && find bunlinks -type l -delete && cd bunlinks && bundle show --paths | xargs -L1 ln -s; cd .. ; else echo "not in Gemfile directory"; fi'
 alias perrbit='cd ~/code/promote3 && xsel > errbit_error.txt && vim errbit_error.txt -c "%s/\v^(.*gems.*gems\/)?([^(-)]*-\d\.)/bunlinks\/\2/e | %s/\v^([^(bunlinks|\/opt)].)/\1/e | %s/\v^\/opt\/promote\/releases\/\d+T\d+\///e | w | set errorformat=%f:%l%m | cbuffer | copen" && rm errbit_error.txt'
+alias textgraph="sort | uniq -c | sort -rn | perl -ane 'printf \"%30s %s\\n\", \$F[1], \"=\"x\$F[0];'"
 alias rgdb='gdb $(rbenv which ruby) $(pgrep -f "jobs:work" | head -n1)'
 alias glujc='gluj -m | egrep --color "[A-Z]|$"'
 alias lichobile='chromium --user-data-dir=$HOME/.config/chromium_dev --disable-web-security ~/code/lichobile/project/www/index.html'
@@ -220,8 +222,11 @@ alias mkchangelog='surf -x -t hgmd.css | read HDSURFXID & (while read; do hoedow
 function active_branch {
   echo $(git_current_branch | tr -d "[[:space:]]")
 }
+function lowercase {
+  tr "[:upper:]" "[:lower:]"
+}
 function active_branch_cleaned {
-  echo $(git_current_branch | tr "[:upper:]" "[:lower:]" | sed "s/[^0-9a-z_-]//g")
+  echo $(git_current_branch | lowercase | sed "s/[^0-9a-z_-]//g")
 }
 function graft_branch {
   local branch=${1:-$(active_branch_cleaned)}
@@ -448,3 +453,5 @@ function gbc {
     git branch -D "$branch"
   fi
 }
+
+alias test="xdotool selectwindow windowfocus --sync key F11 sleep 0.1; i3-msg floating enable, fullscreen disable, resize set 500px 1060px, move position 1420px 20px"

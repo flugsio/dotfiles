@@ -8,6 +8,17 @@ alias g='git'
 alias gr='git $(git root)'
 # list remote branches with author
 alias gbr='for branch in `git branch -r | grep -v HEAD`;do echo -e `git show --format="%ai %ar by %an" $branch | head -n 1` \\t$branch; done | sort -r'
+# lists git tags
+function gt {
+  git for-each-ref refs/tags/ --format '%(objecttype) %(refname:short)' |
+    while read ty name; do
+      if [ $ty = commit ]; then
+        echo "$name (lightweight)"
+      elif [ $ty = tag ]; then
+        echo "$name (full tag)"
+      fi
+    done
+}
 function browse {
   echo $@
   if [ -n "$DISPLAY" ]; then

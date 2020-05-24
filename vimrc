@@ -340,15 +340,18 @@ nnoremap <leader>o :PomodoroToDoToday<CR>
 nnoremap <leader>l :call system("surf_go " . g:url)
 "nnoremap <leader>l :w\|call system("export surfwid=" . g:browser_id . " && surf_go " . g:url)
 "nnoremap <leader>l :w\|:call system("xdotool windowactivate " . g:browser_id . " key 'ctrl+r'")
-nnoremap <leader>l :silent w\|:exec "AsyncRun sleep 2; send_key_to 'ctrl+r' ".g:browser_id<CR>
-"nnoremap <leader>l :silent w\|:exec "AsyncRun send_key_to 'Return' ".g:browser_id<CR>
+nnoremap <leader>l :silent wa\|:exec "AsyncRun sleep 2; send_key_to 'ctrl+r' ".g:browser_id<CR>
+"nnoremap <leader>l :silent wa\|:exec "AsyncRun send_key_to 'Return' ".g:browser_id<CR>
 nnoremap <leader>p :silent !xdg-open <C-R>=escape("<C-R><C-F>", "#?&;\|%")<CR><CR>
 vnoremap <leader>p :w !curl -F 'f:1=<-' ix.io<CR>
-nnoremap <silent> <leader>K :silent w<bar>:K rs <c-r>%<cr><cr>
+nnoremap <silent> <leader>K :silent wa<bar>:K rs <c-r>%<cr><cr>
 nnoremap <silent> <leader>L :AsyncRun tmux send-keys -t~ -l "<C-R>=escape(getline("."), "$")<C-V><C-M>"<cr>
-nnoremap <silent> <leader>KR :silent w<bar>:K rspec <c-r>%<cr><cr>
-nnoremap <silent> <leader>KM :silent w<bar>:K tmux send-keys -t~ C-p C-m<cr><cr>
-nnoremap <silent> <leader>k :silent w<bar>:KK<cr>
+nnoremap <silent> <leader>KR :silent wa<bar>:K rspec <c-r>%<cr><cr>
+if !exists("g:async_command")
+  let g:async_command = 'tmux send-keys -t~ C-p C-m'
+endif
+nnoremap <silent> <leader>KM :silent wa<bar>:K tmux send-keys -t~ C-p C-m<cr><cr>
+nnoremap <silent> <leader>k :silent wa<bar>:KK<cr>
 "nnoremap <silent> <leader>k :silent w<bar>:call system("tmux send-keys -t~ C-p C-m")<cr>
 "nnoremap <leader>k :silent w\|:exec "AsyncRun sleep 1; send_key_to 'ctrl+r' ".g:browser_id<CR>
 

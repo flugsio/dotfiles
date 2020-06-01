@@ -186,6 +186,8 @@ highlight Search3 ctermbg=red ctermfg=black
 
 " Plugin configs
 
+let g:markdown_fenced_languages = ['html', 'dot', 'bash=sh', 'sh', 'yml=yaml', 'yaml', 'ruby', 'json', 'groovy', 'css']
+
 let g:elm_setup_keybindings = 0
 
 let g:ansible_options = {'ignore_blank_lines': 0, 'documentation_mapping': 'K'}

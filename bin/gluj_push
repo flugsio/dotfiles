@@ -1,0 +1,7 @@
+#!/bin/bash
+
+set -e
+
+cd ~/.local/share/gluj
+
+git pull && (cat new.csv >> all.csv; git add all.csv; git commit -m "update" && git push && git checkout new.csv) || (echo aborting; git checkout all.csv)

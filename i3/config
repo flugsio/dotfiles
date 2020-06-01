@@ -233,7 +233,7 @@ bindsym $mod+ctrl+space exec i3-input -F 'exec investigate "%s"' -P 'Investigate
 
 bindsym $mod+ctrl+n exec i3-input -F 'exec i3-msg rename workspace to "%s"' -P 'Rename Workspace: '
 bindsym $mod+ctrl+m exec i3-input -F 'exec xdotool getactivewindow set_window --name="%s"' -P 'Rename Window: '
-bindsym $mod+ctrl+o exec i3-input -F "exec gluj %s && killall -USR1 i3status" -P 'Glucose: '
+bindsym $mod+ctrl+o exec i3-input -F "exec gluj %s && killall -USR1 i3status && gluj_push" -P 'Glucose: '
 
 bindsym $mod+g exec ink
 bindsym $mod+shift+g exec $simple_term -t editlinks -e zsh -i -c "vim ~/code/sparkleshare/links.wofl -c 'set nofoldenable'"

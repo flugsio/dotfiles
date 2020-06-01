@@ -465,4 +465,4 @@ function gbc {
   fi
 }
 
-alias test="xdotool selectwindow windowfocus --sync key F11 sleep 0.1; i3-msg floating enable, fullscreen disable, resize set 500px 1060px, move position 1420px 20px"
+alias test_stuff="xdotool selectwindow windowfocus --sync key F11 sleep 0.1; i3-msg floating enable, fullscreen disable, resize set 500px 1060px, move position 1420px 20px"

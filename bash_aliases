@@ -451,12 +451,21 @@ function gbc {
   git add -p
   echo "gbc: commit message"
   read message
+  echo "gbc: commit body (ctrl-D to finish)"
+  body=$(cat)
   if [ -n "$message" ]; then
     local branch="$(echo $message | sed 's/[^a-z]/-/g;s/-\+/-/g;s/\(^-\|-$\)//g')"
     # cleans the branch name
     # replaces everything which isn't a-z, and then removes extra dashes
     git checkout -b "$branch"
-    git commit -v -m "$message"
+    if [ -n "$body" ]; then
+      # TODO: test the linebreaks
+      git commit -v -m "$message
+      
+$body"
+    else
+      git commit -v -m "$message"
+    fi
 
     git push -u
     openpr

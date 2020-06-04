@@ -265,6 +265,7 @@ let g:reek_on_loading = 0
 " let &l:efm = &efm . ',%-G%.%#'
 
 " Abbreviations
+iab AC ### Acceptance Criteria
 iab <expr> dts strftime("%Y-%m-%d")
 iab <expr> dta strftime("%Y-%m-%d %H:%M")
 iab <expr> dtz strftime("%Y-%m-%dT%H:%M:%S%z")

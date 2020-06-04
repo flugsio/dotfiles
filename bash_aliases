@@ -479,5 +479,43 @@ $body"
     git branch -D "$branch"
   fi
 }
+function fast_chromium {
+  (
+    set -e
+    if pgrep chromium; then
+      echo "stop chromium first"
+      exit 1
+    fi
+    if [ ! -e ~/.config/chromium_real ]; then
+      mv ~/.config/chromium ~/.config/chromium_real
+    fi
+    if [ ! -e ~/.config/chromium ]; then
+      # check required size dynamically?
+      mkdir ~/.config/chromium
+      sudo mount -t tmpfs -o size=1G,noatime tmpfs ~/.config/chromium
+      rsync -a ~/.config/chromium_real/ ~/.config/chromium || true
+      du -sh ~/.config/chromium*
+    else
+      echo "Already mounted"
+    fi
+  )
+}
+function fast_chromium_stop {
+  (
+    set -e
+    if pgrep chromium; then
+      echo "stop chromium first"
+      exit 1
+    fi
+    if [ -e ~/.config/chromium_real ]; then
+      rsync -a ~/.config/chromium/ ~/.config/chromium_real
+      sync
+      sleep 1
+      sudo umount ~/.config/chromium
+      rmdir ~/.config/chromium
+      mv ~/.config/chromium_real ~/.config/chromium 
+    fi
+  )
+}
 
 alias test_stuff="xdotool selectwindow windowfocus --sync key F11 sleep 0.1; i3-msg floating enable, fullscreen disable, resize set 500px 1060px, move position 1420px 20px"

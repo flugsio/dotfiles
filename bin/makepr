@@ -28,15 +28,15 @@ if [ -n "$prnr" ]; then
   #title=$(echo $title | sed -E 's{\[#([[:digit:]]+)\]{[[#\1]](https://www.pivotaltracker.com/n/projects/'$PT_PROJECT_ID'/stories/\1/){')
   title=$(echo $title | sed -E 's{\[#([[:digit:]]+)\]{<https://www.pivotaltracker.com/n/projects/'$PT_PROJECT_ID'/stories/\1/|[#\1]>{')
 
-  assignee=$(cat $response | jq -r '.assignees | first .login | select (.!=null)')
-  if [ -n "$assignee" ]; then
-    assignee="${GITHUB_SLACK_USERS[$assignee]}"
-  else
-    echo "No assignee!"
-    exit 1
-  fi
-  content="pr $assignee $title $url"
-  # This follows the format of "flows/organization/flowname"
+  #assignee=$(cat $response | jq -r '.assignees | first .login | select (.!=null)')
+  #if [ -n "$assignee" ]; then
+  #  assignee="${GITHUB_SLACK_USERS[$assignee]}"
+  #else
+  #  echo "No assignee!"
+  #  exit 1
+  #fi
+  #content="pr $assignee $title $url"
+  content="#pr $title $url"
   recipient="$SLACK_MAIN_FLOW"
 
   if [ -n "$title" -a -n "$url" ]; then

@@ -1,3 +1,4 @@
 dunst
 inotify-tools
 vim
+fbset

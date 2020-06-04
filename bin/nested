@@ -1,0 +1,7 @@
+#!/bin/bash
+
+Xephyr -br -ac -noreset -screen 1920x1080 :2 &
+#Xnest -br -ac -noreset -geometry 1920x1080 :2 &
+sleep 0.5
+DISPLAY=:2 i3
+

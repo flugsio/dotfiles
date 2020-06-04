@@ -350,7 +350,7 @@ nnoremap <silent> <leader>K :silent wa<bar>:K rs <c-r>%<cr><cr>
 nnoremap <silent> <leader>L :AsyncRun tmux send-keys -t~ -l "<C-R>=escape(getline("."), "$")<C-V><C-M>"<cr>
 nnoremap <silent> <leader>KR :silent wa<bar>:K rspec <c-r>%<cr><cr>
 if !exists("g:async_command")
-  let g:async_command = 'tmux send-keys -t~ C-p C-m'
+  let g:async_command = 'tmux send-keys -t~ C-p C-m'
 endif
 nnoremap <silent> <leader>KM :silent wa<bar>:K tmux send-keys -t~ C-p C-m<cr><cr>
 nnoremap <silent> <leader>k :silent wa<bar>:KK<cr>

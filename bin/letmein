@@ -1,27 +1,81 @@
 #!/bin/sh
 
+CONFIG=${XDG_CONFIG_HOME:-$HOME/.config}/letmein
+
+function main {
+  TARGETS="promote1\ndashboard\nfetch\npromote2\npromote3\npromote4"
+  TARGETS=$(ls -1 $CONFIG/apps)
+
+  #TARGET=`echo -e "$TARGETS" | dmenu -p target: -l 10`
+  TARGET=`echo -e "$TARGETS" | fzf --prompt target:`
+  if [ -z $TARGET ]; then exit; fi
+  source $CONFIG/global_config
+  source $CONFIG/apps/$TARGET
+  exit
+  # TODO: if no gud, otherwise check gud database instead
+
+  # TODO: find out origin name for gud
+  #if no_gud_auth; then
+  if [[ "$DBTYPE" = promote ]]; then
+    usernames=$(psql $DB -qtAc "select email, concat(first_name, ' ', last_name) as name from users;" | dmenu -p SignInWith: -l 20 | cut -f1 -d\|)
+  else
+    usernames=$(ssh gud.vagrant "psql gud -qtAc \"select data->>'email' from user_origins where data->>'origin' = '$ORIGIN';\"" | dmenu -p SignInWith: -l 20 | cut -f1 -d\|)
+  fi
+  for username in $usernames ; do
+    sign_in $username $PROMOTE_PASSWORD &
+  done
+} 
+
+function no_gud_auth {
+  grep -sq '^gud_auth: no' ~/code/${TARGET}/{,site/}config/app/development_local.yaml
+}
+
+function is_promote {
+  [[ "$TARGET" = promote* ]]
+}
+
+function is_dashboard {
+  [[ "$TARGET" = dasboard ]]
+}
+
 function sign_in {
   local username=$1
   local password=$2
   local return_to=''
   local surf_cookie_file=$(mktemp -t surf_session_${username}_XXXXX)
 
-  if [[ "$username" = admin* ]]; then
-    return_to=/admin
+  if is_promote; then
+    if [[ "$username" = *admin* ]]; then
+      return_to=/admin
+    fi
+    target_url=http://${TARGET}.previouscode.com/users/auth/promote_oauth2?return_to=$return_to
+  elif is_dashboard; then
+    target_url=http://dashboard.previouscode.com/auth/gud_oauth2
   fi
 
-  curl "gud.previouscode.com/login" \
-    -F "user[email]=$username" \
-    -F "user[password]=$password" \
-    -c - 2> /dev/null | tail -n -1 | \
+  if is_promote && no_gud_auth; then
+    authenticity_token=$(curl "${TARGET}.previouscode.com/users/sign_in" \
+      -c $surf_cookie_file 2> /dev/null | \
+      grep -oP "authenticity_token[^\>]+" | \
+      grep -oP "(?<=value=\")[^\"]+")
+    curl "${TARGET}.previouscode.com/users/sign_in" \
+      -F "user[email]=$username" \
+      -F "user[password]=$password" \
+      -F "authenticity_token=$authenticity_token" \
+      -b $surf_cookie_file \
+      -c $surf_cookie_file 2> /dev/null
     # change session cookie to persistent
-    sed 's/\t0\t/\t9992211999\t/' > $surf_cookie_file
-  surf -c "$surf_cookie_file" http://promote.previouscode.com/users/auth/promote_oauth2?return_to=$return_to
+    sed -ir 's/\W0\W/\t9992211999\t/' $surf_cookie_file
+    surf -c "$surf_cookie_file" http://${TARGET}.previouscode.com$return_to
+  else
+    curl "gud.previouscode.com/login" \
+      -F "user[email]=$username" \
+      -F "user[password]=$password" \
+      -c - 2> /dev/null | tail -n -1 | \
+      # change session cookie to persistent
+      sed 's/\t0\t/\t9992211999\t/' > $surf_cookie_file
+    surf -c "$surf_cookie_file" $target_url
+  fi
 }
 
-usernames=$(psql ${PROMOTE_DB:-promote_dev} -qtc 'select email from users;' | \
-  sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' | \
-  dmenu -p SignInWith: "$@" -l 20)
-for username in $usernames ; do
-  sign_in $username ${PROMOTE_PASSWORD:-password} &
-done
+main

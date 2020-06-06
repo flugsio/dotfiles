@@ -518,4 +518,9 @@ function fast_chromium_stop {
   )
 }
 
+function convert_accucheck {
+  grep '^[0-9]' D*.csv | \
+    sed -r 's/;HI;/;33.3;/;s/;LOW;/;0.0;/;s/([0-9]+).([0-9]+).([0-9]+);([0-9]+:[0-9]+);([^;]*).*/\3-\2-\1T\4:00+0200, \5/'
+}
+
 alias test_stuff="xdotool selectwindow windowfocus --sync key F11 sleep 0.1; i3-msg floating enable, fullscreen disable, resize set 500px 1060px, move position 1420px 20px"

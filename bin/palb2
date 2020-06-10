@@ -1,0 +1,71 @@
+#!/bin/sh
+
+echo "this is legacy stuff, don't use"
+exit 1
+
+# remove databases where there was no match
+# :g/\v^promote.*27\n(\?=promote)/d
+
+command=""
+command_numberofrecalculating="select id, handler from delayed_jobs where handler ilike '%recalculate_user_progresses%' order by updated_at desc limit 1;"
+command_gaperror_conflicts="select program_id, ancestry, position from activities where ancestry is not null group by program_id, ancestry, position having count(id) > 1;"
+command_gaperror_conflicts_created_at="select a2.program_id, a2.id, a2.created_at from activities a2 where a2.ancestry in (select ancestry from activities where ancestry is not null group by program_id, ancestry, position having count(id) > 1);"
+command_sco_activites="select program_id, id as activity_id, ancestry, title from activities where content_object_type = 'Sco' or completion_type_class = 'CompletionType::ScormData';"
+#command="select * from activities where ancestry (select program_id, id, ancestry, title from activities where content_object_type = 'Sco';"
+sites_command="select id, name, concat('https://', hostname, '/users/auth/promote_oauth2') from sites;"
+#command=$command_sco_activites
+#command="select * from progresses where progress is not null and progress <> 0 and progress <> 1"
+program_duplicate_file_resources="select p.created_at, pr.program_id, fr.file_hash, array_agg(fr.title), array_agg(r.id) as data from file_resources fr inner join resources r on r.resourceable_id = fr.id and r.resourceable_type = 'FileResource' inner join programs_resources pr on pr.resource_id = r.id inner join programs p on p.id = pr.program_id where fr.type = 'FileResource' group by p.created_at, fr.file_hash, pr.program_id having count(*) > 1;"
+command="$program_duplicate_file_resources"
+command="$sites_command $program_duplicate_file_resources"
+command="select r.name from users u inner join users_roles ur on ur.user_id = u.id inner join roles r on r.id = ur.role_id where u.email = 'dev-dashboard@promoteapp.net';"
+command="select * from system_settings where variable = 'admin_url';"
+
+#command=$(sed -n '/^;--palb$/,/^;$/p' ~/code/promote/site/postgre.sql | tail -n+2)
+#command="SELECT a1.id, a1.ancestry, a1.title, array_length(regexp_split_to_array(a1.ancestry, '/'), 1) AS levels
+#    FROM activities AS a1
+#    WHERE a1.ancestry IS NOT NULL
+#    AND array_length(regexp_split_to_array(a1.ancestry, '/'), 1) > 2
+#    ORDER BY levels DESC"
+#command="SELECT count(a1.id)
+#    FROM activities AS a1
+#    WHERE a1.ancestry IS NOT NULL
+#    AND array_length(regexp_split_to_array(a1.ancestry, '/'), 1) > 3;"
+#command="SELECT a1.program_id 
+#    FROM activities AS a1
+#    WHERE a1.ancestry IS NOT NULL
+#    AND array_length(regexp_split_to_array(a1.ancestry, '/'), 1) > 2
+#    group by program_id;"
+#command="select id from activities;"
+#command="$1"
+rails_sco="
+scos = Activity.where(content_object_type: 'Sco')
+puts \"number: #{scos.length}\"
+scos.each do |sco|
+  puts sco
+  puts 'children:'
+  puts sco.children
+end
+"
+rails="
+Program.all.to_a.reject(&:valid?).each do |p|
+  puts p.id, p.errors.inspect
+end.to_a.inspect
+"
+
+cd ~/code/promote3/site
+echo SQL command: "$command"
+for db in $(psql -l | grep "^ promote" | grep -oP "promote-[^-]*-20161102"); do
+  echo ""
+  echo "$db"
+  psql $db -qtAc "$command" | cat
+  #result=$(echo "$command" | psql $db -q)
+  #if [ "$(echo "$result" | wc -l)" -gt 3 ]; then
+  #if [ "$(echo "$result" | grep '(0 rows)' | wc -l)" -eq 0 ]; then
+  #  echo ""
+  #  echo ""
+  #  echo "$db"
+  #  echo "$result"
+  #fi
+  #PROMOTE3_DB_DB=$db bundle exec rails runner "$rails"
+done

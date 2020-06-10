@@ -1,0 +1,20 @@
+#!/bin/bash
+
+echo WIP
+exit 1
+
+STORY_ID=$(xsel)
+
+function main {
+  story=$(cat ~/.cache/pt_updates || (get_story | tee ~/.cache/pt_updates))
+  echo "$story" | jq .
+}
+
+function get_story {
+  #occurred_after=
+  curl -X GET -H "X-TrackerToken: $PT_TOKEN" \
+    -H "Content-Type: application/json" \
+    "https://www.pivotaltracker.com/services/v5/my/activity?limit=100"
+}
+
+main

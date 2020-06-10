@@ -1,0 +1,26 @@
+#!/usr/bin/gnuplot
+
+# cat history.txt| jq -s 'add | .[] | .created_at' -r | cut -b 1-7 | sort | uniq -c > test.dat
+# :%s/^\s*//
+
+reset
+set terminal png
+
+#set xdata time
+#set timefmt "%Y-%m-%d %H:%M:%S"
+#set timefmt "%Y-%m-%d"
+#set format x "%H:%M"
+set format x "%Y-%m"
+set xlabel "date"
+show xdata
+
+set ylabel "total messages"
+set yrange [0:3000]
+
+set title "Messages jimmie/andreas"
+set key reverse Left outside
+set grid
+
+set style data linespoints
+
+plot "test.dat" using 2:1 title "1"

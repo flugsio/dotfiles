@@ -1,0 +1,15 @@
+#!/bin/bash
+
+set -e
+
+while true; do
+  #since_id="9058137520"
+  since_id=$(tail -n1 history.txt | jq -r ".[] | .id" | tail -n1)
+  if [ -n "$since_id" ]; then
+    curl https://${FLOWDOCK_AVIDITY_TOKEN}@api.flowdock.com/private/88732/messages -d "limit=100" -d "event=message" -d "since_id=$since_id" -d "sort=asc" -X GET -w "\n" >> history.txt
+    sleep 2
+  else
+    echo "done"
+    exit
+  fi
+done

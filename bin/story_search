@@ -1,0 +1,30 @@
+#!/bin/bash
+
+function main {
+  what=$1
+  #while true; do
+    search "$what"
+  #  echo "What are you looking for?"
+  #  read what
+  #done
+}
+
+function urldecode {
+  python -c "import sys, urllib.parse as ul; print(ul.unquote_plus(sys.argv[1]))" "$1"
+}
+
+function urlencode {
+  python -c "import sys, urllib.parse as ul; print(ul.quote_plus(sys.argv[1]))" "$1"
+}
+
+function search {
+  local what=$1
+  if [ -n "$what" ]; then
+    curl -X GET -H "X-TrackerToken: $PT_TOKEN" \
+      -H "Content-Type: application/json" \
+      "https://www.pivotaltracker.com/services/v5/projects/$PT_PROJECT_ID/search?query=$(urlencode "$what")" \
+      | jq -r '.stories.stories[] | "[#" + (.id|tostring) + "] " + .name + "\n             " + .current_state + " " + .url + "\n"' 
+  fi
+}
+
+main "$@"

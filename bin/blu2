@@ -1,0 +1,42 @@
+#!/usr/bin/expect -f
+
+# for some reason # can't be used for expect matches
+set prompt "\[bluetooth\]"
+set card "bluez_card.00_16_94_0B_68_4F"
+set address "2C:41:A1:C3:CC:77"
+set timeout 10
+
+send_user "spawning\n"
+spawn bluetoothctl
+sleep 1
+expect -re $prompt
+send_user "power on\n"
+send "power on\r"
+
+expect -re "Changing power on succeeded"
+
+expect -re $prompt {
+  send_user "connecting...\n"
+  send "connect $address\n"
+  sleep 3
+}
+
+#send_user "before expect\n"
+#expect {
+#  "\[Blackout\]" {
+#    send_user "\n\ndone Blackout\n\n"
+#  } "\[LE-Blackout\]" {
+#    send_user "\n\ndone LE-Blackout\n\n"
+#  } "Connection successful" {
+#    send_user "\n\ndone\n\n"
+#  } $prompt {
+#    send_user "connecting...\n"
+#    send "connect $address\n"
+#    sleep 3
+#    exp_continue
+#  } -re $prompt
+#
+#}
+send "quit\r"
+spawn mmb fix
+# TODO https://gist.github.com/RamonGilabert/046727b302b4d9fb0055

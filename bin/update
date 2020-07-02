@@ -3,7 +3,8 @@
 set -e
 
 function update_one {
-  local url=$1
+  local url=$(echo $1 | cut -d'#' -f 1)
+  local branch=$(echo $1 | cut -d'#' -sf 2)
   local name=${url##*/}
 
   if [ -e "$name" ]; then
@@ -19,12 +20,16 @@ function update_one {
     )
   else
     git clone $url $name
+    if [ -n "$branch" ]; then
+      (cd $name && git checkout $branch)
+    fi
   fi
 }
 export -f update_one
 
 function install_dependencies {
-  local url=$1
+  local url=$(echo $1 | cut -d'#' -f 1)
+  local branch=$(echo $1 | cut -d'#' -sf 2)
   local name=${url##*/}
 
   if [ -e "$name" ]; then

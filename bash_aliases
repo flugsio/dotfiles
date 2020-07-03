@@ -413,7 +413,17 @@ function remote_push {
 function remote_pull {
   num=$(remote_num $1)
   scp scp://vagrant@$REMOTEIP:${num}0/$2 $3
-  #scp -P ${num}0 vagrant@$REMOTEIP:$2 $3
+}
+function remote_sync {
+  # source
+  num1=$(remote_num $1)
+  # target
+  num2=$(remote_num $2)
+  fingerprint=$(ssh-keygen -q -F [$REMOTEIP]:${num2}0)
+  ssh -A ssh://vagrant@$REMOTEIP:${num1}0 "(grep -F \"$fingerprint\" ~/.ssh/known_hosts -q || echo \"$fingerprint\" >> ~/.ssh/known_hosts); rsync -ar $3 vagrant@$REMOTEIP:$3 -e \"ssh -p ${num2}0\""
+}
+function remote_sync_weechat {
+  remote_sync $1 $2 .weechat/
 }
 function print_location {
   printf "\033[0;33m=== $(pwd) @ $(active_branch) | $(git describe 2>/dev/null)\033[0m\n"

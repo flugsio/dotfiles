@@ -534,4 +534,4 @@ function convert_accucheck {
 }
 
 alias test_stuff="xdotool selectwindow windowfocus --sync key F11 sleep 0.1; i3-msg floating enable, fullscreen disable, resize set 500px 1060px, move position 1420px 20px"
-alias speedtest="speedtest-cli --secure --simple | awk 'ORS=", "' | head -c -2"
+alias speedtest="speedtest-cli --secure --simple | awk 'ORS=\", \"' | head -c -2"

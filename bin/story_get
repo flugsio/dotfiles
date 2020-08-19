@@ -1,6 +1,6 @@
 #!/bin/bash
 
-STORY_ID=$(xsel)
+STORY_ID=${1:-$(xsel)}
 
 function main {
   story=$(get_story)
@@ -9,7 +9,7 @@ function main {
 
 function get_story {
   if [ -n "$STORY_ID" ]; then
-    curl -X GET -H "X-TrackerToken: $PT_TOKEN" \
+    curl -s -X GET -H "X-TrackerToken: $PT_TOKEN" \
       -H "Content-Type: application/json" \
       "https://www.pivotaltracker.com/services/v5/projects/$PT_PROJECT_ID/stories/$STORY_ID"
   else

@@ -471,12 +471,16 @@ function gbc {
   echo "======="
   echo "STAGED:"
   echo "======="
-  git status --cached
+  git diff --cached
 
   if [ -n "$id" ]; then
     local message=$(story_get $id)
   fi
-  read -p "gbc: commit message" message -i $message -e message
+  if type 'vared' 2>/dev/null | grep -q 'shell builtin'; then
+    vared -cp "gbc commit message: " message
+  else
+    read -p "gbc: commit message" -i "$message" -e message
+  fi
   echo "gbc: commit body (ctrl-D to finish)"
   body=$(cat)
   if [ -n "$message" ]; then

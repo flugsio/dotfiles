@@ -30,7 +30,7 @@ function browse {
   fi
 }
 function random_word {
-  shuf -n1 /usr/share/dict/american-english | sed "s/'//" | tr '[:upper:]' '[:lower:]'
+  shuf -n1 /usr/share/dict/american-english | sed "s/'//" | lowercase
 }
 # first parameter is deadline, 3 seconds default
 function has_network {
@@ -480,7 +480,7 @@ function gbc {
   echo "gbc: commit body (ctrl-D to finish)"
   body=$(cat)
   if [ -n "$message" ]; then
-    local branch="$(echo $message | sed 's/[^a-z]/-/g;s/-\+/-/g;s/\(^-\|-$\)//g')"
+    local branch="$(echo $message | lowercase | sed 's/[^a-z]/-/g;s/-\+/-/g;s/\(^-\|-$\)//g')"
     # cleans the branch name
     # replaces everything which isn't a-z, and then removes extra dashes
     git checkout -b "$branch"

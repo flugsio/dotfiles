@@ -462,11 +462,21 @@ function ch {
 }
 
 # git branch commit, pushes a simple change as a new pr
+# $1: PT story id
 function gbc {
+  local id="$1"
   echo "gbc: add changes"
   git add -p
-  echo "gbc: commit message"
-  read message
+
+  echo "======="
+  echo "STAGED:"
+  echo "======="
+  git status --cached
+
+  if [ -n "$id" ]; then
+    local message=$(story_get $id)
+  fi
+  read -p "gbc: commit message" message -i $message -e message
   echo "gbc: commit body (ctrl-D to finish)"
   body=$(cat)
   if [ -n "$message" ]; then

@@ -134,7 +134,7 @@ function findserver() {
 
 zle -N wrap
 function wrap() {
-  if $(echo "$BUFFER" | grep development); then
+  if echo "$BUFFER" | grep development -q; then
     local new=$(echo "$BUFFER" | sed 's/development/$i/')
     BUFFER="for i in development staging production; do $new; done"
     CURSOR=39

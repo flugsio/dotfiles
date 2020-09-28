@@ -131,8 +131,21 @@ function findserver() {
     zle .accept-line
   fi
 }
+
+zle -N wrap
+function wrap() {
+  if $(echo "$BUFFER" | grep development); then
+    local new=$(echo "$BUFFER" | sed 's/development/$i/')
+    BUFFER="for i in development staging production; do $new; done"
+    CURSOR=39
+  else
+    BUFFER="for i in {1..5}; do $BUFFER; done"
+    CURSOR=15
+  fi
+}
 bindkey '^V' browsedir
 bindkey '^G' findserver
+bindkey '^H' wrap
 
 export KEYTIMEOUT=1
 

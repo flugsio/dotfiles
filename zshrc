@@ -110,13 +110,14 @@ zle -N findserver
 function findserver() {
   local cmd=""
   if [ -e ~/donjon/ansible ]; then
-    local result=$(grep "ansible_host" ~/donjon/ansible/{d,s,p}*/host_vars/* | sed 's/"//g;s/.*ansible\/\(.*\)\/host_vars\//\1 /;s/:ansible_host:\s*/ /' | awk '{print $3 "\t" $1 "\t" $2}' | fzf)
+    local result=$(grep "^ansible_host" ~/donjon/ansible/{d,s,p}*/host_vars/* | sed 's/"//g;s/.*ansible\/\(.*\)\/host_vars\//\1 /;s/:ansible_host:\s*/ /' | awk '{print $3 "\t" $1 "\t" $2}' | fzf)
     local ip=$(echo $result | cut -f1)
     local universe=$(echo $result | cut -f2)
     local name=$(echo $result | cut -f3 | sed 's/:.*ansible_host://')
-    local cmd=$(cat ~/.config/zcommands | fzf | sed 's/ *#.*$//' | sed 's# LOG# | tee ~/debug/latest/$(datei)_'$universe-$name'.log#')
+    #local cmd=$(cat ~/.config/zcommands | fzf | sed 's/ *#.*$//' | sed 's# LOG# | tee ~/debug/latest/$(datei)_'$universe-$name'.log#')
     if [ -n "$ip" ]; then
-      cmd="grep ansible ~/donjon/ansible/$universe/host_vars/$name; ssh $SPUSER@$ip $cmd"
+      k=$(grep ansible_ssh_private_key_file ~/donjon/ansible/development/group_vars/all | grep -Po '(?<=")[^"]*')
+      cmd="grep ansible_become ~/donjon/ansible/$universe/host_vars/$name; ssh -i ~/$k $SPUSER@$ip $cmd"
     fi
   else
     if [ -e ~/.donjon ]; then

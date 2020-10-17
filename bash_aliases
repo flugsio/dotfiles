@@ -489,7 +489,6 @@ function gbc {
     # replaces everything which isn't a-z, and then removes extra dashes
     git checkout -b "$branch"
     if [ -n "$body" ]; then
-      # TODO: test the linebreaks
       git commit -v -m "$message
       
 $body"
@@ -497,10 +496,10 @@ $body"
       git commit -v -m "$message"
     fi
 
-    git push -u
-    openpr
-    git checkout master
-    git branch -D "$branch"
+    git push -u &&
+      openpr &&
+      git checkout master &&
+      git branch -D "$branch"
   fi
 }
 function fast_chromium {

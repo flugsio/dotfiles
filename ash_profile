@@ -1,0 +1,5 @@
+[[ -e ~/.bash_aliases ]] && . ~/.bash_aliases
+export PATH=$HOME/bin:$PATH
+vseta
+vsetc
+export LANG=en_US.UTF-8

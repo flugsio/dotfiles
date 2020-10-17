@@ -1,0 +1,55 @@
+# pipe this to ash
+
+function main {
+  add_repos
+  install_packages
+  get_dotfiles
+  update_dotfiles
+}
+
+function install_packages {
+  # https://pkgs.alpinelinux.org/contents?branch=v3.12&arch=x86_64
+  apk add kbd terminus-font openssh mosh git
+}
+
+function add_repos {
+  version="v3.12"
+  add_repo "https://mirror.operationtulip.com/alpine/$version/main"
+  add_repo "https://mirror.operationtulip.com/alpine/$version/community"
+  add_repo "https://ftp.acc.umu.se/mirror/alpinelinux.org/$version/main"
+  add_repo "https://ftp.acc.umu.se/mirror/alpinelinux.org/$version/community"
+}
+
+function add_repo {
+  local file=/etc/apk/repositories
+  grep -q -F "$1" $file || echo "$1" >> $file
+}
+
+function get_dotfiles {
+  if [ ! -e $HOME/code/dotfiles ]; then
+    mkdir -p $HOME/code
+    git clone https://github.com/flugsio/dotfiles $HOME/code/dotfiles
+  fi
+}
+
+function update_dotfiles {
+  (
+    cd $HOME/code/dotfiles
+    git pull
+
+    source common
+
+    link_file bash_aliases
+    link_file bin bin
+    link_file ash_profile .profile
+
+    source ~/.bash_aliases
+    source ~/.profile
+
+    if [ ! -e ~/.ssh/id_rsa ]; then
+      ssh-keygen -t rsa -f ~/.ssh/id_rsa -N "" -C "alpine $(dta)"
+    fi
+  )
+}
+
+main

@@ -1,0 +1,95 @@
+#!/bin/sh
+
+function main {
+  if [ "$1" = "g" ]; then
+    # green
+    mono_colors "5fd787" "002000"
+  elif [ "$1" = "gr1" ]; then
+    mono_range "10" "97" "27" "5F" "D7" "87" "003000"
+  elif [ "$1" = "gr2" ]; then
+    mono_range "3F" "D7" "67" "5F" "D7" "87" "003000"
+  elif [ "$1" = "gr3" ]; then
+    mono_range "1F" "A7" "17" "5F" "D7" "87" "003000"
+  elif [ "$1" = "gr4" ]; then
+    mono_range "1F" "A7" "17" "7F" "F7" "A7" "003000"
+  elif [ "$1" = "c" ]; then
+    # cyan
+    mono_colors "60d7d7" "003030"
+  elif [ "$1" = "o" ]; then
+    # orange
+    mono_colors "df8757" "201000"
+  else
+    custom_colors # modified gruvbox
+  fi
+  #clear
+  print_colors
+}
+
+function custom_colors {
+  set_color  0 "#222222"
+  set_color  1 "#d54e53"
+  set_color  2 "#8ec07c"
+  set_color  3 "#fe8019"
+  set_color  4 "#458588"
+  set_color  5 "#b16286"
+  set_color  6 "#689d6a"
+  set_color  7 "#bdae93"
+  set_color  8 "#7c6f64"
+  set_color  9 "#fb4934"
+  set_color 10 "#b8bb26"
+  set_color 11 "#fabd2f"
+  set_color 12 "#83a598"
+  set_color 13 "#d3569b"
+  set_color 14 "#8ec07c"
+  set_color 15 "#ebdbb2"
+}
+
+# fg bg
+function mono_colors {
+  set_color 0 "${2:-222222}"
+  for i in $(seq 1 15); do
+    set_color $i "$1"
+  done
+}
+
+# create a range of colors
+function mono_range {
+  set_color 0 "${2:-222222}"
+  for i in $(seq 1 15); do
+    r=$(echo "scale=0; $(echo "obase=16; $(echo "ibase=16; $4-$1" | bc -l) * ($i/15)"| bc -l) / 1" | bc -l)
+    g=$(echo "scale=0; $(echo "obase=16; $(echo "ibase=16; $5-$2" | bc -l) * ($i/15)" | bc -l) / 1" | bc -l)
+    b=$(echo "scale=0; $(echo "obase=16; $(echo "ibase=16; $6-$3" | bc -l) * ($i/15)" | bc -l) / 1" | bc -l)
+    set_color $i "$(echo "obase=16; ibase=16; (($4 * 10000) + $5 * 100 + $6) - (($r * 10000) + $g * 100 + $b)" | bc -l)"
+  done
+}
+
+# color number in hex, color hex (with or without #)
+function set_color {
+  #if [ -z "$TMUX" ]; then
+    printf "\e]P%x${2/\#/}" $1
+  #else
+  #  printf "\ePtmux;\e\e]P%x${2/\#/}\e\\" $1
+  #fi
+}
+function preview_color {
+  color=$1
+  if [ -z "$TMUX" ]; then
+    echo -e "\\33[38;5;${color}mTest $color\\33[0m"
+  else
+    # this is not working great
+    printf "\ePtmux;\e\e[38;5;${color}mTest $color\e\e[0m\e\\"
+    echo
+    sleep 0.01
+  fi
+}
+
+#other colors
+#076678
+
+function print_colors  {
+  for i in $(seq 0 16); do
+    preview_color $i
+  done
+}
+
+main $@

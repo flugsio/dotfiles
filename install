@@ -1,5 +1,9 @@
 #!/bin/bash
 
+DIR="${BASH_SOURCE%/*}"
+if [[ ! -d "$DIR" ]]; then DIR="$PWD"; fi
+source "$DIR/common"
+
 function main {
   create_all_links
   install_vundles
@@ -41,53 +45,6 @@ function create_all_links {
   [ -d ~/code/ansible ] && copy_file vtools/traprack code/ansible/vtools/traprack
 
   #  sudo cp ~/code/dotfiles/slash/sv-code.map /usr/share/X11/xkb/symbols
-}
-
-function link_override {
-  hostname=$(hostname)
-  default_target=$1$2
-  override_target=$1-$hostname$2
-  link_name=${3:-.$1$2}
-  if [ -e "$override_target" ]; then
-    link_file $override_target $link_name
-  else
-    link_file $default_target $link_name
-  fi 
-}
-
-function link_file {
-  # the symlink target/file in the repo
-  target=$PWD/$1
-  link_name=$HOME/${2:-.$1}
-  if [ -e "$link_name" ]; then
-    # file exists
-    if [ -L "$link_name" ]; then
-      # it is a link
-      existing_target=$(readlink $link_name)
-      if [ -n $existing_target ]; then
-        if [ ! "$existing_target" = "$target" ]; then
-          echo Link already exists but links to $existing_target, overwrite with $target?
-          ln -vis $target $link_name
-        fi
-      else
-        echo "Previous link broken, overwriting"
-        ln -vis $target $link_name
-      fi
-    else
-      echo warning: File exists and is not a symlink, wanted target dotfile: $target link_name: $link_name
-    fi
-  else
-    mkdir -vp $(dirname $link_name)
-    ln -vs $target $link_name
-  fi
-}
-
-function copy_file {
-  target=$PWD/$1
-  copy_to=$HOME/${2:-.$1}
-
-  mkdir -vp $(dirname $copy_to)
-  cp -f $target $copy_to
 }
 
 function install_vundles {

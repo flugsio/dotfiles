@@ -1,0 +1,13 @@
+# pipe this to ash
+
+function main {
+  echo "starting setup"
+  add_repo "https://mirror.operationtulip.com/alpine/v3.12/main"
+}
+
+function add_repo {
+  local file=/etc/apk/repositories
+  grep --quiet "$1" $file || echo "$1" >> $file
+}
+
+main

@@ -1,0 +1,26 @@
+#!/bin/bash
+
+setfont /usr/share/consolefonts/ter-132b.psf.gz
+
+#printf "\\e]PBef4020"
+
+# no sudo
+loadkeys -s ~/code/dotfiles/slash/sv-code.map
+#kbdv
+printf "\\e]P0222222"
+printf "\\e]P1cc241d"
+printf "\\e]P298971a"
+printf "\\e]P3fe8019"
+printf "\\e]P4458588"
+printf "\\e]P5b16286"
+printf "\\e]P6689d6a"
+printf "\\e]P7bdae93"
+printf "\\e]P87c6f64"
+printf "\\e]P9fb4934"
+printf "\\e]Pab8bb26"
+printf "\\e]Pbfabd2f"
+printf "\\e]Pc83a598"
+printf "\\e]Pdd3869b"
+printf "\\e]Pe8ec07c"
+printf "\\e]Pfebdbb2"
+

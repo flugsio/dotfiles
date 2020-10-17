@@ -172,6 +172,7 @@ else
 endif
 set t_Co=256
 let g:gruvbox_italic=0
+let g:gruvbox_termcolors=16
 silent! colorscheme gruvbox
 if &background == "dark"
   hi StatusLine ctermfg=208 ctermbg=234 cterm=NONE

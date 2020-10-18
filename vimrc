@@ -5,10 +5,12 @@ call vundle#begin()
 
 Plugin        'gmarik/Vundle.vim'
 
-Plugin 'prabirshrestha/async.vim'
-Plugin 'prabirshrestha/vim-lsp'
-Plugin 'prabirshrestha/asyncomplete.vim'
-Plugin 'prabirshrestha/asyncomplete-lsp.vim'
+" these case issues with escape
+" it jumps toggles into insert mode
+" Plugin 'prabirshrestha/async.vim'
+" Plugin 'prabirshrestha/vim-lsp'
+" Plugin 'prabirshrestha/asyncomplete.vim'
+" Plugin 'prabirshrestha/asyncomplete-lsp.vim'
 
 Plugin   'majutsushi/tagbar'
 Plugin       'mileszs/ack.vim'

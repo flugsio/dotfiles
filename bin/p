@@ -56,10 +56,16 @@ function show_name {
 }
 
 function started_at {
-  pcregrep -o1 "Timer: (\d.*)" ~/todotoday | head -n1 | awk '$0="--date=\""$0"\""' | xargs date +'%s' --date=
+  local time=$(pcregrep -o1 "Timer: (\d.*)" ~/todotoday)
+  if [ -n "$time" ]; then
+    echo $time | awk '$0="--date=\""$0"\""' | xargs date +'%s' --date=
+  fi
 }
 
 function show_graph {
+  if [ -z "$(started_at)" ]; then
+    return
+  fi
   workunits_done=$(echo "($(date +'%s')-$(started_at))/60" | bc)
   pauseunits_done=$(echo "($(date +'%s')-$(started_at)-1500)/12" | bc)
   

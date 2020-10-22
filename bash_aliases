@@ -154,6 +154,8 @@ alias record3='sleep 1.5 && ffmpeg -f pulse -name a -channels 2 -fragment_size 1
 alias record4='sleep 1.5 && ffmpeg -f pulse -name a -channels 1 -fragment_size 1024 -i default -f x11grab -s 1920x1080 -r 60 -i :0.0 -ac 1 -acodec ac3 -vcodec libx264 -preset ultrafast -crf 0 -threads 0 ~/output-$(date +%s).mkv 2>&1'
 alias record5='sleep 1.5 && ffmpeg -f x11grab -s 1920x1080 -r 60 -i :0.0 -vcodec libx264 -preset ultrafast -crf 0 -threads 0 ~/output-$(date +%s).mkv 2>&1'
 function record {
+  # for example
+  # record 1920x1080 noaudio
   local what=${1:-resize} # area, window, 1920x1080 (a size), resize 1920px1080px (uses i3 to set the size)
   if [ "$what" = "resize" ]; then
     local what="window"
@@ -329,6 +331,10 @@ alias gbmod='git diff origin/master...HEAD --name-only --diff-filter=DMR | xargs
 #alias i="(cd ~/code/ansible && (pgrep invoker || bundle exec invoker start vagrant.ini -d) && bundle exec invoker"
 alias urldecode='python3 -c "import sys, urllib.parse as ul; print(ul.unquote_plus(sys.argv[1]))"'
 alias urlencode='python3 -c "import sys, urllib.parse as ul; print (ul.quote_plus(sys.argv[1]))"'
+
+function remote_syncthing {
+  remote $1 -L localhost:83$1:localhost:8384
+}
 function remote_num {
   printf "6%.3d" $1
 }
@@ -459,6 +465,13 @@ function ch {
     )
   )
   done
+}
+
+function v {
+  local url=${1:-$(xsel)}
+  youtube-dl -F "$url"
+
+  mpv "$url" --ytdl-format="248+bestaudio/247+bestaudio"
 }
 
 # git branch commit, pushes a simple change as a new pr

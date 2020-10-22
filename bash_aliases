@@ -322,6 +322,7 @@ alias swatch2='swatch_start; while true; do sleep 1; swatch_status ; done)'
 alias stopw='(stop=$(date +"%s" -d "$at"); echo "-00:00"; typeset -Z2 minutes seconds; while [ $minutes -gt 0 -o $seconds -gt 0 ]; do sleep 1; total=$(($stop-$(date +"%s"))); minutes=$(($total/60)); seconds=$(($total%60)); echo "-$minutes:$seconds\e[1A" ; done)'
 alias ptfinished='jq ".data.stories.stories[] | \" - [\" + (.id | tostring + \"](\") + .url + \") \" + .name" -r'
 alias bat='grep -hoP "(?<=CAPACITY=)\d+" /sys/class/power_supply/BAT*/uevent'
+alias batall='cat /sys/class/power_supply/BAT*/uevent'
 alias pkgcachesize='(cd /var/cache/pacman/pkg && ls -1 . | sed "s/lib32-/lib32_/" | cut -d"-" -f1 | sed "s/lib32_/lib32-/" | sort -u | while read f; do du -cah $f-* | tail -n1 | sed "s/total/$f/" ; done | sort -h)'
 alias rfcsync='rsync -avz --delete ftp.rfc-editor.org::rfcs-text-only ~/code/rfc'
 alias pong='while sleep 1 && ! ping 8.8.8.8 -c 1 -w 3; do :; done'
@@ -334,6 +335,7 @@ alias urlencode='python3 -c "import sys, urllib.parse as ul; print (ul.quote_plu
 
 function remote_syncthing {
   remote $1 -L localhost:83$1:localhost:8384
+  echo http://localhost:83$1
 }
 function remote_num {
   printf "6%.3d" $1

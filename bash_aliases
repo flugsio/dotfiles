@@ -325,7 +325,7 @@ alias swatch_status='total=$(($(date +"%s")-$start)); minutes=$(($total/60)); se
 alias swatch2='swatch_start; while true; do sleep 1; swatch_status ; done)'
 alias stopw='(stop=$(date +"%s" -d "$at"); echo "-00:00"; typeset -Z2 minutes seconds; while [ $minutes -gt 0 -o $seconds -gt 0 ]; do sleep 1; total=$(($stop-$(date +"%s"))); minutes=$(($total/60)); seconds=$(($total%60)); echo "-$minutes:$seconds\e[1A" ; done)'
 alias ptfinished='jq ".data.stories.stories[] | \" - [\" + (.id | tostring + \"](\") + .url + \") \" + .name" -r'
-alias bat='grep -hoP "(?<=CAPACITY=)\d+" /sys/class/power_supply/BAT*/uevent'
+alias bat='grep CAPACITY= /sys/class/power_supply/BAT*/uevent | cut -d= -f2'
 alias batall='cat /sys/class/power_supply/BAT*/uevent'
 alias pkgcachesize='(cd /var/cache/pacman/pkg && ls -1 . | sed "s/lib32-/lib32_/" | cut -d"-" -f1 | sed "s/lib32_/lib32-/" | sort -u | while read f; do du -cah $f-* | tail -n1 | sed "s/total/$f/" ; done | sort -h)'
 alias rfcsync='rsync -avz --delete ftp.rfc-editor.org::rfcs-text-only ~/code/rfc'
@@ -417,6 +417,10 @@ function remote {
 function remote_save_history {
   remote_pull $1 /home/vagrant/.histfile ~/debug/history/$(dtz)_$1.sh
   cd ~/debug/history
+}
+function remote_copyid {
+  num=$(remote_num $1)
+  ssh-copy-id vagrant@$REMOTEIP:${num}0
 }
 function remote_push {
   num=$(remote_num $1)

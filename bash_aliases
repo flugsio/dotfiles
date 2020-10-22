@@ -498,8 +498,10 @@ $body"
 
     git push -u &&
       openpr &&
+      (gh pr create -f || true) &&
       git checkout master &&
       git branch -D "$branch"
+    echo "To notify slack, use `makepr NR`"
   fi
 }
 function fast_chromium {

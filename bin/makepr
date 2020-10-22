@@ -12,10 +12,14 @@ set -e
 
 prnr=$1
 
-url=$(xsel)
+if [ -z "$1" ]; then
+  url=$(xsel)
+fi
 if [[ "$url" =~ "github.com" ]]; then
   hubname=$(echo $url | sed -E 's"^https://github.com/([^/]+\/[^/]+).*$"\1"')
   prnr=$(echo $url | sed -E 's"^https://github.com/[^/]+/[^/]+/pull/([[:digit:]]+).*$"\1"')
+else
+  hubname=$(hubname)
 fi
 
 if [ -n "$prnr" ]; then
@@ -32,7 +36,7 @@ if [ -n "$prnr" ]; then
   fi
 
   if [ -z "$assignee" ]; then
-    assignee="@channel"
+    assignee="@here"
   fi
 
   content="pr $assignee $title $url"

@@ -1,5 +1,9 @@
 # vim:ft=zsh ts=2 sw=2 sts=2
 
+function pt {
+  # wrap pt, to reuse the same .pt file
+  (cd ~/code && command pt $@)
+}
 alias dot='cd ~/code/dotfiles'
 alias rep='cd ~/code/ansible/repos'
 alias t='tig --all'

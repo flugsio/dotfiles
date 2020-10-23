@@ -75,6 +75,7 @@ alias istart='invoker start all -d'
 alias iw='alias i{r,l,s,a,clear,log}; echo iA=run interactively'
 alias i='invoker'
 alias il='invoker list'
+alias ill='invoker list -r | grep -Po "(?<=Name |PID : ).*" | sed "/: /{N;s/\n/, /}" | column | ack --passthru Not'
 # These work on the argument list, or DEFAULT_RELOAD if set, or fallbacks to current directories processes
 function ir { for s in ${*:-${DEFAULT_RELOAD:-$(ihere)}}; do echo reload $s; invoker reload $s; done }
 function is { for s in ${*:-${DEFAULT_RELOAD:-$(ihere)}}; do echo remove $s; invoker remove $s; done }

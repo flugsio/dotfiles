@@ -1,0 +1,18 @@
+# these are alpine/ash specific aliases
+function add_bt {
+  apk add bluez
+  /etc/init.d/bluetooth start
+  echo "now run: bluetoothctl, power on, scan on, pair MAC, trust MAC, connect MAC, scan off"
+}
+
+function add_audio {
+  apk add alsa-utils alsa-lib alsaconf
+  echo "Optional: apk add alsa-utils-doc"
+  echo "Add your own account: addgroup USERNAME audio"
+  addgroup root audio
+  # this has lots of dependencies, TODO: investigate alternatives
+  apk add cmus
+  mkdir ~/music
+  echo "Adjust .asoundrc as needed"
+  aplay -l
+}

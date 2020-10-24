@@ -10,8 +10,7 @@ function add_audio {
   echo "Optional: apk add alsa-utils-doc"
   echo "Add your own account: addgroup USERNAME audio"
   addgroup root audio
-  # this has lots of dependencies, TODO: investigate alternatives
-  apk add cmus
+  apk add mpg123
   mkdir ~/music
   echo "Adjust .asoundrc as needed"
   aplay -l

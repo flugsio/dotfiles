@@ -5,6 +5,7 @@ function main {
   if [ "$size" = "w" ]; then
     echo 14 16 18 20 22* 24 28* 32
   else
+    # showconsolefont to view all characters
     setfont /usr/share/consolefonts/ter-1${size}b.psf.gz
   fi
 

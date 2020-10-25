@@ -18,6 +18,9 @@ function init {
     "name")
       show_name
       ;;
+    "combined")
+      combined
+      ;;
     "graph")
       show_graph
       ;;
@@ -62,9 +65,23 @@ function started_at {
   fi
 }
 
+# This will show the graph, and overlay the name
+# check for shorter characters, setfont
+function combined {
+  local g=$(show_graph)
+  local dashes=$(echo $g | sed -E 's/[^-]//g')
+  local count=$(echo $dashes | wc -c)
+  if [ $(echo $g | sed -E 's/[^\=]//g' | wc -c) -gt 0 -e "$count" -gt 0 ]; then
+    local name=$(printf "%.*s" $count "$(show_name)" | sed -E 's/[^A-Za-z]/_/g')
+    echo $g | sed -E "s/$dashes/$name/"
+  else
+    echo $g
+  fi
+}
+
 function show_graph {
   if [ -z "$(started_at)" ]; then
-    return
+    return 0
   fi
   workunits_done=$(echo "($(date +'%s')-$(started_at))/60" | bc)
   pauseunits_done=$(echo "($(date +'%s')-$(started_at)-1500)/12" | bc)

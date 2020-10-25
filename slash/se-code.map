@@ -22,6 +22,7 @@ strings as usual
 
 keycode   1 = Escape
 	alt     keycode   1 = Meta_Escape
+        altgr   keycode   1 = Caps_Lock
 keycode   2 = one              exclam
 	alt     keycode   2 = Meta_one
 keycode   3 = two              quotedbl         at
@@ -127,7 +128,7 @@ keycode  57 = space
 	control keycode  57 = nul
 	alt     keycode  57 = Meta_space
 keycode  58 = Escape
-        altgr   keycode  58 = Caps_Lock
+#        altgr   keycode  58 = Caps_Lock
 keycode  86 = less             greater          bar
 	alt     keycode  86 = Meta_less
 # right control key

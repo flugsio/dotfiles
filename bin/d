@@ -1,0 +1,40 @@
+#!/bin/bash
+
+# toDo, add an list todos
+
+file=~/Sync/todo.txt
+
+function main {
+  if [ -z "$1" ]; then
+    show_incomplete
+  elif [ "$1" = "w" ]; then
+    echo "a = add task"
+    echo "e = open in editor"
+    echo "t = show Tags"
+  elif [ "$1" = "e" ]; then
+    $EDITOR $file
+  elif [ "$1" = "t" ]; then
+    show_incomplete
+  elif [ "$1" = "a" ]; then
+    shift
+    add $@
+  elif [ $(echo "$@" | wc -c) -ge 10 ]; then
+    add $@
+  else
+    echo "Use a command for tasks shorter than 10 characters"
+  fi
+}
+
+function add {
+  echo "* $@" >> $file
+}
+
+function tags {
+  grep -oE "\b#[^\b]*" $file | sort | uniq -c | sort -h
+}
+
+function show_incomplete {
+  grep "\s*\*" $file
+}
+
+main $@

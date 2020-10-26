@@ -1,0 +1,16 @@
+#!/bin/sh
+# https://unix.stackexchange.com/questions/111386/emulate-horizontal-scrolling-with-shift-key
+
+on {
+  xmodmap -e 'pointer = 1 2 3 6 7 4 5 8 9 10 11 12'
+}
+
+off {
+  xmodmap -e 'pointer = default'
+}
+
+if xmodmap -pp | grep -q '4.*6'; then
+  off
+else
+  on
+fi

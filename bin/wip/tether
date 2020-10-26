@@ -1,0 +1,18 @@
+#!/bin/bash
+
+echo $(date) >> /home/flugsio/tetherlog.log
+echo "before usb0 up" >> /home/flugsio/tetherlog.log
+/usr/bin/ip link set dev usb0 up
+
+echo "before enp0s20u1 up" >> /home/flugsio/tetherlog.log
+/usr/bin/ip link set dev enp0s20u1 up
+
+echo "before enp0s20u2 up" >> /home/flugsio/tetherlog.log
+/usr/bin/ip link set dev enp0s20u2 up
+
+sleep 2
+
+echo "before restarting network" >> /home/flugsio/tetherlog.log
+/usr/bin/systemctl restart dhcpcd
+
+echo "after everything" >> /home/flugsio/tetherlog.log

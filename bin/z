@@ -1,0 +1,4 @@
+#!/bin/bash
+
+export DISPLAY=:0
+while read -n1 i; do xdotool search --name pdf windowactivate sleep 0.1 type j; done

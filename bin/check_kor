@@ -1,0 +1,50 @@
+#!/bin/zsh -il
+
+function check {
+  #page=$(curl -s 'http://wahlinfastigheter.se/lediga-objekt/lagenhet/' -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' --compressed -H 'Accept-Language: en-US,en;q=0.5' -H 'Connection: keep-alive' -H 'Cookie: _ga=GA1.2.978005517.1520857873; pll_language=sv; _gid=GA1.2.501726136.1526970392; _hjIncludedInSample=1' -H 'Host: wahlinfastigheter.se' -H 'Referer: http://wahlinfastigheter.se/lediga-objekt/lagenthet' -H 'Upgrade-Insecure-Requests: 1' -H 'User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:59.0) Gecko/20100101 Firefox/59.0')
+  page=$(curl 'https://16291.str.se/e-handel/?mode=courses' \
+    -H 'Connection: keep-alive' \
+    -H 'Cache-Control: max-age=0' \
+    -H 'Upgrade-Insecure-Requests: 1' \
+    -H 'User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36' \
+    -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9' \
+    -H 'Sec-Fetch-Site: cross-site' \
+    -H 'Sec-Fetch-Mode: navigate' \
+    -H 'Sec-Fetch-User: ?1' \
+    -H 'Sec-Fetch-Dest: document' \
+    -H 'Accept-Language: en-US,en;q=0.9,sv;q=0.8' \
+    --compressed)
+  #result=$(echo "$page" | grep -P "https?://wahlinfastigheter.se/lediga-objekt/(?!(lagenhet|lokaler|forrad|parkering))[^\"]*" -o | sort | uniq)
+  result=$(echo "$page" | sed -n '/Introduktionsutbildning <\/a>/,/FULLBOKAD/p' | grep "none.*FULLBOKAD" -B 5 | grep -oP "2020-(10-(06|07|10|13|14|17|21)|09-(29|30))")
+
+  while read item; do
+    grep "$item" ~/.kor_cache -q
+    if [ $? -eq 0 ]; then
+      echo already exists in file
+      :; # nothing
+    else
+      echo "adding to file"
+      echo "$item" >> ~/.kor_cache
+      message="introutbildning $item"
+      notiflug "$message"
+      echo $message
+      #notilutra "$message"
+    fi
+  done <<< $(echo $result)
+}
+
+if [ "$1" = "now" ]; then
+  while sleep 1s; do
+    check
+    sleep 4s
+  done
+else
+  while sleep 5m; do
+    # currenttime=$(date +%H:%M)
+    # if [[ "$currenttime" > "13:00" ]] && [[ "$currenttime" < "13:30" ]]; then
+      check
+    # elif [[ "$currenttime" > "13:30" ]] && [[ "$currenttime" < "14:00" ]]; then
+      # echo "" > ~/.kor_cache
+    # fi
+  done
+fi

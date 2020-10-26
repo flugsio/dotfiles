@@ -374,6 +374,23 @@ bar {
         }
 }
 
+# xrandr --output DP1 --mode 2560x1440 --fb 1920x1080 --transform 1,0,-320,0,1,0,0,0,1 --panning 0x0
+#bar {
+#        status_command i3status | i3status_wrapper
+#        position bottom
+#        font pango:Ubuntu Mono 264
+#
+#        colors {
+#                background          $bg2
+#	        statusline          $fg
+#	        separator           $green
+#	        focused_workspace   $bg2        $bg2        $green2
+#	        active_workspace    $gn        $ac        $tx
+#	        inactive_workspace  $bg2        $bg2        $ia
+#	        urgent_workspace    $green2        $green2        $base02
+#        }
+#}
+
 #bindsym $mod+shift+p bar hidden_state toggle bar_help
 
 #bar {

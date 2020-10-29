@@ -9,31 +9,35 @@ function h {
     local last_modified=0
     # watch processes
     while sleep 1; do
-      local pid=$(tmux list-panes -F "#{pane_active} #{pane_pid}" | grep "^1 " | cut -d" " -f2)
-      if [ -n "$pid" ]; then
-        local c=$(cat ~/.cache/h/$pid 2>/dev/null);
-        if [ -n "$c"  ]; then
-          # allow editing and previewing result
-          if [ "$c" = "h" ]; then
-            c=$last
-          fi
-          local f="$HOME/Sync/h/${c}.wofl"
-
-          local modified=$(stat $f -c %Y 2>/dev/null || echo 0)
-          if [ "$c" != "$last" -o "$(expr $modified - $last_modified)" -gt $cache_time ]; then
-            local last=$c
-            local last_modified=$(stat $f -c %Y 2>/dev/null || echo 0)
-            clear
-            cat $f 2>/dev/null || echo "Empty: $c"
-            echo
-            #man $c | head
-          fi
+      local c=$(h_cmd)
+      if [ -n "$c"  ]; then
+        # allow editing and previewing result
+        if [ "$c" = "h" ]; then
+          c=$last
         fi
+        local f="$HOME/Sync/h/${c}.wofl"
+
+        local modified=$(stat $f -c %Y 2>/dev/null || echo 0)
+        if [ "$c" != "$last" -o "$(expr $modified - $last_modified)" -gt $cache_time ]; then
+          local last=$c
+          local last_modified=$(stat $f -c %Y 2>/dev/null || echo 0)
+          clear
+          cat $f 2>/dev/null || echo "Empty: $c"
+          echo
+          #man $c | head
+      fi
       fi
     done
   elif [ "$1" = "e" ]; then
-    # edit
-    $EDITOR ~/Sync/h/$2.wofl
+    # edit, TODO: this does not use focus, but latest started
+    $EDITOR ~/Sync/h/${2:-$(cat $(ls -t1 ~/.cache/h/* | head -n2 | tail -n1))}.wofl
+  fi
+}
+
+function h_cmd {
+  local pid=$(tmux list-panes -F "#{pane_active} #{pane_pid}" | grep "^1 " | cut -d" " -f2)
+  if [ -n "$pid" ]; then
+    cat ~/.cache/h/$pid 2>/dev/null
   fi
 }
 

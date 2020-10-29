@@ -11,7 +11,7 @@ function h {
     while sleep 1; do
       local pid=$(tmux list-panes -F "#{pane_active} #{pane_pid}" | grep "^1 " | cut -d" " -f2)
       if [ -n "$pid" ]; then
-        local c=$(cat ~/.cache/i/$pid 2>/dev/null);
+        local c=$(cat ~/.cache/h/$pid 2>/dev/null);
         if [ -n "$c"  ]; then
           # allow editing and previewing result
           if [ "$c" = "h" ]; then

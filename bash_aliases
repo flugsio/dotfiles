@@ -1,10 +1,48 @@
 # vim:ft=zsh ts=2 sw=2 sts=2
 
+# this is a tiny helper thingy
+# the purpose is to provide contextual help
+# recommended tmux keybind: M-a h
+function h {
+  if [ "$1" = "w" ]; then
+    local cache_time=2
+    local last_modified=0
+    # watch processes
+    while sleep 1; do
+      local pid=$(tmux list-panes -F "#{pane_active} #{pane_pid}" | grep "^1 " | cut -d" " -f2)
+      if [ -n "$pid" ]; then
+        local c=$(cat ~/.cache/i/$pid 2>/dev/null);
+        if [ -n "$c"  ]; then
+          # allow editing and previewing result
+          if [ "$c" = "h" ]; then
+            c=$last
+          fi
+          local f="$HOME/Sync/h/${c}.wofl"
+
+          local modified=$(stat $f -c %Y 2>/dev/null || echo 0)
+          if [ "$c" != "$last" -o "$(expr $modified - $last_modified)" -gt $cache_time ]; then
+            local last=$c
+            local last_modified=$(stat $f -c %Y 2>/dev/null || echo 0)
+            clear
+            cat $f 2>/dev/null || echo "Empty: $c"
+            echo
+            #man $c | head
+          fi
+        fi
+      fi
+    done
+  elif [ "$1" = "e" ]; then
+    # edit
+    $EDITOR ~/Sync/h/$2.wofl
+  fi
+}
+
 function pt {
   # wrap pt, to reuse the same .pt file
   (cd ~/code && command pt $@)
 }
 alias dot='cd ~/code/dotfiles'
+alias syn='cd ~/Sync'
 alias rep='cd ~/code/ansible/repos'
 alias t='tig --all'
 alias ra='ranger'

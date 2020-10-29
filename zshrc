@@ -74,6 +74,14 @@ bindkey '^r' history-incremental-search-backward
 
 bindkey '\e.' insert-last-word
 
+# http://zsh.sourceforge.net/Doc/Release/Functions.html
+# stores the last command, to use with the h function
+# This does not work well with nested programs, but it works well with last-command
+mkdir -p ~/.cache/h
+function preexec {
+  echo $1 | cut -d' ' -f1 > ~/.cache/h/$$
+}
+
 # widget: http://zsh.sourceforge.net/Guide/zshguide04.html#l103
 zle -N browsedir
 function browsedir() {

@@ -174,7 +174,8 @@ file_sorting_method=BY_FILENAME
 # NOTE: Some fixed format documents may look disfigured when
 # "LINKS_ARE_NUMBERED" or "LINKS_AND_FORM_FIELDS_ARE_NUMBERED" are
 # enabled.
-keypad_mode=LINKS_ARE_NOT_NUMBERED
+#keypad_mode=LINKS_ARE_NOT_NUMBERED
+keypad_mode=LINKS_AND_FORM_FIELDS_ARE_NUMBERED
 
 # lineedit_mode specifies the key binding used for inputting strings in
 # prompts and forms.  If lineedit_mode is set to "Default Binding" then
@@ -323,7 +324,7 @@ sub_bookmarks=OFF
 # commands.  Set user_mode to "INTERMEDIATE" to turn off the extra info.
 # Use "ADVANCED" to see the URL of the currently selected link at the
 # bottom of the screen.
-user_mode=NOVICE
+user_mode=ADVANCED
 
 # If verbose_images is "on", lynx will print the name of the image
 # source file in place of [INLINE], [LINK] or [IMAGE]

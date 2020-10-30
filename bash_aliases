@@ -365,6 +365,28 @@ function openwiki {
 alias swatch='(start=$(date +"%s"); echo "00:00"; typeset -Z2 minutes seconds; while true; do sleep 1; total=$(($(date +"%s")-$start)); minutes=$(($total/60)); seconds=$(($total%60)); echo "\e[1A$minutes:$seconds" ; done)'
 alias swatch_start='start=$(date +"%s"); typeset -Z2 minutes seconds'
 alias swatch_status='total=$(($(date +"%s")-$start)); minutes=$(($total/60)); seconds=$(($total%60)); echo "$minutes:$seconds"'
+
+function measure_downtime {
+  echo "Starting uptime clock"
+  local url=$1
+  local interval=${2:-1}
+  swatch_start
+  while curl "$url" -IL -f -s &>/dev/null; do
+    sleep $interval
+    swatch_status
+  done
+  echo "Going down after waiting:"
+  swatch_status
+  echo "Starting downtime clock"
+  swatch_start
+  sleep 1 # some padding
+  while curl "$url" -IL -f >&/dev/null; test $? -ne 0; do
+    sleep $interval
+    swatch_status
+  done
+  echo "Service recovered after:"
+  swatch_status
+}
 alias swatch2='swatch_start; while true; do sleep 1; swatch_status ; done)'
 alias stopw='(stop=$(date +"%s" -d "$at"); echo "-00:00"; typeset -Z2 minutes seconds; while [ $minutes -gt 0 -o $seconds -gt 0 ]; do sleep 1; total=$(($stop-$(date +"%s"))); minutes=$(($total/60)); seconds=$(($total%60)); echo "-$minutes:$seconds\e[1A" ; done)'
 alias ptfinished='jq ".data.stories.stories[] | \" - [\" + (.id | tostring + \"](\") + .url + \") \" + .name" -r'

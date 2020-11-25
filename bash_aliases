@@ -40,10 +40,33 @@ function h_cmd {
     cat ~/.cache/h/$pid 2>/dev/null
   fi
 }
+function ci {
+  if [ "$1" = "log" ]; then
+    curl $CI_URL/job/${CI_PROJECTS[$(hubname)]//\%2F/\/job/}/job/$(active_branch)/lastBuild/logText/progressiveText?start=0 -L --user $JENKINS_USERTOKEN
+  else
+    echo "no such command"
+  fi
+}
 
 function pt {
   # wrap pt, to reuse the same .pt file
   (cd ~/code && command pt $@)
+}
+
+function mo {
+  local prefix=''
+  # for mmonit 3.7.1+
+  #local prefix='/api/1'
+  if [ "$1" = "list" ]; then
+    set -x
+    curl -b "$MONIT_COOKIE" "${MONIT_URL}${prefix}/status/hosts/list" | \
+      jq '.records[] | select(.led != 2) | [(.hostname | sub(".promoteapp.net"; "")), .led, .statusid, .status] | @csv' -r | \
+      column -s, -t
+  elif [ "$1" = "login" ]; then
+    echo todo
+  else
+    echo "no such command"
+  fi
 }
 alias dot='cd ~/code/dotfiles'
 alias syn='cd ~/Sync'
@@ -113,15 +136,17 @@ function cleanup {
     git branch -d $branch
   done
 }
-alias istart='invoker start all -d'
+function i {
+  (rbenv shell 2.6.5; invoker $@)
+}
+alias istart='i start all -d'
 alias iw='alias i{r,l,s,a,clear,log}; echo iA=run interactively'
-alias i='invoker'
-alias il='invoker list'
-alias ill='invoker list -r | grep -Po "(?<=Name |PID : ).*" | sed "/: /{N;s/\n/, /}" | column | ack --passthru Not'
+alias il='i list'
+alias ill='i list -r | grep -Po "(?<=Name |PID : ).*" | sed "/: /{N;s/\n/, /}" | column | ack --passthru Not'
 # These work on the argument list, or DEFAULT_RELOAD if set, or fallbacks to current directories processes
-function ir { for s in ${*:-${DEFAULT_RELOAD:-$(ihere)}}; do echo reload $s; invoker reload $s; done }
-function is { for s in ${*:-${DEFAULT_RELOAD:-$(ihere)}}; do echo remove $s; invoker remove $s; done }
-function ia { for s in ${*:-${DEFAULT_RELOAD:-$(ihere)}}; do echo add $s; invoker add $s; done }
+function ir { for s in ${*:-${DEFAULT_RELOAD:-$(ihere)}}; do echo reload $s; i reload $s; done }
+function is { for s in ${*:-${DEFAULT_RELOAD:-$(ihere)}}; do echo remove $s; i remove $s; done }
+function ia { for s in ${*:-${DEFAULT_RELOAD:-$(ihere)}}; do echo add $s; i add $s; done }
 function iA { eval $(sed -n "/\[$1\]/,/^\[/p" ~/.invoker/all.ini | grep -Po "(?<=command = ).*"); }
 alias iclear='pkill -f "^tail.*.invoker/invoker.log"'
 alias ilog='while true; do clear; tmux clear-history; tail -n0 -F ~/.invoker/invoker.log; done'
@@ -148,7 +173,9 @@ function mkde {
   mkdir "$pathname"
   ln -fns "$pathname" $HOME/debug/latest
   cd "$pathname"
-  i3-msg move workspace $name, workspace $name
+  if command -v i3-msg >/dev/null 2>&1; then
+    i3-msg move workspace $name, workspace $name || true
+  fi
   vim log.md
 }
 alias be='bundle exec'
@@ -348,7 +375,7 @@ alias opengrafter='browse "https://$(active_branch_cleaned).$GRAFTER_DOMAIN"'
 # typeset -A CI_PROJECTS=(
 #     avidity/errbit apps%2Ferrbit
 #     key value)
-alias openci='browse "https://ci.promoteapp.net/blue/organizations/jenkins/${CI_PROJECTS[$(hubname)]}/activity?branch=$(active_branch)"'
+alias openci='browse "$CI_URL/blue/organizations/jenkins/${CI_PROJECTS[$(hubname)]}/activity?branch=$(active_branch)"'
 function opendocs {
     browse "https://docs.promoteapp.net/?search=$@"
 }
@@ -371,7 +398,7 @@ function measure_downtime {
   local url=$1
   local interval=${2:-1}
   swatch_start
-  while curl "$url" -IL -f -s &>/dev/null; do
+  while curl "$url" -k -IL -f -s &>/dev/null; do
     sleep $interval
     swatch_status
   done
@@ -380,7 +407,7 @@ function measure_downtime {
   echo "Starting downtime clock"
   swatch_start
   sleep 1 # some padding
-  while curl "$url" -IL -f >&/dev/null; test $? -ne 0; do
+  while curl "$url" -k -IL -f >&/dev/null; test $? -ne 0; do
     sleep $interval
     swatch_status
   done
@@ -586,9 +613,13 @@ $body"
 
     git push -u &&
       openpr &&
-      (gh pr create -f || true) &&
-      git checkout master &&
-      git branch -D "$branch"
+      (gh pr create -f || true)
+         # &&
+      #git checkout master &&
+      #git branch -D "$branch"
+      while sleep 4; do
+        gh pr checks | grep pass && break || echo not yet
+      done
     echo "To notify slack, use `makepr NR`"
   fi
 }

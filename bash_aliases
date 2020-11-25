@@ -63,7 +63,13 @@ function mo {
       jq '.records[] | select(.led != 2) | [(.hostname | sub(".promoteapp.net"; "")), .led, .statusid, .status] | @csv' -r | \
       column -s, -t
   elif [ "$1" = "login" ]; then
-    echo todo
+    curl -c "$MONIT_COOKIE" "${MONIT_URL}/index.csp"
+    curl -b "$MONIT_COOKIE" \
+      -d z_username="$MONIT_USERNAME" \
+      -d z_password="$(pass $MONIT_PASS_NAME)" \
+      -d z_csrf_protection=off \
+      -d z_remember_me=on \
+      "${MONIT_URL}/z_security_check"
   else
     echo "no such command"
   fi

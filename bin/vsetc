@@ -21,8 +21,8 @@ function main {
   else
     custom_colors # modified gruvbox
   fi
-  #clear
-  print_colors
+  clear
+  #print_colors
 }
 
 function custom_colors {

@@ -45,8 +45,6 @@ function update_dotfiles {
     link_file ash_profile .profile
     link_file alpine/asoundrc .asoundrc
 
-    source ~/.profile
-
     if [ ! -e ~/.ssh/id_rsa ]; then
       ssh-keygen -t rsa -f ~/.ssh/id_rsa -N "" -C "alpine $(date -u +'%Y%m%d %H%M')"
     fi

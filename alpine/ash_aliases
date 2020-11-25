@@ -4,6 +4,7 @@ function add_bt {
   /etc/init.d/bluetooth start
   mac="90:7F:61:5A:2A:B0"
   bluetoothctl power on
+  bluetoothctl --timeout 12 scan on
   bluetoothctl pair $mac
   bluetoothctl trust $mac
   bluetoothctl connect $mac

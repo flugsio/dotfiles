@@ -403,8 +403,8 @@ alias urldecode='python3 -c "import sys, urllib.parse as ul; print(ul.unquote_pl
 alias urlencode='python3 -c "import sys, urllib.parse as ul; print (ul.quote_plus(sys.argv[1]))"'
 
 function remote_syncthing {
-  remote $1 -L localhost:83$1:localhost:8384
-  echo http://localhost:83$1
+  echo http://localhost:83${1}
+  remote $1 -L localhost:83${1}:localhost:8384
 }
 function remote_num {
   printf "6%.3d" $1

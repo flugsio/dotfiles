@@ -2,7 +2,11 @@
 function add_bt {
   apk add bluez
   /etc/init.d/bluetooth start
-  echo "now run: bluetoothctl, power on, scan on, pair MAC, trust MAC, connect MAC, scan off"
+  mac="90:7F:61:5A:2A:B0"
+  bluetoothctl power on
+  bluetoothctl pair $mac
+  bluetoothctl trust $mac
+  bluetoothctl connect $mac
 }
 
 function add_audio {

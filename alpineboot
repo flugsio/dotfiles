@@ -40,6 +40,7 @@ function update_dotfiles {
     source common
 
     link_file bash_aliases
+    link_file alpine/ash_aliases .ash_aliases
     link_file bin bin
     link_file ash_profile .profile
     link_file alpine/asoundrc .asoundrc

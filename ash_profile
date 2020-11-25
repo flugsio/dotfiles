@@ -1,4 +1,5 @@
 [[ -e ~/.bash_aliases ]] && . ~/.bash_aliases
+[[ -e ~/.ash_aliases ]] && . ~/.ash_aliases
 export PATH=$HOME/bin:$PATH
 vseta
 vsetc

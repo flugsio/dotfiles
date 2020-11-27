@@ -5,6 +5,7 @@
 
 set -e
 
+config="$HOME/.config/story"
 tmp=$(mktemp --suffix=.md)
 
 technical_backlog="170027982"
@@ -21,25 +22,25 @@ fi
 
 if [ "$1" = "bug" ]; then
   # TODO: use another template
-  cp ~/.config/bug_template $tmp
+  cp $config/bug_template $tmp
   story_type="bug"
   shift
 elif [ "$1" = "security" ]; then
-  cp ~/.config/security_template $tmp
+  cp $config/security_template $tmp
   story_type="chore"
   labels="\"security\",\"security from sprint 7\",\"upgrade\",\"technical\""
   shift
 elif [ "$1" = "chore" ]; then
-  cp ~/.config/chore_template $tmp
+  cp $config/chore_template $tmp
   story_type="chore"
   shift
 elif [ "$1" = "errbit" ]; then
-  cp ~/.config/errbit_template $tmp
+  cp $config/errbit_template $tmp
   story_type="chore"
   labels="\"errbit\",\"technical\""
   shift
 else
-  cp ~/.config/story_template $tmp
+  cp $config/story_template $tmp
   story_type="feature"
 fi
 

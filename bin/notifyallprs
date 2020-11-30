@@ -1,0 +1,34 @@
+#!/bin/zsh -il
+
+set -e
+
+# TODO: include merged pr's for the last x hours
+# TODO: update the last message if it's still "visible"
+
+#-F q="is:open" \
+#-F sort=created \
+#-F per_page=100 \
+response="$HOME/.cache/notifypr_response"
+curl -sSL -H "Authorization: token $GITHUB_TOKEN" \
+  -H "Accept: application/vnd.github.v3+json" \
+  -o $response \
+  "https://api.github.com/search/issues?q=is:open+is:pr+user:promoteinternational+draft:false+-status:failure"
+prs=$(cat $response | jq -r ".items[] | [.title, .html_url, .user.login, .created_at] | @csv")
+content="current open pr's here (excluding drafts)"
+while read pr; do
+  title=$(echo $pr | cut -d',' -f1 | sed 's/"//g')
+  url=$(echo $pr | cut -d',' -f2 | sed 's/"//g')
+  user=$(echo $pr | cut -d',' -f3 | sed 's/"//g')
+  created_at=$(echo $pr | cut -d',' -f4 | sed 's/"//g')
+
+  hours_ago=$(echo $((($(date +"%s")-$(date +"%s" -d "$created_at"))/60/60)))
+  title=$(echo $title | sed -E 's{(.*\] |)(.*){\1<'$url'|\2>{')
+  title=$(echo $title | sed -E 's{\[#([[:digit:]]+)\]{<https://www.pivotaltracker.com/n/projects/'$PT_PROJECT_ID'/stories/\1/|[#\1]>{')
+
+  content="$content%0A$title (${hours_ago}h by $user)"
+done <<< $prs
+recipient="$SLACK_MAIN_FLOW"
+recipient="$SLACK_DEVSTATUS"
+
+echo "$content"
+curl -d "token=${SLACK_PROMOTEINT_TOKEN}" -d "channel=$recipient" -d "as_user=true" -d "link_names=true" --data-binary "text=${content}" https://slack.com/api/chat.postMessage

@@ -20,7 +20,7 @@ curl -sSL -H "Authorization: token $GITHUB_TOKEN" \
 curl -sSL -H "Authorization: token $GITHUB_TOKEN" \
   -H "Accept: application/vnd.github.v3+json" \
   -o ${response}_merged \
-  "https://api.github.com/search/issues?q=is:merged+is:pr+user:promoteinternational+draft:false+merged:>=$(date +'%Y-%m-%d')&sort=updated"
+  "https://api.github.com/search/issues?q=is:merged+is:pr+user:promoteinternational+draft:false+merged:>=$(date +'%Y-11-30')&sort=updated&order=asc"
 
 prs=$(cat $response | jq -r ".items[] | [.title, .html_url, .user.login, .created_at, .updated_at, .closed_at] | @csv")
 prs_failed=$(cat ${response}_failed | jq -r ".items[] | [.title, .html_url, .user.login, .created_at, .updated_at, .closed_at] | @csv")
@@ -42,16 +42,16 @@ while read pr; do
 
   created_ago=$(echo $((($(date +"%s")-$(date +"%s" -d "$created_at"))/60/60)))
   updated_ago=$(echo $((($(date +"%s")-$(date +"%s" -d "$updated_at"))/60)))
-  if [ "$updated_ago" -gt 720 ]; then
+  if [ "$updated_ago" -gt 120 ]; then
     updated_ago=$(echo $(($updated_ago/60))h)
   else
     updated_ago=$(echo ${updated_ago}m)
   fi
   closed_ago=$(echo $((($(date +"%s")-$(date +"%s" -d "$closed_at"))/60)))
   title=$(echo $title | sed -E 's{(.*\] |)(.*){\1<'$url'|\2>{')
-  title=$(echo $title | sed -E 's{\[#([[:digit:]]+)\]{<https://www.pivotaltracker.com/n/projects/'$PT_PROJECT_ID'/stories/\1/|[#\1]>{')
+  title=$(echo $title | sed -E 's{\[#([[:digit:]]+)\]{<pivotaltracker.com/story/show/\1/|[#\1]>{')
 
-  content="$content%0A:open: $title (${created_ago}h ago by $user, updated ${updated_ago} ago)"
+  content="$content%0A:op:$title (${created_ago}h ago by $user, updated ${updated_ago} ago)"
 done <<< $prs
 
 if [ "$(echo $prs_failed | wc -l)" -gt 1 ]; then
@@ -68,14 +68,14 @@ if [ "$(echo $prs_failed | wc -l)" -gt 1 ]; then
     updated_ago=$(echo $((($(date +"%s")-$(date +"%s" -d "$updated_at"))/60)))
     #closed_ago=$(echo $((($(date +"%s")-$(date +"%s" -d "$closed_at"))/60)))
     title=$(echo $title | sed -E 's{(.*\] |)(.*){\1<'$url'|\2>{')
-    title=$(echo $title | sed -E 's{\[#([[:digit:]]+)\]{<https://www.pivotaltracker.com/n/projects/'$PT_PROJECT_ID'/stories/\1/|[#\1]>{')
+    title=$(echo $title | sed -E 's{\[#([[:digit:]]+)\]{<pivotaltracker.com/story/show/\1/|[#\1]>{')
   
     content="$content%0A:octagonal_sign: $title (${created_ago}h ago by $user, updated ${updated_ago}m ago)"
   done <<< $prs_failed
 fi
 
 if [ "$(echo $prs_merged | wc -l)" -gt 0 ]; then
-  content="$content%0A%0Arecently merged pr's"
+  content_merged="recently merged pr's"
   while read pr; do
     title=$(echo $pr | cut -d',' -f1 | sed 's/"//g')
     url=$(echo $pr | cut -d',' -f2 | sed 's/"//g')
@@ -88,14 +88,30 @@ if [ "$(echo $prs_merged | wc -l)" -gt 0 ]; then
     #updated_ago=$(echo $((($(date +"%s")-$(date +"%s" -d "$updated_at"))/60)))
     closed_ago=$(echo $((($(date +"%s")-$(date +"%s" -d "$closed_at"))/60/60)))
     title=$(echo $title | sed -E 's{(.*\] |)(.*){\1<'$url'|\2>{')
-    title=$(echo $title | sed -E 's{\[#([[:digit:]]+)\]{<https://www.pivotaltracker.com/n/projects/'$PT_PROJECT_ID'/stories/\1/|[#\1]>{')
+    title=$(echo $title | sed -E 's{\[#([[:digit:]]+)\]{<pivotaltracker.com/story/show/\1/|#\1>{')
   
     # TODO: who merged it, it's not included in the current api request
-    content="$content%0A:merge: $title (${created_ago}h ago by $user, merged ${closed_ago}h ago)"
+    content_merged="$content_merged%0A:me:$title (${created_ago}h ago by $user, merged ${closed_ago}h ago)"
+    #content_merged="$content_merged%0A:merge: $title"
   done <<< $prs_merged
 fi
 
-echo "$content" | sed 's/%0A/\n/g'
-#curl -d "token=${SLACK_PROMOTEINT_TOKEN}" -d "channel=$recipient" -d "as_user=true" -d "link_names=true" --data-binary "text=${content}" https://slack.com/api/chat.postMessage
+echo "$content_merged" | sed 's/%0A/\n/g'
+#echo "$content" | sed 's/%0A/\n/g'
+echo "$content_merged" | sed 's/%0A/\n/g' | wc
+#echo "$content" | sed 's/%0A/\n/g' | wc
+# TODO: check if messages are new or old
+exit 0
+curl -d "token=${SLACK_PROMOTEINT_TOKEN}" -d "channel=$recipient" -d "as_user=true" -d "link_names=true" --data-binary "text=${content_merged}" https://slack.com/api/chat.postMessage -o "$HOME/.cache/notifypr_content_merged"
+content_merged_ts=$(cat "$HOME/.cache/notifypr_content_merged" | jq -r .ts)
+sleep 1
+curl -d "token=${SLACK_PROMOTEINT_TOKEN}" -d "channel=$recipient" -d "as_user=true" -d "link_names=true" --data-binary "text=${content}" https://slack.com/api/chat.postMessage -o "$HOME/.cache/notifypr_content"
+content_ts=$(cat "$HOME/.cache/notifypr_content" | jq -r .ts)
+
+while sleep 5s; do
 # update
-curl -d ts="1606737299.221300" -d "token=${SLACK_PROMOTEINT_TOKEN}" -d "channel=$recipient" -d "as_user=true" -d "link_names=true" --data-binary "text=${content}" https://slack.com/api/chat.update
+  curl -d ts="$content_merged_ts" -d "token=${SLACK_PROMOTEINT_TOKEN}" -d "channel=$recipient" -d "as_user=true" -d "link_names=true" --data-binary "text=${content_merged}" https://slack.com/api/chat.update
+  sleep 1
+  curl -d ts="$content_ts"-d "token=${SLACK_PROMOTEINT_TOKEN}" -d "channel=$recipient" -d "as_user=true" -d "link_names=true" --data-binary "text=${content}" https://slack.com/api/chat.update
+  sleep 10m
+done

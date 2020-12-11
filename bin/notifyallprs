@@ -13,10 +13,13 @@ recipient="$SLACK_DEVSTATUS"
 recipient="$SLACK_MAIN_FLOW"
 
 function main {
-  refresh_data
   #exit 0
   # TODO: check if messages are new or old
+
+  refresh_data
+  delete_old_message
   notify_slack_first
+  sleep 5m
   while sleep 5s; do
     refresh_data
     notify_slack_update
@@ -44,13 +47,14 @@ function refresh_data {
     -o ${response}_merged \
     "https://api.github.com/search/issues?q=is:merged+is:pr+user:promoteinternational+draft:false+merged:>=$(date +'%Y-%m-%d')&sort=updated&order=asc"
 
-  prs=$(cat $response | jq -r ".items[] | [.title, .html_url, .user.login, .created_at, .updated_at, .closed_at] | @csv")
-  prs_failed=$(cat ${response}_failed | jq -r ".items[] | [.title, .html_url, .user.login, .created_at, .updated_at, .closed_at] | @csv")
-  prs_merged=$(cat ${response}_merged | jq -r ".items[] | [.title, .html_url, .user.login, .created_at, .updated_at, .closed_at] | @csv")
+  prs=$(cat $response | jq -r ".items[] | [(.title | sub(\",\"; \"\")), .html_url, .user.login, .created_at, .updated_at, .closed_at] | @csv")
+  prs_failed=$(cat ${response}_failed | jq -r ".items[] | [(.title | sub(\",\"; \"\")), .html_url, .user.login, .created_at, .updated_at, .closed_at] | @csv")
+  prs_merged=$(cat ${response}_merged | jq -r ".items[] | [(.title | sub(\",\"; \"\")), .html_url, .user.login, .created_at, .updated_at, .closed_at] | @csv")
 
   content="<https://github.com/pulls?q=is%3Aopen+is%3Apr+user%3Apromoteinternational+draft%3Afalse+-status%3Afailure|current open pr's> $notify (excluding drafts)"
   if [ "$(echo $prs | wc -l)" -gt 1 ]; then
     while read pr; do
+      echo "::${pr}::"
       title=$(echo $pr | cut -d',' -f1 | sed 's/"//g')
       url=$(echo $pr | cut -d',' -f2 | sed 's/"//g')
       user=$(echo $pr | cut -d',' -f3 | sed 's/"//g')
@@ -133,9 +137,17 @@ function refresh_data {
   echo "$content" | sed 's/%0A/\n/g' | wc
 }
 
+function delete_old_message {
+  content_merged_ts=$(cat "$HOME/.cache/notifypr_content_merged" | jq -r .ts)
+  content_ts=$(cat "$HOME/.cache/notifypr_content" | jq -r .ts)
+  curl -d ts="$content_merged_ts" -d "token=${SLACK_PROMOTEINT_TOKEN}" -d "channel=$recipient" -d "as_user=true" https://slack.com/api/chat.delete
+  sleep 0.5
+  curl -d ts="$content_ts" -d "token=${SLACK_PROMOTEINT_TOKEN}" -d "channel=$recipient" -d "as_user=true" https://slack.com/api/chat.delete
+}
+
 function notify_slack_first {
   curl -d "token=${SLACK_PROMOTEINT_TOKEN}" -d "channel=$recipient" -d "as_user=true" -d "link_names=true" --data-binary "text=${content_merged}" https://slack.com/api/chat.postMessage -o "$HOME/.cache/notifypr_content_merged"
-  sleep 1
+  sleep 0.5
   curl -d "token=${SLACK_PROMOTEINT_TOKEN}" -d "channel=$recipient" -d "as_user=true" -d "link_names=true" --data-binary "text=${content}" https://slack.com/api/chat.postMessage -o "$HOME/.cache/notifypr_content"
 }
 
@@ -143,7 +155,7 @@ function notify_slack_update {
   content_merged_ts=$(cat "$HOME/.cache/notifypr_content_merged" | jq -r .ts)
   content_ts=$(cat "$HOME/.cache/notifypr_content" | jq -r .ts)
   curl -d ts="$content_merged_ts" -d "token=${SLACK_PROMOTEINT_TOKEN}" -d "channel=$recipient" -d "as_user=true" -d "link_names=true" --data-binary "text=${content_merged}" https://slack.com/api/chat.update
-  sleep 1
+  sleep 0.5
   curl -d ts="$content_ts" -d "token=${SLACK_PROMOTEINT_TOKEN}" -d "channel=$recipient" -d "as_user=true" -d "link_names=true" --data-binary "text=${content}" https://slack.com/api/chat.update
 }
 

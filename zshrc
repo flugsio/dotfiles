@@ -157,4 +157,6 @@ bindkey '^G' findserver
 bindkey '^H' wrap
 
 export KEYTIMEOUT=1
+# can only be used when using ruby 2.7+
+#export RUBYOPT='-W:deprecated'
 

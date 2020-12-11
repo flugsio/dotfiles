@@ -142,7 +142,7 @@ function cleanup {
   done
 }
 function i {
-  (rbenv shell 2.6.5; invoker $@)
+  (rbenv shell 2.7.2; invoker $@)
 }
 alias istart='i start all -d'
 alias iw='alias i{r,l,s,a,clear,log}; echo iA=run interactively'

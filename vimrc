@@ -33,7 +33,7 @@ Plugin        'quramy/tsuquyomi'
 Plugin        'Quramy/vim-js-pretty-template'
 Plugin     'jason0x43/vim-js-indent'
 if has('python3')
-  Plugin      'SirVer/ultisnips'
+  "Plugin      'SirVer/ultisnips'
 endif
 if has('python3')
   " TODO: find/configure debugging plugin

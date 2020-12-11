@@ -60,8 +60,16 @@ elif [ "$1" = "now" ]; then
     labels="\"${extra_label}\""
   fi
   owner_ids="[1812784]"
-  if [ "$story_type" = "feature" ]; then
+  if [ "$story_type" = "bug" ]; then
+    estimate="2"
+  elif [ "$story_type" = "security" ]; then
     estimate="1"
+  elif [ "$story_type" = "chore" ]; then
+    estimate="1"
+  elif [ "$story_type" = "errbit" ]; then
+    estimate="1"
+  elif [ "$story_type" = "feature" ]; then
+    estimate="2"
   fi
 fi
 

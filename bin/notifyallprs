@@ -57,7 +57,7 @@ function refresh_data {
       echo "::${pr}::"
       title=$(echo $pr | cut -d',' -f1 | sed 's/"//g')
       url=$(echo $pr | cut -d',' -f2 | sed 's/"//g')
-      user=$(echo $pr | cut -d',' -f3 | sed 's/"//g')
+      user=$(echo $pr | cut -d',' -f3 | sed 's/"//g' | sed 's/dependabot.*/bot/')
       created_at=$(echo $pr | cut -d',' -f4 | sed 's/"//g')
       updated_at=$(echo $pr | cut -d',' -f5 | sed 's/"//g')
       closed_at=$(echo $pr | cut -d',' -f6 | sed 's/"//g')
@@ -88,7 +88,7 @@ function refresh_data {
     while read pr; do
       title=$(echo $pr | cut -d',' -f1 | sed 's/"//g')
       url=$(echo $pr | cut -d',' -f2 | sed 's/"//g')
-      user=$(echo $pr | cut -d',' -f3 | sed 's/"//g')
+      user=$(echo $pr | cut -d',' -f3 | sed 's/"//g' | sed 's/dependabot.*/bot/')
       created_at=$(echo $pr | cut -d',' -f4 | sed 's/"//g')
       updated_at=$(echo $pr | cut -d',' -f5 | sed 's/"//g')
       closed_at=$(echo $pr | cut -d',' -f6 | sed 's/"//g')
@@ -113,7 +113,7 @@ function refresh_data {
     while read pr; do
       title=$(echo $pr | cut -d',' -f1 | sed 's/"//g')
       url=$(echo $pr | cut -d',' -f2 | sed 's/"//g')
-      user=$(echo $pr | cut -d',' -f3 | sed 's/"//g')
+      user=$(echo $pr | cut -d',' -f3 | sed 's/"//g' | sed 's/dependabot.*/bot/')
       created_at=$(echo $pr | cut -d',' -f4 | sed 's/"//g')
       updated_at=$(echo $pr | cut -d',' -f5 | sed 's/"//g')
       closed_at=$(echo $pr | cut -d',' -f6 | sed 's/"//g')

@@ -48,9 +48,14 @@ function install_dependencies {
 export -f install_dependencies
 
 function main {
-  parallel update_one < repos.txt
-  # this can't run in parallel
-  cat repos.txt | while read url; do install_dependencies $url; done
+  if [ -e repos.txt ]; then
+    parallel update_one < repos.txt
+    # this can't run in parallel
+    cat repos.txt | while read url; do install_dependencies $url; done
+  else
+    update_one .
+    install_dependencies .
+  fi
 }
 
 main

@@ -7,7 +7,7 @@ prs=""
 prs_failed=""
 prs_merged=""
 
-notify="@here "
+#notify="@here "
 notify=" "
 recipient="$SLACK_DEVSTATUS"
 recipient="$SLACK_MAIN_FLOW"
@@ -61,6 +61,7 @@ function refresh_data {
       created_at=$(echo $pr | cut -d',' -f4 | sed 's/"//g')
       updated_at=$(echo $pr | cut -d',' -f5 | sed 's/"//g')
       closed_at=$(echo $pr | cut -d',' -f6 | sed 's/"//g')
+      repo_short=$(echo $url | cut -d'/' -f 5 | sed 's/promote-//' | cut -d'-' -f 1)
     
       created_ago=$(echo $((($(date +"%s")-$(date +"%s" -d "$created_at"))/60/60)))
       updated_ago=$(echo $((($(date +"%s")-$(date +"%s" -d "$updated_at"))/60)))
@@ -75,14 +76,14 @@ function refresh_data {
       title=$(echo $title | sed -E 's{(.*\] |)(.*){\1<'$url'|\2>{')
       title=$(echo $title | sed -E 's{\[#([[:digit:]]+)\]{<https://pivotaltracker.com/story/show/\1/|#\1>{')
     
-      content="$content%0A:op:$title ${created_ago}h by $user"
+      content="$content%0A:op:$repo_short $title ${created_ago}h by $user"
       if [ "${created_ago}h" != "$updated_ago" ]; then
         content="$content, updated ${updated_ago}"
       fi
     done <<< $prs
   fi
   
-  if [ "$(echo $prs_failed | wc -l)" -gt 1 ]; then
+  if [ "$(echo $prs_failed | wc -c)" -gt 1 ]; then
     content="$content%0A%0Arecently failing pr's"
     while read pr; do
       title=$(echo $pr | cut -d',' -f1 | sed 's/"//g')
@@ -91,6 +92,7 @@ function refresh_data {
       created_at=$(echo $pr | cut -d',' -f4 | sed 's/"//g')
       updated_at=$(echo $pr | cut -d',' -f5 | sed 's/"//g')
       closed_at=$(echo $pr | cut -d',' -f6 | sed 's/"//g')
+      repo_short=$(echo $url | cut -d'/' -f 5 | sed 's/promote-//' | cut -d'-' -f 1)
     
       created_ago=$(echo $((($(date +"%s")-$(date +"%s" -d "$created_at"))/60/60)))
       updated_ago=$(echo $((($(date +"%s")-$(date +"%s" -d "$updated_at"))/60)))
@@ -99,7 +101,7 @@ function refresh_data {
       title=$(echo $title | sed -E 's{(.*\] |)(.*){\1<'$url'|\2>{')
       title=$(echo $title | sed -E 's{\[#([[:digit:]]+)\]{<https://pivotaltracker.com/story/show/\1/|#\1>{')
     
-      content="$content%0A:octagonal_sign:$title ${created_ago}h by $user"
+      content="$content%0A:octagonal_sign:$repo_short $title ${created_ago}h by $user"
       if [ "$created_ago" != "$updated_ago" ]; then
         content="$content, updated ${updated_ago}m"
       fi
@@ -115,6 +117,7 @@ function refresh_data {
       created_at=$(echo $pr | cut -d',' -f4 | sed 's/"//g')
       updated_at=$(echo $pr | cut -d',' -f5 | sed 's/"//g')
       closed_at=$(echo $pr | cut -d',' -f6 | sed 's/"//g')
+      repo_short=$(echo $url | cut -d'/' -f 5 | sed 's/promote-//' | cut -d'-' -f 1)
     
       created_ago=$(echo $((($(date +"%s")-$(date +"%s" -d "$created_at"))/60/60)))
       #updated_ago=$(echo $((($(date +"%s")-$(date +"%s" -d "$updated_at"))/60)))
@@ -124,7 +127,7 @@ function refresh_data {
       title=$(echo $title | sed -E 's{\[#([[:digit:]]+)\]{<https://pivotaltracker.com/story/show/\1/|#\1>{')
     
       # TODO: who merged it, it's not included in the current api request
-      content_merged="$content_merged%0A:me:$title ${created_ago}h by $user, merged ${closed_ago}h"
+      content_merged="$content_merged%0A:me:$repo_short $title ${created_ago}h by $user, merged ${closed_ago}h"
       #content_merged="$content_merged%0A:merge: $title"
     done <<< $prs_merged
   else

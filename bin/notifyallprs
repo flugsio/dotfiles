@@ -45,11 +45,17 @@ function refresh_data {
   curl -sSL -H "Authorization: token $GITHUB_TOKEN" \
     -H "Accept: application/vnd.github.v3+json" \
     -o ${response}_merged \
-    "https://api.github.com/search/issues?q=is:merged+is:pr+user:promoteinternational+draft:false+merged:>=$(date +'%Y-%m-%d')&sort=updated&order=asc"
+    "https://api.github.com/search/issues?q=is:merged+is:pr+user:promoteinternational+draft:false+merged:>=$(date +'%Y-%m-%d')+-author%3Aapp%2Fdependabot&sort=updated&order=asc"
 
-  prs=$(cat $response | jq -r ".items[] | [(.title | sub(\",\"; \"\")), .html_url, .user.login, .created_at, .updated_at, .closed_at] | @csv")
+  curl -sSL -H "Authorization: token $GITHUB_TOKEN" \
+    -H "Accept: application/vnd.github.v3+json" \
+    -o ${response}_depend \
+    "https://api.github.com/search/issues?q=is:merged+is:pr+user:promoteinternational+draft:false+merged:>=$(date +'%Y-%m-%d')+author%3Aapp%2Fdependabot&sort=updated&order=asc"
+
+  prs=$(cat $response | jq -r ".items[] | [(.title | sub(\",\"; \"\")), .html_url, .user.login, .created_at, .updated_at, .closed_at, .comments] | @csv")
   prs_failed=$(cat ${response}_failed | jq -r ".items[] | [(.title | sub(\",\"; \"\")), .html_url, .user.login, .created_at, .updated_at, .closed_at] | @csv")
   prs_merged=$(cat ${response}_merged | jq -r ".items[] | [(.title | sub(\",\"; \"\")), .html_url, .user.login, .created_at, .updated_at, .closed_at] | @csv")
+  prs_depend=$(cat ${response}_depend | jq -r ".items[] | [(.title | sub(\",\"; \"\")), .html_url, .user.login, .created_at, .updated_at, .closed_at] | @csv")
 
   content="<https://github.com/pulls?q=is%3Aopen+is%3Apr+user%3Apromoteinternational+draft%3Afalse+-status%3Afailure|current open pr's> $notify (excluding drafts)"
   if [ "$(echo $prs | wc -l)" -gt 1 ]; then
@@ -61,6 +67,7 @@ function refresh_data {
       created_at=$(echo $pr | cut -d',' -f4 | sed 's/"//g')
       updated_at=$(echo $pr | cut -d',' -f5 | sed 's/"//g')
       closed_at=$(echo $pr | cut -d',' -f6 | sed 's/"//g')
+      comments=$(echo $pr | cut -d',' -f7)
       repo_short=$(echo $url | cut -d'/' -f 5 | sed 's/promote-//' | cut -d'-' -f 1)
     
       created_ago=$(echo $((($(date +"%s")-$(date +"%s" -d "$created_at"))/60/60)))
@@ -79,6 +86,10 @@ function refresh_data {
       content="$content%0A:op:$repo_short $title ${created_ago}h by $user"
       if [ "${created_ago}h" != "$updated_ago" ]; then
         content="$content, updated ${updated_ago}"
+      fi
+      # this does not work with reviews
+      if [ "$comments" -gt 1 ] || [ "$repo_short" != "promote" -a "$comments" -gt 0 ]; then
+        content="$content:memo:${comments}"
       fi
     done <<< $prs
   fi
@@ -132,6 +143,35 @@ function refresh_data {
     done <<< $prs_merged
   else
     content_merged="$content_merged%0Anone today"
+  fi
+  if [ "$(echo $prs_depend | wc -l)" -gt 1 ]; then
+    content_merged="$content_merged%0A:me:Dependencies:"
+    # todo sort by repo
+    local prev_repo=""
+    while read pr; do
+      title=$(echo $pr | cut -d',' -f1 | sed 's/"//g' | sed 's/Bump //')
+      url=$(echo $pr | cut -d',' -f2 | sed 's/"//g')
+      user=$(echo $pr | cut -d',' -f3 | sed 's/"//g' | sed 's/dependabot.*/bot/')
+      created_at=$(echo $pr | cut -d',' -f4 | sed 's/"//g')
+      updated_at=$(echo $pr | cut -d',' -f5 | sed 's/"//g')
+      closed_at=$(echo $pr | cut -d',' -f6 | sed 's/"//g')
+      repo_short=$(echo $url | cut -d'/' -f 5 | sed 's/promote-//' | cut -d'-' -f 1)
+    
+      created_ago=$(echo $((($(date +"%s")-$(date +"%s" -d "$created_at"))/60/60)))
+      #updated_ago=$(echo $((($(date +"%s")-$(date +"%s" -d "$updated_at"))/60)))
+      closed_ago=$(echo $((($(date +"%s")-$(date +"%s" -d "$closed_at"))/60/60)))
+      title=${title:0:50}
+      title=$(echo $title | sed -E 's{(.*\] |)(.*){\1<'$url'|\2>{')
+      title=$(echo $title | sed -E 's{\[#([[:digit:]]+)\]{<https://pivotaltracker.com/story/show/\1/|#\1>{')
+    
+      if [ "$prev_repo" = "$repo_short" ]; then
+        content_merged="$content_merged $title,"
+      else
+        prev_repo=$repo_short
+        content_merged="$content_merged $repo_short $title,"
+      fi
+    done <<< $prs_depend
+    content_merged=${content_merged%?}
   fi
   
   echo "$content_merged" | sed 's/%0A/\n/g'

@@ -4,3 +4,4 @@ export PATH=$HOME/bin:$PATH
 vseta
 vsetc
 export LANG=en_US.UTF-8
+export PATH=$PATH:/root/.platformio/penv/bin

@@ -20,3 +20,28 @@ function add_audio {
   echo "Adjust .asoundrc as needed"
   aplay -l
 }
+
+function share_init {
+  modprobe usbip-core vhci-hcd
+  usbipd -d
+  #usbipd -D
+}
+
+function share_nano {
+  share_usb "1a86:7523"
+}
+
+function share_olex {
+  share_usb "16d0:0753"
+}
+
+# this requires share_init
+# $1 = id
+function share_usb {
+  busid=$(usbip list -p -l | grep "$1" | cut -d '#' -f1 | cut -d'=' -f 2)
+  usbip bind -b $busid
+}
+
+function vimdiff {
+  vim -d $1 scp://$2/$1
+}

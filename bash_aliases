@@ -482,6 +482,12 @@ function remote_command {
   if [ "$1" == "reload_feh" ]; then
     # reload twice to force reload through sshfs
     xdotool search --name feh sleep 0.5 key r sleep 0.5 key r
+  elif [ "$1" == "share_nano" ]; then
+    source ~/.ash_aliases
+    share_nano
+  elif [ "$1" == "share_olex" ]; then
+    source ~/.ash_aliases
+    share_olex
   fi
 }
 function remote {

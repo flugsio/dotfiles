@@ -58,7 +58,7 @@ function refresh_data {
   prs_depend=$(cat ${response}_depend | jq -r ".items[] | [(.title | sub(\",\"; \"\")), .html_url, .user.login, .created_at, .updated_at, .closed_at] | @csv")
 
   content="<https://github.com/pulls?q=is%3Aopen+is%3Apr+user%3Apromoteinternational+draft%3Afalse+-status%3Afailure|current open pr's> $notify (excluding drafts)"
-  if [ "$(echo $prs | wc -l)" -gt 1 ]; then
+  if [ "$(echo $prs | wc -c)" -gt 1 ]; then
     while read pr; do
       echo "::${pr}::"
       title=$(echo $pr | cut -d',' -f1 | sed 's/"//g')
@@ -120,7 +120,7 @@ function refresh_data {
   fi
   
   content_merged="recently merged pr's"
-  if [ "$(echo $prs_merged | wc -l)" -gt 1 ]; then
+  if [ "$(echo $prs_merged | wc -c)" -gt 1 ]; then
     while read pr; do
       title=$(echo $pr | cut -d',' -f1 | sed 's/"//g')
       url=$(echo $pr | cut -d',' -f2 | sed 's/"//g')
@@ -144,7 +144,7 @@ function refresh_data {
   else
     content_merged="$content_merged%0Anone today"
   fi
-  if [ "$(echo $prs_depend | wc -l)" -gt 1 ]; then
+  if [ "$(echo $prs_depend | wc -c)" -gt 1 ]; then
     content_merged="$content_merged%0A:me:Dependencies:"
     # todo sort by repo
     local prev_repo=""

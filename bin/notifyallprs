@@ -52,10 +52,10 @@ function refresh_data {
     -o ${response}_depend \
     "https://api.github.com/search/issues?q=is:merged+is:pr+user:promoteinternational+draft:false+merged:>=$(date +'%Y-%m-%d')+author%3Aapp%2Fdependabot&sort=updated&order=asc"
 
-  prs=$(cat $response | jq -r ".items[] | [(.title | sub(\",\"; \"\")), .html_url, .user.login, .created_at, .updated_at, .closed_at, .comments] | @csv")
-  prs_failed=$(cat ${response}_failed | jq -r ".items[] | [(.title | sub(\",\"; \"\")), .html_url, .user.login, .created_at, .updated_at, .closed_at] | @csv")
-  prs_merged=$(cat ${response}_merged | jq -r ".items[] | [(.title | sub(\",\"; \"\")), .html_url, .user.login, .created_at, .updated_at, .closed_at] | @csv")
-  prs_depend=$(cat ${response}_depend | jq -r ".items[] | [(.title | sub(\",\"; \"\")), .html_url, .user.login, .created_at, .updated_at, .closed_at] | @csv")
+  prs=$(cat $response | jq -r ".items[] | [(.title | gsub(\",\"; \"،\")), .html_url, .user.login, .created_at, .updated_at, .closed_at, .comments] | @csv")
+  prs_failed=$(cat ${response}_failed | jq -r ".items[] | [(.title | gsub(\",\"; \"،\")), .html_url, .user.login, .created_at, .updated_at, .closed_at] | @csv")
+  prs_merged=$(cat ${response}_merged | jq -r ".items[] | [(.title | gsub(\",\"; \"،\")), .html_url, .user.login, .created_at, .updated_at, .closed_at] | @csv")
+  prs_depend=$(cat ${response}_depend | jq -r ".items | sort_by(.html_url)[] | [(.title | gsub(\",\"; \"،\")), .html_url, .user.login, .created_at, .updated_at, .closed_at] | @csv")
 
   content="<https://github.com/pulls?q=is%3Aopen+is%3Apr+user%3Apromoteinternational+draft%3Afalse+-status%3Afailure|current open pr's> $notify (excluding drafts)"
   if [ "$(echo $prs | wc -c)" -gt 1 ]; then
@@ -146,10 +146,9 @@ function refresh_data {
   fi
   if [ "$(echo $prs_depend | wc -c)" -gt 1 ]; then
     content_merged="$content_merged%0A:me:Dependencies:"
-    # todo sort by repo
     local prev_repo=""
     while read pr; do
-      title=$(echo $pr | cut -d',' -f1 | sed 's/"//g' | sed 's/Bump //')
+      title=$(echo $pr | cut -d',' -f1 | sed 's/"//g' | sed 's/Bump //' | sed 's/ from//' | sed 's/ to /\//')
       url=$(echo $pr | cut -d',' -f2 | sed 's/"//g')
       user=$(echo $pr | cut -d',' -f3 | sed 's/"//g' | sed 's/dependabot.*/bot/')
       created_at=$(echo $pr | cut -d',' -f4 | sed 's/"//g')

@@ -73,6 +73,31 @@ function mo {
     echo "no such command"
   fi
 }
+
+function err {
+  if [ "$1" = "show" ]; then
+    # TODO:
+    curl -G -d "auth_token=$ERRBIT_TOKEN" \
+      "https://errbit.promoteapp.net/apps/5d8258c14c851100075f6c9f/problems/5fc76bebb674770007b4acbc"
+  elif [ "$1" = "createapp" ]; then
+    curl -G -d "auth_token=$ERRBIT_TOKEN" \
+      -d "app[name]=$name" \
+      -d "app[github_repo]=$repo" \
+      -d "app[api_key]=$api_key" \
+      "https://errbit.promoteapp.net/apps/search"
+    return
+    local name="$2"
+    local repo="$3"
+    local api_key="$4"
+    curl -XPOST -d "auth_token=$ERRBIT_TOKEN" \
+      -d "app[name]=$name" \
+      -d "app[github_repo]=$repo" \
+      -d "app[api_key]=$api_key" \
+      -d "app[notification_service_attributes][type]=NotificationServices::SlackService" \
+      -d "app[notification_service_attributes][service_url]=$ERRBIT_SLACK_SERVICE_URL" \
+      "https://errbit.promoteapp.net/apps"
+  fi
+}
 alias dot='cd ~/code/dotfiles'
 alias syn='cd ~/Sync'
 alias rep='cd ~/code/ansible/repos'

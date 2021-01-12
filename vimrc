@@ -336,6 +336,8 @@ nnoremap <leader>gw :Gwrite<CR>
 nnoremap <leader>gb :Gblame<CR>
 nnoremap <leader>do :diffoff!<CR>:only<CR>
 nnoremap <leader>gp :Gpush -u<CR>
+" diff file under cursor
+nnoremap <leader>gf :vert diffsplit <cfile><CR>
 
 " Jobs
 nnoremap ! :AsyncRun<space>

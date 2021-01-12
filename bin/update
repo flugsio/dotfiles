@@ -20,6 +20,9 @@ function update_one {
     )
   else
     git clone $url $name
+    git config --add remote.origin.fetch ^refs/heads/staging
+    git config --add remote.origin.fetch ^refs/heads/production
+    git branch -d -r origin/{staging,production}
     if [ -n "$branch" ]; then
       (cd $name && git checkout $branch)
     fi

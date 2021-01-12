@@ -177,7 +177,8 @@ alias ill='i list -r | grep -Po "(?<=Name |PID : ).*" | sed "/: /{N;s/\n/, /}" |
 function ir { for s in ${*:-${DEFAULT_RELOAD:-$(ihere)}}; do echo reload $s; i reload $s; done }
 function is { for s in ${*:-${DEFAULT_RELOAD:-$(ihere)}}; do echo remove $s; i remove $s; done }
 function ia { for s in ${*:-${DEFAULT_RELOAD:-$(ihere)}}; do echo add $s; i add $s; done }
-function iA { eval $(sed -n "/\[$1\]/,/^\[/p" ~/.invoker/all.ini | grep -Po "(?<=command = ).*"); }
+function icom { sed -n "/\[$1\]/,/^\[/p" ~/.invoker/all.ini | grep -Po "(?<=^command = ).*" }
+function iA { eval $(icom $1) }
 alias iclear='pkill -f "^tail.*.invoker/invoker.log"'
 alias ilog='while true; do clear; tmux clear-history; tail -n0 -F ~/.invoker/invoker.log; done'
 alias ilist="cat ~/.invoker/all.ini | sed -rn '/^\[/{N;s/\[([^]]*)\]\ndirectory = (.*)$/\1 \2/;p}'"
@@ -244,7 +245,7 @@ alias view_shots='ranger --cmd="set column_ratios 1,5" --cmd="set display_size_i
 alias mux='tmuxinator'
 alias windows='rdesktop 192.168.1.189 -u Administrator -k sv -g 2555x1400 -r sound:off'
 alias windows2='rdesktop 192.168.1.188 -u Avidity -k sv -g 2550x1380 -r sound:off'
-alias mkbunlinks='if [ -f "Gemfile" ]; then mkdir -p bunlinks && find bunlinks -type l -delete && cd bunlinks && bundle show --paths | xargs -L1 ln -s; cd .. ; else echo "not in Gemfile directory"; fi'
+alias mkbunlinks='if [ -f "Gemfile" ]; then mkdir -p bunlinks && find bunlinks -type l -delete && cd bunlinks && bundle list --paths | xargs -L1 ln -s; cd .. ; else echo "not in Gemfile directory"; fi'
 alias perrbit='cd ~/code/promote3 && xsel > errbit_error.txt && vim errbit_error.txt -c "%s/\v^(.*gems.*gems\/)?([^(-)]*-\d\.)/bunlinks\/\2/e | %s/\v^([^(bunlinks|\/opt)].)/\1/e | %s/\v^\/opt\/promote\/releases\/\d+T\d+\///e | w | set errorformat=%f:%l%m | cbuffer | copen" && rm errbit_error.txt'
 alias textgraph="sort | uniq -c | sort -rn | perl -ane 'printf \"%30s %s\\n\", \$F[1], \"=\"x\$F[0];'"
 alias rgdb='gdb $(rbenv which ruby) $(pgrep -f "jobs:work" | head -n1)'

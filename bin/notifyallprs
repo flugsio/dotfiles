@@ -57,7 +57,8 @@ function refresh_data {
   prs_merged=$(cat ${response}_merged | jq -r ".items[] | [(.title | gsub(\",\"; \"،\")), .html_url, .user.login, .created_at, .updated_at, .closed_at] | @csv")
   prs_depend=$(cat ${response}_depend | jq -r ".items | sort_by(.html_url)[] | [(.title | gsub(\",\"; \"،\")), .html_url, .user.login, .created_at, .updated_at, .closed_at] | @csv")
 
-  content="<https://github.com/pulls?q=is%3Aopen+is%3Apr+user%3Apromoteinternational+draft%3Afalse+-status%3Afailure|current open pr's> $notify (excluding drafts)"
+  content="<https://github.com/pulls?q=is%3Aopen+is%3Apr+user%3Apromoteinternational+draft%3Afalse+-status%3Afailure|current open pr's> $notify"
+  content+="(<https://github.com/pulls?q=is%3Aopen+is%3Apr+user%3Apromoteinternational+draft%3Atrue|current drafts>)"
   if [ "$(echo $prs | wc -c)" -gt 1 ]; then
     while read pr; do
       echo "::${pr}::"

@@ -227,7 +227,7 @@ function xkcd {
 alias bed='bundle exec rails db'
 alias bec='bundle exec rails console'
 alias brow='surf -x $url 2> /dev/null & firefox $url & chromium $url &'
-alias tag='([ -f tags ] && echo "Preparing tags" && ctags -R || true)'
+alias tag='([ -f tags ] && echo "Preparing tags" && ctags -R --exclude="@.gitignore" --exclude="@$HOME/.gitignore" || true)'
 alias bun='rbenv install --skip-existing; bundle check; bundle install; mkbunlinks'
 alias yar='([ -f yarn.lock ] && yarn install --check-files || true)'
 alias mig='ber db:migrate'

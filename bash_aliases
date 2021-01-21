@@ -75,27 +75,52 @@ function mo {
 }
 
 function err {
-  if [ "$1" = "show" ]; then
+  errb remote $@
+}
+function erp {
+  errb prod $@
+}
+function errb {
+  target=$1
+  action=$2
+  if [ "$target" = "remote" ]; then
+    token=$REMOTE_ERRBIT_TOKEN
+    url=$REMOTE_ERRBIT_URL
+  elif [ "$target" = "prod" ]; then
+    token=$PROD_ERRBIT_TOKEN
+    url=$PROD_ERRBIT_URL
+  else
+    echo "no such target"
+    return 1
+  fi
+
+  if [ "$action" = "show" ]; then
     # TODO:
-    curl -G -d "auth_token=$ERRBIT_TOKEN" \
-      "https://errbit.promoteapp.net/apps/5d8258c14c851100075f6c9f/problems/5fc76bebb674770007b4acbc"
-  elif [ "$1" = "createapp" ]; then
-    curl -G -d "auth_token=$ERRBIT_TOKEN" \
+    curl -G -d "auth_token=$token" \
+      "$url/apps/5d8258c14c851100075f6c9f/problems/5fc76bebb674770007b4acbc"
+  elif [ "$action" = "createapp" ]; then
+    local name="$3"
+    local repo="$4"
+    local api_key="$5"
+    local service_url="$6"
+    local service_type="$7"
+    if [ -n "$service_url" ] && [ -z "$service_type" ]; then
+      service_type="NotificationServices::SlackService"
+    fi
+    # TODO:
+    #curl -G -d "auth_token=$token" \
+    #  -d "app[name]=$name" \
+    #  -d "app[github_repo]=$repo" \
+    #  -d "app[api_key]=$api_key" \
+    #  "https://errbit.promoteapp.net/apps/search"
+    #return
+    curl -XPOST -d "auth_token=$token" \
       -d "app[name]=$name" \
       -d "app[github_repo]=$repo" \
       -d "app[api_key]=$api_key" \
-      "https://errbit.promoteapp.net/apps/search"
-    return
-    local name="$2"
-    local repo="$3"
-    local api_key="$4"
-    curl -XPOST -d "auth_token=$ERRBIT_TOKEN" \
-      -d "app[name]=$name" \
-      -d "app[github_repo]=$repo" \
-      -d "app[api_key]=$api_key" \
-      -d "app[notification_service_attributes][type]=NotificationServices::SlackService" \
-      -d "app[notification_service_attributes][service_url]=$ERRBIT_SLACK_SERVICE_URL" \
-      "https://errbit.promoteapp.net/apps"
+      -d "app[notification_service_attributes][type]=$service_type" \
+      -d "app[notification_service_attributes][service_url]=$service_url" \
+      "$url/apps"
   fi
 }
 alias dot='cd ~/code/dotfiles'

@@ -5,3 +5,6 @@ tags
 bunlinks
 base/config/environment.rb
 vtools
+node_modules
+packs
+packs-test

@@ -16,6 +16,8 @@ function add_x {
 function add_ui_tools {
   apk add alacritty ttf-ubuntu-font-family
   apk add vim tmux fzf dmenu zsh keychain
+  # bash is used in many scripts
+  apk add bash
   sed 's/\/bin\/ash/\/bin\/zsh/' -i /etc/passwd
 
   (cd ~/code/dotfiles && . ./install)

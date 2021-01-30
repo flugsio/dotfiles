@@ -293,7 +293,7 @@ function record {
     local size=${1:-1920px1080px}
     echo "resizing to $size, click on window"
     xdotool selectwindow windowfocus --sync
-    i3-msg floating enable resize set $size
+    i3-msg floating enable border none resize set $size
     echo "click on window again to start recording"
   fi
   local audio=${2:-audio} # audio, noaudio

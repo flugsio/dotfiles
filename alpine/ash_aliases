@@ -10,6 +10,7 @@ function add_x {
   apk add xinput-mouse xinput-keyboard
   apk add libxcursor libxrandr libxi
   apk add i3wm i3status
+  add xmodmap xset setxkbmap
   add_ui_tools
 }
 

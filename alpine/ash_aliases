@@ -1,4 +1,24 @@
 # these are alpine/ash specific aliases
+
+function add_w {
+# todo wayland
+  add_ui_tools
+}
+function add_x {
+  setup-xorg-base
+
+  apk add xinput-mouse xinput-keyboard
+  apk add libxcursor libxrandr libxi
+  apk add i3wm i3status
+  add_ui_tools
+}
+
+function add_ui_tools {
+  apk add alacritty ttf-ubuntu-font-family
+  apk add vim tmux
+  # TODO: some browser
+}
+
 function add_bt {
   apk add bluez
   /etc/init.d/bluetooth start

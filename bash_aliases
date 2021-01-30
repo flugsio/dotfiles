@@ -203,7 +203,7 @@ function ir { for s in ${*:-${DEFAULT_RELOAD:-$(ihere)}}; do echo reload $s; i r
 function is { for s in ${*:-${DEFAULT_RELOAD:-$(ihere)}}; do echo remove $s; i remove $s; done }
 function ia { for s in ${*:-${DEFAULT_RELOAD:-$(ihere)}}; do echo add $s; i add $s; done }
 function icom { sed -n "/\[$1\]/,/^\[/p" ~/.invoker/all.ini | grep -Po "(?<=^command = ).*" }
-function iA { eval $(icom $1) }
+function iA { eval " $(icom $1)"; }
 alias iclear='pkill -f "^tail.*.invoker/invoker.log"'
 alias ilog='while true; do clear; tmux clear-history; tail -n0 -F ~/.invoker/invoker.log; done'
 alias ilist="cat ~/.invoker/all.ini | sed -rn '/^\[/{N;s/\[([^]]*)\]\ndirectory = (.*)$/\1 \2/;p}'"

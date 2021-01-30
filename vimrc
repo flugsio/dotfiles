@@ -167,11 +167,12 @@ set listchars=tab:>-,trail:·,eol:$
 set nrformats-=octal
 silent! set signcolumn=no
 
-if 5 < strftime("%H") && strftime("%H") < 13
-  set background=light
-else
-  set background=dark
-endif
+"if 5 < strftime("%H") && strftime("%H") < 13
+"  set background=light
+"else
+"  set background=dark
+"endif
+set background=dark
 set t_Co=256
 let g:gruvbox_italic=0
 let g:gruvbox_termcolors=16

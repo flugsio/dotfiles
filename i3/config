@@ -88,6 +88,7 @@ bindsym $mod+b layout splith
 
 # toggle tiling / floating
 bindsym $mod+Shift+space floating toggle
+bindsym $mod+ctrl+Shift+space sticky toggle
 
 # change focus between tiling / floating windows
 bindsym $mod+space focus mode_toggle
@@ -404,7 +405,7 @@ bar {
 #  Modifier Mod2 # unused modifier
 #}
 
-exec_always ~/bin/kbdh
+exec_always ~/bin/kbd
 
 # These are really buggy, only meant for testing
 #fake-outputs 1920x1080+0+0,640x1080+1920+0,2560x360+0+1080

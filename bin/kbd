@@ -11,6 +11,10 @@ elif [ `hostname` = "toldi_broken" ]; then
     xinput --get-feedbacks $i 2>/dev/null | grep -q KbdFeedbackClass && xinput --list-props $i | grep -q "Device Product ID.*6058" &&
       setxkbmap -I /home/flugsio/code/dotfiles/slash -layout sv-code -option caps:swapescape -variant nodeadkeys -device $i
   done
+elif [ `hostname` = "toldi" ]; then
+  kbdh
+elif [ `hostname` = "zdani" ]; then
+  kbdh
 else
   setxkbmap -layout se -option caps:swapescape -variant nodeadkeys
   /usr/bin/xmodmap $HOME/.Xmodmap

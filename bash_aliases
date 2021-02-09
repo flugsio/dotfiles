@@ -257,7 +257,7 @@ alias bun='rbenv install --skip-existing; bundle check; bundle install; mkbunlin
 alias yar='([ -f yarn.lock ] && yarn install --check-files || true)'
 alias mig='ber db:migrate'
 alias unmig='ber db:rollback'
-alias i18='ber i18nlite:sync'
+alias i18='ber i18nlite:sync i18nlite:clear_cache'
 alias tes='ber db:migrate RAILS_ENV=test'
 alias dbdiff='git --no-pager diff db/schema.rb'
 alias remig='ber db:migrate && dbdiff && unmig && dbdiff && ber db:migrate && dbdiff'

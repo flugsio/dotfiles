@@ -337,6 +337,7 @@ nnoremap <leader>gw :Gwrite<CR>
 nnoremap <leader>gb :Gblame<CR>
 nnoremap <leader>do :diffoff!<CR>:only<CR>
 nnoremap <leader>gp :Gpush -u<CR>
+nnoremap <leader>gP :Gpush -f<CR>
 " diff file under cursor
 nnoremap <leader>gf :vert diffsplit <cfile><CR>
 

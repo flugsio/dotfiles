@@ -574,7 +574,7 @@ function remote_save_history {
 }
 function remote_copyid {
   num=$(remote_num $1)
-  ssh-copy-id vagrant@$REMOTEIP -p ${num}0
+  ssh-copy-id -p ${num}0 vagrant@$REMOTEIP
 }
 function remote_push {
   num=$(remote_num $1)

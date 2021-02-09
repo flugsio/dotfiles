@@ -71,7 +71,7 @@ function combined {
   local g=$(show_graph)
   local dashes=$(echo $g | sed -E 's/[^-]//g')
   local count=$(echo $dashes | wc -c)
-  if [ $(echo $g | sed -E 's/[^\=]//g' | wc -c) -gt 0 -e "$count" -gt 0 ]; then
+  if [ $(echo $g | sed -E 's/[^\=]//g' | wc -c) -gt 0 -a "$count" -gt 0 ]; then
     local name=$(printf "%.*s" $count "$(show_name)" | sed -E 's/[^A-Za-z]/_/g')
     echo $g | sed -E "s/$dashes/$name/"
   else

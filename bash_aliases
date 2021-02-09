@@ -582,7 +582,8 @@ function remote_push {
 }
 function remote_pull {
   num=$(remote_num $1)
-  scp scp://vagrant@$REMOTEIP:${num}0/$2 $3
+  #scp scp://vagrant@$REMOTEIP:${num}0/$2 $3
+  rsync -Pz vagrant@$REMOTEIP:$2 $3 -e "ssh -p ${num}0"
 }
 function remote_sync {
   # source

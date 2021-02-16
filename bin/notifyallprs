@@ -1,7 +1,6 @@
 #!/bin/zsh -il
 
 set -e
-# TODO: update the last message if it's still "visible"
 
 prs=""
 prs_failed=""
@@ -13,18 +12,38 @@ recipient="$SLACK_DEVSTATUS"
 recipient="$SLACK_MAIN_FLOW"
 
 function main {
-  #exit 0
-  # TODO: check if messages are new or old
+  local cmd=$1
+  if [ "$cmd" = "daily_merge_status" ]; then
+    daily_merge_status
+  elif [ "$cmd" = "loop_update" ]; then
+    loop_update
+  elif [ "$cmd" = "update" ]; then
+    update_or_replace
+  else
+    echo "not a valid command"
+  fi
+}
 
-  refresh_data
-  delete_old_message
-  notify_slack_first
-  sleep 5m
-  while sleep 5s; do
-    refresh_data
-    notify_slack_update
-    sleep 10m
+function daily_merge_status {
+  # TODO: only send merge message
+  # refresh_data
+}
+function loop_update {
+  update_or_replace
+  while sleep 10m; do
+    update_or_replace
   done
+}
+
+# this will reuse the old message or replace if too old
+function update_or_replace {
+  refresh_data
+  if [ "$(minutes_since_post)" -gt 180 ]; then
+    delete_old_message
+    notify_slack_first
+  else
+    notify_slack_update
+  fi
 }
 
 function refresh_data {
@@ -178,6 +197,12 @@ function refresh_data {
   echo "$content" | sed 's/%0A/\n/g'
   echo "$content_merged" | sed 's/%0A/\n/g' | wc
   echo "$content" | sed 's/%0A/\n/g' | wc
+}
+
+function minutes_since_post {
+  local now=$(date -u +%s)
+  local posted_at=$(cat "$HOME/.cache/notifypr_content_merged" | jq -r .ts | cut -d. -f1)
+  echo "($now - $posted_at) / 60" | bc
 }
 
 function delete_old_message {

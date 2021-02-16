@@ -183,23 +183,41 @@ function refresh_data {
 function delete_old_message {
   content_merged_ts=$(cat "$HOME/.cache/notifypr_content_merged" | jq -r .ts)
   content_ts=$(cat "$HOME/.cache/notifypr_content" | jq -r .ts)
-  curl -d ts="$content_merged_ts" -d "token=${SLACK_PROMOTEINT_TOKEN}" -d "channel=$recipient" -d "as_user=true" https://slack.com/api/chat.delete
-  sleep 0.5
-  curl -d ts="$content_ts" -d "token=${SLACK_PROMOTEINT_TOKEN}" -d "channel=$recipient" -d "as_user=true" https://slack.com/api/chat.delete
+  delete_slack "$content_merged_ts"
+  delete_slack "$content_ts"
 }
 
 function notify_slack_first {
-  curl -d "token=${SLACK_PROMOTEINT_TOKEN}" -d "channel=$recipient" -d "as_user=true" -d "link_names=true" --data-binary "text=${content_merged}" https://slack.com/api/chat.postMessage -o "$HOME/.cache/notifypr_content_merged"
-  sleep 0.5
-  curl -d "token=${SLACK_PROMOTEINT_TOKEN}" -d "channel=$recipient" -d "as_user=true" -d "link_names=true" --data-binary "text=${content}" https://slack.com/api/chat.postMessage -o "$HOME/.cache/notifypr_content"
+  create_slack "$content_merged" "$HOME/.cache/notifypr_content_merged"
+  create_slack "$content" "$HOME/.cache/notifypr_content"
 }
 
 function notify_slack_update {
   content_merged_ts=$(cat "$HOME/.cache/notifypr_content_merged" | jq -r .ts)
   content_ts=$(cat "$HOME/.cache/notifypr_content" | jq -r .ts)
-  curl -d ts="$content_merged_ts" -d "token=${SLACK_PROMOTEINT_TOKEN}" -d "channel=$recipient" -d "as_user=true" -d "link_names=true" --data-binary "text=${content_merged}" https://slack.com/api/chat.update
-  sleep 0.5
-  curl -d ts="$content_ts" -d "token=${SLACK_PROMOTEINT_TOKEN}" -d "channel=$recipient" -d "as_user=true" -d "link_names=true" --data-binary "text=${content}" https://slack.com/api/chat.update
+  update_slack "$content_merged" "$content_merged_ts"
+  update_slack "$content" "$content_ts"
 }
 
-main
+function create_slack {
+  local text="$1"
+  local output="$2"
+  curl -d "token=${SLACK_PROMOTEINT_TOKEN}" -d "channel=$recipient" -d "as_user=true" -d "link_names=true" --data-binary "text=${text}" https://slack.com/api/chat.postMessage -o "$output"
+  sleep 0.2
+}
+
+function update_slack {
+  local text="$1"
+  local ts="$2"
+  curl -d "token=${SLACK_PROMOTEINT_TOKEN}" -d "channel=$recipient" -d "as_user=true" -d "link_names=true" --data-binary "text=${text}" -d ts="$ts" https://slack.com/api/chat.update
+  sleep 0.2
+}
+
+function delete_slack {
+  local ts="$1"
+  curl -d "token=${SLACK_PROMOTEINT_TOKEN}" -d "channel=$recipient" -d "as_user=true" -d ts="$ts" https://slack.com/api/chat.delete
+  sleep 0.2
+}
+
+
+main $@

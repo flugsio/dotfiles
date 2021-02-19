@@ -6,6 +6,9 @@ prs=""
 prs_failed=""
 prs_merged=""
 
+content=""
+content_merged=""
+
 #notify="@here "
 notify=" "
 recipient="$SLACK_DEVSTATUS"
@@ -25,8 +28,8 @@ function main {
 }
 
 function daily_merge_status {
-  # TODO: only send merge message
-  # refresh_data
+  refresh_prs_merged "$(TZ=UTC+24 date +'%Y-%m-%dT%H:%M')" "_daily"
+  notify_slack_daily_merged
 }
 function loop_update {
   update_or_replace
@@ -47,6 +50,17 @@ function update_or_replace {
 }
 
 function refresh_data {
+  refresh_prs
+  local standup_time="$(TZ=UTC date +'%Y-%m-%dT12:40')"
+  if [ "$(date +%s --date $standup_time)" -gt "$(date +%s)" ]; then
+    # rewind 24 hours if the time is in the future
+    standup_time="$(TZ=UTC+24 date +'%Y-%m-%dT12:40')"
+  fi
+
+  refresh_prs_merged "$standup_time"
+}
+
+function refresh_prs {
   #-F q="is:open" \
   #-F sort=created \
   #-F per_page=100 \
@@ -61,20 +75,8 @@ function refresh_data {
     -o ${response}_failed \
     "https://api.github.com/search/issues?q=is:open+is:pr+user:promoteinternational+draft:false+status:failure+updated:>=$(TZ=UTC+24 date +'%Y-%m-%dT%H:%M')"
 
-  curl -sSL -H "Authorization: token $GITHUB_TOKEN" \
-    -H "Accept: application/vnd.github.v3+json" \
-    -o ${response}_merged \
-    "https://api.github.com/search/issues?q=is:merged+is:pr+user:promoteinternational+draft:false+merged:>=$(TZ=UTC+24 date +'%Y-%m-%dT%H:%M')+-author%3Aapp%2Fdependabot&sort=updated&order=asc"
-
-  curl -sSL -H "Authorization: token $GITHUB_TOKEN" \
-    -H "Accept: application/vnd.github.v3+json" \
-    -o ${response}_depend \
-    "https://api.github.com/search/issues?q=is:merged+is:pr+user:promoteinternational+draft:false+merged:>=$(TZ=UTC+24 date +'%Y-%m-%dT%H:%M')+author%3Aapp%2Fdependabot&sort=updated&order=asc"
-
   prs=$(cat $response | jq -r ".items[] | [(.title | gsub(\",\"; \"،\")), .html_url, .user.login, .created_at, .updated_at, .closed_at, .comments] | @csv")
   prs_failed=$(cat ${response}_failed | jq -r ".items[] | [(.title | gsub(\",\"; \"،\")), .html_url, .user.login, .created_at, .updated_at, .closed_at] | @csv")
-  prs_merged=$(cat ${response}_merged | jq -r ".items[] | [(.title | gsub(\",\"; \"،\")), .html_url, .user.login, .created_at, .updated_at, .closed_at] | @csv")
-  prs_depend=$(cat ${response}_depend | jq -r ".items | sort_by(.html_url)[] | [(.title | gsub(\",\"; \"،\")), .html_url, .user.login, .created_at, .updated_at, .closed_at] | @csv")
 
   content="<https://github.com/pulls?q=is%3Aopen+is%3Apr+user%3Apromoteinternational+draft%3Afalse+-status%3Afailure|current open pr's> $notify"
   content+="(<https://github.com/pulls?q=is%3Aopen+is%3Apr+user%3Apromoteinternational+draft%3Atrue|current drafts>)"
@@ -139,6 +141,28 @@ function refresh_data {
     done <<< $prs_failed
   fi
   
+  #echo "$content" | sed 's/%0A/\n/g'
+  #echo "$content" | sed 's/%0A/\n/g' | wc
+}
+
+function refresh_prs_merged {
+  local date="$1"
+  local postfix="$2"
+  response="$HOME/.cache/notifypr_response"
+  response_merged="$HOME/.cache/notifypr_response$postfix"
+  curl -sSL -H "Authorization: token $GITHUB_TOKEN" \
+    -H "Accept: application/vnd.github.v3+json" \
+    -o ${response_merged} \
+    "https://api.github.com/search/issues?q=is:merged+is:pr+user:promoteinternational+draft:false+merged:>=$date+-author%3Aapp%2Fdependabot&sort=updated&order=asc"
+
+  curl -sSL -H "Authorization: token $GITHUB_TOKEN" \
+    -H "Accept: application/vnd.github.v3+json" \
+    -o ${response}_depend \
+    "https://api.github.com/search/issues?q=is:merged+is:pr+user:promoteinternational+draft:false+merged:>=$date+author%3Aapp%2Fdependabot&sort=updated&order=asc"
+
+  prs_merged=$(cat ${response_merged} | jq -r ".items[] | [(.title | gsub(\",\"; \"،\")), .html_url, .user.login, .created_at, .updated_at, .closed_at] | @csv")
+  prs_depend=$(cat ${response}_depend | jq -r ".items | sort_by(.html_url)[] | [(.title | gsub(\",\"; \"،\")), .html_url, .user.login, .created_at, .updated_at, .closed_at] | @csv")
+
   content_merged="recently merged pr's"
   if [ "$(echo $prs_merged | wc -c)" -gt 1 ]; then
     while read pr; do
@@ -162,7 +186,7 @@ function refresh_data {
       #content_merged="$content_merged%0A:merge: $title"
     done <<< $prs_merged
   else
-    content_merged="$content_merged%0Anone today"
+    content_merged="$content_merged%0A"
   fi
   if [ "$(echo $prs_depend | wc -c)" -gt 1 ]; then
     content_merged="$content_merged%0A:me:Dependencies:"
@@ -192,11 +216,8 @@ function refresh_data {
     done <<< $prs_depend
     content_merged=${content_merged%?}
   fi
-  
-  echo "$content_merged" | sed 's/%0A/\n/g'
-  echo "$content" | sed 's/%0A/\n/g'
-  echo "$content_merged" | sed 's/%0A/\n/g' | wc
-  echo "$content" | sed 's/%0A/\n/g' | wc
+  #echo "$content_merged" | sed 's/%0A/\n/g'
+  #echo "$content_merged" | sed 's/%0A/\n/g' | wc
 }
 
 function minutes_since_post {
@@ -210,6 +231,10 @@ function delete_old_message {
   content_ts=$(cat "$HOME/.cache/notifypr_content" | jq -r .ts)
   delete_slack "$content_merged_ts"
   delete_slack "$content_ts"
+}
+
+function notify_slack_daily_merged {
+  create_slack "$content_merged" "$HOME/.cache/notifypr_content_daily"
 }
 
 function notify_slack_first {

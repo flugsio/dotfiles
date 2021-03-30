@@ -51,11 +51,14 @@ function update_or_replace {
 
 function refresh_data {
   refresh_prs
-  local standup_time="$(TZ=UTC date +'%Y-%m-%dT12:40')"
-  if [ "$(date +%s --date $standup_time)" -gt "$(date +%s)" ]; then
-    # rewind 24 hours if the time is in the future
-    standup_time="$(TZ=UTC+24 date +'%Y-%m-%dT12:40')"
-  fi
+  # todo: fixes
+  #local standup_time="$(TZ=UTC date +'%Y-%m-%dT12:40')"
+  #if [ "$(date +%s --date $standup_time)" -gt "$(date +%s)" ]; then
+  #  # rewind 24 hours if the time is in the future
+  #  standup_time="$(TZ=UTC+24 date +'%Y-%m-%dT12:40')"
+  #fi
+
+  standup_time="$(TZ=UTC+24 date +'%Y-%m-%dT%H:%M')"
 
   refresh_prs_merged "$standup_time"
 }
@@ -68,17 +71,17 @@ function refresh_prs {
   curl -sSL -H "Authorization: token $GITHUB_TOKEN" \
     -H "Accept: application/vnd.github.v3+json" \
     -o $response \
-    "https://api.github.com/search/issues?q=is:open+is:pr+user:promoteinternational+draft:false+-status:failure"
+    "https://api.github.com/search/issues?q=is:open+is:pr+user:promoteinternational+draft:false+-status:failure+-assignee:andreask"
 
   curl -sSL -H "Authorization: token $GITHUB_TOKEN" \
     -H "Accept: application/vnd.github.v3+json" \
     -o ${response}_failed \
-    "https://api.github.com/search/issues?q=is:open+is:pr+user:promoteinternational+draft:false+status:failure+updated:>=$(TZ=UTC+24 date +'%Y-%m-%dT%H:%M')"
+    "https://api.github.com/search/issues?q=is:open+is:pr+user:promoteinternational+draft:false+status:failure+updated:>=$(TZ=UTC+24 date +'%Y-%m-%dT%H:%M')+-assignee:andreask"
 
   prs=$(cat $response | jq -r ".items[] | [(.title | gsub(\",\"; \"،\")), .html_url, .user.login, .created_at, .updated_at, .closed_at, .comments] | @csv")
   prs_failed=$(cat ${response}_failed | jq -r ".items[] | [(.title | gsub(\",\"; \"،\")), .html_url, .user.login, .created_at, .updated_at, .closed_at] | @csv")
 
-  content="<https://github.com/pulls?q=is%3Aopen+is%3Apr+user%3Apromoteinternational+draft%3Afalse+-status%3Afailure|current open pr's> $notify"
+  content="<https://github.com/pulls?q=is%3Aopen+is%3Apr+user%3Apromoteinternational+draft%3Afalse+-status%3Afailure+-assignee%3Aandreask|current open pr's> $notify"
   content+="(<https://github.com/pulls?q=is%3Aopen+is%3Apr+user%3Apromoteinternational+draft%3Atrue|current drafts>)"
   if [ "$(echo $prs | wc -c)" -gt 1 ]; then
     while read pr; do
@@ -103,7 +106,7 @@ function refresh_prs {
       # limit to git recommended length, slack api is limited to 4000 characters (including the markdown syntax/urls)
       title=${title:0:50}
       title=$(echo $title | sed -E 's{(.*\] |)(.*){\1<'$url'|\2>{')
-      title=$(echo $title | sed -E 's{\[#([[:digit:]]+)\]{<https://pivotaltracker.com/story/show/\1/|#\1>{')
+      title=$(pt_links "$title")
     
       content="$content%0A:op:$repo_short $title ${created_ago}h by $user"
       if [ "${created_ago}h" != "$updated_ago" ]; then
@@ -132,7 +135,7 @@ function refresh_prs {
       #closed_ago=$(echo $((($(date +"%s")-$(date +"%s" -d "$closed_at"))/60)))
       title=${title:0:50}
       title=$(echo $title | sed -E 's{(.*\] |)(.*){\1<'$url'|\2>{')
-      title=$(echo $title | sed -E 's{\[#([[:digit:]]+)\]{<https://pivotaltracker.com/story/show/\1/|#\1>{')
+      title=$(pt_links "$title")
     
       content="$content%0A:octagonal_sign:$repo_short $title ${created_ago}h by $user"
       if [ "$created_ago" != "$updated_ago" ]; then
@@ -149,16 +152,16 @@ function refresh_prs_merged {
   local date="$1"
   local postfix="$2"
   response="$HOME/.cache/notifypr_response"
-  response_merged="$HOME/.cache/notifypr_response$postfix"
+  response_merged="$HOME/.cache/notifypr_response_merged$postfix"
   curl -sSL -H "Authorization: token $GITHUB_TOKEN" \
     -H "Accept: application/vnd.github.v3+json" \
     -o ${response_merged} \
-    "https://api.github.com/search/issues?q=is:merged+is:pr+user:promoteinternational+draft:false+merged:>=$date+-author%3Aapp%2Fdependabot&sort=updated&order=asc"
+    "https://api.github.com/search/issues?q=is:merged+is:pr+user:promoteinternational+draft:false+merged:>=$date+-author%3Aapp%2Fdependabot+-assignee:andreask&sort=updated&order=asc"
 
   curl -sSL -H "Authorization: token $GITHUB_TOKEN" \
     -H "Accept: application/vnd.github.v3+json" \
     -o ${response}_depend \
-    "https://api.github.com/search/issues?q=is:merged+is:pr+user:promoteinternational+draft:false+merged:>=$date+author%3Aapp%2Fdependabot&sort=updated&order=asc"
+    "https://api.github.com/search/issues?q=is:merged+is:pr+user:promoteinternational+draft:false+merged:>=$date+author%3Aapp%2Fdependabot+-assignee:andreask&sort=updated&order=asc"
 
   prs_merged=$(cat ${response_merged} | jq -r ".items[] | [(.title | gsub(\",\"; \"،\")), .html_url, .user.login, .created_at, .updated_at, .closed_at] | @csv")
   prs_depend=$(cat ${response}_depend | jq -r ".items | sort_by(.html_url)[] | [(.title | gsub(\",\"; \"،\")), .html_url, .user.login, .created_at, .updated_at, .closed_at] | @csv")
@@ -179,7 +182,7 @@ function refresh_prs_merged {
       closed_ago=$(echo $((($(date +"%s")-$(date +"%s" -d "$closed_at"))/60/60)))
       title=${title:0:50}
       title=$(echo $title | sed -E 's{(.*\] |)(.*){\1<'$url'|\2>{')
-      title=$(echo $title | sed -E 's{\[#([[:digit:]]+)\]{<https://pivotaltracker.com/story/show/\1/|#\1>{')
+      title=$(pt_links "$title")
     
       # TODO: who merged it, it's not included in the current api request
       content_merged="$content_merged%0A:me:$repo_short $title ${created_ago}h by $user, merged ${closed_ago}h"
@@ -205,7 +208,7 @@ function refresh_prs_merged {
       closed_ago=$(echo $((($(date +"%s")-$(date +"%s" -d "$closed_at"))/60/60)))
       title=${title:0:50}
       title=$(echo $title | sed -E 's{(.*\] |)(.*){\1<'$url'|\2>{')
-      title=$(echo $title | sed -E 's{\[#([[:digit:]]+)\]{<https://pivotaltracker.com/story/show/\1/|#\1>{')
+      title=$(pt_links "$title")
     
       if [ "$prev_repo" = "$repo_short" ]; then
         content_merged="$content_merged $title,"
@@ -267,6 +270,10 @@ function delete_slack {
   local ts="$1"
   curl -d "token=${SLACK_PROMOTEINT_TOKEN}" -d "channel=$recipient" -d "as_user=true" -d ts="$ts" https://slack.com/api/chat.delete
   sleep 0.2
+}
+
+function pt_links {
+  echo $1 | sed -E 's{[،,\[]?#([[:digit:]]+)\]?{<https://pivotaltracker.com/story/show/\1/|#\1>{g'
 }
 
 

@@ -724,6 +724,18 @@ function fast_chromium_stop {
     fi
   )
 }
+# taskwarrior gtd
+# https://cs-syd.eu/posts/2015-06-14-gtd-with-taskwarrior-part-1-intro.html
+alias in='task add +in'
+alias in_count='task +in +PENDING count'
+function tickle () {
+  deadline=$1
+  shift
+  in +tickle wait:$deadline $@
+}
+alias tick=tickle
+# for yes/no questions
+alias think='tickle +1d'
 
 function convert_accucheck {
   grep '^[0-9]' D*.csv | \

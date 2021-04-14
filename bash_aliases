@@ -42,7 +42,13 @@ function h_cmd {
 }
 function ci {
   if [ "$1" = "log" ]; then
-    curl $CI_URL/job/${CI_PROJECTS[$(hubname)]//\%2F/\/job/}/job/$(active_branch)/lastBuild/logText/progressiveText?start=0 -L --user $JENKINS_USERTOKEN
+    if [ -n "$2" ]; then
+      job="/job/${2//\//\/job\//}"
+      echo $job
+    else
+      job="/job/${CI_PROJECTS[$(hubname)]//\%2F/\/job/}/job/$(active_branch)"
+    fi
+    curl ${CI_URL}${job}/lastBuild/logText/progressiveText?start=0 -L --user $JENKINS_USERTOKEN
   else
     echo "no such command"
   fi

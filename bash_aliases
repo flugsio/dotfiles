@@ -680,10 +680,10 @@ $body"
          # &&
       #git checkout master &&
       #git branch -D "$branch"
-      while sleep 4; do
-        gh pr checks | grep pass && break || echo not yet
-      done
-    echo "To notify slack, use `makepr NR`"
+      #while sleep 4; do
+      #  gh pr checks | grep pass && break || echo not yet
+      #done
+    #echo "To notify slack, use `makepr NR`"
   fi
 }
 function fast_chromium {

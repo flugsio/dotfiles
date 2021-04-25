@@ -744,12 +744,12 @@ function fast_chromium_stop {
 }
 # taskwarrior gtd
 # https://cs-syd.eu/posts/2015-06-14-gtd-with-taskwarrior-part-1-intro.html
-alias in='task add +in'
-alias in_count='task +in +PENDING count'
+alias tin='task add +in'
+alias tin_count='task +in +PENDING count'
 function tickle () {
   deadline=$1
   shift
-  in +tickle wait:$deadline $@
+  tin +tickle wait:$deadline $@
 }
 alias tick=tickle
 # for yes/no questions

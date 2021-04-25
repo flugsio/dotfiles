@@ -183,7 +183,7 @@ function gb {
   git checkout -b $name origin/master
 }
 function gp {
-  git checkout master
+  git checkout master || git checkout main
   git pull -p
   cleanup
 }
@@ -490,6 +490,18 @@ alias gbmod='git diff origin/master...HEAD --name-only --diff-filter=DMR | xargs
 #alias i="(cd ~/code/ansible && (pgrep invoker || bundle exec invoker start vagrant.ini -d) && bundle exec invoker"
 alias urldecode='python3 -c "import sys, urllib.parse as ul; print(ul.unquote_plus(sys.argv[1]))"'
 alias urlencode='python3 -c "import sys, urllib.parse as ul; print (ul.quote_plus(sys.argv[1]))"'
+
+function remote_forward {
+  local port1=${2:-22}
+  local port2=${3:-2222}
+  remote $1 -L localhost:${port1}:localhost:${port2}
+}
+
+function remote_backward {
+  local port1=${2:-3240}
+  local port2=${3:-$port}
+  remote $1 -R localhost:${port1}:localhost:${port2}
+}
 
 function remote_syncthing {
   echo http://localhost:83${1}

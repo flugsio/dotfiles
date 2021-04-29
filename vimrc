@@ -72,6 +72,9 @@ Plugin       'cespare/vim-toml'
 Plugin       'flugsio/Vomodoro'
 Plugin       'flugsio/workflowish'
 "Plugin     'Valloric/YouCompleteMe'
+if has('nvim')
+  Plugin     'francoiscabrol/ranger.vim'
+end
 
 call vundle#end()
 
@@ -189,6 +192,11 @@ highlight Search2 ctermbg=blue ctermfg=black
 highlight Search3 ctermbg=red ctermfg=black
 
 " Plugin configs
+
+if has('nvim')
+  let g:ranger_map_keys = 0
+  "let g:ranger_replace_netrw = 1
+endif
 
 let g:markdown_fenced_languages = ['html', 'dot', 'bash=sh', 'sh', 'yml=yaml', 'yaml', 'ruby', 'json', 'groovy', 'css']
 
@@ -344,8 +352,13 @@ nnoremap <leader>gf :vert diffsplit <cfile><CR>
 " Jobs
 nnoremap ! :AsyncRun<space>
 nnoremap <silent> <leader>§ :copen<CR>
-nnoremap <leader>i :<C-U>RangerChooser -<CR>
-nnoremap <leader>I :<C-U>RangerChooser .<CR>
+if has('nvim')
+  nnoremap <leader>i :<C-U>Ranger<CR>
+  nnoremap <leader>I :<C-U>RangerWorkingDirectory<CR>
+else
+  nnoremap <leader>i :<C-U>RangerChooser -<CR>
+  nnoremap <leader>I :<C-U>RangerChooser .<CR>
+endif
 nnoremap <leader>o :PomodoroToDoToday<CR>
 nnoremap <leader>l :call system("surf_go " . g:url)
 "nnoremap <leader>l :w\|call system("export surfwid=" . g:browser_id . " && surf_go " . g:url)

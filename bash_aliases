@@ -48,7 +48,9 @@ function ci {
     else
       job="/job/${CI_PROJECTS[$(hubname)]//\%2F/\/job/}/job/$(active_branch)"
     fi
-    curl ${CI_URL}${job}/lastBuild/logText/progressiveText?start=0 -L --user $JENKINS_USERTOKEN
+    curl -s ${CI_URL}${job}/lastBuild/logText/progressiveText?start=0 -L --user $JENKINS_USERTOKEN
+  elif [ "$1" = "fail" ]; then
+    ci log | grep -Po "(?<=^rspec ).*?(?= #)" | sort | uniq
   else
     echo "no such command"
   fi
@@ -243,6 +245,7 @@ function mkde {
 alias be='bundle exec'
 alias ber='bundle exec rake'
 alias bb='bundle exec rspec $(ack byebug\$ spec --output=:: | sed s/::://)'
+alias berci='bundle exec rspec $(ci fail | xargs)'
 alias datei='date -u +"%Y%m%dT%H%M%SZ"'
 alias dts='date -u +"%Y%m%d"'
 alias dta='date -u +"%Y%m%d %H%M"'

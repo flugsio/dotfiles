@@ -101,9 +101,71 @@ function errb {
   fi
 
   if [ "$action" = "show" ]; then
+#                               Prefix Verb         URI Pattern                                                   Controller#Action
+#              notifier_api_v2_notices GET|POST     /notifier_api/v2/notices(.:format)                            notices#create
+#                               locate GET          /locate/:id(.:format)                                         notices#locate
+#                               notice GET          /notices/:id(.:format)                                        notices#show
+#                    site_config_index PUT          /site_config(.:format)                                        site_config#update
+#                                      GET          /site_config(.:format)                                        site_config#index
+#             destroy_several_problems POST         /problems/destroy_several(.:format)                           problems#destroy_several
+#             resolve_several_problems POST         /problems/resolve_several(.:format)                           problems#resolve_several
+#           unresolve_several_problems POST         /problems/unresolve_several(.:format)                         problems#unresolve_several
+#               merge_several_problems POST         /problems/merge_several(.:format)                             problems#merge_several
+#             unmerge_several_problems POST         /problems/unmerge_several(.:format)                           problems#unmerge_several
+#                      search_problems GET          /problems/search(.:format)                                    problems#search
+#                             problems GET          /problems(.:format)                                           problems#index
+#                  app_problem_notices GET          /apps/:app_id/problems/:problem_id/notices(.:format)          notices#index
+#                                      POST         /apps/:app_id/problems/:problem_id/notices(.:format)          notices#create
+#               new_app_problem_notice GET          /apps/:app_id/problems/:problem_id/notices/new(.:format)      notices#new
+#              edit_app_problem_notice GET          /apps/:app_id/problems/:problem_id/notices/:id/edit(.:format) notices#edit
+#                   app_problem_notice GET          /apps/:app_id/problems/:problem_id/notices/:id(.:format)      notices#show
+#                                      PATCH        /apps/:app_id/problems/:problem_id/notices/:id(.:format)      notices#update
+#                                      PUT          /apps/:app_id/problems/:problem_id/notices/:id(.:format)      notices#update
+#                                      DELETE       /apps/:app_id/problems/:problem_id/notices/:id(.:format)      notices#destroy
+#                 app_problem_comments POST         /apps/:app_id/problems/:problem_id/comments(.:format)         comments#create
+#                  app_problem_comment DELETE       /apps/:app_id/problems/:problem_id/comments/:id(.:format)     comments#destroy
+#             destroy_all_app_problems POST         /apps/:app_id/problems/destroy_all(.:format)                  problems#destroy_all
+#            xhr_sparkline_app_problem GET          /apps/:app_id/problems/:id/xhr_sparkline(.:format)            problems#xhr_sparkline
+#                  resolve_app_problem PUT          /apps/:app_id/problems/:id/resolve(.:format)                  problems#resolve
+#                unresolve_app_problem PUT          /apps/:app_id/problems/:id/unresolve(.:format)                problems#unresolve
+#             create_issue_app_problem POST         /apps/:app_id/problems/:id/create_issue(.:format)             problems#create_issue
+#              close_issue_app_problem POST         /apps/:app_id/problems/:id/close_issue(.:format)              problems#close_issue
+#             unlink_issue_app_problem DELETE       /apps/:app_id/problems/:id/unlink_issue(.:format)             problems#unlink_issue
+#                         app_problems GET          /apps/:app_id/problems(.:format)                              problems#index
+#                                      POST         /apps/:app_id/problems(.:format)                              problems#create
+#                      new_app_problem GET          /apps/:app_id/problems/new(.:format)                          problems#new
+#                     edit_app_problem GET          /apps/:app_id/problems/:id/edit(.:format)                     problems#edit
+#                          app_problem GET          /apps/:app_id/problems/:id(.:format)                          problems#show
+#                                      PATCH        /apps/:app_id/problems/:id(.:format)                          problems#update
+#                                      PUT          /apps/:app_id/problems/:id(.:format)                          problems#update
+#                                      DELETE       /apps/:app_id/problems/:id(.:format)                          problems#destroy
+#                          app_watcher PATCH        /apps/:app_id/watchers/:id(.:format)                          watchers#update
+#                                      PUT          /apps/:app_id/watchers/:id(.:format)                          watchers#update
+#                                      DELETE       /apps/:app_id/watchers/:id(.:format)                          watchers#destroy
+#               regenerate_api_key_app POST         /apps/:id/regenerate_api_key(.:format)                        apps#regenerate_api_key
+#                          search_apps GET          /apps/search(.:format)                                        apps#search
+#                                 apps GET          /apps(.:format)                                               apps#index
+#                                      POST         /apps(.:format)                                               apps#create
+#                              new_app GET          /apps/new(.:format)                                           apps#new
+#                             edit_app GET          /apps/:id/edit(.:format)                                      apps#edit
+#                                  app GET          /apps/:id(.:format)                                           apps#show
+#                                      PATCH        /apps/:id(.:format)                                           apps#update
+#                                      PUT          /apps/:id(.:format)                                           apps#update
+#                                      DELETE       /apps/:id(.:format)                                           apps#destroy
+#                                      GET          /problems/:id(.:format)                                       problems#show_by_id
+#                     health_readiness GET          /health/readiness(.:format)                                   health#readiness
+#                      health_liveness GET          /health/liveness(.:format)                                    health#liveness
+#                health_api_key_tester GET          /health/api-key-tester(.:format)                              health#api_key_tester
+#                      api_v1_problems GET          /api/v1/problems(.:format)                                    api/v1/problems#index {:format=>"json"}
+#                       api_v1_problem GET          /api/v1/problems/:id(.:format)                                api/v1/problems#show {:format=>"json"}
+#                       api_v1_notices GET          /api/v1/notices(.:format)                                     api/v1/notices#index {:format=>"json"}
+#                     app_api_v1_stats GET          /api/v1/stats/app(.:format)                                   api/v1/stats#app {:format=>"json"}
+#                                 root GET          /                                                             apps#index
     # TODO:
+    #curl -G -d "auth_token=$token" \
+    #  "$url/apps/5d8258c14c851100075f6c9f/problems/5fc76bebb674770007b4acbc"
     curl -G -d "auth_token=$token" \
-      "$url/apps/5d8258c14c851100075f6c9f/problems/5fc76bebb674770007b4acbc"
+      "$3"
   elif [ "$action" = "createapp" ]; then
     local name="$3"
     local repo="$4"

@@ -63,6 +63,8 @@ Plugin         'tpope/vim-bundler'
 Plugin         'tpope/vim-rails'
 Plugin      'vim-ruby/vim-ruby'
 Plugin    'thoughtbot/vim-rspec'
+" Better syntax highlighting
+" Plugin         'keith/rspec.vim'
 Plugin         'tpope/vim-repeat'
 Plugin    'derekwyatt/vim-scala'
 "Plugin        'tpope/vim-sleuth' " 100ms

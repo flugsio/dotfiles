@@ -66,7 +66,9 @@ function add_audio {
 
 function share_init {
   apk add usbip-utils
-  modprobe usbip-core usbip-host vhci-hcd
+  modprobe usbip-core
+  modprobe usbip-host
+  modprobe vhci-hcd
   usbipd -d
   #usbipd -D
 }

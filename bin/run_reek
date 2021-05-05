@@ -1,0 +1,37 @@
+#!/bin/bash -l
+
+function unstaged_changes {
+  git diff --name-only --diff-filter=ACMR | xargs
+}
+
+function staged_changes {
+  git diff --name-only --diff-filter=ACMR --cached | xargs
+}
+
+function branch_changes {
+  git diff origin/master...HEAD --name-only --diff-filter=ACMR | xargs
+}
+
+function run_reek {
+  local files=$@
+  if [ -n "$files" ]; then
+    echo $files
+    bundle exec reek $files
+  else
+    echo "   - No changes"
+    echo
+  fi
+}
+
+function main {
+  echo "> Running reek for unstaged changes"
+  run_reek $(unstaged_changes)
+
+  echo "> Running reek for staged changes"
+  run_reek $(staged_changes)
+
+  echo "> Running reek for current branch compared common ancestor on master"
+  run_reek $(branch_changes)
+}
+
+main

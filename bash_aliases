@@ -396,6 +396,11 @@ function graft_tail {
   local branch_log="/home/promote/apps/promote-release/tmp/branch-${branch}.log /opt/promote/${branch}/shared/log/\*.log"
   ssh grafter "tail -n 100 -F $grafter $branch_log"
 }
+function graft_log_release {
+  local branch=${1:-$(active_branch_cleaned)}
+  local release_log="/home/promote/apps/promote-release/tmp/branch-${branch}.log"
+  ssh grafter "cat $release_log"
+}
 function graft_flag {
   local branch=${1:-$(active_branch_cleaned)}
   vim scp://grafter//opt/promote/${branch}/shared/config/features_${branch}.yaml

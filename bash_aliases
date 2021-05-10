@@ -595,8 +595,8 @@ function remote {
   fi
 }
 function remote_save_history {
-  remote_pull $1 /home/vagrant/.histfile ~/debug/history/$(dtz)_$1.sh
-  cd ~/debug/history
+  remote_pull $1 /home/vagrant/.histfile ~/Sync/history/$(dtz)_$1.sh
+  cd ~/Sync/history
 }
 function remote_copyid {
   num=$(remote_num $1)
@@ -604,7 +604,7 @@ function remote_copyid {
 }
 function remote_push {
   num=$(remote_num $1)
-  scp -r $2 scp://vagrant@$REMOTEIP:${num}0/$3
+  rsync -r $2 vagrant@$REMOTEIP:$3 -e "ssh -p ${num}0"
 }
 function remote_pull {
   num=$(remote_num $1)

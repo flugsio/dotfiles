@@ -2,22 +2,38 @@
 
 source kbd_common
 
-if [ `hostname` = "ranmi" ]; then
+layout="$1"
+
+if [ -z "$layout" ]; then
+  if [ `hostname` = "ranmi" ]; then
+    layout=1
+  elif [ `hostname` = "toldi_broken" ]; then
+    layout=2
+  elif [ `hostname` = "toldi" ]; then
+    layout=3
+  elif [ `hostname` = "zdani" ]; then
+    layout=3
+  else
+    layout=4
+  fi
+fi
+
+if [ "$layout" = 1 ]; then
   setxkbmap -layout sv-code -option caps:swapescape -variant nodeadkeys
   /usr/bin/xmodmap $HOME/.Xmodmap
   #/usr/bin/xmodmap $HOME/.Xmodmap_keys
-elif [ `hostname` = "toldi_broken" ]; then
+elif [ "$layout" = 2 ]; then
   for i in $(xinput --list --id-only); do
     xinput --get-feedbacks $i 2>/dev/null | grep -q KbdFeedbackClass && xinput --list-props $i | grep -q "Device Product ID.*6058" &&
       setxkbmap -I /home/flugsio/code/dotfiles/slash -layout sv-code -option caps:swapescape -variant nodeadkeys -device $i
   done
-elif [ `hostname` = "toldi" ]; then
+elif [ "$layout" = 3 ]; then
   kbdh
-elif [ `hostname` = "zdani" ]; then
-  kbdh
-else
+elif [ "$layout" = 4 ]; then
   setxkbmap -layout se -option caps:swapescape -variant nodeadkeys
   /usr/bin/xmodmap $HOME/.Xmodmap
   /usr/bin/xmodmap $HOME/.Xmodmap_keys
+else
+  echo no such layout
 fi
 

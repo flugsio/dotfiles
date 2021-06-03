@@ -8,8 +8,10 @@ function add_w {
 function add_x {
   setup-xorg-base
 
+  apk add xf86-video-intel
   apk add xinput-mouse xinput-keyboard
   apk add libxcursor libxrandr libxi
+  apk add python3
   apk add i3wm i3status
   apk add xmodmap xset setxkbmap
   add_tools

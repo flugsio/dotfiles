@@ -30,8 +30,13 @@ function add_tools {
 
 function add_ui_tools {
   apk add alacritty ttf-ubuntu-font-family
+  apk add ranger neovim
   apk add firefox
   startx
+}
+
+function add_ruby {
+  apk add ruby ruby-dev ruby-bundler
 }
 
 function add_sshfs {

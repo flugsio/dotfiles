@@ -170,7 +170,7 @@ function refresh_prs_merged {
   prs_merged=$(cat ${response_merged} | jq -r ".items[] | [(.title | gsub(\",\"; \"،\")), .html_url, .user.login, .created_at, .updated_at, .closed_at] | @csv")
   prs_depend=$(cat ${response}_depend | jq -r ".items | sort_by(.html_url)[] | [(.title | gsub(\",\"; \"،\")), .html_url, .user.login, .created_at, .updated_at, .closed_at] | @csv")
 
-  content_merged="recently merged pr's"
+  content_merged="recently merged pr's%0A:me:"
   if [ "$(echo $prs_merged | wc -c)" -gt 1 ]; then
     while read pr; do
       title=$(echo $pr | cut -d',' -f1 | sed 's/"//g')
@@ -189,7 +189,9 @@ function refresh_prs_merged {
       title=$(pt_links "$title")
     
       # TODO: who merged it, it's not included in the current api request
-      content_merged="$content_merged%0A:me:$repo_short $title ${created_ago}h by $user, merged ${closed_ago}h"
+      #content_merged="$content_merged%0A:me:$repo_short $title ${created_ago}h by $user, merged ${closed_ago}h"
+      # shorter format
+      content_merged="$content_merged $title by $user,"
       #content_merged="$content_merged%0A:merge: $title"
     done <<< $prs_merged
   else
@@ -277,8 +279,7 @@ function delete_slack {
 }
 
 function pt_links {
-  echo $1 | sed -E 's{[،,\[]?#([[:digit:]]+)\]?{<https://pivotaltracker.com/story/show/\1/|#\1>{g'
+  echo $1 | sed -E 's{[،,\[]?#([[:digit:]]+)\]?{<https://pivotaltracker.com/story/show/\1/|:p:>{g'
 }
-
 
 main $@

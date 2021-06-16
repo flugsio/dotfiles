@@ -2,6 +2,8 @@
 
 set -e
 
+SLACK_PROMOTEINT_TOKEN=$SLACK_PROMOTEINT_JENKINS_TOKEN
+
 prs=""
 prs_failed=""
 prs_merged=""
@@ -22,6 +24,8 @@ function main {
     loop_update
   elif [ "$cmd" = "update" ]; then
     update_or_replace
+  elif [ "$cmd" = "now" ]; then
+    update_or_replace now
   else
     echo "not a valid command"
   fi
@@ -41,7 +45,7 @@ function loop_update {
 # this will reuse the old message or replace if too old
 function update_or_replace {
   refresh_data
-  if [ "$(minutes_since_post)" -gt 180 ]; then
+  if [ "$(minutes_since_post)" -gt 360 ] || [ "$1" = "now" ]; then
     delete_old_message
     notify_slack_first
   else
@@ -195,7 +199,7 @@ function refresh_prs_merged {
     content_merged="$content_merged%0A:me:Dependencies:"
     local prev_repo=""
     while read pr; do
-      title=$(echo $pr | cut -d',' -f1 | sed 's/"//g' | sed 's/Bump //' | sed 's/ from//' | sed 's/ to /\//')
+      title=$(echo $pr | cut -d',' -f1 | sed 's/"//g' | sed 's/Bump //' | sed 's/ from//' | sed 's/ to /→/')
       url=$(echo $pr | cut -d',' -f2 | sed 's/"//g')
       user=$(echo $pr | cut -d',' -f3 | sed 's/"//g' | sed 's/dependabot.*/bot/')
       created_at=$(echo $pr | cut -d',' -f4 | sed 's/"//g')

@@ -26,6 +26,8 @@ function main {
     update_or_replace
   elif [ "$cmd" = "now" ]; then
     update_or_replace now
+  elif [ "$cmd" = "delete" ]; then
+    delete_messages
   else
     echo "not a valid command"
   fi
@@ -51,6 +53,10 @@ function update_or_replace {
   else
     notify_slack_update
   fi
+}
+
+function delete_messages {
+    delete_old_message
 }
 
 function refresh_data {

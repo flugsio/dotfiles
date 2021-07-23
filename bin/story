@@ -5,6 +5,9 @@
 
 set -e
 
+function task_property {
+  task export $1 | jq ".[] .$2" -r
+}
 config="$HOME/.config/story"
 tmp=$(mktemp --suffix=.md)
 
@@ -16,6 +19,7 @@ labels=""
 owner_ids="[]"
 current_state="\"unscheduled\""
 estimate="null"
+template=""
 
 if [ "$1" = "--help" ]; then
   echo "1st argument template: bug|security|chore|errbit|(blank=feature)"
@@ -24,26 +28,42 @@ fi
 
 if [ "$1" = "bug" ]; then
   # TODO: use another template
-  cp $config/bug_template $tmp
+  template=$config/bug_template
   story_type="bug"
   shift
 elif [ "$1" = "security" ]; then
-  cp $config/security_template $tmp
+  template=$config/security_template
   story_type="chore"
   labels="\"security\",\"security from sprint 7\",\"upgrade\",\"technical\""
   shift
 elif [ "$1" = "chore" ]; then
-  cp $config/chore_template $tmp
+  template=$config/chore_template
   story_type="chore"
   shift
 else
-  cp $config/story_template $tmp
+  template=$config/story_template
   story_type="feature"
+fi
+
+if [ "$1" = "now" ]; then
+  now=1
+  shift
+fi
+
+if [ -n "$1" ]; then
+  id="$1"
+  initial=$(task_property "$id" description)
+fi
+
+echo "$initial" > $tmp
+
+if [ -e "$template" ]; then
+  cat $template >> $tmp
 fi
 
 vim $tmp
 
-if [ "$1" = "now" ]; then
+if [ "$now" = "1" ]; then
   current_state="\"planned\""
   # this label conveys it was injected into current sprint
   # unclear if bonus and urgent is really is the same,

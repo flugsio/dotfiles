@@ -1,5 +1,7 @@
 #!/bin/bash
 
+#  cargo install --git https://github.com/cloudhead/rx --branch master
+
 function main {
   install_pacman archlinux_base.txt
   install_pacman archlinux_allgui.txt

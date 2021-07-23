@@ -41,6 +41,7 @@ fi
 export PATH=$HOME/bin:$HOME/bin/games:$HOME/code/scripts:$HOME/.cargo/bin:$PATH
 
 export EDITOR='vim'
+export PAGER='less'
 if [ `hostname` = "toldi" ]; then
   export LC_PAPER=sv_SE.UTF-8
 fi

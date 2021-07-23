@@ -114,6 +114,8 @@ font:
     #   - (Windows) Consolas
     #family: monospace
     family: Ubuntu Mono
+    #family: JetBrainsMono
+    #family: Terminus
 
     # The `style` can be specified to pick a specific face.
     #style: Regular
@@ -190,6 +192,8 @@ draw_bold_text_with_bright_colors: true
 colors:
   # Default colors
   primary:
+    #background: '0x002b46'
+    #background: '0x005269'
     background: '0x222222'
     foreground: '0xebdbb2'
 
@@ -210,6 +214,11 @@ colors:
 
   # Normal colors
   normal:
+    #black:   '0x002b46'
+    #black:   '0x003E54'
+    #black:   '0x004258'
+    #black:   '0x004258'
+    #black:   '0x005269'
     black:   '0x222222'
     red:     '0xd54e53'
     green:   '0x98971a'
@@ -221,7 +230,8 @@ colors:
 
   # Bright colors
   bright:
-    black:   '0x7c6f64'
+    #black:   '0x7c6f64'
+    black:   '0xfc6f74' # comments in vim
     red:     '0xfb4934'
     green:   '0xb8bb26'
     yellow:  '0xfabd2f'
@@ -268,12 +278,19 @@ colors:
     - { index: 228, color: '0xf2e5bc' }
     - { index: 229, color: '0xfbf1c7' }
     - { index: 230, color: '0xf9f5d7' }
+    # vim status bar
     - { index: 234, color: '0x1d2021' }
+    #- { index: 234, color: '0x1d5061' }
+    # tmux status bar, active vim tab
     - { index: 235, color: '0x282828' }
+    #- { index: 235, color: '0x306080' }
     - { index: 236, color: '0x32302f' }
     - { index: 237, color: '0x3c3836' }
     - { index: 239, color: '0x504945' }
-    - { index: 241, color: '0x665c54' }
+    # highlight text color in vim
+    #- { index: 241, color: '0x004258' }
+    #- { index: 241, color: '0x665c54' }
+    - { index: 241, color: '0x103030' }
     - { index: 243, color: '0x7c6f64' }
     - { index: 244, color: '0x928374' }
     - { index: 245, color: '0x928374' }
@@ -495,7 +512,7 @@ mouse:
   # If this is `true`, the cursor is temporarily hidden when typing.
   #hide_when_typing: false
 
-  url:
+  hints:
     # URL launcher
     #
     # This program is executed when clicking on a text which is recognized as a

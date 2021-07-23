@@ -28,6 +28,7 @@
 
 [alias]
   b = branch
+  d = diff
   s = status
   c = commit -v
   f = fetch --all

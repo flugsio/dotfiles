@@ -378,7 +378,11 @@ alias ltra="rbenv shell 2.3.5; ruby -e \"require 'date'; require 'time'; require
 alias mount_donjon='mkdir ~/donjon; sudo mount -t tmpfs -o size=64M,noatime tmpfs ~/donjon && cd ~/donjon && git clone donjon: .'
 alias mkchangelog='surf -x -t hgmd.css | read HDSURFXID & (while read; do hoedown CHANGELOG.md > changelog.html; echo xprop -id $HDSURFXID -f _SURF_GO 8s -set _SURF_GO "file://$(pwd)/changelog.html" ; done; rm changelog.html)'
 function active_branch {
-  echo $(git_current_branch | tr -d "[[:space:]]")
+  if [ -z "$B" ]; then
+    echo $(git_current_branch | tr -d "[[:space:]]")
+  else
+    echo "$B"
+  fi
 }
 function lowercase {
   tr "[:upper:]" "[:lower:]"
@@ -669,6 +673,7 @@ function v {
 # $1: PT story id
 function gbc {
   local id="$1"
+  local opts="$2"
   echo "gbc: add changes"
   git add -p
 
@@ -689,6 +694,9 @@ function gbc {
   body=$(cat)
   if [ -n "$message" ]; then
     local branch="$(echo $message | lowercase | sed 's/[^a-z]/-/g;s/-\+/-/g;s/\(^-\|-$\)//g')"
+    if [ "$opts" = "skip" ]; then
+      branch="$branch-skip-ui-grafter"
+    fi
     # cleans the branch name
     # replaces everything which isn't a-z, and then removes extra dashes
     git checkout -b "$branch"
@@ -762,6 +770,11 @@ function tickle () {
 alias tick=tickle
 # for yes/no questions
 alias think='tickle +1d'
+function task_property {
+  local id=$1
+  local property=$2
+  task export $id | jq ".[] .$property" -r
+}
 
 function convert_accucheck {
   grep '^[0-9]' D*.csv | \

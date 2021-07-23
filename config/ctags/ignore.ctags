@@ -1,0 +1,9 @@
+--exclude=node_modules
+--exclude=public
+--exclude=tmp
+--exclude=target
+# ignore some large gems
+# cat tags | cut -f 2 | cut -d '/' -f 1-6 | sort | uniq -c | sort -h
+--exclude=brakeman-*
+--exclude=ffi-*
+--exclude=mime-types-data-*

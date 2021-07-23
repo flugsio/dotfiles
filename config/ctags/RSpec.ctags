@@ -1,0 +1,13 @@
+# https://github.com/universal-ctags/ctags/blob/master/optlib/RSpec.ctags
+# adding shared contexts
+--regex-RSpec=/^[ \t]*shared_examples[ \t]+"([^"]+)"[ \t]+do/\1/e/
+--regex-RSpec=/^[ \t]*shared_examples[ \t]+'([^']+)'[ \t]+do/\1/e/
+--regex-RSpec=/^[ \t]*shared_examples[ \t]+([^"']+)[ \t]+do/\1/e/
+--regex-RSpec=/^[ \t]*shared_context[ \t]+"([^"]+)"[ \t]+do/\1/s/
+--regex-RSpec=/^[ \t]*shared_context[ \t]+'([^']+)'[ \t]+do/\1/s/
+--regex-RSpec=/^[ \t]*shared_context[ \t]+([^"']+)[ \t]+do/\1/s/
+# use this with --extras=+r to find references
+--_roledef-RSpec.s=includedContext,included context
+--regex-RSpec=/^[ \t]*include_context[ \t]+"([^"]+)"/\1/s/{_role=includedContext}
+--regex-RSpec=/^[ \t]*include_context[ \t]+'([^']+)'/\1/s/{_role=includedContext}
+--regex-RSpec=/^[ \t]*include_context[ \t]+([^"']+)/\1/s/{_role=includedContext}

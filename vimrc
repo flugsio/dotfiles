@@ -337,17 +337,17 @@ nnoremap <leader>S ?{<CR>jV/[{}]<CR>k:sort<CR>:noh<CR>
 "nnoremap <leader>v V`]
 
 " Git
-nnoremap <leader>gs :Gstatus<CR>
-nnoremap <leader>gc :Gcommit -v<CR>
-nnoremap <leader>gC :Gcommit -v --amend<CR>
-nnoremap <leader>gd :Gvdiff<CR>
+nnoremap <leader>gs :G<CR>
+nnoremap <leader>gc :G commit -v<CR>
+nnoremap <leader>gC :G commit -v --amend<CR>
+nnoremap <leader>gd :Gvdiffsplit<CR>
 nnoremap <leader>gw :Gwrite<CR>
-nnoremap <leader>gb :Gblame<CR>
+nnoremap <leader>gb :G blame<CR>
 nnoremap <leader>do :diffoff!<CR>:only<CR>
-nnoremap <leader>gp :Gpush -u<CR>
-nnoremap <leader>gP :Gpush -f<CR>
+nnoremap <leader>gp :G push -u<CR>
+nnoremap <leader>gP :G push -f<CR>
 " diff file under cursor
-nnoremap <leader>gf :vert diffsplit <cfile><CR>
+nnoremap <leader>gf :vert :Gdiffsplit <cfile><CR>
 
 " Jobs
 nnoremap ! :AsyncRun<space>

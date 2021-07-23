@@ -96,7 +96,7 @@ function refresh_prs {
   if [ "$(echo $prs | wc -c)" -gt 1 ]; then
     while read pr; do
       echo "::${pr}::"
-      title=$(echo $pr | cut -d',' -f1 | sed 's/"//g')
+      title=$(echo $pr | cut -d',' -f1 | sed 's/"//g;s/&/and/g;s/،/,/g')
       url=$(echo $pr | cut -d',' -f2 | sed 's/"//g')
       user=$(echo $pr | cut -d',' -f3 | sed 's/"//g' | sed 's/dependabot.*/bot/')
       created_at=$(echo $pr | cut -d',' -f4 | sed 's/"//g')
@@ -132,7 +132,7 @@ function refresh_prs {
   if [ "$(echo $prs_failed | wc -c)" -gt 1 ]; then
     content="$content%0A%0Arecently failing pr's"
     while read pr; do
-      title=$(echo $pr | cut -d',' -f1 | sed 's/"//g')
+      title=$(echo $pr | cut -d',' -f1 | sed 's/"//g;s/&/and/g;s/،/,/g')
       url=$(echo $pr | cut -d',' -f2 | sed 's/"//g')
       user=$(echo $pr | cut -d',' -f3 | sed 's/"//g' | sed 's/dependabot.*/bot/')
       created_at=$(echo $pr | cut -d',' -f4 | sed 's/"//g')
@@ -179,7 +179,7 @@ function refresh_prs_merged {
   content_merged="recently merged pr's%0A:me:"
   if [ "$(echo $prs_merged | wc -c)" -gt 1 ]; then
     while read pr; do
-      title=$(echo $pr | cut -d',' -f1 | sed 's/"//g')
+      title=$(echo $pr | cut -d',' -f1 | sed 's/"//g;s/&/and/g;s/،/,/g')
       url=$(echo $pr | cut -d',' -f2 | sed 's/"//g')
       user=$(echo $pr | cut -d',' -f3 | sed 's/"//g' | sed 's/dependabot.*/bot/')
       created_at=$(echo $pr | cut -d',' -f4 | sed 's/"//g')
@@ -207,7 +207,7 @@ function refresh_prs_merged {
     content_merged="$content_merged%0A:me:Dependencies:"
     local prev_repo=""
     while read pr; do
-      title=$(echo $pr | cut -d',' -f1 | sed 's/"//g' | sed 's/Bump //' | sed 's/ from//' | sed 's/ to /→/')
+      title=$(echo $pr | cut -d',' -f1 | sed 's/"//g;s/&/and/g;s/،/,/g' | sed 's/Bump //' | sed 's/ from//' | sed 's/ to /→/')
       url=$(echo $pr | cut -d',' -f2 | sed 's/"//g')
       user=$(echo $pr | cut -d',' -f3 | sed 's/"//g' | sed 's/dependabot.*/bot/')
       created_at=$(echo $pr | cut -d',' -f4 | sed 's/"//g')

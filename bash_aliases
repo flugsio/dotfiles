@@ -439,6 +439,9 @@ function vagdestroy {
     vagrant halt $vag; vagrant destroy -f $vag; vagrant up $vag
   fi
 }
+function sus() {
+  sort | uniq -c | sort $@
+}
 alias giturl='git remote get-url --push origin | sed -r "s/^(git@github.com|hub):/https:\/\/github.com\//; s/.git$//"'
 alias hubname='git remote get-url --push origin | sed -r "s/^(git@github.com|hub)://; s/.git$//"'
 alias openall='openpr; openci; opengrafter'

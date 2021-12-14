@@ -62,11 +62,11 @@ function delete_messages {
 
 function refresh_data {
   refresh_prs
-  # content for since last standup
+  # content since last standup
   local standup_time="$(TZ=UTC date +'%Y-%m-%dT'$DAILY_TIME)"
   if [ "$(date +%s --date $standup_time)" -gt "$(date +%s)" ]; then
     # rewind 24 hours if the time is in the future
-    standup_time="$(TZ=UTC+24 date +'%Y-%m-%dT$DAILY_TIME')"
+    standup_time="$(TZ=UTC+24 date +'%Y-%m-%dT'$DAILY_TIME)"
   fi
 
   # content for last 24 hours

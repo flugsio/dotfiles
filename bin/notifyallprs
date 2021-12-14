@@ -3,6 +3,7 @@
 set -e
 
 SLACK_PROMOTEINT_TOKEN=$SLACK_PROMOTEINT_JENKINS_TOKEN
+DAILY_TIME=${DAILY_TIME:-'12:40'}
 
 prs=""
 prs_failed=""
@@ -62,10 +63,10 @@ function delete_messages {
 function refresh_data {
   refresh_prs
   # content for since last standup
-  local standup_time="$(TZ=UTC date +'%Y-%m-%dT14:40')"
+  local standup_time="$(TZ=UTC date +'%Y-%m-%dT$DAILY_TIME')"
   if [ "$(date +%s --date $standup_time)" -gt "$(date +%s)" ]; then
     # rewind 24 hours if the time is in the future
-    standup_time="$(TZ=UTC+24 date +'%Y-%m-%dT14:40')"
+    standup_time="$(TZ=UTC+24 date +'%Y-%m-%dT$DAILY_TIME')"
   fi
 
   # content for last 24 hours

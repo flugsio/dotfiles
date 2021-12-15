@@ -181,7 +181,7 @@ function refresh_prs_merged {
   if [ "$postfix" = "_daily" ]; then
     content_merged="Merged pr's last 24 hours%0A:me:"
   else
-    content_merged="Merged pr's since $date%0A:me:"
+    content_merged="Merged pr's since $date UTC%0A:me:"
   fi
   if [ "$(echo $prs_merged | wc -c)" -gt 1 ]; then
     while read pr; do

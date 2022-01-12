@@ -179,7 +179,7 @@ function refresh_prs_merged {
   prs_depend=$(cat ${response}_depend | jq -r ".items | sort_by(.html_url)[] | [(.title | gsub(\",\"; \"،\")), .html_url, .user.login, .created_at, .updated_at, .closed_at] | @csv")
 
   if [ "$postfix" = "_daily" ]; then
-    content_merged="Merged pr's last 24 hours%0A:me:"
+    content_merged="Merged pr's last 24 hours"
   else
     content_merged="Merged pr's since $date UTC%0A:me:"
   fi

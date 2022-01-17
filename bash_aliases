@@ -65,10 +65,12 @@ function mo {
   local prefix=''
   # for mmonit 3.7.1+
   #local prefix='/api/1'
-  if [ "$1" = "list" ]; then
+  if [ -z "$1" ]; then
     curl -sb "$MONIT_COOKIE" "${MONIT_URL}${prefix}/status/hosts/list" | \
       jq '.records[] | select(.led != 2) | [(.hostname | sub(".promoteapp.net"; "")), .led, .statusid, .status] | @csv' -r | \
       column -s, -t
+  elif [ "$1" = "list" ]; then
+    curl -sb "$MONIT_COOKIE" "${MONIT_URL}${prefix}/status/hosts/list"
   elif [ "$1" = "login" ]; then
     curl -sc "$MONIT_COOKIE" "${MONIT_URL}/index.csp"
     curl -sb "$MONIT_COOKIE" \

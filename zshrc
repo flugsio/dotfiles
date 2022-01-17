@@ -156,11 +156,18 @@ function wrap() {
     CURSOR=15
   fi
 }
+
+# execute line but keep buffer
+zle -N accepthold
+function accepthold() {
+  zle .accept-and-hold
+}
 bindkey '^V' browsedir
 bindkey '^G' findserver
 bindkey '^H' wrap
+bindkey '^[' accepthold # alt+return
 
 export KEYTIMEOUT=1
 # can only be used when using ruby 2.7+
-#export RUBYOPT='-W:deprecated'
+export RUBYOPT='-W:deprecated'
 

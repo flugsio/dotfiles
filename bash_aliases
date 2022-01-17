@@ -41,16 +41,16 @@ function h_cmd {
   fi
 }
 function ci {
+  local build=${3:-lastBuild}
   if [ "$1" = "log" ]; then
     if [ -n "$2" ]; then
       job="/job/${2//\//\/job\//}"
-      echo $job
     else
       job="/job/${CI_PROJECTS[$(hubname)]//\%2F/\/job/}/job/$(active_branch)"
     fi
-    curl -s ${CI_URL}${job}/lastBuild/logText/progressiveText?start=0 -L --user $JENKINS_USERTOKEN
+    curl -s ${CI_URL}${job}/$build/logText/progressiveText?start=0 -L --user $JENKINS_USERTOKEN
   elif [ "$1" = "fail" ]; then
-    ci log | grep -Po "(?<=^rspec ).*?(?= #)" | sort | uniq
+    grep -Po "(?<=^rspec ).*?(?= #)" | sort | uniq
   else
     echo "no such command"
   fi

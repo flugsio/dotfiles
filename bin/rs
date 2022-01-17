@@ -33,7 +33,7 @@ function process
     fi
     commands+=("$command")
     echo "$command"
-    if echo "$command" | sh; then
+    if ! echo "$command" | sh; then
       errors+=("$file")
     fi
   done

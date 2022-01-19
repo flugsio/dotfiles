@@ -28,6 +28,10 @@ function process
     #command=`echo $file | sed -r "s/(\w+)\/(\w+)\/(.*)/bundle exec rake konacha:run SPEC=\3/"`
     if [ -n "$VAGRANT_MACHINE" ]; then
       command="ssh -tt $VAGRANT_MACHINE \"bash -O huponexit -lc 'cd $VAGRANT_DIR; $command'\""
+    elif [[ $PWD = *promote-docker* ]]; then
+
+      command="docker-compose run --rm promote bash -O huponexit -lc '$command'"
+      #command="docker-compose run --rm fetch bash -O huponexit -lc '$command'"
     else
       command=$command $opts
     fi

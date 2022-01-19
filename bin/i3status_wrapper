@@ -72,7 +72,7 @@ if __name__ == '__main__':
             line, prefix = line[1:], ','
 
         j = json.loads(line)
-        j.insert(0, {'full_text' : '%s' % get_journal_entries_count(), 'name' : 'journal_entries'})
+        #j.insert(0, {'full_text' : '%s' % get_journal_entries_count(), 'name' : 'journal_entries'})
         j.insert(0, {'full_text' : '%s' % get_hexa_clock(), 'name' : 'hexa_clock'})
         j.insert(0, {'full_text' : '%s' % get_glucose(), 'name' : 'glucose', 'color' : glucose_color()})
         j.insert(0, {'full_text' : '%s' % get_pomodoro_graph(), 'name' : 'pomodoro_graph'})

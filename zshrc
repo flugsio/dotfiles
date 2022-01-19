@@ -89,7 +89,7 @@ fi
 # widget: http://zsh.sourceforge.net/Guide/zshguide04.html#l103
 zle -N browsedir
 function browsedir() {
-  local dir=$( (cat ~/.config/zlinks 2>/dev/null || find ~/code -maxdepth 1 -type d) | fzf | sed 's/ *#.*$//')
+  local dir=$( (cat ~/.config/zlinks 2>/dev/null || find ~/code ~/code/promote-docker/repos -maxdepth 1 -type d) | fzf | sed 's/ *#.*$//')
   if [ "$HOME/debug" = "$dir" ]; then
     local dir=$(find "$dir" -maxdepth 1 -type d | fzf | sed 's/ *#.*$//')
     if [ "$HOME/debug" = "$dir" ]; then
@@ -170,4 +170,5 @@ bindkey '^[' accepthold # alt+return
 export KEYTIMEOUT=1
 # can only be used when using ruby 2.7+
 export RUBYOPT='-W:deprecated'
+export LOG4J_FORMAT_MSG_NO_LOOKUPS=true
 

@@ -1,0 +1,23 @@
+#!/bin/bash
+
+function click {
+  xdotool mousemove $1 $2 sleep 0.15 mousedown 1 sleep 0.15 mouseup 1 sleep 0.15
+}
+
+function item {
+  #click 139 1313
+  click 139 1213
+  #click 139 1113
+  #click 139 1000
+  #sleep 0.05
+  click 1358 915
+  #sleep 0.05
+  xdotool type 6900
+  click 1358 1025
+}
+
+function main {
+  item
+}
+
+main

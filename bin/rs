@@ -15,7 +15,7 @@ function process
 
   if [ "$opts" = "-d" ]; then
     opts="-fd --order defined"
-  elif [ "$opts" = "-f" ]; then
+  elif [ "$opts" = "-f" ] || grep -qe "\(fit\|fdescribe\|fcontext\)" $files; then
     opts="-fd --order defined -t focus"
   fi
 

@@ -13,7 +13,7 @@ function install_packages {
 }
 
 function add_repos {
-  version="v3.13"
+  version="v3.15"
   add_repo "https://mirror.operationtulip.com/alpine/$version/main"
   add_repo "https://mirror.operationtulip.com/alpine/$version/community"
   add_repo "https://ftp.acc.umu.se/mirror/alpinelinux.org/$version/main"

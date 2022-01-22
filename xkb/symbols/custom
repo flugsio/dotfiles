@@ -1,0 +1,28 @@
+partial alphanumeric_keys modifier_keys
+xkb_symbols "custom" {
+    include "latin(type2)"
+    include "se(se)"
+    include "se(nodeadkeys)"
+    include "capslock(escape_shifted_capslock)"
+    // Menu acts as AltGr
+    include "level3(menu_switch)"
+    // The right Win key acts as AltGr (third shift level)
+    include "level3(rwin_switch)"
+
+    //key <AE05>  { [         5,    percent,     EuroSign,         cent ] };
+    // Menu key functions as altgr
+    //replace key <MENU> { [ Alt_R ] };
+    //modifier_map Mod1 { <MENU> };
+
+    // Right alt acts as left alt
+    key <RALT> { [ Alt_L, Meta_L ] };
+    // It's unclear if this is required
+    //modifier_map Mod1 { Alt_L, Alt_R, Meta_L, Meta_R };
+
+    // Left alt acts as left control
+    replace key <LALT> { [ Control_L, Control_L ] };
+    replace key <LCTL> { [ Alt_L, Meta_L ] };
+    // When this isn't specified, it doesn't work as control in terminal, but xev shows correct
+    modifier_map Mod1    { <LCTL> };
+    modifier_map Control { <LALT> };
+};

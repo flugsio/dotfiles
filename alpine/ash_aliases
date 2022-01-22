@@ -1,57 +1,82 @@
 # these are alpine/ash specific aliases
 
 function add_w {
-# todo wayland
+  # https://elis.nu/blog/2021/02/switching-to-wayland-sway/
   add_tools
   add_ui_tools
-}
-function add_x {
-  setup-xorg-base
 
-  apk add xf86-video-intel
-  apk add xinput-mouse xinput-keyboard
-  apk add libxcursor libxrandr libxi
-  apk add python3
-  apk add i3wm i3status
-  apk add xmodmap xset setxkbmap
+  apk_add eudev
+  doas setup-udev
+  apk_add ttf-dejavu font-ubuntu-nerd
+  apk_add seatd-launch
+
+  doas adduser $USER input
+  #adduser $USER video
+  #adduser $USER seat
+  apk_add elogind polkit-elogind
+  doas rc-service elogind start
+  apk_add mesa-dri-intel
+  apk_add sway sway-doc
+  apk_add xwayland foot dmenu swaylock swayidle
+  apk_add i3status
+  echo "relogin and then run startw"
+}
+
+function startw {
+  #XDG_RUNTIME_DIR=/tmp
+  #zsh -c 'sleep 10s; pkill -9 sway' &
+  #export WLR_NO_HARDWARE_CURSOR=1
+  seatd-launch sway -d >sway.log 2>&1
+}
+
+function add_x {
+  doas setup-xorg-base
+
+  apk_add xf86-video-intel
+  apk_add xinput-mouse xinput-keyboard
+  apk_add libxcursor libxrandr libxi
+  apk_add i3wm i3status
+  apk_add xmodmap xset setxkbmap
   add_tools
   add_ui_tools
+  startx
 }
 
 function add_tools {
-  apk add vim tmux fzf dmenu zsh keychain
+  apk_add vim neovim tmux fzf dmenu zsh keychain
   # bash is used in many scripts
-  apk add bash
-  sed 's/\/bin\/ash/\/bin\/zsh/' -i /etc/passwd
+  apk_add bash
+  # this seems weird
+  doas sed 's/\/bin\/ash/\/bin\/zsh/' -i /etc/passwd
   cp ~/.profile ~/.zprofile
 
+  # python is used by vim plugins and ranger
+  apk_add python3 ranger
   (cd ~/code/dotfiles && . ./install)
 }
 
 function add_ui_tools {
-  apk add alacritty ttf-ubuntu-font-family
-  apk add ranger neovim
-  apk add firefox
-  startx
+  apk_add alacritty ttf-ubuntu-font-family
+  apk_add firefox
 }
 
 function add_ruby {
-  apk add ruby ruby-dev ruby-bundler
+  apk_add ruby ruby-dev ruby-bundler
 }
 
 function add_sshfs {
-  apk add sshfs
-  modprobe fuse
+  apk_add sshfs
+  doas modprobe fuse
 }
 
 function add_pio {
-  apk add python3 py3-pip build-base gcc-avr
+  apk_add python3 py3-pip build-base gcc-avr
   pip install -U platformio
 }
 
 function add_bt {
-  apk add bluez
-  /etc/init.d/bluetooth start
+  apk_add bluez
+  doas /etc/init.d/bluetooth start
   mac="90:7F:61:5A:2A:B0"
   bluetoothctl power on
   bluetoothctl --timeout 12 scan on
@@ -61,22 +86,26 @@ function add_bt {
 }
 
 function add_audio {
-  apk add alsa-utils alsa-lib alsaconf
-  echo "Optional: apk add alsa-utils-doc"
+  apk_add alsa-utils alsa-lib alsaconf
+  echo "Optional: apk_add alsa-utils-doc"
   echo "Add your own account: addgroup USERNAME audio"
-  addgroup root audio
-  apk add mpg123
+  doas addgroup root audio
+  apk_add mpg123
   mkdir ~/music
   echo "Adjust .asoundrc as needed"
   aplay -l
 }
 
+function add_st_deps {
+  apk_add make gcc fontconfig-dev freetype-dev musl-dev libx11-dev libxft-dev
+}
+
 function share_init {
-  apk add usbip-utils
-  modprobe usbip-core
-  modprobe usbip-host
-  modprobe vhci-hcd
-  usbipd -d
+  apk_add usbip-utils
+  doas modprobe usbip-core
+  doas modprobe usbip-host
+  doas modprobe vhci-hcd
+  doas usbipd -d
   #usbipd -D
 }
 
@@ -92,9 +121,13 @@ function share_olex {
 # $1 = id
 function share_usb {
   busid=$(usbip list -p -l | grep "$1" | cut -d '#' -f1 | cut -d'=' -f 2)
-  usbip bind -b $busid
+  doas usbip bind -b $busid
 }
 
 function vimdiff {
   vim -d $1 scp://$2/$1
+}
+
+function apk_add {
+  doas apk add $@
 }

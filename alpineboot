@@ -35,6 +35,7 @@ function get_dotfiles {
 function update_dotfiles {
   (
     cd $HOME/code/dotfiles
+    git checkout alpinewip
     git pull
 
     source common

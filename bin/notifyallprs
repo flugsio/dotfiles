@@ -24,6 +24,7 @@ function main {
   local cmd=$1
   if [ "$cmd" = "daily_merge_status" ]; then
     #daily_merge_status
+    :;
   elif [ "$cmd" = "loop_update" ]; then
     loop_update
   elif [ "$cmd" = "update" ]; then

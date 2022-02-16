@@ -105,7 +105,7 @@ function refresh_prs {
       title=$(echo $pr | cut -d',' -f1 | sed 's/"//g;s/&/and/g;s/،/,/g')
       url=$(echo $pr | cut -d',' -f2 | sed 's/"//g')
       user=$(echo $pr | cut -d',' -f3 | sed 's/"//g' | sed 's/dependabot.*/bot/')
-      [[ ${skip_users[(ie)$user]} -le ${#skip_users} ]] && continue;
+      [[ " ${skip_users[*]} " =~ " ${user} " ]] && continue;
       created_at=$(echo $pr | cut -d',' -f4 | sed 's/"//g')
       updated_at=$(echo $pr | cut -d',' -f5 | sed 's/"//g')
       closed_at=$(echo $pr | cut -d',' -f6 | sed 's/"//g')

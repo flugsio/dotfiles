@@ -201,6 +201,8 @@ function cleanup {
     git branch -d $branch
   done
 }
+
+# invoker aliases
 function i {
   (rbenv shell 2.7.2; invoker $@)
 }
@@ -222,6 +224,26 @@ function ihere {
   local p=$(pwd | sed "s#$HOME#~#")
   ilist | grep -E "$p($|\/)" | cut -f1 -d' ' | xargs echo
 }
+
+# docker aliases
+alias doco="docker-compose"
+# docker start
+alias dos='doco up -d promote'
+# TODO: project name
+alias dor='doco run -T --rm --no-deps promote-base '
+alias dobe='dor bundle exec '
+function dol {
+  doco logs --tail 200 --follow; sleep 1; dol
+}
+function dorsi {
+  xhost +local:root
+  docker-compose run --rm --no-deps \
+    --env="DISPLAY" --env="SHOW_BROWSER=1" \
+    -v /tmp/.X11-unix:/tmp/.X11-unix \
+    promote-base bundle exec rspec $@
+  xhost -local:root
+}
+
 function rv {
   # TODO: fix quotes/params
   if [ -z "$*" ]; then
@@ -788,5 +810,4 @@ function convert_accucheck {
 
 alias test_stuff="xdotool selectwindow windowfocus --sync key F11 sleep 0.1; i3-msg floating enable, fullscreen disable, resize set 500px 1060px, move position 1420px 20px"
 alias speedtest="speedtest-cli --secure --simple | awk 'ORS=\", \"' | head -c -2"
-alias doco="docker-compose"
 alias cam="mpv --demuxer-lavf-o-set='input_format=mjpeg' /dev/video0"

@@ -226,12 +226,42 @@ function ihere {
 }
 
 # docker aliases
-alias doco="docker-compose"
+function phere {
+  case "$PWD" in
+    *control-center)
+      echo cc
+      ;;
+    *promote)
+      echo promote
+      ;;
+    *promote-gud)
+      echo gud
+      ;;
+    *promote-mimir)
+      echo mimir
+      ;;
+    *fetch)
+      echo fetch
+      ;;
+    *)
+      echo promote
+      ;;
+  esac
+}
+function doco {
+  (
+    if [[ $PWD != *promote-docker* ]]; then
+      cd ~/code/promote-docker
+    fi
+    docker-compose $@
+  )
+}
 # docker start
-alias dos='doco up -d promote'
+alias dos='doco up -d $(phere)'
 # TODO: project name
-alias dor='doco run -T --rm --no-deps promote-base '
+alias dor='doco run -T --rm --no-deps $(phere)-base '
 alias dobe='dor bundle exec '
+alias dop='doco run --rm --no-deps --env="PGPASSWORD=$(phere)" $(phere)-db psql -h $(phere)-db -U $(phere) '
 function dol {
   doco logs --tail 200 --follow; sleep 1; dol
 }

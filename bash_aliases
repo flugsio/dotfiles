@@ -261,7 +261,7 @@ alias dos='doco up -d $(phere)'
 # TODO: project name
 alias dor='doco run -T --rm --no-deps $(phere)-base '
 alias dobe='dor bundle exec '
-alias dop='doco run --rm --no-deps --env="PGPASSWORD=$(phere)" $(phere)-db psql -h $(phere)-db -U $(phere) '
+alias dop='doco run --rm --no-deps --env="PGPASSWORD=$(phere)" $(phere)-db psql -h $(phere)-db -U $(phere) $(phere)_dev'
 function dol {
   doco logs --tail 200 --follow; sleep 1; dol
 }

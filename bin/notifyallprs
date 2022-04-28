@@ -57,7 +57,7 @@ function update_or_replace {
 }
 
 function delete_messages {
-    delete_old_message
+  delete_old_message
 }
 
 function refresh_data {
@@ -80,15 +80,9 @@ function refresh_prs {
   #-F sort=created \
   #-F per_page=100 \
   response="$HOME/.cache/notifypr_response"
-  curl -sSL -H "Authorization: token $GITHUB_TOKEN" \
-    -H "Accept: application/vnd.github.v3+json" \
-    -o $response \
-    "https://api.github.com/search/issues?q=is:open+is:pr+user:promoteinternational+draft:false+-status:failure+-assignee:andreask"
+  gh_api $response "/search/issues?q=is:open+is:pr+user:promoteinternational+draft:false+-status:failure+-assignee:andreask"
 
-  curl -sSL -H "Authorization: token $GITHUB_TOKEN" \
-    -H "Accept: application/vnd.github.v3+json" \
-    -o ${response}_failed \
-    "https://api.github.com/search/issues?q=is:open+is:pr+user:promoteinternational+draft:false+status:failure+-assignee:andreask"
+  gh_api ${response}_failed "/search/issues?q=is:open+is:pr+user:promoteinternational+draft:false+status:failure+-assignee:andreask"
 
   prs=$(cat $response | jq -r ".items[] | [(.title | gsub(\",\"; \"،\")), .html_url, .user.login, .created_at, .updated_at, .closed_at, .comments] | @csv")
   prs_failed=$(cat ${response}_failed | jq -r ".items[] | [(.title | gsub(\",\"; \"،\")), .html_url, .user.login, .created_at, .updated_at, .closed_at] | @csv")
@@ -160,20 +154,29 @@ function refresh_prs {
   #echo "$content" | sed 's/%0A/\n/g' | wc
 }
 
+function gh_api {
+  local output="$1"
+  local path="$2"
+
+  if [ -n "$GITHUB_TOKEN" ]; then
+    curl -sSL -H "Authorization: token $GITHUB_TOKEN" \
+      -H "Accept: application/vnd.github.v3+json" \
+      -o "$output" "https://api.github.com/$path"
+  else
+    curl -sSL -u "${GITHUB_USR}:${GITHUB_PSW}" \
+      -H "Accept: application/vnd.github.v3+json" \
+      -o "$output" "https://api.github.com/$path"
+  fi
+}
+
 function refresh_prs_merged {
   local date="$1"
   local postfix="$2"
   response="$HOME/.cache/notifypr_response"
   response_merged="$HOME/.cache/notifypr_response_merged$postfix"
-  curl -sSL -H "Authorization: token $GITHUB_TOKEN" \
-    -H "Accept: application/vnd.github.v3+json" \
-    -o ${response_merged} \
-    "https://api.github.com/search/issues?q=is:merged+is:pr+user:promoteinternational+draft:false+merged:>=$date+-author%3Aapp%2Fdependabot+-assignee:andreask&sort=updated&order=asc"
+  gh_api ${response_merged} "/search/issues?q=is:merged+is:pr+user:promoteinternational+draft:false+merged:>=$date+-author%3Aapp%2Fdependabot+-assignee:andreask&sort=updated&order=asc"
 
-  curl -sSL -H "Authorization: token $GITHUB_TOKEN" \
-    -H "Accept: application/vnd.github.v3+json" \
-    -o ${response}_depend \
-    "https://api.github.com/search/issues?q=is:merged+is:pr+user:promoteinternational+draft:false+merged:>=$date+author%3Aapp%2Fdependabot+-assignee:andreask&sort=updated&order=asc"
+  gh_api ${response}_depend "/search/issues?q=is:merged+is:pr+user:promoteinternational+draft:false+merged:>=$date+author%3Aapp%2Fdependabot+-assignee:andreask&sort=updated&order=asc"
 
   prs_merged=$(cat ${response_merged} | jq -r ".items[] | [(.title | gsub(\",\"; \"،\")), .html_url, .user.login, .created_at, .updated_at, .closed_at] | @csv")
   prs_depend=$(cat ${response}_depend | jq -r ".items | sort_by(.html_url)[] | [(.title | gsub(\",\"; \"،\")), .html_url, .user.login, .created_at, .updated_at, .closed_at] | @csv")

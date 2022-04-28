@@ -115,9 +115,13 @@ function refresh_prs {
       title=$(echo $title | sed -E 's{(.*\] |)(.*){\1<'$url'|\2>{')
       title=$(pt_links "$title")
     
-      content="$content%0A:op:$repo_short $title ${created_ago}h by $user"
-      if [ "${created_ago}h" != "$updated_ago" ]; then
-        content="$content, updated ${updated_ago}"
+      if [ -s "$SHOW_TIMES" ];
+        content="$content%0A:op:$repo_short $title ${created_ago}h by $user"
+        if [ "${created_ago}h" != "$updated_ago" ]; then
+          content="$content, updated ${updated_ago}"
+        fi
+      else
+        content="$content%0A:op:$repo_short $title by $user"
       fi
       # this does not work with reviews
       if [ "$comments" -gt 1 ] || [ "$repo_short" != "promote" -a "$comments" -gt 0 ]; then
@@ -144,9 +148,13 @@ function refresh_prs {
       title=$(echo $title | sed -E 's{(.*\] |)(.*){\1<'$url'|\2>{')
       title=$(pt_links "$title")
     
-      content="$content%0A:octagonal_sign:$repo_short $title ${created_ago}h by $user"
-      if [ "$created_ago" != "$updated_ago" ]; then
-        content="$content, updated ${updated_ago}m"
+      if [ -s "$SHOW_TIMES" ];
+        content="$content%0A:octagonal_sign:$repo_short $title ${created_ago}h by $user"
+        if [ "$created_ago" != "$updated_ago" ]; then
+          content="$content, updated ${updated_ago}m"
+        fi
+      else
+        content="$content%0A:octagonal_sign:$repo_short $title by $user"
       fi
     done <<< $prs_failed
   fi
@@ -267,13 +275,20 @@ function notify_slack_daily_merged {
 function notify_slack_first {
   #create_slack "$content_merged" "$HOME/.cache/notifypr_content_merged"
   create_slack "$content" "$HOME/.cache/notifypr_content"
+  echo "$content" > "$HOME/.cache/notifypr_content_message"
 }
 
 function notify_slack_update {
   #content_merged_ts=$(cat "$HOME/.cache/notifypr_content_merged" | jq -r .ts)
   content_ts=$(cat "$HOME/.cache/notifypr_content" | jq -r .ts)
   #update_slack "$content_merged" "$content_merged_ts"
-  update_slack "$content" "$content_ts"
+  local previous_content=$(cat "$HOME/.cache/notifypr_content_message")
+  if [ "$previous_content" != "$content" ]; then
+    update_slack "$content" "$content_ts"
+    echo "$content" > "$HOME/.cache/notifypr_content_message"
+  else
+    echo "not updating slack, content is the same as previous update"
+  fi
 }
 
 function create_slack {

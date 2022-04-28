@@ -16,15 +16,11 @@ content_merged=""
 notify=" "
 recipient="$SLACK_DEVSTATUS"
 recipient="$SLACK_MAIN_FLOW"
-# these have automated notifications themself,
-# allows threaded discussions in user messages
-skip_users=(lilly-arch tiagomagnusss)
 
 function main {
   local cmd=$1
   if [ "$cmd" = "daily_merge_status" ]; then
-    #daily_merge_status
-    :;
+    daily_merge_status
   elif [ "$cmd" = "loop_update" ]; then
     loop_update
   elif [ "$cmd" = "update" ]; then
@@ -105,7 +101,6 @@ function refresh_prs {
       title=$(echo $pr | cut -d',' -f1 | sed 's/"//g;s/&/and/g;s/،/,/g')
       url=$(echo $pr | cut -d',' -f2 | sed 's/"//g')
       user=$(echo $pr | cut -d',' -f3 | sed 's/"//g' | sed 's/dependabot.*/bot/')
-      [[ " ${skip_users[*]} " =~ " ${user} " ]] && continue;
       created_at=$(echo $pr | cut -d',' -f4 | sed 's/"//g')
       updated_at=$(echo $pr | cut -d',' -f5 | sed 's/"//g')
       closed_at=$(echo $pr | cut -d',' -f6 | sed 's/"//g')
@@ -266,14 +261,14 @@ function notify_slack_daily_merged {
 }
 
 function notify_slack_first {
-  #create_slack "$content_merged" "$HOME/.cache/notifypr_content_merged"
+  create_slack "$content_merged" "$HOME/.cache/notifypr_content_merged"
   create_slack "$content" "$HOME/.cache/notifypr_content"
 }
 
 function notify_slack_update {
   content_merged_ts=$(cat "$HOME/.cache/notifypr_content_merged" | jq -r .ts)
   content_ts=$(cat "$HOME/.cache/notifypr_content" | jq -r .ts)
-  #update_slack "$content_merged" "$content_merged_ts"
+  update_slack "$content_merged" "$content_merged_ts"
   update_slack "$content" "$content_ts"
 }
 

@@ -161,11 +161,11 @@ function gh_api {
   if [ -n "$GITHUB_TOKEN" ]; then
     curl -sSL -H "Authorization: token $GITHUB_TOKEN" \
       -H "Accept: application/vnd.github.v3+json" \
-      -o "$output" "https://api.github.com/$path"
+      -o "$output" "https://api.github.com$path"
   else
     curl -sSL -u "${GITHUB_USR}:${GITHUB_PSW}" \
       -H "Accept: application/vnd.github.v3+json" \
-      -o "$output" "https://api.github.com/$path"
+      -o "$output" "https://api.github.com$path"
   fi
 }
 

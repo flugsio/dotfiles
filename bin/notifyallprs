@@ -115,7 +115,7 @@ function refresh_prs {
       title=$(echo $title | sed -E 's{(.*\] |)(.*){\1<'$url'|\2>{')
       title=$(pt_links "$title")
     
-      if [ -s "$SHOW_TIMES" ];
+      if [ -s "$SHOW_TIMES" ]; then
         content="$content%0A:op:$repo_short $title ${created_ago}h by $user"
         if [ "${created_ago}h" != "$updated_ago" ]; then
           content="$content, updated ${updated_ago}"
@@ -148,7 +148,7 @@ function refresh_prs {
       title=$(echo $title | sed -E 's{(.*\] |)(.*){\1<'$url'|\2>{')
       title=$(pt_links "$title")
     
-      if [ -s "$SHOW_TIMES" ];
+      if [ -s "$SHOW_TIMES" ]; then
         content="$content%0A:octagonal_sign:$repo_short $title ${created_ago}h by $user"
         if [ "$created_ago" != "$updated_ago" ]; then
           content="$content, updated ${updated_ago}m"

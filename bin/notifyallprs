@@ -80,16 +80,16 @@ function refresh_prs {
   #-F sort=created \
   #-F per_page=100 \
   response="$HOME/.cache/notifypr_response"
-  # this doesn't seem to work anymore: +-assignee:andreask
-  gh_api $response "/search/issues?q=is:open+is:pr+user:promoteinternational+draft:false+-status:failure"
+  # this doesn't seem to work anymore: %2B-assignee:andreask
+  gh_api $response "/search/issues?q=is:open%2Bis:pr%2Buser:promoteinternational%2Bdraft:false%2B-status:failure"
 
-  gh_api ${response}_failed "/search/issues?q=is:open+is:pr+user:promoteinternational+draft:false+status:failure"
+  gh_api ${response}_failed "/search/issues?q=is:open%2Bis:pr%2Buser:promoteinternational%2Bdraft:false%2Bstatus:failure"
 
   prs=$(cat $response | jq -r ".items[] | [(.title | gsub(\",\"; \"،\")), .html_url, .user.login, .created_at, .updated_at, .closed_at, .comments] | @csv")
   prs_failed=$(cat ${response}_failed | jq -r ".items[] | [(.title | gsub(\",\"; \"،\")), .html_url, .user.login, .created_at, .updated_at, .closed_at] | @csv")
 
-  content=" <https://github.com/pulls?q=is%3Aopen+is%3Apr+user%3Apromoteinternational+draft%3Afalse+-status%3Afailure|active_prs> $notify"
-  content+="(<https://github.com/pulls?q=is%3Aopen+is%3Apr+user%3Apromoteinternational+draft%3Atrue|drafts>) "
+  content=" <https://github.com/pulls?q=is%3Aopen%2Bis%3Apr%2Buser%3Apromoteinternational%2Bdraft%3Afalse%2B-status%3Afailure|active prs> $notify"
+  content+="(<https://github.com/pulls?q=is%3Aopen%2Bis%3Apr%2Buser%3Apromoteinternational%2Bdraft%3Atrue|drafts>) "
   if [ "$(echo $prs | wc -c)" -gt 1 ]; then
     while read pr; do
       echo "::${pr}::"
@@ -183,10 +183,10 @@ function refresh_prs_merged {
   local postfix="$2"
   response="$HOME/.cache/notifypr_response"
   response_merged="$HOME/.cache/notifypr_response_merged$postfix"
-  # this filter doesn't currently work, applied further down as a workaround +-author%3Aapp%2Fdependabot
-  gh_api ${response_merged} "/search/issues?q=is:merged+is:pr+user:promoteinternational+draft:false+merged:>=2022-04-28T12:47&sort=updated&order=asc"
+  # this filter doesn't currently work, applied further down as a workaround %2B-author%3Aapp%2Fdependabot
+  gh_api ${response_merged} "/search/issues?q=is:merged%2Bis:pr%2Buser:promoteinternational%2Bdraft:false%2Bmerged:>=2022-04-28T12:47&sort=updated&order=asc"
 
-  gh_api ${response}_depend "/search/issues?q=is:merged+is:pr+user:promoteinternational+draft:false+merged:>=$date+author%3Aapp%2Fdependabot&sort=updated&order=asc"
+  gh_api ${response}_depend "/search/issues?q=is:merged%2Bis:pr%2Buser:promoteinternational%2Bdraft:false%2Bmerged:>=$date%2Bauthor%3Aapp%2Fdependabot&sort=updated&order=asc"
 
   prs_merged=$(cat ${response_merged} | jq -r ".items[] | [(.title | gsub(\",\"; \"،\")), .html_url, .user.login, .created_at, .updated_at, .closed_at] | @csv")
   prs_depend=$(cat ${response}_depend | jq -r ".items | sort_by(.html_url)[] | [(.title | gsub(\",\"; \"،\")), .html_url, .user.login, .created_at, .updated_at, .closed_at] | @csv")
@@ -317,7 +317,7 @@ function delete_slack {
 }
 
 function pt_links {
-  echo $1 | sed -E 's{[،,\[]?#([[:digit:]]+)\]?{<https://pivotaltracker.com/story/show/\1/|:p:>{g'
+  echo $1 | sed -E 's{[،,\[]?#([[:digit:]]+)\]?{<https://pivotaltracker.com/story/show/\1/|#:p:>{g'
 }
 
 main $@

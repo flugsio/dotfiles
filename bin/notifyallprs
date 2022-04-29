@@ -183,7 +183,8 @@ function refresh_prs_merged {
   local postfix="$2"
   response="$HOME/.cache/notifypr_response"
   response_merged="$HOME/.cache/notifypr_response_merged$postfix"
-  gh_api ${response_merged} "/search/issues?q=is:merged+is:pr+user:promoteinternational+draft:false+merged:>=$date+-author%3Aapp%2Fdependabot&sort=updated&order=asc"
+  # this filter doesn't currently work, applied further down as a workaround +-author%3Aapp%2Fdependabot
+  gh_api ${response_merged} "/search/issues?q=is:merged+is:pr+user:promoteinternational+draft:false+merged:>=2022-04-28T12:47&sort=updated&order=asc"
 
   gh_api ${response}_depend "/search/issues?q=is:merged+is:pr+user:promoteinternational+draft:false+merged:>=$date+author%3Aapp%2Fdependabot&sort=updated&order=asc"
 
@@ -200,6 +201,10 @@ function refresh_prs_merged {
       title=$(echo $pr | cut -d',' -f1 | sed 's/"//g;s/&/and/g;s/،/,/g')
       url=$(echo $pr | cut -d',' -f2 | sed 's/"//g')
       user=$(echo $pr | cut -d',' -f3 | sed 's/"//g' | sed 's/dependabot.*/bot/')
+      # workaround
+      if [ "$user" = "bot" ]; then
+        continue
+      fi
       created_at=$(echo $pr | cut -d',' -f4 | sed 's/"//g')
       updated_at=$(echo $pr | cut -d',' -f5 | sed 's/"//g')
       closed_at=$(echo $pr | cut -d',' -f6 | sed 's/"//g')

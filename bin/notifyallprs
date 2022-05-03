@@ -184,7 +184,7 @@ function refresh_prs_merged {
   response="$HOME/.cache/notifypr_response"
   response_merged="$HOME/.cache/notifypr_response_merged$postfix"
   # this filter doesn't currently work, applied further down as a workaround +-author%3Aapp%2Fdependabot
-  gh_api ${response_merged} "/search/issues?q=is:merged+is:pr+user:promoteinternational+draft:false+merged:>=2022-04-28T12:47&sort=updated&order=asc"
+  gh_api ${response_merged} "/search/issues?q=is:merged+is:pr+user:promoteinternational+draft:false+merged:>=$date&sort=updated&order=asc"
 
   gh_api ${response}_depend "/search/issues?q=is:merged+is:pr+user:promoteinternational+draft:false+merged:>=$date+author%3Aapp%2Fdependabot&sort=updated&order=asc"
 
@@ -219,7 +219,11 @@ function refresh_prs_merged {
     
       # TODO: who merged it, it's not included in the current api request
       if [ "$postfix" = "_daily" ]; then
-        content_merged="$content_merged%0A:me:$repo_short $title ${created_ago}h by $user, merged ${closed_ago}h"
+        if [ -s "$SHOW_TIMES" ]; then
+          content_merged="$content_merged%0A:me:$repo_short $title ${created_ago}h by $user, merged ${closed_ago}h"
+        else
+          content_merged="$content_merged%0A:me:$repo_short $title by $user"
+        fi
       else
         # shorter format
         content_merged="$content_merged $title by $user,"

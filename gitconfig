@@ -46,3 +46,5 @@
   ui = auto
 [pull]
   ff = only
+[safe]
+	directory = /home/flugsio/donjon

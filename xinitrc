@@ -14,7 +14,7 @@ if [ `hostname` = "cedra" ]; then
   xrandr --setprovideroutputsource modesetting NVIDIA-0
 fi
 xrandr --dpi 96
-xrandr --auto
+slayout 2 || xrandr --auto
 xset r rate 200 33
 xset -dpms
 

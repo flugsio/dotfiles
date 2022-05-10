@@ -43,7 +43,11 @@ function h_cmd {
 function ci {
   local build=${3:-lastBuild}
   if [ "$1" = "log" ]; then
-    if [ -n "$2" ]; then
+    if [[ "$2" == $CI_URL* ]]; then
+      echo matches url
+      job=$(echo "$2" | sed "s#$CI_URL/blue/organizations/jenkins/#/job/#" | sed "s#/detail/.*##" | sed "s#%2F#/job/#")
+      build=$(echo "$2" | grep -Po "\d*(?=\/pipeline)" )
+    elif [ -n "$2" ]; then
       job="/job/${2//\//\/job\//}"
     else
       job="/job/${CI_PROJECTS[$(hubname)]//\%2F/\/job/}/job/$(active_branch)"
@@ -501,6 +505,7 @@ alias hubname='git remote get-url --push origin | sed -r "s/^(git@github.com|hub
 alias openall='openpr; openci; opengrafter'
 alias openpr='browse "$(giturl)/compare/$(active_branch)?expand=1"'
 alias opengrafter='browse "https://$(active_branch_cleaned).$GRAFTER_DOMAIN"'
+function openpt { browse http://www.pivotaltracker.com/story/show/$(task export active | jq -r '.[0].pivotalid // ""') }
 # openci requires a translation dictionary like this, store somewhere and load from your bashrc/zshrc like this
 # [[ -e ~/.api_keys ]] && . ~/.api_keys
 # typeset -A CI_PROJECTS=(
@@ -766,7 +771,7 @@ $body"
     fi
 
     git push -u &&
-      openpr &&
+      #openpr &&
       (gh pr create -f || true)
          # &&
       #git checkout master &&

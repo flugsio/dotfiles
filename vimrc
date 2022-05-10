@@ -33,7 +33,7 @@ Plugin        'quramy/tsuquyomi'
 Plugin        'Quramy/vim-js-pretty-template'
 Plugin     'jason0x43/vim-js-indent'
 if has('python3')
-  "Plugin      'SirVer/ultisnips'
+  Plugin      'SirVer/ultisnips'
 endif
 if has('python3')
   " TODO: find/configure debugging plugin
@@ -352,6 +352,8 @@ nnoremap <leader>gf :vert :Gdiffsplit <cfile><CR>
 " Jobs
 nnoremap ! :AsyncRun<space>
 nnoremap <silent> <leader>§ :copen<CR>
+" same as above but shift, key left of 1
+nnoremap <silent> <leader>~ :vert :copen 50<CR>
 if has('nvim')
   nnoremap <leader>i :<C-U>Ranger<CR>
   nnoremap <leader>I :<C-U>RangerWorkingDirectory<CR>

@@ -75,7 +75,7 @@ if [ "$now" = "1" ]; then
   else
     labels="\"${extra_label}\""
   fi
-  #owner_ids="[1812784]"
+  owner_ids="[1812784]"
   if [ "$story_type" = "bug" ]; then
     estimate="2"
   elif [ "$story_type" = "security" ]; then

@@ -12,7 +12,9 @@ if [ `hostname` = "kribev" ]; then
 elif [ `hostname` = "toldi" ] || [ `hostname` = "zdani" ]; then
   xinput set-prop "Synaptics TM3075-002" "libinput Disable While Typing Enabled" 0
   xinput set-prop "Synaptics TM3075-002" "libinput Tapping Enabled" 1
-
+elif [ `hostname` = "cedra" ]; then
+  xinput set-prop "SynPS/2 Synaptics TouchPad" "libinput Disable While Typing Enabled" 0
+  xinput set-prop "SynPS/2 Synaptics TouchPad" "libinput Tapping Enabled" 1
 fi
 
 set -x
@@ -21,4 +23,12 @@ if [ -n "$id" ]; then
   xinput set-prop $id "libinput Scroll Method Enabled" 0, 0, 1
   xinput set-prop $id "libinput Button Scrolling Button" 12
   xinput set-prop $id "libinput Button Scrolling Button Lock Enabled" 1
+fi
+
+id=$(xinput list --id-only pointer:"ELECOM TrackBall Mouse HUGE TrackBall")
+if [ -n "$id" ]; then
+  xinput set-prop $id "libinput Scroll Method Enabled" 0, 0, 1
+  xinput set-prop $id "libinput Button Scrolling Button" 10 # Fn1
+  xinput set-prop $id "libinput Button Scrolling Button Lock Enabled" 1
+  #xinput set-prop $id "libinput Scrolling Pixel Distance" 15
 fi

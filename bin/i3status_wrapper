@@ -11,6 +11,9 @@ def shell_read(command):
 def get_recording_size():
     return "~" + shell_read("du -sh /tmp/*.mkv | cut -f1")
 
+def get_active():
+    return shell_read("""task export active | jq -r '.[0].description // ""'""")
+
 def get_glucose():
     return shell_read("gluj")
 
@@ -78,6 +81,7 @@ if __name__ == '__main__':
         j.insert(0, {'full_text' : '%s' % get_pomodoro_graph(), 'name' : 'pomodoro_graph'})
         j.insert(0, {'full_text' : '%s' % get_pomodoro_name(), 'name' : 'pomodoro_name'})
         j.insert(0, {'full_text' : '%s' % get_recording_size(), 'name' : 'recording_size'})
+        j.insert(0, {'full_text' : '%s' % get_active(), 'name' : 'tw_active', 'color' : '#fb6f0e'})
         #cpu_temp = int(get_cpu_temperature())
         #if cpu_temp < 53:
         #  cpu_temp_color = "#9f9f9f"

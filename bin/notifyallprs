@@ -266,7 +266,7 @@ function refresh_prs_merged {
 
 function minutes_since_post {
   local now=$(date -u +%s)
-  local posted_at=$(cat "$HOME/.cache/notifypr_content_merged" | jq -r .ts | cut -d. -f1)
+  local posted_at=$(cat "$HOME/.cache/notifypr_content" | jq -r .ts | cut -d. -f1)
   echo "$(( ($now - $posted_at) / 60 ))"
 }
 

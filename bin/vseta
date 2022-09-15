@@ -10,7 +10,7 @@ function main {
   fi
 
   # this differ a bit compared to sv-code
-  loadkeys -s ~/code/dotfiles/slash/se-code.map
+  doas loadkeys -s ~/code/dotfiles/slash/se-code.map
 }
 
 main $@

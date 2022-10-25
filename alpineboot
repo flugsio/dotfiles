@@ -15,8 +15,8 @@ function add_user {
 }
 
 function install_packages {
-  # https://pkgs.alpinelinux.org/contents?branch=v3.15&arch=x86_64
-  apk add kbd terminus-font openssh mosh git shadow doas
+  # https://pkgs.alpinelinux.org/contents?branch=v3.16&arch=x86_64
+  apk add kbd terminus-font openssh mosh git shadow doas rsync
 }
 
 function add_repos {

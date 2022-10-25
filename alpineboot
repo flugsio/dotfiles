@@ -23,8 +23,8 @@ function add_repos {
   version="v3.16"
   add_repo "https://ftp.acc.umu.se/mirror/alpinelinux.org/$version/main"
   add_repo "https://ftp.acc.umu.se/mirror/alpinelinux.org/$version/community"
-  add_repo "https://mirror.operationtulip.com/alpine/$version/main"
-  add_repo "https://mirror.operationtulip.com/alpine/$version/community"
+  add_repo "https://mirrors.dotsrc.org/alpine/$version/main"
+  add_repo "https://mirrors.dotsrc.org/alpine/$version/community"
 }
 
 function add_repo {

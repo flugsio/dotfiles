@@ -1,0 +1,11 @@
+# Note that kbd is still run by i3 config
+input * {
+  xkb_file "~/./xkb/keymap"
+}
+input * repeat_delay 250
+input * repeat_rate 33
+input type:touchpad {
+  tap enabled
+}
+
+include ~/.i3/config

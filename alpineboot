@@ -1,23 +1,30 @@
 # pipe this to ash
+# Note that this is cached by github for a short while
 
 function main {
   add_repos
   install_packages
-  get_dotfiles
-  update_dotfiles
+  add_user "$1" "$2"
+  get_dotfiles "$1"
+}
+
+function add_user {
+  useradd -m -p "$2" "$1"
+  echo "permit nopass root as $1" >> /etc/doas.conf
+  echo "permit nopass $1 as root" >> /etc/doas.conf
 }
 
 function install_packages {
-  # https://pkgs.alpinelinux.org/contents?branch=v3.12&arch=x86_64
-  apk add kbd terminus-font openssh mosh git
+  # https://pkgs.alpinelinux.org/contents?branch=v3.16&arch=x86_64
+  apk add kbd terminus-font openssh mosh git shadow doas rsync
 }
 
 function add_repos {
-  version="v3.15"
-  add_repo "https://mirror.operationtulip.com/alpine/$version/main"
-  add_repo "https://mirror.operationtulip.com/alpine/$version/community"
+  version="v3.16"
   add_repo "https://ftp.acc.umu.se/mirror/alpinelinux.org/$version/main"
   add_repo "https://ftp.acc.umu.se/mirror/alpinelinux.org/$version/community"
+  add_repo "https://mirror.operationtulip.com/alpine/$version/main"
+  add_repo "https://mirror.operationtulip.com/alpine/$version/community"
 }
 
 function add_repo {
@@ -26,30 +33,11 @@ function add_repo {
 }
 
 function get_dotfiles {
-  if [ ! -e $HOME/code/dotfiles ]; then
-    mkdir -p $HOME/code
-    git clone https://github.com/flugsio/dotfiles $HOME/code/dotfiles
+  if [ ! -e "/home/$1/code/dotfiles" ]; then
+    doas -u "$1" mkdir -p "/home/$1/code"
+    doas -u "$1" git clone https://github.com/flugsio/dotfiles "/home/$1/code/dotfiles" -b alpinewip
   fi
+  doas -u "$1" ash -c "cd /home/$1/code/dotfiles; git pull; ./install_ash"
 }
 
-function update_dotfiles {
-  (
-    cd $HOME/code/dotfiles
-    git checkout alpinewip
-    git pull
-
-    source common
-
-    link_file bash_aliases
-    link_file alpine/ash_aliases .ash_aliases
-    link_file bin bin
-    link_file ash_profile .profile
-    link_file alpine/asoundrc .asoundrc
-
-    if [ ! -e ~/.ssh/id_rsa ]; then
-      ssh-keygen -t rsa -f ~/.ssh/id_rsa -N "" -C "alpine $(date -u +'%Y%m%d %H%M')"
-    fi
-  )
-}
-
-main
+main flugsio "$1"

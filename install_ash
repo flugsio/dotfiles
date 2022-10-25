@@ -1,0 +1,13 @@
+#!/bin/ash
+
+source common
+
+link_file bash_aliases
+link_file alpine/ash_aliases .ash_aliases
+link_file bin bin
+link_file ash_profile .profile
+link_file alpine/asoundrc .asoundrc
+
+if [ ! -e ~/.ssh/id_rsa ]; then
+  ssh-keygen -t rsa -f ~/.ssh/id_rsa -N "" -C "alpine $(date -u +'%Y%m%d %H%M')"
+fi

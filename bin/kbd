@@ -5,7 +5,9 @@ source kbd_common
 layout="$1"
 
 if [ -z "$layout" ]; then
-  if [ `hostname` = "ranmi" ]; then
+  if [ `hostname` = "localhost" ]; then
+    layout=0
+  elif [ `hostname` = "ranmi" ]; then
     layout=1
   elif [ `hostname` = "toldi_broken" ]; then
     layout=2
@@ -18,7 +20,10 @@ if [ -z "$layout" ]; then
   fi
 fi
 
-if [ "$layout" = 1 ]; then
+if [ "$layout" = 0 ]; then
+  # nothing
+  :;
+elif [ "$layout" = 1 ]; then
   setxkbmap -layout sv-code -option caps:swapescape -variant nodeadkeys
   /usr/bin/xmodmap $HOME/.Xmodmap
   #/usr/bin/xmodmap $HOME/.Xmodmap_keys

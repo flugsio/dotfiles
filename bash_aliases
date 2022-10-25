@@ -643,9 +643,9 @@ function remote {
   if [ "$1" -gt 0 ] 2>/dev/null; then
     num=$(remote_num $1)
     shift
-    if [ "$#" -eq 0 ]; then
+    if [ $# -eq 0 ]; then
       $d mosh vagrant@$REMOTEIP -p ${num}0:${num}9 --ssh="ssh -p ${num}0" -- tmux new-session -A -s m
-    elif [ "$1" == "weechat" ]; then
+    elif [ "$1" = "weechat" ]; then
       export TERM=screen-256color 
       $d mosh vagrant@$REMOTEIP -p ${num}0:${num}9 --ssh="ssh -p ${num}0" -- tmux -L tmux_weechat -f .tmux.weechat.conf new-session -A -s w weechat
     else

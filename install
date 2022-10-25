@@ -27,6 +27,8 @@ function create_all_links {
   link_file gitconfig
   link_file gitignore
   link_file i3
+  link_file config/sway/config
+  link_file xkb
   link_file lynxrc
   link_file surf.css
   link_file tmuxinator

@@ -10,8 +10,11 @@ function main {
 
 function add_user {
   useradd -m -p "$2" "$1"
-  echo "permit nopass root as $1" >> /etc/doas.conf
-  echo "permit nopass $1 as root" >> /etc/doas.conf
+  file=/etc/doas.d/doas.conf
+  echo "permit nopass root as $1" >> $file
+  echo "permit nopass $1 as root" >> $file
+  ls -lah $file
+  chown root:root $file
 }
 
 function install_packages {

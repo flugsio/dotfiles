@@ -532,7 +532,9 @@ alias hubname='git remote get-url --push origin | sed -r "s/^(git@github.com|hub
 alias openall='openpr; openci; opengrafter'
 alias openpr='browse "$(giturl)/compare/$(active_branch)?expand=1"'
 alias opengrafter='browse "https://$(active_branch_cleaned).$GRAFTER_DOMAIN"'
-function openpt { browse http://www.pivotaltracker.com/story/show/$(task export active | jq -r '.[0].pivotalid // ""') }
+function openpt {
+  browse http://www.pivotaltracker.com/story/show/$(task export active | jq -r '.[0].pivotalid // ""')
+}
 # openci requires a translation dictionary like this, store somewhere and load from your bashrc/zshrc like this
 # [[ -e ~/.api_keys ]] && . ~/.api_keys
 # typeset -A CI_PROJECTS=(

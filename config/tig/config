@@ -1,0 +1,1 @@
+bind main w !>sh -c 'git diff --merge-base origin/master %(refname) | tig show'

@@ -1,0 +1,21 @@
+#!/bin/bash
+#i3-msg workspace 9
+
+pkill getpixel
+sleep 0.3
+#xdotool click 1
+sleep 1
+~/learn/c/screen/getpixelcolor >> output_click.txt 2>&1
+#for i in $(seq 50); do
+#  sleep 0.05
+#  if [ $(~/learn/c/screen/getpixelcolor 360 694) = "#FFFFFF" ]; then
+#    xdotool key a && break
+#  fi
+#  if [ $(~/learn/c/screen/getpixelcolor 412 694) = "#FFFFFF" ]; then
+#    xdotool key a && break
+#  fi
+#  #(scrot -o - -a 148,694,476,1 | convert - txt:- | grep '#FFFFFF' | cut -d, -f1 | tee output_click.txt | grep '^224$') && xdotool key a && break
+#done
+# 224
+
+# sleep 0.3; i3-msg workspace 10

@@ -23,6 +23,10 @@ while read -n1 what; do
     xdotool key f
   elif [ "$what" = "3" ]; then
     xdotool key ctrl+w
+  elif [ "$what" = "7" ]; then
+    xdotool click 1
+  elif [ "$what" = "9" ]; then
+    xdotool click 2
   fi
 done
 

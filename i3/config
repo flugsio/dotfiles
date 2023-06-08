@@ -7,6 +7,7 @@
 set $mod Mod4
 set $term alacritty
 set $simple_term st
+set $simple_term_dev ~/code/st/st
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below. ISO 10646 = Unicode
@@ -28,8 +29,10 @@ bindsym $mod+ctrl+mod1+shift+4 exec --no-startup-id slayout 4
 bindsym $mod+ctrl+mod1+shift+0 exec --no-startup-id slayout 0
 
 # start a terminal
-bindsym $mod+Return exec $term -e /bin/sh -i -c tmux
+bindsym $mod+Return exec $simple_term_dev -e /bin/sh -i -c tmux
 bindsym $mod+shift+Return exec $term
+bindsym $mod+ctrl+Return exec $simple_term_dev -e /bin/zsh -i -c "remote 31"
+bindsym $mod+ctrl+shift+Return exec $simple_term_dev -e /bin/zsh -i -c "remote 31 -A"
 # emergency shell
 bindsym $mod+shift+BackSpace exec st -e /bin/sh
 
@@ -145,6 +148,10 @@ bindsym $mod+Shift+c reload
 bindsym $mod+Shift+r restart
 # exit i3 (logs you out of your X session)
 bindsym $mod+Shift+t exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
+
+# 48 = ä
+# 49 = §
+#bindcode 49 exec --no-startup-id click_w
 
 # This prevents most keyboard binds to be consumed,
 #   allows using i3 in a container like Xnest or Xephyr
@@ -272,7 +279,7 @@ bindsym --release Shift+Print           exec screenshot -s
 bindsym $mod+Print exec $simple_term -t shot_viewer -e zsh -i -c 'view_shots'
 for_window [title="shot_viewer"] fullscreen
 
-bindsym $mod+Pause exec sleep 0.5 && xset dpms force off
+bindsym $mod+Pause exec sleep 0.1 && xset dpms force off
 bindsym $mod+shift+Pause exec sleep 0.5 && xset dpms force off && slock
 bindsym $mod+shift+F12 exec sleep 0.5 && xset dpms force off && slock
 
@@ -293,6 +300,9 @@ default_border pixel 1
 default_floating_border pixel 1
 hide_edge_borders both
 
+# workaround weird issue, chromium doesn't get default border
+for_window [class="Chromium"] border pixel 1
+
 for_window [class="Surf"] border normal
 
 for_window [title="QUAKE LIVE Launcher" class="Wine"] floating enable
@@ -308,7 +318,8 @@ for_window [title="DeathTrap"] floating enable
 for_window [title="Safecracker"] floating enable
 for_window [workspace=10] floating enable
 
-for_window [title="VirtualBox$"] floating enable; workspace 10
+for_window [title="VirtualBox$"] floating enable, workspace 10
+#assign [title="feh"] 10
 
 for_window [class="Pavucontrol"] floating enable, sticky enable, resize set 600px 440px, move position 1960px 21px
 for_window [class="Xephyr"] move position 0px 21px, border none

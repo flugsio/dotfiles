@@ -2,168 +2,231 @@
 
 # screen layout
 
-if [ `hostname` = "toldi" ]; then
-  primary="eDP1"
-  primary_extra="--auto"
-  secondary="DP1"
-  secondary_extra="--auto"
-  # secondary="HDMI1"
-  # secondary_extra="--mode 1920x1080"
-elif [ `hostname` = "cedra" ]; then
-  primary="eDP-1-1"
-  #primary_extra="--mode 1920x1080"
-  #secondary="DP-1-3" # charging port
-  secondary="DP-1-2" # next to charging
-  secondary_extra="--mode 2560x1440 --rate 74.97"
-  #secondary_extra="--mode 2560x1440 --rate 59.88"
-  #secondary_extra="--mode 1920x1080 --rate 59.95"
-
-  # tv
-  # secondary="HDMI-1-1" # next to charging
-  # secondary_extra="--mode 1920x1080 --rate 120.00"
-elif [ `hostname` = "zdani" ]; then
-  primary="DP-0"
-  primary_extra="--mode 1920x1080"
-  secondary="HDMI-0"
-  secondary_extra="--mode 1920x1080"
-elif [ `hostname` = "dartro" ]; then
-  primary="LVDS1"
-  primary_extra="--mode 1600x900"
-  secondary="HDMI1"
-  secondary_extra="--mode 1920x1080"
-  # TODO: detect which is connected
-  secondary="DP1"
-  secondary_extra="--mode 2560x1440"
-elif [ `hostname` = "kribev" ]; then
-  primary="LVDS-0"
-  primary_extra="--mode 1366x768"
-  secondary="VGA-0"
-  secondary_extra="--mode 1680x1050"
-  thirdary="HDMI-0"
-  thirdary_extra="--mode 2048x1152"
-else
-  primary="LVDS-0"
-  primary_extra="--mode 1440x900"
-  secondary="VGA"
-  secondary_extra="--mode 1680x1050"
-fi
-
-xrandr \
-    --delmonitor $secondary~1 \
-    --delmonitor $secondary~2 \
-    --delmonitor $secondary~3 \
-
-if [ "$1" = "0" ]; then
-  xrandr --auto
-elif [ "$1" = "t" ]; then
-  xrandr \
-    --output $primary --off \
-    --output $secondary --auto
-elif [ "$1" = "1" ]; then
-  xrandr \
-    --output $primary $primary_extra \
-    --output $secondary --off
-elif [ "$1" = "2" ]; then
-  xrandr \
-    --output $primary --off \
-    --output $secondary $secondary_extra
-elif [ "$1" = "3" ]; then
-  # todo, clear this up
+function main {
   if [ `hostname` = "toldi" ]; then
-    # external is psudo-primary
-    xrandr \
-      --output $secondary $secondary_extra --primary \
-      --output $primary $primary_extra --right-of $secondary
+    primary="eDP1"
+    primary_extra="--auto"
+    secondary="DP1"
+    secondary_extra="--auto"
+    # secondary="HDMI1"
+    # secondary_extra="--mode 1920x1080"
   elif [ `hostname` = "cedra" ]; then
-    # external is psudo-primary
-    xrandr \
-      --output $secondary $secondary_extra --primary \
-      --output $primary $primary_extra --right-of $secondary
+    primary="eDP-1-1"
+    primary_extra="--auto"
+    #primary_extra="--mode 1920x1080"
+    #secondary="DP-1-3" # charging port
+    if xrandr --query | grep "DP-1-3 connected"; then
+      # charging port
+      secondary="DP-1-3"
+      secondary_extra="--mode 3440x1440 --rate 99.98"
+      kbd
+    # elif xrandr --query | grep "DP-1-2 connected" &&
+    #   xrandr --query | grep "HDMI-1-1 connected"; then
+    #   primary="DP-1-2"
+    #   primary_extra="--mode 1920x1080 --rate 74.97"
+
+    #   secondary="HDMI-1-1"
+    #   secondary_extra="--mode 1920x1080 --rate 60.00 --same-as $primary"
+    #   xrandr \
+    #     --output $primary $primary_extra \
+    #     --output $secondary $secondary_extra --primary
+    #   return
+    elif xrandr --query | grep "DP-1-2 connected"; then
+      # next to charging
+      secondary="DP-1-2"
+      #secondary_extra="--mode 2560x1440 --rate 74.97"
+      secondary_extra="--mode 2560x1440 --rate 59.95"
+      #secondary_extra="--mode 2560x1440 --rate 59.88"
+      #secondary_extra="--mode 1920x1080 --rate 59.95"
+      # huion at home
+      if xrandr --query | grep "HDMI-1-1 connected"; then
+        thirdary="HDMI-1-1"
+        thirdary_extra="--mode 1920x1080 --rate 60.00"
+      fi
+    elif xrandr --query | grep "HDMI-1-1 connected"; then
+      secondary="HDMI-1-1"
+      # tv
+      secondary_extra="--mode 1920x1080 --rate 120.00"
+      # tv green room
+      #secondary_extra="--mode 3840x2160i --rate 60.00"
+      #secondary_extra="--mode 3840x2160 --rate 30.00"
+      secondary_extra="--mode 1920x1080 --rate 60.00 --"
+    fi
+  elif [ `hostname` = "zdani" ]; then
+    primary="DP-0"
+    primary_extra="--mode 1920x1080"
+    secondary="HDMI-0"
+    secondary_extra="--mode 1920x1080"
+  elif [ `hostname` = "dartro" ]; then
+    primary="LVDS1"
+    primary_extra="--mode 1600x900"
+    secondary="HDMI1"
+    secondary_extra="--mode 1920x1080"
+    # TODO: detect which is connected
+    secondary="DP1"
+    secondary_extra="--mode 2560x1440"
+  elif [ `hostname` = "kribev" ]; then
+    primary="LVDS-0"
+    primary_extra="--mode 1366x768"
+    secondary="VGA-0"
+    secondary_extra="--mode 1680x1050"
+    thirdary="HDMI-0"
+    thirdary_extra="--mode 2048x1152"
   else
-    xrandr \
-      --output LVDS-0 --mode 1440x900 --pos 0x250 \
-      --output VGA-0 --mode 1680x1050 --right-of LVDS-0
+    primary="LVDS-0"
+    primary_extra="--mode 1440x900"
+    secondary="VGA"
+    secondary_extra="--mode 1680x1050"
   fi
-elif [ "$1" = "4" ]; then
-  xrandr \
-    --output $primary $primary_extra \
-    --output $secondary $primary_extra --same-as $primary
-elif [ "$1" = "5" ]; then
-  secondary="DP1"
-  #
-  # |------------|------|
-  # | 1          | 3    |
-  # | 1920x1080  | 640x |
-  # |            | 1080 |
-  # |            |      |
-  # |            |      |
-  # |-------------------|
-  # | 2 2560x360        |
-  # |-------------------|
-  # width, px/mm:
-  #   2560/700
-  #   1920/525
-  #   640/175
-  # height, px/mm:
-  #   1440/390
-  #   1080/293 (292.5)
-  #   360/97
-  
-  xrandr \
-    --output LVDS1 --off \
-    --delmonitor $secondary~1 \
-    --delmonitor $secondary~2 \
-    --delmonitor $secondary~3 \
-    --setmonitor $secondary~2 2560/700x360/97+1080+0 $secondary \
-    --setmonitor $secondary~3 640/175x1080/293+0+1920 $secondary \
-    --setmonitor $secondary~1 1920/525x1080/293+0+0 $secondary
-    xrandr --fb 2560x1441; sleep 1; xrandr --fb 2560x1440
+  set_monitor "$1"
+  configure_huion || true
+}
 
-elif [ "$1" = "55" ]; then
-  secondary="DP1"
-  #
-  # |------------|------|
-  # | 1          | 3    |
-  # | 1920x1080  | 640x |
-  # |            | 1080 |
-  # |            |      |
-  # |            |      |
-  # |-------------------|
-  # | 2 2560x360        |
-  # |-------------------|
-  # width, px/mm:
-  #   2560/700
-  #   1920/525
-  #   640/175
-  # height, px/mm:
-  #   1440/390
-  #   1080/293 (292.5)
-  #   360/97
-  
-  xrandr \
-    --output LVDS1 --off \
-    --delmonitor $secondary~1 \
-    --delmonitor $secondary~2 \
-    --delmonitor $secondary~3 \
-    --setmonitor $secondary~2 2560/700x360/97+1080+0 $secondary \
-    --setmonitor $secondary~3 640/175x1080/293+0+1920 $secondary \
-    --setmonitor $secondary~1 1920/525x1080/293+0+0 $secondary
-    xrandr --fb 2560x1441; sleep 1; xrandr --fb 2560x1440
+function set_monitor {
+  if [ "$1" = "0" ]; then
+    xrandr --auto
+  elif [ "$1" = "t" ]; then
+    xrandr \
+      --output $primary --off \
+      --output $secondary --auto
+  elif [ "$1" = "1" ]; then
+    xrandr \
+      --output $primary $primary_extra \
+      --output $secondary --off ||
+    xrandr \
+      --output $primary $primary_extra
+  elif [ "$1" = "2" ]; then
+    xrandr \
+      --output $primary --off \
+      --output $secondary $secondary_extra
+    if [ -n "$thirdary" ]; then
+      xrandr --output $thirdary --off
+    fi
+  # mirror on huion
+  elif [ "$1" = "2m" ]; then
+    xrandr \
+      --output $primary --off \
+      --output $secondary $secondary_extra \
+      --output $thirdary $thirdary_extra --same-as $secondary
+      # extend on huion
+  elif [ "$1" = "2e" ]; then
+    xrandr \
+      --output $primary --off \
+      --output $secondary $secondary_extra --primary \
+      --output $thirdary $thirdary_extra --below $secondary
+  elif [ "$1" = "3" ]; then
+    # todo, clear this up
+    if [ `hostname` = "toldi" ]; then
+      # external is psudo-primary
+      xrandr \
+        --output $secondary $secondary_extra --primary \
+        --output $primary $primary_extra --right-of $secondary
+    elif [ `hostname` = "cedra" ]; then
+      # external is psudo-primary
+      xrandr \
+        --output $secondary $secondary_extra --primary \
+        --output $primary $primary_extra --right-of $secondary
+    else
+      xrandr \
+        --output LVDS-0 --mode 1440x900 --pos 0x250 \
+        --output VGA-0 --mode 1680x1050 --right-of LVDS-0
+    fi
+  elif [ "$1" = "4" ]; then
+    xrandr \
+      --output $primary $primary_extra \
+      --output $secondary $primary_extra --same-as $primary
+  elif [ "$1" = "5" ]; then
+    secondary="DP1"
+    #
+    # |------------|------|
+    # | 1          | 3    |
+    # | 1920x1080  | 640x |
+    # |            | 1080 |
+    # |            |      |
+    # |            |      |
+    # |-------------------|
+    # | 2 2560x360        |
+    # |-------------------|
+    # width, px/mm:
+    #   2560/700
+    #   1920/525
+    #   640/175
+    # height, px/mm:
+    #   1440/390
+    #   1080/293 (292.5)
+    #   360/97
+    
+    xrandr \
+      --output LVDS1 --off \
+      --delmonitor $secondary~1 \
+      --delmonitor $secondary~2 \
+      --delmonitor $secondary~3 \
+      --setmonitor $secondary~2 2560/700x360/97+1080+0 $secondary \
+      --setmonitor $secondary~3 640/175x1080/293+0+1920 $secondary \
+      --setmonitor $secondary~1 1920/525x1080/293+0+0 $secondary
+      xrandr --fb 2560x1441; sleep 1; xrandr --fb 2560x1440
 
-elif [ "$1" = "6" ]; then
-  secondary="DP1"
-  xrandr \
-    --output $primary --off \
-    --delmonitor $secondary~1 \
-    --delmonitor $secondary~2 \
-    --delmonitor $secondary~3 \
-    --output $secondary --auto
-    #--setmonitor $secondary~1 2560/700x1440/390+0+0 $secondary
-else
-  echo "usage:"
-  echo "  $0 0 : auto"
-  echo "  $0 1 : primary"
-  echo "  $0 2 : secondary"
-  echo "  $0 3 : primary+secondary extend"
-  echo "  $0 4 : primary+secondary mirror"
-fi
+  elif [ "$1" = "55" ]; then
+    secondary="DP1"
+    #
+    # |------------|------|
+    # | 1          | 3    |
+    # | 1920x1080  | 640x |
+    # |            | 1080 |
+    # |            |      |
+    # |            |      |
+    # |-------------------|
+    # | 2 2560x360        |
+    # |-------------------|
+    # width, px/mm:
+    #   2560/700
+    #   1920/525
+    #   640/175
+    # height, px/mm:
+    #   1440/390
+    #   1080/293 (292.5)
+    #   360/97
+    
+    xrandr \
+      --output LVDS1 --off \
+      --delmonitor $secondary~1 \
+      --delmonitor $secondary~2 \
+      --delmonitor $secondary~3 \
+      --setmonitor $secondary~2 2560/700x360/97+1080+0 $secondary \
+      --setmonitor $secondary~3 640/175x1080/293+0+1920 $secondary \
+      --setmonitor $secondary~1 1920/525x1080/293+0+0 $secondary
+      xrandr --fb 2560x1441; sleep 1; xrandr --fb 2560x1440
+
+  elif [ "$1" = "6" ]; then
+    secondary="DP1"
+    xrandr \
+      --output $primary --off \
+      --delmonitor $secondary~1 \
+      --delmonitor $secondary~2 \
+      --delmonitor $secondary~3 \
+      --output $secondary --auto
+      #--setmonitor $secondary~1 2560/700x1440/390+0+0 $secondary
+  elif [ "$1" = "7" ]; then
+    xrandr \
+      --delmonitor $secondary~1 \
+      --delmonitor $secondary~2 \
+      --delmonitor $secondary~3 \
+  else
+    echo "usage:"
+    echo "  $0 0 : auto"
+    echo "  $0 1 : primary"
+    echo "  $0 2 : secondary"
+    echo "  $0 3 : primary+secondary extend"
+    echo "  $0 4 : primary+secondary mirror"
+  fi
+}
+
+function configure_huion {
+  # huion
+  id=$(xinput list --id-only pointer:"Tablet Monitor Pen Pen (0)" 2> /dev/null)
+  if [ -n "$id" ]; then
+    xinput map-to-output $id HDMI-1-1
+  fi
+}
+
+main $@

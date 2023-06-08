@@ -8,6 +8,9 @@ from subprocess import Popen, PIPE
 def shell_read(command):
     return Popen(command, stdout=PIPE, shell=True, universal_newlines=True).stdout.read().strip()
 
+def get_cmus_song():
+    return shell_read("cmus-remote -Q | grep tag | head -n3 | sort -r | cut -d ' ' -f 3- | xargs echo")
+
 def get_recording_size():
     return "~" + shell_read("du -sh /tmp/*.mkv | cut -f1")
 
@@ -82,6 +85,7 @@ if __name__ == '__main__':
         j.insert(0, {'full_text' : '%s' % get_pomodoro_name(), 'name' : 'pomodoro_name'})
         j.insert(0, {'full_text' : '%s' % get_recording_size(), 'name' : 'recording_size'})
         j.insert(0, {'full_text' : '%s' % get_active(), 'name' : 'tw_active', 'color' : '#fb6f0e'})
+        j.insert(0, {'full_text' : '%s' % get_cmus_song(), 'name' : 'song'})
         #cpu_temp = int(get_cpu_temperature())
         #if cpu_temp < 53:
         #  cpu_temp_color = "#9f9f9f"

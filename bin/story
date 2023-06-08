@@ -6,14 +6,12 @@
 set -e
 
 function task_property {
-  task export $1 | jq ".[] .$2" -r
+  task "$1" export | jq ".[] .$2 // empty" -r
 }
 config="$HOME/.config/story"
 tmp=$(mktemp --suffix=.md)
 
-last_development_backlog="170027982" # technical backlog starts
-last_technical_backlog="177574618" # infra backlog starts
-last_infra_backlog="171604085" # design backlog starts
+last_development_backlog="171604085" # design starts
 before_id=""
 labels=""
 owner_ids="[]"
@@ -50,14 +48,25 @@ if [ "$1" = "now" ]; then
   shift
 fi
 
+set -x
 if [ -n "$1" ]; then
   id="$1"
   initial=$(task_property "$id" description)
+  initial_pt_description=$(task_property "$id" pivotaldescription)
+  initial_pt_story_type="$(task_property "$id" pivotalstorytype)"
+  task_id="$id"
+  if [ -n "$initial_pt_story_type" ]; then
+    story_type=$initial_pt_story_type
+  fi
 fi
 
 echo "$initial" > $tmp
 
-if [ -e "$template" ]; then
+if [ -n "$initial_pt_description" ]; then
+  unset template
+  echo >> $tmp
+  echo "$initial_pt_description" >> $tmp
+elif [ -e "$template" ]; then
   cat $template >> $tmp
 fi
 
@@ -87,11 +96,11 @@ if [ "$now" = "1" ]; then
   fi
 else
   current_state="\"unstarted\""
-  if [ "$story_type" = "feature" ] || [ "$story_type" = "bug" ]; then
+  # if [ "$story_type" = "feature" ] || [ "$story_type" = "bug" ]; then
     before_id="$last_development_backlog"
-  else
-    before_id="$last_technical_backlog"
-  fi
+  # else
+    # before_id="$last_technical_backlog"
+  # fi
 fi
 
 extra_label=$(echo -e "needs grooming\ntechnical\nsecurity\ncc\ngud\nfetch" | fzf --prompt "Extra label? (CTRL-C to cancel)" || echo "")
@@ -115,10 +124,15 @@ if [ -n "$before_id" ]; then
 fi
 
 if [ -n "$name" ]; then
-  curl -X POST -H "X-TrackerToken: $PT_TOKEN" \
+  set -x
+  response=$(curl -X POST -H "X-TrackerToken: $PT_TOKEN" \
     -H "Content-Type: application/json" \
     -d "{$data}" \
-    "https://www.pivotaltracker.com/services/v5/projects/$PT_PROJECT_ID/stories" | jq .
+    "https://www.pivotaltracker.com/services/v5/projects/$PT_PROJECT_ID/stories" | jq .)
+  pt_id=$(echo $response | jq .id)
+  if [ -n "$task_id" ] && [ -n "$pt_id" ]; then
+    task modify "$task_id" pivotalid:$pt_id rc.recurrence.confirmation=no
+  fi
 else
   echo "Aborted due to missing story name"
   echo "Filename: $tmp"

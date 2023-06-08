@@ -24,6 +24,7 @@ function create_all_links {
   link_file config/ctags/ignore.ctags
   link_file config/ctags/scala.ctags
   link_file config/ctags/RSpec.ctags
+  link_file config/tig/config
   link_file gitconfig
   link_file gitignore
   link_file i3
@@ -51,6 +52,9 @@ function create_all_links {
   [ -d ~/code/ansible ] && copy_file vtools/traprack code/ansible/vtools/traprack
 
   #  sudo cp ~/code/dotfiles/slash/sv-code.map /usr/share/X11/xkb/symbols
+  if [ `hostname` = "cedra" ]; then
+    sudo cp ~/code/dotfiles/slash/etc/modprobe.d/iwl.conf /etc/modprobe.d/iwl.conf
+  fi
 }
 
 function install_vundles {

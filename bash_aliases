@@ -28,6 +28,8 @@ function h {
       fi
       fi
     done
+  elif [ "$1" = "l" ]; then
+    ls ~/Sync/h
   elif [ "$1" = "e" ]; then
     # edit, TODO: this does not use focus, but latest started
     $EDITOR ~/Sync/h/${2:-$(cat $(ls -t1 ~/.cache/h/* | head -n2 | tail -n1))}.wofl
@@ -41,22 +43,40 @@ function h_cmd {
   fi
 }
 function ci {
+  local job=$(ci_parse_job "$2")
   local build=${3:-lastBuild}
   if [ "$1" = "log" ]; then
     if [[ "$2" == $CI_URL* ]]; then
-      echo matches url
-      job=$(echo "$2" | sed "s#$CI_URL/blue/organizations/jenkins/#/job/#" | sed "s#/detail/.*##" | sed "s#%2F#/job/#")
-      build=$(echo "$2" | grep -Po "\d*(?=\/pipeline)" )
-    elif [ -n "$2" ]; then
-      job="/job/${2//\//\/job\//}"
-    else
-      job="/job/${CI_PROJECTS[$(hubname)]//\%2F/\/job/}/job/$(active_branch)"
+      # target
+      # job=/job/upkeep/job/promote-testrun
+      # build=58390
+      if [[ "$2" == */blue/organizations* ]]; then
+        # from https://ci.promoteapp.net/blue/organizations/jenkins/upkeep%2Fpromote-testrun/detail/promote-testrun/58390/pipeline
+        job=$(echo "$2" | sed "s#$CI_URL/blue/organizations/jenkins/#/job/#" | sed "s#/detail/.*##" | sed "s#%2F#/job/#")
+        build=$(echo "$2" | grep -Po "\d*(?=\/pipeline)" )
+      else
+        # from https://ci.promoteapp.net/job/upkeep/job/promote-testrun/58390/"
+        job=$(echo "$2" | sed "s#$CI_URL##" | sed -E "s#/[[:digit:]]+/\$##")
+        # 58390
+        build=$(echo "$2" | grep -Po "\d*(?=\/$)" )
+      fi
     fi
     curl -s ${CI_URL}${job}/$build/logText/progressiveText?start=0 -L --user $JENKINS_USERTOKEN
+  elif [ "$1" = "build" ]; then
+    build=/build
+    curl -XPOST -s ${CI_URL}${job}/$build -L --user $JENKINS_USERTOKEN
   elif [ "$1" = "fail" ]; then
     grep -Po "(?<=^rspec ).*?(?= #)" | sort | uniq
   else
     echo "no such command"
+  fi
+}
+
+function ci_parse_job {
+  if [ -n "$1" ]; then
+    echo "/job/${1//\//\/job\//}"
+  else
+    echo "/job/${CI_PROJECTS[$(hubname)]//\%2F/\/job/}/job/$(active_branch)"
   fi
 }
 
@@ -320,7 +340,7 @@ alias bed='bundle exec rails db'
 alias bec='bundle exec rails console'
 alias brow='surf -x $url 2> /dev/null & firefox $url & chromium $url &'
 alias tag='([ -f tags ] && echo "Preparing tags" && ctags -R --exclude="@.gitignore" --exclude="@$HOME/.gitignore" || true)'
-alias bun='rbenv install --skip-existing; bundle check; bundle install; mkbunlinks'
+alias bun='(bundle check || bundle install); mkbunlinks'
 alias yar='([ -f yarn.lock ] && yarn install --check-files || true)'
 alias mig='ber db:migrate'
 alias unmig='ber db:rollback'
@@ -339,6 +359,7 @@ alias windows='rdesktop 192.168.1.189 -u Administrator -k sv -g 2555x1400 -r sou
 alias windows2='rdesktop 192.168.1.188 -u Avidity -k sv -g 2550x1380 -r sound:off'
 alias mkbunlinks='if [ -f "Gemfile" ]; then mkdir -p bunlinks && find bunlinks -type l -delete && cd bunlinks && bundle list --paths | xargs -L1 ln -s; cd .. ; else echo "not in Gemfile directory"; fi'
 alias perrbit='cd ~/code/promote3 && xsel > errbit_error.txt && vim errbit_error.txt -c "%s/\v^(.*gems.*gems\/)?([^(-)]*-\d\.)/bunlinks\/\2/e | %s/\v^([^(bunlinks|\/opt)].)/\1/e | %s/\v^\/opt\/promote\/releases\/\d+T\d+\///e | w | set errorformat=%f:%l%m | cbuffer | copen" && rm errbit_error.txt'
+alias cop='bun && be rubocop > rubocop_error.txt; vim rubocop_error.txt -c "set errorformat=%f:%l%m | cbuffer | copen" && rm rubocop_error.txt'
 alias textgraph="sort | uniq -c | sort -rn | perl -ane 'printf \"%30s %s\\n\", \$F[1], \"=\"x\$F[0];'"
 alias rgdb='gdb $(rbenv which ruby) $(pgrep -f "jobs:work" | head -n1)'
 alias glujc='gluj -m | egrep --color "[A-Z]|$"'
@@ -384,8 +405,8 @@ function record {
   fi
   local extra="-acodec ac3 -vcodec libx264 -preset ultrafast -crf 24 -threads 0"
   local filename="output-$(date +%s)"
-  local output="/tmp/${filename}.mkv"
-  local compressed="$HOME/${filename}c.mkv"
+  local output="/tmp/${filename}.mov"
+  local compressed="$HOME/${filename}c.mov"
   echo "executing in 1 second ffmpeg $sauce -f x11grab $potatoes $extra $output 2>&1"
   sleep 1
   eval "ffmpeg $sauce -f x11grab $potatoes $extra $output"
@@ -744,7 +765,10 @@ function gbc {
   echo "======="
   git diff --cached
 
-  if [ -n "$id" ]; then
+  if [ -z "$id" ]; then
+    local id="$(task export active | jq -r '.[0].pivotalid // ""')"
+  fi
+  if [ -n "$id" ] && [ "$id" != - ]; then
     local message=$(story_get $id)
   fi
   if type 'vared' 2>/dev/null | grep -q 'shell builtin'; then
@@ -837,6 +861,52 @@ function task_property {
   local property=$2
   task export $id | jq ".[] .$property" -r
 }
+function story_start_task {
+  set -x
+  local pt_id="$1"
+  if [ -z "$pt_id" ]; then
+    echo "no pt id specified"
+    return
+  fi
+
+  local task_id=$(task pivotalid:$pt_id export | jq 'first | .id')
+  if [ "$task_id" = 0 ]; then
+    echo "task story exist but is completed"
+    return
+  fi
+  if [ "$task_id" = null ]; then
+    # create new task
+    local pt_story=$(pt_get_story $pt_id)
+    local pt_name=$(echo -E "$pt_story" | jq -r .name)
+    local pt_description=$(echo -E "$pt_story" | jq -r .description)
+    if [ "$pt_name" = null ]; then
+      echo "missing name or description"
+      return
+    elif [ -n "$pt_name" ] && [ -n "$pt_description" ]; then
+      task add pivotalid:$pt_id $pt_name
+      task_id=$(task +LATEST ids)
+      if [ -n "$task_id" ]; then
+        if [ "$pt_description" != null ]; then
+          task annotate $task_id $pt_description
+        fi
+        task start $task_id
+      fi
+    else
+      echo "no such pt story"
+      return
+    fi
+  else
+    task start $task_id
+  fi
+  #pt start $pt_id
+}
+
+function pt_get_story {
+  local story_id="$1"
+  curl -X GET -H "X-TrackerToken: $PT_TOKEN" \
+    -H "Content-Type: application/json" \
+    "https://www.pivotaltracker.com/services/v5/projects/$PT_PROJECT_ID/stories/$story_id"
+}
 
 function convert_accucheck {
   grep '^[0-9]' D*.csv | \
@@ -846,3 +916,11 @@ function convert_accucheck {
 alias test_stuff="xdotool selectwindow windowfocus --sync key F11 sleep 0.1; i3-msg floating enable, fullscreen disable, resize set 500px 1060px, move position 1420px 20px"
 alias speedtest="speedtest-cli --secure --simple | awk 'ORS=\", \"' | head -c -2"
 alias cam="mpv --demuxer-lavf-o-set='input_format=mjpeg' /dev/video0"
+function ffmpeg_to_mov {
+  local input="$1"
+  ffmpeg -i "$input" -c copy -vcodec libx264 -crf 24 "$(basename $input).mov"
+}
+function perf {
+  watch -n 0.5 'cat /sys/firmware/acpi/platform_profile; (cat /proc/acpi/ibm/fan | grep speed -A1); cat /proc/acpi/ibm/thermal; (cat /proc/cpuinfo | grep MHz)'
+}
+alias bell='echo -e "\a"'

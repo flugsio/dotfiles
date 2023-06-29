@@ -4,6 +4,9 @@ set -e
 
 SLACK_PROMOTEINT_TOKEN=$SLACK_PROMOTEINT_JENKINS_TOKEN
 DAILY_TIME=${DAILY_TIME:-'12:40'}
+# newline separated list, for example "/torvalds/linux/\n/rails/rails/"
+# all pr's with html_url matching this will be filtered
+SKIP_REPOS=""
 
 prs=""
 prs_failed=""
@@ -80,7 +83,6 @@ function refresh_prs {
   #-F sort=created \
   #-F per_page=100 \
   response="$HOME/.cache/notifypr_response"
-  # this doesn't seem to work anymore: +-assignee:andreask
   gh_api $response "/search/issues?q=is:open+is:pr+user:promoteinternational+draft:false+-status:failure"
 
   gh_api ${response}_failed "/search/issues?q=is:open+is:pr+user:promoteinternational+draft:false+status:failure"
@@ -96,6 +98,7 @@ function refresh_prs {
       echo "::${pr}::"
       title=$(echo $pr | cut -d',' -f1 | sed 's/"//g;s/&/and/g;s/،/,/g')
       url=$(echo $pr | cut -d',' -f2 | sed 's/"//g')
+      if [ "$(echo $URL | grep -f "$(echo $SKIP_REPOS)")" = "0" ]; then continue; fi
       user=$(echo $pr | cut -d',' -f3 | sed 's/"//g' | sed 's/dependabot.*/bot/')
       created_at=$(echo $pr | cut -d',' -f4 | sed 's/"//g')
       updated_at=$(echo $pr | cut -d',' -f5 | sed 's/"//g')
@@ -136,6 +139,7 @@ function refresh_prs {
     while read pr; do
       title=$(echo $pr | cut -d',' -f1 | sed 's/"//g;s/&/and/g;s/،/,/g')
       url=$(echo $pr | cut -d',' -f2 | sed 's/"//g')
+      if [ "$(echo $URL | grep -f "$(echo $SKIP_REPOS)")" = "0" ]; then continue; fi
       user=$(echo $pr | cut -d',' -f3 | sed 's/"//g' | sed 's/dependabot.*/bot/')
       created_at=$(echo $pr | cut -d',' -f4 | sed 's/"//g')
       updated_at=$(echo $pr | cut -d',' -f5 | sed 's/"//g')
@@ -201,11 +205,10 @@ function refresh_prs_merged {
     while read pr; do
       title=$(echo $pr | cut -d',' -f1 | sed 's/"//g;s/&/and/g;s/،/,/g')
       url=$(echo $pr | cut -d',' -f2 | sed 's/"//g')
+      if [ "$(echo $URL | grep -f "$(echo $SKIP_REPOS)")" = "0" ]; then continue; fi
       user=$(echo $pr | cut -d',' -f3 | sed 's/"//g' | sed 's/dependabot.*/bot/')
       # workaround
-      if [ "$user" = "bot" ]; then
-        continue
-      fi
+      if [ "$user" = "bot" ]; then continue; fi
       created_at=$(echo $pr | cut -d',' -f4 | sed 's/"//g')
       updated_at=$(echo $pr | cut -d',' -f5 | sed 's/"//g')
       closed_at=$(echo $pr | cut -d',' -f6 | sed 's/"//g')
@@ -239,6 +242,7 @@ function refresh_prs_merged {
     while read pr; do
       title=$(echo $pr | cut -d',' -f1 | sed 's/"//g;s/&/and/g;s/،/,/g' | sed 's/Bump //;s/^build.*bump //' | sed 's/ from//' | sed 's/ to /→/')
       url=$(echo $pr | cut -d',' -f2 | sed 's/"//g')
+      if [ "$(echo $URL | grep -f "$(echo $SKIP_REPOS)")" = "0" ]; then continue; fi
       user=$(echo $pr | cut -d',' -f3 | sed 's/"//g' | sed 's/dependabot.*/bot/')
       created_at=$(echo $pr | cut -d',' -f4 | sed 's/"//g')
       updated_at=$(echo $pr | cut -d',' -f5 | sed 's/"//g')

@@ -98,7 +98,7 @@ function refresh_prs {
       echo "::${pr}::"
       title=$(echo $pr | cut -d',' -f1 | sed 's/"//g;s/&/and/g;s/،/,/g')
       url=$(echo $pr | cut -d',' -f2 | sed 's/"//g')
-      if [ "$(echo $url | grep -f "$(echo $SKIP_REPOS)")" = "0" ]; then continue; fi
+      if [ "$(echo $url | grep -F "$(echo $SKIP_REPOS)")" = 0 ]; then continue; fi
       user=$(echo $pr | cut -d',' -f3 | sed 's/"//g' | sed 's/dependabot.*/bot/')
       created_at=$(echo $pr | cut -d',' -f4 | sed 's/"//g')
       updated_at=$(echo $pr | cut -d',' -f5 | sed 's/"//g')
@@ -139,7 +139,7 @@ function refresh_prs {
     while read pr; do
       title=$(echo $pr | cut -d',' -f1 | sed 's/"//g;s/&/and/g;s/،/,/g')
       url=$(echo $pr | cut -d',' -f2 | sed 's/"//g')
-      if [ "$(echo $url | grep -f "$(echo $SKIP_REPOS)")" = "0" ]; then continue; fi
+      if [ "$(echo $url | grep -F "$(echo $SKIP_REPOS)")" = 0 ]; then continue; fi
       user=$(echo $pr | cut -d',' -f3 | sed 's/"//g' | sed 's/dependabot.*/bot/')
       created_at=$(echo $pr | cut -d',' -f4 | sed 's/"//g')
       updated_at=$(echo $pr | cut -d',' -f5 | sed 's/"//g')
@@ -205,7 +205,7 @@ function refresh_prs_merged {
     while read pr; do
       title=$(echo $pr | cut -d',' -f1 | sed 's/"//g;s/&/and/g;s/،/,/g')
       url=$(echo $pr | cut -d',' -f2 | sed 's/"//g')
-      if [ "$(echo $url | grep -f "$(echo $SKIP_REPOS)")" = "0" ]; then continue; fi
+      if [ "$(echo $url | grep -F "$(echo $SKIP_REPOS)")" = 0 ]; then continue; fi
       user=$(echo $pr | cut -d',' -f3 | sed 's/"//g' | sed 's/dependabot.*/bot/')
       # workaround
       if [ "$user" = "bot" ]; then continue; fi
@@ -242,7 +242,7 @@ function refresh_prs_merged {
     while read pr; do
       title=$(echo $pr | cut -d',' -f1 | sed 's/"//g;s/&/and/g;s/،/,/g' | sed 's/Bump //;s/^build.*bump //' | sed 's/ from//' | sed 's/ to /→/')
       url=$(echo $pr | cut -d',' -f2 | sed 's/"//g')
-      if [ "$(echo $url | grep -f "$(echo $SKIP_REPOS)")" = "0" ]; then continue; fi
+      if [ "$(echo $url | grep -F "$(echo $SKIP_REPOS)")" = 0 ]; then continue; fi
       user=$(echo $pr | cut -d',' -f3 | sed 's/"//g' | sed 's/dependabot.*/bot/')
       created_at=$(echo $pr | cut -d',' -f4 | sed 's/"//g')
       updated_at=$(echo $pr | cut -d',' -f5 | sed 's/"//g')

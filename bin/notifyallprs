@@ -237,7 +237,7 @@ function refresh_prs_merged {
     content_merged="$content_merged%0A:me:Dependencies:"
     local prev_repo=""
     while read pr; do
-      title=$(echo $pr | cut -d',' -f1 | sed 's/"//g;s/&/and/g;s/،/,/g' | sed 's/Bump //' | sed 's/ from//' | sed 's/ to /→/')
+      title=$(echo $pr | cut -d',' -f1 | sed 's/"//g;s/&/and/g;s/،/,/g' | sed 's/Bump //;s/^build.*bump //' | sed 's/ from//' | sed 's/ to /→/')
       url=$(echo $pr | cut -d',' -f2 | sed 's/"//g')
       user=$(echo $pr | cut -d',' -f3 | sed 's/"//g' | sed 's/dependabot.*/bot/')
       created_at=$(echo $pr | cut -d',' -f4 | sed 's/"//g')

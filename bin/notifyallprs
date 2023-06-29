@@ -89,7 +89,8 @@ function refresh_prs {
   prs_failed=$(cat ${response}_failed | jq -r ".items[] | [(.title | gsub(\",\"; \"،\")), .html_url, .user.login, .created_at, .updated_at, .closed_at] | @csv")
 
   content="<https://github.com/pulls?q=is%3Aopen%2Bis%3Apr%2Buser%3Apromoteinternational%2Bdraft%3Afalse%2B-status%3Afailure|active prs> $notify"
-  content+="(<https://github.com/pulls?q=is%3Aopen%2Bis%3Apr%2Buser%3Apromoteinternational%2Bdraft%3Atrue|drafts>)"
+  content+="(<https://github.com/pulls?q=is%3Aopen%2Bis%3Apr%2Buser%3Apromoteinternational%2Bdraft%3Atrue|drafts>, "
+  content+="<https://github.com/pulls?q=is%3Amerged%2Bis%3Apr%2Buser%3Apromoteinternational%2Bsort%3Aupdated-desc|merged>)"
   if [ "$(echo $prs | wc -c)" -gt 1 ]; then
     while read pr; do
       echo "::${pr}::"

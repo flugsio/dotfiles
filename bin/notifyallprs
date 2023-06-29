@@ -6,7 +6,7 @@ SLACK_PROMOTEINT_TOKEN=$SLACK_PROMOTEINT_JENKINS_TOKEN
 DAILY_TIME=${DAILY_TIME:-'12:40'}
 # newline separated list, for example "/torvalds/linux/\n/rails/rails/"
 # all pr's with html_url matching this will be filtered
-SKIP_REPOS=""
+SKIP_REPOS="${SKIP_REPOS:-}"
 
 prs=""
 prs_failed=""

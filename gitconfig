@@ -48,3 +48,6 @@
   ff = only
 [safe]
 	directory = /home/flugsio/donjon
+	directory = /home/vagrant/donjon
+; [blame]
+; 	ignoreRevsFile = .git-blame-ignore-revs

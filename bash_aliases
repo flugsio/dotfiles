@@ -66,7 +66,11 @@ function ci {
     build=/build
     curl -XPOST -s ${CI_URL}${job}/$build -L --user $JENKINS_USERTOKEN
   elif [ "$1" = "fail" ]; then
-    grep -Po "(?<=^rspec ).*?(?= #)" | sort | uniq
+    shift
+    ci log $@ | grep -Po "(?<=^rspec ).*?(?= #)" | sort | uniq
+  elif [ "$1" = "error" ]; then # for vim
+    shift
+    ci log $@ | grep -Po "(?<=^rspec ).*" | sort | uniq
   else
     echo "no such command"
   fi
@@ -228,7 +232,8 @@ function cleanup {
 
 # invoker aliases
 function i {
-  (rbenv shell 2.7.2; invoker $@)
+  #(rbenv shell 3.1.2; invoker $@)
+  (frum local 3.1.2; invoker $@)
 }
 alias istart='i start all -d'
 alias iw='alias i{r,l,s,a,clear,log}; echo iA=run interactively'
@@ -390,13 +395,14 @@ function record {
   if [ "$what" = "area" ]; then
     local potatoes=$(eval $(xdotool selectwindow getmouselocation --shell | grep "[XY]=" | sed "s/^/A/"; xdotool selectwindow getmouselocation --shell | grep "[XY]=" | sed "s/^/B/"); echo "-s $(($BX-$AX))x$(($BY-$AY)) -r $frames -i :0.0+$AX,$AY")
   elif [ "$what" = "window" ]; then
-    local potatoes=$(eval $(xdotool selectwindow getwindowgeometry --shell); echo "-s ${WIDTH}x${HEIGHT} -r $frames -i :0.0+$X,$Y")
+    local potatoes=$(eval $(xdotool selectwindow getwindowgeometry --shell); echo "-s ${WIDTH}x${HEIGHT} -r $frames -i :0.0+nomouse+$X,$Y")
   else
     local potatoes="-s $what -r $frames -i :0.0"
   fi
 
   if [ "$audio" = "audio" ]; then
-    local sauce="-f pulse -name a -channels 2 -fragment_size 1024 -i default"
+    local sauce="-f pulse -i alsa_output.pci-0000_00_1f.3-platform-skl_hda_dsp_generic.HiFi__hw_sofhdadsp_3__sink.monitor"
+    local sauce="-f pulse -i alsa_output.usb-C-Media_Electronics_Inc._USB_PnP_Sound_Device-00.iec958-stereo.monitor"
   elif [ "$audio" = "noaudio" ]; then
     local sauce=""
   else

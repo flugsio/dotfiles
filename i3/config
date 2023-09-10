@@ -177,7 +177,7 @@ mode "automate2" {
   bindsym c exec auto_getlocation
   #bindsym g exec auto_click
   #bindsym t exec pkill -9 auto_click
-  bindsym g exec auto_click_2
+  bindsym r exec pvc r
 
   bindsym Escape mode "default"
 }

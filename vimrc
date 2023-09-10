@@ -47,12 +47,14 @@ Plugin   'AndrewRadev/vim-eco' " requires vim-coffee-script
 Plugin  'rainerborene/vim-reek'
 Plugin     'rust-lang/rust.vim'
 Plugin    'racer-rust/vim-racer'
+Plugin          'ngmy/vim-rubocop'
 Plugin  'toyamarinyon/vim-swift'
 Plugin         'tpope/vim-commentary'
 Plugin         'tpope/vim-endwise'
 "Plugin         'int3/vim-extradite'
 "Plugin        'tpope/vim-flatfoot'
 Plugin         'tpope/vim-fugitive'
+Plugin         'tpope/vim-rhubarb'
 Plugin         'tpope/vim-git'
 "Plugin        'tpope/vim-haml'
 Plugin        'dzeban/vim-log-syntax'
@@ -75,6 +77,7 @@ Plugin       'flugsio/workflowish'
 if has('nvim')
   Plugin     'francoiscabrol/ranger.vim'
 end
+Plugin  'puremourning/vimspector'
 
 call vundle#end()
 
@@ -89,6 +92,12 @@ if has("gui_gtk3")
   set guifont=Ubuntu\ Mono\ 20
   set guicursor=n-v-c:block-Cursor/lCursor,ve:ver35-Cursor,o:hor50-Cursor,i-ci:ver20-Cursor/lCursor,r-cr:hor20-Cursor/lCursor,a:blinkwait400-blinkoff500-blinkon500
 end
+
+" set cursor insert in insert mode
+" works in alacritty/tmux, kitty, and st
+let &t_SI = "\<Esc>[6 q"
+let &t_SR = "\<Esc>[4 q"
+let &t_EI = "\<Esc>[2 q"
 
 if has("autocmd")
   filetype plugin indent on
@@ -169,6 +178,7 @@ set fillchars=vert:\ ,fold:-
 set listchars=tab:>-,trail:·,eol:$
 set nrformats-=octal
 silent! set signcolumn=no
+set colorcolumn=80,100
 
 "if 5 < strftime("%H") && strftime("%H") < 13
 "  set background=light

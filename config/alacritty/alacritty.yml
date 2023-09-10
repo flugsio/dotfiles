@@ -113,11 +113,14 @@ font:
     #   - (Linux/BSD) monospace
     #   - (Windows) Consolas
     #family: monospace
-    family: Ubuntu Mono
+    #family: Ubuntu Mono
+    #family: Comic Mono
     #family: JetBrainsMono
     #family: Terminus
+    family: Dejavu Sans Mono
 
     # The `style` can be specified to pick a specific face.
+    #style: Normal
     #style: Regular
     style: Bold
 
@@ -155,6 +158,7 @@ font:
     #style: Bold Italic
 
   # Point size
+  # font ubuntu mono
   size: 18.5
   size: 33
   size: 26
@@ -163,6 +167,9 @@ font:
   #size: 15.5 # 3-way-diff
   #size: 18 # normal
   #size: 24 # pairing
+  
+  # font dejavu mono
+  size: 22
 
   # Offset is the extra space around each character. `offset.y` can be thought
   # of as modifying the line spacing, and `offset.x` as modifying the letter
@@ -193,8 +200,9 @@ colors:
   # Default colors
   primary:
     #background: '0x002b46'
-    #background: '0x005269'
-    background: '0x222222'
+    background: '0x005269'
+    background: '0x000000'
+    #background: '0x222222'
     foreground: '0xebdbb2'
 
     # Bright and dim foreground colors
@@ -218,8 +226,9 @@ colors:
     #black:   '0x003E54'
     #black:   '0x004258'
     #black:   '0x004258'
-    #black:   '0x005269'
-    black:   '0x222222'
+    #black:   '0x004258'
+    black:   '0x005269'
+    #black:   '0x222222'
     red:     '0xd54e53'
     green:   '0x98971a'
     yellow:  '0xfe8019'

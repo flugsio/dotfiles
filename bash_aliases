@@ -62,6 +62,8 @@ function ci {
       fi
     fi
     curl -s ${CI_URL}${job}/$build/logText/progressiveText?start=0 -L --user $JENKINS_USERTOKEN
+  elif [ "$1" = "api" ]; then
+    curl -s ${CI_URL}/$2/api/json -L --user $JENKINS_USERTOKEN
   elif [ "$1" = "build" ]; then
     build=/build
     curl -XPOST -s ${CI_URL}${job}/$build -L --user $JENKINS_USERTOKEN
@@ -214,8 +216,13 @@ function gb {
   # do that when pushing instead, for renames
   git checkout -b $name origin/master
 }
+function gmain {
+  # origin/HEAD might not exist if remote was added instead of cloning
+  # git remote set-head origin -a
+  git symbolic-ref refs/remotes/origin/HEAD | sed 's#.*/##'
+}
 function gp {
-  git checkout master || git checkout main
+  git checkout $(gmain)
   git pull -p
   cleanup
 }
@@ -225,15 +232,18 @@ function gf {
 }
 function cleanup {
   local branch
-  for branch in $(git branch --merged | grep -v master | grep -v "^\*"); do
+  for branch in $(git branch --merged | grep -Pv "^(master|main|$(gmain))$" | grep -v "^\*"); do
     git branch -d $branch
   done
 }
 
 # invoker aliases
 function i {
-  #(rbenv shell 3.1.2; invoker $@)
-  (frum local 3.1.2; invoker $@)
+  if command -v frum >/dev/null 2>&1; then
+    (frum local 3.1.2; invoker $@)
+  else
+    (rbenv shell 3.2.1; invoker $@)
+  fi
 }
 alias istart='i start all -d'
 alias iw='alias i{r,l,s,a,clear,log}; echo iA=run interactively'

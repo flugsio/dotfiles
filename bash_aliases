@@ -115,7 +115,7 @@ function mo {
 }
 
 function err {
-  errb remote $@
+  errb re $@
 }
 function erp {
   errb prod $@
@@ -608,18 +608,18 @@ alias urlencode='python3 -c "import sys, urllib.parse as ul; print (ul.quote_plu
 function remote_forward {
   local port1=${2:-22}
   local port2=${3:-2222}
-  remote $1 -L localhost:${port1}:localhost:${port2}
+  re $1 -L localhost:${port1}:localhost:${port2}
 }
 
 function remote_backward {
   local port1=${2:-3240}
   local port2=${3:-$port}
-  remote $1 -R localhost:${port1}:localhost:${port2}
+  re $1 -R localhost:${port1}:localhost:${port2}
 }
 
 function remote_syncthing {
   echo http://localhost:83${1}
-  remote $1 -L localhost:83${1}:localhost:8384
+  re $1 -L localhost:83${1}:localhost:8384
 }
 function remote_num {
   printf "6%.3d" $1
@@ -674,6 +674,9 @@ function remote_command {
   fi
 }
 function remote {
+  re "$@"
+}
+function re {
   if [ -z "$REMOTEIP" ]; then
     local REMOTEIP=$(curl -Ls ipinfo.io | jq -r .ip)
     local d=echo

@@ -1,0 +1,188 @@
+#!/bin/bash
+
+# reset getopts
+OPTIND=1
+server=''
+verbose=0
+#prefix ssh with echo
+debug=0
+d=''
+
+if [ -z "$REMOTEIP" ]; then
+  REMOTEIP=$(curl -Ls ipinfo.io | jq -r .ip)
+  d=echo
+  set -x
+fi
+
+function main {
+  while getopts "h?vds:" opt; do
+    case "$opt" in
+      h|\?)
+        show_help
+        exit 0
+        ;;
+      v)  verbose=1
+        ;;
+      d)  debug=1; d=echo
+        ;;
+      s)  server=$OPTARG
+        ;;
+    esac
+  done
+
+  shift $((OPTIND-1))
+
+  if [ "$verbose" = 1 ]; then
+    echo "verbose=$verbose, server='$server', Leftovers: $@"
+    set -x
+  fi
+
+  cmd=$1
+  shift
+  [ "${1:-}" = "--" ] && shift
+
+  case "$cmd" in
+    save_history) remote_save_history "$@";;
+    copyid) remote_copyid "$@";;
+    push) remote_push "$@";;
+    pull) remote_pull "$@";;
+    sync) remote_sync "$@";;
+    sync_weechat) remote_sync_weechat "$@";;
+    forward) remote_forward "$@";;
+    backward) remote_backward "$@";;
+    syncthing) remote_syncthing "$@";;
+    weechat|w) remote_weechat "$@";;
+    sshfs) remote_sshfs "$@";;
+    watch) remote_watch "$@";;
+    watcher) remote_watcher "$@";;
+    listen) remote_listen "$@";;
+    ssh) ssh_guest "$@";;
+    *) connect "$@";;
+  esac
+}
+
+# ssh or mosh depending on server
+function connect {
+  # If server is a number, connect to guest, otherwise the host
+  if [ "$server" -gt 0 ] 2>/dev/null; then
+    mosh_guest "$@"
+  else
+    ssh_host "$@"
+  fi
+}
+
+function ssh_host {
+  if [ "$#" -eq 0 ]; then
+    $d ssh -A $REMOTEIP
+  else
+    $d ssh -t $REMOTEIP "cd ~/code/remote; $@"
+  fi
+}
+
+# connect to existing tmux session or create new
+function mosh_guest {
+  num=$(remote_num $server)
+  $d mosh vagrant@$REMOTEIP -p ${num}0:${num}9 --ssh="ssh -p ${num}0" -- tmux new-session -A -s m
+}
+
+function ssh_guest {
+  num=$(remote_num $server)
+  $d ssh vagrant@$REMOTEIP -p ${num}0 $@
+}
+
+function remote_weechat {
+  num=$(remote_num $server)
+  export TERM=screen-256color 
+  $d mosh vagrant@$REMOTEIP -p ${num}0:${num}9 --ssh="ssh -p ${num}0" --\
+    tmux -L tmux_weechat -f .tmux.weechat.conf new-session -A -s w weechat
+}
+function remote_save_history {
+  remote_pull /home/vagrant/.histfile ~/Sync/history/$(dtz)_$server.sh
+  cd ~/Sync/history
+}
+function remote_copyid {
+  num=$(remote_num $server)
+  ssh-copy-id -p ${num}0 vagrant@$REMOTEIP
+}
+function remote_push {
+  num=$(remote_num $server)
+  rsync -r $1 vagrant@$REMOTEIP:$2 -e "ssh -p ${num}0"
+}
+function remote_pull {
+  num=$(remote_num $server)
+  #scp scp://vagrant@$REMOTEIP:${num}0/$2 $3
+  rsync -Pz vagrant@$REMOTEIP:$1 $2 -e "ssh -p ${num}0"
+}
+function remote_sync {
+  # source
+  num1=$(remote_num $server)
+  # target
+  num2=$(remote_num $1)
+  fingerprint=$(ssh-keygen -q -F [$REMOTEIP]:${num2}0)
+  ssh -A ssh://vagrant@$REMOTEIP:${num1}0 "(grep -F \"$fingerprint\" ~/.ssh/known_hosts -q || echo \"$fingerprint\" >> ~/.ssh/known_hosts); rsync -avr $2 vagrant@$REMOTEIP:$2 -e \"ssh -p ${num2}0\""
+}
+function remote_sync_weechat {
+  remote_sync $1 .weechat/
+}
+function remote_forward {
+  local port1=${1:-22}
+  local port2=${2:-2222}
+  ssh_guest -L localhost:${port1}:localhost:${port2}
+}
+
+function remote_backward {
+  local port1=${1:-3240}
+  local port2=${2:-$port}
+  ssh_guest -R localhost:${port1}:localhost:${port2}
+}
+
+function remote_syncthing {
+  echo http://localhost:83${server}
+  ssh_guest -L localhost:83${server}:localhost:8384
+}
+function remote_num {
+  printf "6%.3d" $1
+}
+function show_help {
+  echo "REMOTE SCREENSHOTS"
+  echo "  To watch screenshots from 32"
+  echo "  remote_sshfs 32"
+  echo "  feh ~/remote/32/screenshot.png &"
+  echo "  remote_watch 32 (keep running)"
+  echo "  remote_listen 32 (keep running)"
+  echo "  on server: (can be used as byebug display expression)"
+  echo "  save_screenshot('~/code/screenshot.png')"
+}
+function remote_sshfs {
+  num=$(remote_num $server)
+  $d mkdir -p ~/remote/$server
+  $d sshfs vagrant@$REMOTEIP:/home/vagrant/code ~/remote/$server -p ${num}0 $@
+}
+function remote_watch {
+  num=$(remote_num $server)
+  ssh vagrant@$REMOTEIP -p ${num}0 $@ -R 127.0.0.1:7722:127.0.0.1:77$n zsh -ilc remote_watcher
+}
+function remote_watcher {
+  while sleep 0.2; do
+    inotifywait -e modify ~/code/screenshot.png && echo reload_feh | nc -c localhost 7722
+  done
+}
+function remote_listen {
+  while sleep 0.2; do
+    remote_command $(nc -l -p 77$server);
+  done
+}
+function remote_command {
+  if [ "$1" == "reload_feh" ]; then
+    # reload twice to force reload through sshfs
+    xdotool search --name feh sleep 0.5 key r sleep 0.5 key r
+  elif [ "$1" == "share_nano" ]; then
+    source ~/.ash_aliases
+    share_nano
+  elif [ "$1" == "share_olex" ]; then
+    source ~/.ash_aliases
+    share_olex
+  fi
+}
+
+main "$@"

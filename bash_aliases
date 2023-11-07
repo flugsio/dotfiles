@@ -429,6 +429,7 @@ function record {
   echo "start compressing? (ctrl-c to cancel)"
   read i
   if [ "$audio" = "audio" ]; then
+    #ffmpeg -i "$output" -c copy -vcodec libx264 -crf 24 -max_muxing_queue_size 4096 ${compressed}
     ffmpeg -i "$output" -c copy -vcodec libx264 -crf 24 ${compressed}
     echo "delete original? (ctrl-c to cancel)"
     read y

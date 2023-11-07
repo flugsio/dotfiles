@@ -2,6 +2,11 @@
 
 export DISPLAY=:0
 
+echo "2/8 up/down"
+echo "4/6 left/right"
+echo "5 space / pause"
+echo "1 fullscreen"
+echo "3 ctrl+w"
 while read -n1 what; do
   if [ "$what" = "exit" ]; then
     exit 0

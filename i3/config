@@ -181,7 +181,17 @@ mode "automate2" {
 
   bindsym Escape mode "default"
 }
-bindsym $mod+shift+b mode "automate2"
+
+mode "automate3" {
+  bindsym mod1+a exec csd a
+  bindsym mod1+s exec csd s
+  bindsym mod1+d exec csd d
+  bindsym mod1+f exec csd f
+
+  bindsym Escape mode "default"
+}
+bindsym $mod+shift+b mode "automate3"
+
 
 # resize window (you can also use the mouse for that)
 mode "resize" {

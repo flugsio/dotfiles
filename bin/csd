@@ -1,0 +1,78 @@
+#!/bin/bash
+
+# arrows
+ESC=" keydown Escape sleep 0.08 keyup Escape sleep 0.01"
+L=" keydown Left sleep 0.08 keyup Left sleep 0.01"
+R=" keydown Right sleep 0.08 keyup Right sleep 0.01" 
+U=" keydown Up sleep 0.08 keyup Up sleep 0.01" 
+D=" keydown Down sleep 0.08 keyup Down sleep 0.01" 
+# keys
+C=" keydown c sleep 0.08 keyup c sleep 0.01" 
+S=" keydown s sleep 0.08 keyup s sleep 0.01" 
+# enter
+E=" keydown Return sleep 0.08 keyup Return sleep 0.01" 
+
+if [ "a" = "a" ]; then
+  N1=" keydown 1 sleep 0.01 keyup 1 sleep 0.01"
+  N2=" keydown 2 sleep 0.01 keyup 2 sleep 0.01"
+  N3=" keydown 3 sleep 0.01 keyup 3 sleep 0.01"
+  N4=" keydown 4 sleep 0.01 keyup 4 sleep 0.01"
+  N5=" keydown 5 sleep 0.01 keyup 5 sleep 0.01"
+  N6=" keydown 6 sleep 0.01 keyup 6 sleep 0.01"
+  Q=" keydown q sleep 0.01 keyup q sleep 0.01"
+  E=" keydown e sleep 0.01 keyup e sleep 0.01" 
+  A=" keydown a sleep 0.01 keyup a sleep 0.01" 
+  M1=" mousedown 1 sleep 0.30 mouseup 1 sleep 0.01" 
+  pre=" search --classname Chowdren windowactivate --sync sleep 0.1 $ESC"
+  if [ "$1" = "a" ]; then
+    # metal workshop
+    M1=" mousedown 1 sleep 0.15 mouseup 1 sleep 0.03" 
+    xdotool $pre
+      for i in 1 2 3; do
+      xdotool mousemove 598 734 sleep 0.2 $M1 $M1 $M1 $M1 $M1 $M1
+      xdotool keydown d sleep 0.34 keyup d sleep 0.01
+      xdotool mousemove 644 538 sleep 0.2 $N1 $M1 $N2 $M1 $N3 $M1 $N4 $M1 $N5 $M1 $N6 $M1
+      xdotool keydown d sleep 0.8 keyup d sleep 0.01
+      xdotool mousemove 643 729 sleep 0.2 $N1 $M1 $N2 $M1 $N3 $M1 $N4 $M1 $N5 $M1 $N6 $M1
+      xdotool keydown a sleep 1.2 keyup a sleep 0.01
+    done
+    xdotool mousemove 598 734 sleep 0.2 $M1 $M1
+    xdotool keydown d sleep 0.34 keyup d sleep 0.01
+    xdotool mousemove 644 538 sleep 0.2 $N1 $M1 $N2 $M1
+    xdotool keydown d sleep 0.8 keyup d sleep 0.01
+    xdotool mousemove 643 729 sleep 0.2 $N1 $M1 $N2 $M1
+    xdotool $ESC
+  elif [ "$1" = "s" ]; then
+    # box
+    t=" $Q sleep 0.62"
+    t10=" $t $t $t $t $t $t $t $t $t $t"
+    xdotool $pre mousemove 662 632 sleep 0.2 $M1 sleep 0.3 $t10 $t10 $t10 $t10 $t10 $t $t $t $A $ESC
+  elif [ "$1" = "d" ]; then
+    # sprint / weights
+    s="$Q $E $Q $E $Q $E $Q $E $Q $E $Q $E"
+    w="$s sleep 1.1"
+    xdotool sleep 0.3 $pre $w $w $w $w $w $w $w $w $w $w $w $w $w $w $w $w $w $w $w $w $w $ESC
+  elif [ "$1" = "f" ]; then
+    # read
+    c=" $M1 sleep 2.1" 
+    c10=" $c $c $c $c $c $c $c $c $c $c"
+    xdotool $pre mousemove 631 612 sleep 0.2 $c10 $c10 $c $c $c $ESC
+  fi
+else
+  if [ "$1" = "a" ]; then
+    # rat
+    xdotool sleep 0.3 $R sleep 0.1 $D sleep 0.1 $C sleep 0.2 $S
+  elif [ "$1" = "s" ]; then
+    # trash
+    t="$U sleep 0.2 $R sleep 0.2"
+    xdotool sleep 0.3 $t $t $t $t $t $S
+  elif [ "$1" = "d" ]; then
+    # dish
+    w="$L $R $L $R $U"
+    xdotool sleep 0.3 $w $w $w $w $w $w
+  elif [ "$1" = "f" ]; then
+    # wine
+    c=" keydown Up sleep 0.08 keyup Up sleep 0.01" 
+    xdotool sleep 0.3 $U $U $U $U $U $U $U $U $U $U $U $U $U $U $U $U $U $U $U $U $U $U $U $U $E
+  fi
+fi

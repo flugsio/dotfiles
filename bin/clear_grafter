@@ -1,0 +1,48 @@
+#!/bin/bash -e
+
+source ~/.bash_aliases
+
+# this needs to match the ip
+cc_cookie=''
+
+function main {
+  loop_sites
+}
+
+function nuke_site {
+  echo "nuking $1"
+  ci buildparam grafter/prune "GRAFTER_NAME=${1%.dev.promoteapp.net}"
+  sleep 10
+}
+
+function loop_sites {
+  for domain in $(extract "$(site_domains)"); do
+    if ! curl "$domain" -sIL -f > /dev/null; then
+      #echo nuke https://$domain
+      nuke_site "$domain"
+    else
+      if ! curl "$domain" -sL | grep generator | grep -e Promote > /dev/null; then
+        #echo nuke https://$domain
+        nuke_site "$domain"
+      else
+        echo keep https://$domain
+      fi
+    fi
+  done
+}
+function site_domains {
+  if [ -e grafter_sites.html ]; then
+    cat grafter_sites.html
+  else
+    curl -sL 'https://cc-grafter.promoteapp.net/sites?size=500' \
+      -H "Cookie: $cc_cookie"
+  fi
+}
+
+function extract {
+  echo "$1" | htmlq --text \
+    '#site-table > tbody > tr > td:nth-child(1) > a' |\
+    sed -E 's/[[:space:]]*//g;/^$/d'
+}
+
+main

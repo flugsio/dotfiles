@@ -65,8 +65,12 @@ function ci {
   elif [ "$1" = "api" ]; then
     curl -s ${CI_URL}/$2/api/json -L --user $JENKINS_USERTOKEN
   elif [ "$1" = "build" ]; then
-    build=/build
+    set -x
+    build="/build"
     curl -XPOST -s ${CI_URL}${job}/$build -L --user $JENKINS_USERTOKEN
+  elif [ "$1" = "buildparam" ]; then
+    curl -XPOST -s ${CI_URL}${job}/buildWithParameters -L --user $JENKINS_USERTOKEN \
+      -F "$build"
   elif [ "$1" = "fail" ]; then
     shift
     ci log $@ | grep -Po "(?<=^rspec ).*?(?= #)" | sort | uniq

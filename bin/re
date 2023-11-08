@@ -6,6 +6,7 @@ server=''
 verbose=0
 #prefix ssh with echo
 debug=0
+forward=0
 d=''
 
 if [ -z "$REMOTEIP" ]; then
@@ -15,7 +16,7 @@ if [ -z "$REMOTEIP" ]; then
 fi
 
 function main {
-  while getopts "h?vds:" opt; do
+  while getopts "h?vdAs:" opt; do
     case "$opt" in
       h|\?)
         show_help
@@ -24,6 +25,8 @@ function main {
       v)  verbose=1
         ;;
       d)  debug=1; d=echo
+        ;;
+      A)  forward=1
         ;;
       s)  server=$OPTARG
         ;;
@@ -65,7 +68,11 @@ function main {
 function connect {
   # If server is a number, connect to guest, otherwise the host
   if [ "$server" -gt 0 ] 2>/dev/null; then
-    mosh_guest "$@"
+    if [ "$forward" = 1 ]; then
+      ssh_guest -A "$@"
+    else
+      mosh_guest "$@"
+    fi
   else
     ssh_host "$@"
   fi

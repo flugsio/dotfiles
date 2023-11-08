@@ -16,6 +16,7 @@ if [ -z "$REMOTEIP" ]; then
 fi
 
 function main {
+  server=$(load_server)
   while getopts "h?vdAs:" opt; do
     case "$opt" in
       h|\?)
@@ -28,7 +29,7 @@ function main {
         ;;
       A)  forward=1
         ;;
-      s)  server=$OPTARG
+      s)  server=$OPTARG; save_server
         ;;
     esac
   done
@@ -62,6 +63,14 @@ function main {
     ssh) ssh_guest "$@";;
     *) connect "$@";;
   esac
+}
+
+function load_server {
+  cat .cache/re_server || save_server
+}
+
+function save_server {
+  echo "$server" > .cache/re_server
 }
 
 # ssh or mosh depending on server

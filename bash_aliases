@@ -824,3 +824,23 @@ function perf {
   watch -n 0.5 'cat /sys/firmware/acpi/platform_profile; (cat /proc/acpi/ibm/fan | grep speed -A1); cat /proc/acpi/ibm/thermal; (cat /proc/cpuinfo | grep MHz)'
 }
 alias bell='echo -e "\a"'
+function slack_delete {
+  echo "timestamp?"
+  read ts
+  echo "which channel?"
+  channel=$(echo -e "main\nstatus" | fzf)
+  if [ "$channel" = main ]; then
+    recipient=$SLACK_MAIN_FLOW
+  else
+    recipient=$SLACK_DEVSTATUS
+  fi
+
+  echo "which account?"
+  account=$(echo -e "own\njenkins" | fzf)
+  if [ "$account" = jenkins ]; then
+    token=$SLACK_PROMOTEINT_JENKINS_TOKEN
+  else
+    token=$SLACK_PROMOTEINT_TOKEN
+  fi
+  curl -d "token=${token}" -d "channel=$recipient" -d ts="$ts" https://slack.com/api/chat.delete
+}

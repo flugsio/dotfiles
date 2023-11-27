@@ -746,7 +746,7 @@ function fast_chromium_stop {
 }
 # taskwarrior gtd
 # https://cs-syd.eu/posts/2015-06-14-gtd-with-taskwarrior-part-1-intro.html
-alias tin='task add +in'
+alias tin='task add +in rc.context:none'
 alias tin_count='task +in +PENDING count'
 function tickle () {
   deadline=$1

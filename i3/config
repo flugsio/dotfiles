@@ -300,6 +300,7 @@ bindsym XF86AudioStop exec cmus-remote -s
 bindsym XF86AudioPrev exec cmus-remote -r
 bindsym XF86AudioNext exec cmus-remote -n
 bindsym XF86AudioPause exec cmus-remote -u
+#bindsym XF86AudioStop exec /home/flugsio/bin/pause
 
 bindcode $mod+112  exec /usr/bin/pulseaudio-ctl up
 bindcode $mod+117  exec /usr/bin/pulseaudio-ctl down
@@ -326,6 +327,7 @@ for_window [title="FarmingSimulator2015"] floating enable
 for_window [title="Particulars"] floating enable
 for_window [title="DeathTrap"] floating enable
 for_window [title="Safecracker"] floating enable
+for_window [title=" \(DEBUG\)$" instance="Godot_Engine"] floating enable
 for_window [workspace=10] floating enable
 
 for_window [title="VirtualBox$"] floating enable, workspace 10

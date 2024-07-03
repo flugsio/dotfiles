@@ -6,7 +6,8 @@ function main {
     echo 14 16 18 20 22* 24 28* 32
   else
     # showconsolefont to view all characters
-    setfont /usr/share/consolefonts/ter-1${size}b.psf.gz
+    #setfont /usr/share/consolefonts/ter-1${size}b.psf.gz 
+    setfont /usr/share/kbd/consolefonts/ter-1${size}b.psf.gz
   fi
 
   # this differ a bit compared to sv-code

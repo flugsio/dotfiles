@@ -32,13 +32,18 @@ stty -ixon
 [[ -e ~/.bash_aliases ]] && . ~/.bash_aliases
 [[ -e ~/.api_keys ]] && . ~/.api_keys
 
-if command -v ruby >/dev/null 2>&1; then
-  # saves 100ms in total, rm ~/.gem/ruby/current when updating system ruby
-  [[ /var/log/pacman.log -nt ~/.gem/ruby/current.touch ]] && rm ~/.gem/ruby/current
-  [[ -e ~/.rbenv_init ]] && . ~/.rbenv_init
-fi
 
-export PATH=$HOME/bin:$HOME/bin/games:$HOME/code/scripts:$HOME/.cargo/bin:$PATH
+export PATH=$HOME/bin:$HOME/bin/games:$HOME/code/scripts:$HOME/.cargo/bin:$HOME/.local/bin:$PATH
+
+if [ `hostname` = "cedra" ]; then
+  eval "$(frum init)"
+else
+  if command -v ruby >/dev/null 2>&1; then
+    # saves 100ms in total, rm ~/.gem/ruby/current when updating system ruby
+    [[ /var/log/pacman.log -nt ~/.gem/ruby/current.touch ]] && rm ~/.gem/ruby/current
+    [[ -e ~/.rbenv_init ]] && . ~/.rbenv_init
+  fi
+fi
 
 export EDITOR='vim'
 export PAGER='less'
@@ -126,7 +131,7 @@ function findserver() {
     local ip=$(echo $result | cut -f1)
     local universe=$(echo $result | cut -f2)
     local name=$(echo $result | cut -f3 | sed 's/:.*ansible_host://')
-    #local cmd=$(cat ~/.config/zcommands | fzf | sed 's/ *#.*$//' | sed 's# LOG# | tee ~/debug/latest/$(datei)_'$universe-$name'.log#')
+    local cmd=$(cat ~/.config/zcommands | fzf | sed 's/ *#.*$//' | sed 's# LOG# | tee ~/debug/latest/$(datei)_'$universe-$name'.log#')
     if [ -n "$ip" ]; then
       k=$(grep ansible_ssh_private_key_file ~/donjon/ansible/development/group_vars/all | grep -Po '(?<=")[^"]*')
       cmd="grep ansible_become ~/donjon/ansible/$universe/host_vars/$name; ssh -i ~/$k $SPUSER@$ip $cmd"
@@ -170,5 +175,8 @@ bindkey '^[' accepthold # alt+return
 export KEYTIMEOUT=1
 # can only be used when using ruby 2.7+
 export RUBYOPT='-W:deprecated'
+#export RUBYOPT="-W0"
+#export RUBYOPT=""
 export LOG4J_FORMAT_MSG_NO_LOOKUPS=true
-
+export DOCKER_BUILDKIT=1
+export DOCKER_WEB_PORT=444

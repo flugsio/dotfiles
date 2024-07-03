@@ -2,7 +2,8 @@
 
 # workaround multiple monitors
 # this can also apply margins, check the manpage
-vset fbset -xres 2560 -yres 1440
+#sudo fbset -xres 2560 -yres 1440
+sudo fbset -xres 3440 -yres 1440
 setfont $HOME/code/dotfiles/ubuntu-console/UbuntuMono-B-8x16.psf
 setfont ter-132b
 

@@ -3,6 +3,8 @@
 
 # wip
 
+unset RUBYOPT
+
 function process
 {
   args="$@"
@@ -13,10 +15,19 @@ function process
   fi
   files=${files:-.}
 
+  #if [ "$opts" = "-d" ]; then
+  #  opts="-O ~/.rspec_fast -fd --order defined"
+  #elif [ "$opts" = "-f" ] || grep -qe "\(fit\|fdescribe\|fcontext\)" $files; then
+  #  opts="-O ~/.rspec_fast -fd --order defined -t focus"
+  #else
+  #  opts="-O ~/.rspec_fast -fd --order defined"
+  #fi
   if [ "$opts" = "-d" ]; then
     opts="-fd --order defined"
   elif [ "$opts" = "-f" ] || grep -qe "\(fit\|fdescribe\|fcontext\)" $files; then
     opts="-fd --order defined -t focus"
+  else
+    opts="-fd --order defined"
   fi
 
   declare -a errors
@@ -24,19 +35,20 @@ function process
 
   for file in $files; do
     command=`echo $file | sed -r "s/((spec\/|test\/|release\/)|(\w+|)\/?)(.*)/cd .\/\3 \&\& if [ -d spec ]; then bundle exec rspec --order defined --no-color \2\4 $opts; else bundle exec rake test \2\4 $opts; fi/"`
+    #command="rspec --no-color $file $opts"
     #command=`echo $file | sed -r "s/(\w+)\/(.*)/cd \1 \&\& bundle exec rspec \2 spec\/promote\/promote\/copy_spec.rb/"`
     #command=`echo $file | sed -r "s/(\w+)\/(\w+)\/(.*)/bundle exec rake konacha:run SPEC=\3/"`
     if [ -n "$VAGRANT_MACHINE" ]; then
       command="ssh -tt $VAGRANT_MACHINE \"bash -O huponexit -lc 'cd $VAGRANT_DIR; $command'\""
-    elif [[ $PWD = *promote-docker* ]]; then
+    #elif [[ $PWD = *promote-docker* ]]; then
 
-      command="docker-compose run --rm promote bash -O huponexit -lc '$command'"
-      #command="docker-compose run --rm fetch bash -O huponexit -lc '$command'"
+    #  command="docker-compose run -T --rm --no-deps promote-base bash -O huponexit -lc '$command'"
+    #  #command="docker-compose run --rm --no-deps fetch-base bash -O huponexit -lc '$command'"
     else
-      command=$command $opts
+      command=$command
     fi
     commands+=("$command")
-    echo "$command"
+    #echo "$command"
     if ! echo "$command" | sh; then
       errors+=("$file")
     fi

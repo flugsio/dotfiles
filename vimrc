@@ -5,12 +5,14 @@ call vundle#begin()
 
 Plugin        'gmarik/Vundle.vim'
 
+" Plugin 'github/copilot.vim'
+
 " these case issues with escape
 " it jumps toggles into insert mode
-" Plugin 'prabirshrestha/async.vim'
-" Plugin 'prabirshrestha/vim-lsp'
-" Plugin 'prabirshrestha/asyncomplete.vim'
-" Plugin 'prabirshrestha/asyncomplete-lsp.vim'
+Plugin 'prabirshrestha/async.vim'
+Plugin 'prabirshrestha/vim-lsp'
+Plugin 'prabirshrestha/asyncomplete.vim'
+Plugin 'prabirshrestha/asyncomplete-lsp.vim'
 
 Plugin   'majutsushi/tagbar'
 Plugin       'mileszs/ack.vim'
@@ -261,13 +263,13 @@ let g:rails_projections = {
 
 let g:racer_cmd="racer"
 
-if executable('rls')
-    au User lsp_setup call lsp#register_server({
-        \ 'name': 'rls',
-        \ 'cmd': {server_info->['rustup', 'run', 'nightly', 'rls']},
-        \ 'whitelist': ['rust'],
+if executable('rust-analyzer')
+  au User lsp_setup call lsp#register_server({
+        \   'name': 'Rust Language Server',
+        \   'cmd': {server_info->['rust-analyzer']},
+        \   'whitelist': ['rust'],
         \ })
-endif 
+endif
 
 " pomodoros / glue for Vomodoro to bin/p
 let g:Pomo_ArchiveFilePath = "~/code/sparkleshare/pomodoros_archive.wofl"
@@ -314,6 +316,11 @@ endfunction
 
 let mapleader = ","
 let maplocalleader = "-"
+
+" rls completion
+inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+"inoremap <expr> <cr>    pumvisible() ? asyncomplete#close_popup() : "\<cr>"
 
 " Create undo-point before delete-to-beginning in insert mode
 " This makes it possible to undo back to the exact point before pressing CTRL-U

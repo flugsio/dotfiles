@@ -5,4 +5,7 @@
 
 pkill redshift
 sleep 5
-curl ipinfo.io | jq '.loc / "," | "-l " + .[0] + ":" + (.[1] | tonumber + 15 | tostring)' -r | xargs redshift -b 1.0:0.7
+night=0.7
+night=0.6
+#night=0.4
+curl ipinfo.io | jq '.loc / "," | "-l " + .[0] + ":" + (.[1] | tonumber + 15 | tostring)' -r | xargs redshift -b 1.0:$night

@@ -1,1 +1,4 @@
 bind main w !>sh -c 'git diff --merge-base origin/master %(refname) | tig show'
+set reference-format = hide:other
+set main-view-author-display = abbreviated
+set main-view-date-display = relative-compact

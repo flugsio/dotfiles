@@ -61,7 +61,10 @@ function ci {
         build=$(echo "$2" | grep -Po "\d*(?=\/$)" )
       fi
     fi
-    curl -s ${CI_URL}${job}/$build/logText/progressiveText?start=0 -L --user $JENKINS_USERTOKEN
+    #local url="${CI_URL}${job}/$build/logText/progressiveText"
+    #curl -LIs ${url}?start=308000 -L --user $JENKINS_USERTOKEN
+    curl -Ls ${CI_URL}${job}/$build/logText/progressiveText?start=0 -L --user $JENKINS_USERTOKEN
+    #curl -s ${CI_URL}${job}/$build/logText/$MODE -L --user $JENKINS_USERTOKEN
   elif [ "$1" = "api" ]; then
     curl -s ${CI_URL}/$2/api/json -L --user $JENKINS_USERTOKEN
   elif [ "$1" = "build" ]; then
@@ -258,9 +261,9 @@ function ir { for s in ${*:-${DEFAULT_RELOAD:-$(ihere)}}; do echo reload $s; i r
 function is { for s in ${*:-${DEFAULT_RELOAD:-$(ihere)}}; do echo remove $s; i remove $s; done }
 function ia { for s in ${*:-${DEFAULT_RELOAD:-$(ihere)}}; do echo add $s; i add $s; done }
 function icom { sed -n "/\[$1\]/,/^\[/p" ~/.invoker/all.ini | grep -Po "(?<=^command = ).*"; }
-function iA { eval " $(icom $1)"; }
+function iA { is $1; eval " $(icom $1)"; }
 alias iclear='pkill -f "^tail.*.invoker/invoker.log"'
-alias ilog='while true; do clear; tmux clear-history; tail -n0 -F ~/.invoker/invoker.log; done'
+alias ilog='tmux move-window -t9; while true; do clear; tmux clear-history; tail -n0 -F ~/.invoker/invoker.log; done'
 alias ilist="cat ~/.invoker/all.ini | sed -rn '/^\[/{N;s/\[([^]]*)\]\ndirectory = (.*)$/\1 \2/;p}'"
 # List of all processes in invoker's all.ini, filtered by the current directory name
 function ihere {
@@ -369,7 +372,8 @@ alias dbdiff='git --no-pager diff db/schema.rb'
 alias remig='ber db:migrate && dbdiff && unmig && dbdiff && ber db:migrate && dbdiff'
 alias revert_schema='dbdiff && git checkout db/schema.rb'
 alias aup='bun; yar; ber db:migrate; ber i18nlite:sync; ber db:migrate RAILS_ENV=test; revert_schema; tag &'
-alias wha='echo bun, mig, i18, aup=after update, remig=rerun migration, tes=after update for tests, ran=vimt ranger'
+alias gpar='gp; aup; ir'
+alias wha='echo bun, mig, i18, aup=after update, remig=rerun migration, tes=after update for tests, gpar=git pull aup and restart, ran=vimt ranger'
 alias vimt='DISPLAY=:0 \vim --servername $(tmux display-message -p "#S")'
 alias ran='EDITOR="tmux_editor" ranger --cmd="map J chain move down=1 ; move right=1" --cmd="map K chain move up=1 ; move right=1" --cmd="set preview_files false" --cmd="set display_size_in_main_column false"'
 alias view_shots='ranger --cmd="set column_ratios 1,5" --cmd="set display_size_in_main_column false" ~/shots'
@@ -831,6 +835,9 @@ function ffmpeg_to_mov {
   local input="$1"
   ffmpeg -i "$input" -c copy -vcodec libx264 -crf 24 "$(basename $input).mov"
 }
+function hi {
+  source-highlight -s html -f esc
+}
 function perf {
   watch -n 0.5 'cat /sys/firmware/acpi/platform_profile; (cat /proc/acpi/ibm/fan | grep speed -A1); cat /proc/acpi/ibm/thermal; (cat /proc/cpuinfo | grep MHz)'
 }
@@ -839,11 +846,13 @@ function slack_delete {
   echo "timestamp?"
   read ts
   echo "which channel?"
-  channel=$(echo -e "main\nstatus" | fzf)
+  channel=$(echo -e "main\nstatus\nnotifications" | fzf)
   if [ "$channel" = main ]; then
     recipient=$SLACK_MAIN_FLOW
-  else
+  elif [ "$channel" = status ]; then
     recipient=$SLACK_DEVSTATUS
+  else
+    recipient=$SLACK_DEVNOTI
   fi
 
   echo "which account?"

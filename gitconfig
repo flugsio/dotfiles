@@ -37,6 +37,7 @@
   m = checkout master
   r = branch --move
   append = commit --amend --no-edit
+  bb = !better-git-branch.sh
 
 [core]
   excludesfile = ~/.gitignore
@@ -47,7 +48,9 @@
 [pull]
   ff = only
 [safe]
-	directory = /home/flugsio/donjon
-	directory = /home/vagrant/donjon
+  directory = /home/flugsio/donjon
+  directory = /home/vagrant/donjon
 ; [blame]
 ; 	ignoreRevsFile = .git-blame-ignore-revs
+[maintenance]
+  repo = /home/vagrant/code/promote

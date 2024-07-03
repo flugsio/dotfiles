@@ -1,0 +1,92 @@
+#!/bin/bash
+
+function click_at {
+  xdotool mousemove $1 $2 sleep 0.03 mousedown 1 sleep 0.12 mouseup 1
+}
+
+function item {
+  # buy card
+  click_at 680 740; sleep 1.5
+  # click to continue
+  xdotool key space
+  sleep 2.1
+  # close results
+  xdotool key Escape
+  sleep 0.2
+  xdotool key space
+  sleep 0.1
+}
+
+function item2 {
+  # pick card
+  click_at 2339 1220; sleep 0.1
+  # sacrifice
+  click_at 1412 834;  sleep 0.1
+  # sacrifice
+  click_at 1666 848;  sleep 0.3
+  # place
+  click_at 1412 823;  sleep 0.5
+  # hammer
+  click_at 366 999;   sleep 0.2
+  # hammer hit
+  click_at 1422 841;  sleep 1.0
+  # hammer
+  click_at 366 999;   sleep 0.2
+  # hammer hit
+  click_at 1422 841;  sleep 1.4
+  # new skeleton, second card
+  click_at 1136 875;  sleep 1.0
+  # new skeleton, second card
+  click_at 1136 875;  sleep 1.1
+
+  # place new zombies
+  click_at 2389 1250; sleep 0.1
+  click_at 1403 837;  sleep 0.1
+  click_at 2370 1240; sleep 0.1
+  click_at 1671 838;  sleep 0.1
+  sleep 0.5
+}
+
+function item3 {
+  # pick card middle
+  click_at 1280 1220; sleep 0.1
+  # sacrifice 4
+  click_at 1666 848;  sleep 0.3
+  # place 3
+  click_at 1412 840;  sleep 0.5
+  # hammer
+  click_at 366 999;   sleep 0.1
+  # hammer hit 3
+  click_at 1422 840;  sleep 0.1
+  # hammer
+  click_at 366 999;   sleep 0.1
+  # hammer hit 3
+  click_at 1422 840;  sleep 0.1
+  # hammer
+  click_at 366 999;   sleep 0.1
+  # hammer hit 3
+  click_at 1422 840;  sleep 0.1
+  # hammer
+  click_at 366 999;   sleep 0.1
+  # hammer hit 3
+  click_at 1422 840;  sleep 0.1
+  # hammer
+  click_at 366 999;   sleep 0.1
+  # hammer hit 3
+  click_at 1422 840;  sleep 0.1
+  # hammer
+  click_at 366 999;   sleep 0.1
+  # hammer hit 3
+  click_at 1422 840;  sleep 0.1
+  # hammer
+  click_at 366 999;   sleep 0.1
+  # hammer hit 3
+  click_at 1422 840;  sleep 1.3
+  sleep 0.5
+}
+
+function main {
+  item
+}
+
+main

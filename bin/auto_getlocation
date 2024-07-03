@@ -1,3 +1,19 @@
-#!/bin/bash
+#!/bin/bash -e
 
-xdotool getmouselocation >> ~/locations.txt
+# right click to abort
+# doens't work if something is grabbing the mouse
+timer_a=$(date +%s%3N)
+while true; do
+  xdotool selectwindow
+  # || true
+  timer_b=$(date +%s%3N)
+  (echo "click_at $(xdotool getmouselocation | sed 's/x://;s/y://;s/ screen.*//'); sleep $(( timer_b - timer_a ))" ) >> ~/locations.txt
+  sleep 0.1
+  timer_a=$(date +%s%3N)
+  #xdotool click 1 sleep 0.1
+done
+
+# alternative
+# echo "$(date +%s.%1N)" >> ~/locations.txt
+# (echo "click_at $(xdotool getmouselocation | sed 's/x://;s/y://;s/ screen.*//'); sleep 1.0" ) >> ~/locations.txt
+# xdotool click 1

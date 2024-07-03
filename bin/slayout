@@ -60,10 +60,15 @@ function main {
       #secondary_extra="--mode 1920x1080 --rate 60.00 --"
     fi
   elif [ `hostname` = "zdani" ]; then
-    primary="DP-0"
-    primary_extra="--mode 1920x1080"
-    secondary="HDMI-0"
-    secondary_extra="--mode 1920x1080"
+    #primary="DP-0"
+    #primary_extra="--mode 1920x1080"
+    #secondary="HDMI-0"
+    #secondary_extra="--mode 1920x1080"
+
+    primary="HDMI-0"
+    #primary_extra="--mode 1920x1080"
+    primary_extra="--mode 2560x1440 --rate 74.92"
+    #primary_extra="--mode 2560x1440 --rate 59.95"
   elif [ `hostname` = "dartro" ]; then
     primary="LVDS1"
     primary_extra="--mode 1600x900"

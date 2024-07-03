@@ -66,11 +66,11 @@ function main {
 }
 
 function load_server {
-  cat .cache/re_server || save_server
+  cat ~/.cache/re_server || save_server
 }
 
 function save_server {
-  echo "$server" > .cache/re_server
+  echo "$server" > ~/.cache/re_server
 }
 
 # ssh or mosh depending on server
@@ -98,7 +98,8 @@ function ssh_host {
 # connect to existing tmux session or create new
 function mosh_guest {
   num=$(remote_num $server)
-  $d mosh vagrant@$REMOTEIP -p ${num}0:${num}9 --ssh="ssh -p ${num}0" -- tmux new-session -A -s m
+  # this should start at 0
+  $d mosh vagrant@$REMOTEIP -p ${num}1:${num}9 --ssh="ssh -p ${num}0" -- tmux new-session -A -s m
 }
 
 function ssh_guest {

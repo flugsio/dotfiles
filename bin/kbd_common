@@ -32,3 +32,12 @@ if [ -n "$id" ]; then
   xinput set-prop $id "libinput Button Scrolling Button Lock Enabled" 1
   #xinput set-prop $id "libinput Scrolling Pixel Distance" 15
 fi
+
+id=$(xinput list --id-only pointer:"Wacom Bamboo 16FG 4x5 Finger touch")
+if [ -n "$id" ]; then
+  if [ `hostname` = "zdani" ]; then
+    # https://wiki.ubuntu.com/X/InputCoordinateTransformation
+    # clockwise rotation
+    xinput set-prop $id "Coordinate Transformation Matrix" 0 -1 1 1 0 0 0 0 1
+  fi
+fi

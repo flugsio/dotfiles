@@ -177,7 +177,8 @@ mode "automate2" {
   bindsym c exec auto_getlocation
   #bindsym g exec auto_click
   #bindsym t exec pkill -9 auto_click
-  bindsym r exec pvc r
+  bindsym r exec wing.sh r
+  bindsym s exec pkill wing.sh
 
   bindsym Escape mode "default"
 }
@@ -190,7 +191,7 @@ mode "automate3" {
 
   bindsym Escape mode "default"
 }
-bindsym $mod+shift+b mode "automate3"
+bindsym $mod+shift+b mode "automate2"
 
 
 # resize window (you can also use the mouse for that)
@@ -289,7 +290,7 @@ bindsym --release Shift+Print           exec screenshot -s
 bindsym $mod+Print exec $simple_term -t shot_viewer -e zsh -i -c 'view_shots'
 for_window [title="shot_viewer"] fullscreen
 
-bindsym $mod+Pause exec sleep 0.1 && xset dpms force off
+bindsym $mod+Pause exec sleep 0.5 && xset dpms force off
 bindsym $mod+shift+Pause exec sleep 0.5 && xset dpms force off && slock
 bindsym $mod+shift+F12 exec sleep 0.5 && xset dpms force off && slock
 

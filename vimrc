@@ -356,7 +356,7 @@ nnoremap <leader>gw :Gwrite<CR>
 nnoremap <leader>gb :G blame<CR>
 nnoremap <leader>do :diffoff!<CR>:only<CR>
 nnoremap <leader>gp :G push -u<CR>
-nnoremap <leader>gP :G push -f<CR>
+nnoremap <leader>gP :G push --force-with-lease<CR>
 " diff file under cursor
 nnoremap <leader>gf :vert :Gdiffsplit <cfile><CR>
 

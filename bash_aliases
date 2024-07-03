@@ -645,6 +645,17 @@ function ch {
   done
 }
 
+function update_gluj {
+  curl https://scout-32.remote4.promoteapp.net/api/v1/entries.json?count=100 | jq '.[] | (select(.type == "sgv") | [.sysTime, (.sgv/18*10|round/10)]), (select(.type == "mbg") | [.sysTime, (.mbg/18*10|round/10)]) | @csv' -r | sponge ~/.glucose
+}
+function watch_gluj {
+  source ~/.bash_aliases
+  while sleep 1; do
+    update_gluj;
+    sleep 1m;
+  done
+}
+
 function v {
   local url=${1:-$(xsel)}
   youtube-dl -F "$url"

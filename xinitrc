@@ -16,7 +16,8 @@ fi
 xrandr --dpi 96
 slayout 2 || xrandr --auto
 xset r rate 200 33
-xset -dpms
+#xset -dpms
+xset s off -dpms
 
 export PATH=$PATH:~/bin/:~/code/scripts/
 

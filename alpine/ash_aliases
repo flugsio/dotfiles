@@ -117,6 +117,10 @@ function share_olex {
   share_usb "16d0:0753"
 }
 
+function share_espc3 {
+  share_usb "303a:1001"
+}
+
 # this requires share_init
 # $1 = id
 function share_usb {

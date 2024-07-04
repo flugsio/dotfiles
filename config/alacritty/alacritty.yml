@@ -162,9 +162,9 @@ font:
 
   # Point size
   # font ubuntu mono
-  size: 18.5
-  size: 33
-  size: 26
+  #size: 18.5
+  #size: 33
+  #size: 26
   # from toldi
   # 2560x1440 @ 32"
   #size: 15.5 # 3-way-diff
@@ -208,7 +208,7 @@ colors:
   primary:
     #background: '0x002b46'
     background: '0x005269'
-    background: '0x000000'
+    #background: '0x000000'
     #background: '0x222222'
     foreground: '0xebdbb2'
 
@@ -870,6 +870,21 @@ mouse:
 
   # (Windows only)
   #- { key: Return,   mods: Alt,           action: ToggleFullscreen }
+# Values for `mode`:
+#   - ~AppCursor
+#   - AppCursor
+#   - ~AppKeypad
+#   - AppKeypad
+key_bindings:
+  # (Windows/Linux only)
+  #- { key: V,        mods: Control|Shift, action: Paste            }
+  #- { key: C,        mods: Control|Shift, action: Copy             }
+  #- { key: Insert,   mods: Shift,         action: PasteSelection   }
+  - { key: Key0,     mods: Control,       action: ResetFontSize    }
+  #- { key: Equals,   mods: Control,       action: IncreaseFontSize }
+  - { key: Plus,      mods: Control,       action: IncreaseFontSize }
+  #- { key: Subtract, mods: Control,       action: DecreaseFontSize }
+  - { key: Minus,    mods: Control,       action: DecreaseFontSize }
 
   # (macOS only)
   #- { key: K,              mods: Command, mode: ~Vi|~Search, chars: "\x0c"            }

@@ -192,18 +192,10 @@ font:
   #   x: 0
   #   y: -5
 
-  # Thin stroke font rendering (macOS only)
-  #
-  # Thin strokes are suitable for retina displays, but for non-retina screens
-  # it is recommended to set `use_thin_strokes` to `false`.
-  #use_thin_strokes: true
-  use_thin_strokes: false
-
-# If `true`, bold text is drawn using the bright color variants.
-draw_bold_text_with_bright_colors: true
-
 # Colors (Tomorrow Night Bright)
 colors:
+  # If `true`, bold text is drawn using the bright color variants.
+  draw_bold_text_with_bright_colors: true
   # Default colors
   primary:
     #background: '0x002b46'
@@ -528,7 +520,7 @@ mouse:
   # If this is `true`, the cursor is temporarily hidden when typing.
   #hide_when_typing: false
 
-  hints:
+  #hints:
     # URL launcher
     #
     # This program is executed when clicking on a text which is recognized as a
@@ -540,10 +532,10 @@ mouse:
     #   - (macOS) open
     #   - (Linux/BSD) xdg-open
     #   - (Windows) explorer
-    launcher:
-      program: chromium
-      args:
-        - --new-window
+    # launcher:
+    #   program: chromium
+    #   args:
+    #     - --new-window
 
     # URL modifiers
     #
@@ -782,7 +774,8 @@ mouse:
 #
 # If the same trigger is assigned to multiple actions, all of them are executed
 # in the order they were defined in.
-#key_bindings:
+# keyboard:
+#   bindings:
   #- { key: Paste,                                       action: Paste          }
   #- { key: Copy,                                        action: Copy           }
   #- { key: L,         mods: Control,                    action: ClearLogNotice }
@@ -875,7 +868,8 @@ mouse:
 #   - AppCursor
 #   - ~AppKeypad
 #   - AppKeypad
-key_bindings:
+keyboard:
+  bindings:
   # (Windows/Linux only)
   #- { key: V,        mods: Control|Shift, action: Paste            }
   #- { key: C,        mods: Control|Shift, action: Copy             }

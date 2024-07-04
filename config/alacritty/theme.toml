@@ -1,0 +1,172 @@
+[colors]
+draw_bold_text_with_bright_colors = true
+
+[[colors.indexed_colors]]
+color = "0x076678"
+index = 24
+
+[[colors.indexed_colors]]
+color = "0x427b58"
+index = 66
+
+[[colors.indexed_colors]]
+color = "0x9d0006"
+index = 88
+
+[[colors.indexed_colors]]
+color = "0x8f3f71"
+index = 96
+
+[[colors.indexed_colors]]
+color = "0x79740e"
+index = 100
+
+[[colors.indexed_colors]]
+color = "0x8ec07c"
+index = 108
+
+[[colors.indexed_colors]]
+color = "0x83a598"
+index = 109
+
+[[colors.indexed_colors]]
+color = "0xaf3a03"
+index = 130
+
+[[colors.indexed_colors]]
+color = "0xb57614"
+index = 136
+
+[[colors.indexed_colors]]
+color = "0xb8bb26"
+index = 142
+
+[[colors.indexed_colors]]
+color = "0xfb4934"
+index = 167
+
+[[colors.indexed_colors]]
+color = "0xd3569b"
+index = 175
+
+[[colors.indexed_colors]]
+color = "0xfe8019"
+index = 208
+
+[[colors.indexed_colors]]
+color = "0xfabd2f"
+index = 214
+
+[[colors.indexed_colors]]
+color = "0xebdbb2"
+index = 223
+
+[[colors.indexed_colors]]
+color = "0xf2e5bc"
+index = 228
+
+[[colors.indexed_colors]]
+color = "0xfbf1c7"
+index = 229
+
+[[colors.indexed_colors]]
+color = "0xf9f5d7"
+index = 230
+
+[[colors.indexed_colors]]
+color = "0x1d2021"
+index = 234
+
+[[colors.indexed_colors]]
+color = "0x282828"
+index = 235
+
+[[colors.indexed_colors]]
+color = "0x32302f"
+index = 236
+
+[[colors.indexed_colors]]
+color = "0x3c3836"
+index = 237
+
+[[colors.indexed_colors]]
+color = "0x504945"
+index = 239
+
+[[colors.indexed_colors]]
+color = "0x103030"
+index = 241
+
+[[colors.indexed_colors]]
+color = "0x7c6f64"
+index = 243
+
+[[colors.indexed_colors]]
+color = "0x928374"
+index = 244
+
+[[colors.indexed_colors]]
+color = "0x928374"
+index = 245
+
+[[colors.indexed_colors]]
+color = "0xa89984"
+index = 246
+
+[[colors.indexed_colors]]
+color = "0xbdae93"
+index = 248
+
+[[colors.indexed_colors]]
+color = "0xd5c4a1"
+index = 250
+
+[colors.bright]
+#black:   '0x7c6f64'
+black = "0xfc6f74" # comments in vim
+blue = "0x83a598"
+cyan = "0x8ec07c"
+green = "0xb8bb26"
+magenta = "0xd3869b"
+red = "0xfb4934"
+white = "0xebdbb2"
+yellow = "0xfabd2f"
+
+[colors.cursor]
+cursor = "0x22bb33"
+text = "0x88ff99"
+
+[colors.dim]
+black = "0x333333"
+blue = "0x6699cc"
+cyan = "0x66cccc"
+green = "0x99cc99"
+magenta = "0xcc99cc"
+red = "0xf2777a"
+white = "0xdddddd"
+yellow = "0xffcc66"
+
+[colors.normal]
+#black:   '0x002b46'
+#black:   '0x003E54'
+#black:   '0x004258'
+#black:   '0x004258'
+#black:   '0x004258'
+#black:   '0x222222'
+black = "0x005269"
+blue = "0x458588"
+cyan = "0x689d6a"
+green = "0x98971a"
+magenta = "0xb16286"
+red = "0xd54e53"
+white = "0xbdae93"
+yellow = "0xfe8019"
+
+[colors.primary]
+#background: '0x002b46'
+#background: '0x000000'
+#background: '0x222222'
+background = "0x005269"
+foreground = "0xebdbb2"
+
+

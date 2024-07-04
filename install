@@ -17,7 +17,11 @@ function create_all_links {
   link_file config/lynx
   link_file config/qutebrowser/qutebrowser.conf
   link_file config/qutebrowser/keys.conf
-  link_file config/alacritty/alacritty.yml
+  link_file config/alacritty/alacritty.toml
+  link_file config/alacritty/theme.toml
+  link_file config/alacritty/green.toml
+  link_file config/alacritty/font.toml
+  link_file config/alacritty/font-aquarius.toml
   link_file config/gtk-3.0/gtk.css
   link_file config/dunst/dunstrc
   link_file config/nvim/init.vim

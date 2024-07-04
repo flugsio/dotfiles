@@ -1,0 +1,16 @@
+[font]
+size = 16
+
+[font.normal]
+family = "Aquarius Mono Caps"
+style = "Normal"
+
+[font.offset]
+x = -3
+y = -9
+
+[font.glyph_offset]
+x = 0
+y = -5
+
+

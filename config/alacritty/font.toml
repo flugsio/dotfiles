@@ -1,0 +1,23 @@
+[font]
+# font ubuntu mono
+#size: 18.5
+#size: 33
+#size: 26
+# from toldi
+# 2560x1440 @ 32"
+#size: 15.5 # 3-way-diff
+#size: 18 # normal
+#size: 24 # pairing
+
+# font dejavu mono
+size = 22
+
+[font.normal]
+#family: monospace
+#family: Ubuntu Mono
+#family: Comic Mono
+#family: JetBrainsMono
+#family: Terminus
+#family: custom
+family = "Dejavu Sans Mono"
+style = "Bold"

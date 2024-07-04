@@ -1,0 +1,165 @@
+[[colors.indexed_colors]]
+color = "0x076678"
+index = 24
+
+[[colors.indexed_colors]]
+color = "0x22bb33"
+index = 66
+
+[[colors.indexed_colors]]
+color = "0x22bb33"
+index = 88
+
+[[colors.indexed_colors]]
+color = "0x22bb33"
+index = 96
+
+[[colors.indexed_colors]]
+color = "0x22bb33"
+index = 100
+
+[[colors.indexed_colors]]
+color = "0x22bb33"
+index = 108
+
+[[colors.indexed_colors]]
+color = "0x22bb33"
+index = 109
+
+[[colors.indexed_colors]]
+color = "0x22bb33"
+index = 130
+
+[[colors.indexed_colors]]
+color = "0x22bb33"
+index = 136
+
+[[colors.indexed_colors]]
+color = "0x22bb33"
+index = 142
+
+[[colors.indexed_colors]]
+color = "0x22bb33"
+index = 167
+
+[[colors.indexed_colors]]
+color = "0x22bb33"
+index = 175
+
+[[colors.indexed_colors]]
+color = "0x22bb33"
+index = 208
+
+[[colors.indexed_colors]]
+color = "0x22bb33"
+index = 214
+
+[[colors.indexed_colors]]
+color = "0x22bb33"
+index = 223
+
+[[colors.indexed_colors]]
+color = "0x22bb33"
+index = 228
+
+[[colors.indexed_colors]]
+color = "0x22bb33"
+index = 229
+
+[[colors.indexed_colors]]
+color = "0x22bb33"
+index = 230
+
+# vim status bar
+[[colors.indexed_colors]]
+color = "0x1d2021"
+index = 234
+#- { index: 234, color: '0x1d5061' }
+
+# tmux status bar, active vim tab
+[[colors.indexed_colors]]
+color = "0x282828"
+index = 235
+#- { index: 235, color: '0x306080' }
+
+[[colors.indexed_colors]]
+color = "0x32302f"
+index = 236
+
+[[colors.indexed_colors]]
+color = "0x3c3836"
+index = 237
+
+[[colors.indexed_colors]]
+color = "0x504945"
+index = 239
+
+# highlight text color in vim
+[[colors.indexed_colors]]
+color = "0x665c54"
+index = 241
+#- { index: 241, color: '0x004258' }
+#- { index: 241, color: '0x665c54' }
+
+[[colors.indexed_colors]]
+color = "0x7c6f64"
+index = 243
+
+[[colors.indexed_colors]]
+color = "0x928374"
+index = 244
+
+[[colors.indexed_colors]]
+color = "0x928374"
+index = 245
+
+[[colors.indexed_colors]]
+color = "0xa89984"
+index = 246
+
+[[colors.indexed_colors]]
+color = "0xbdae93"
+index = 248
+
+[[colors.indexed_colors]]
+color = "0xd5c4a1"
+index = 250
+
+[colors.bright]
+black = "0x7c6f64"
+blue = "0x83a598"
+cyan = "0x8ec07c"
+green = "0xb8bb26"
+magenta = "0xd3869b"
+red = "0xfb4934"
+white = "0xebdbb2"
+yellow = "0xfabd2f"
+
+[colors.cursor]
+cursor = "0x22bb33"
+text = "0x88ff99"
+
+[colors.dim]
+black = "0x333333"
+blue = "0x6699cc"
+cyan = "0x66cccc"
+green = "0x99cc99"
+magenta = "0xcc99cc"
+red = "0xf2777a"
+white = "0xdddddd"
+yellow = "0xffcc66"
+
+[colors.normal]
+black = "0x222222"
+blue = "0x88ff99"
+cyan = "0x88ff99"
+green = "0x88ff99"
+magenta = "0x88ff99"
+red = "0x88ff99"
+white = "0x88ff99"
+yellow = "0x88ff99"
+
+[colors.primary]
+background = "0x222222"
+foreground = "0x22bb33"
+

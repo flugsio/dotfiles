@@ -343,10 +343,10 @@ function mkde {
   vim log.md
 }
 # workaround frum with cd .
-alias be='cd .; bundle exec'
-alias ber='cd .; bundle exec rake'
-alias bb='cd .; bundle exec rspec $(ack byebug\$ spec --output=:: | sed s/::://)'
-alias berci='cd .; bundle exec rspec $(ci fail | xargs)'
+function be { cd .;  bundle exec $@ }
+function ber { cd .; bundle exec rake $@ }
+function bb { cd .; bundle exec rspec $(ack byebug\$ spec --output=:: | sed s/::://) $@ }
+function berci { cd .; bundle exec rspec $(ci fail | xargs) $@ }
 alias datei='date -u +"%Y%m%dT%H%M%SZ"'
 alias dts='date -u +"%Y%m%d"'
 alias dta='date -u +"%Y%m%d %H%M"'
@@ -359,8 +359,8 @@ function xkcd {
   feh $(curl -sL https://xkcd.com/$1/info.0.json | jq -r '.img') --info \
     "curl -sL https://xkcd.com/$1/info.0.json | jq -r '(.num | tostring) + \": \" + .title, .alt'"
 }
-alias bed='cd .; bundle exec rails db'
-alias bec='cd .; bundle exec rails console'
+function bed { cd .; bundle exec rails db $@ }
+function bec { cd .; bundle exec rails console $@ }
 alias brow='surf -x $url 2> /dev/null & firefox $url & chromium $url &'
 alias tag='([ -f tags ] && echo "Preparing tags" && ctags -R --exclude="@.gitignore" --exclude="@$HOME/.gitignore" || true)'
 alias bun='cd .; (bundle check || bundle install); mkbunlinks'

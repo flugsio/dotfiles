@@ -57,6 +57,8 @@ function main {
     forward) remote_forward "$@";;
     backward) remote_backward "$@";;
     syncthing) remote_syncthing "$@";;
+    selenium) remote_selenium "$@";;
+    selenium_server) selenium_server "$@";;
     weechat|w) remote_weechat "$@";;
     sshfs) remote_sshfs "$@";;
     watch) remote_watch "$@";;
@@ -159,18 +161,42 @@ function remote_syncthing {
   echo http://localhost:83${server}
   ssh_guest -L localhost:83${server}:localhost:8384
 }
+
+function remote_selenium {
+  echo "make sure local nginx is configured 443"
+  echo "start server in new terminal with: re selenium_server"
+  # this requires forward in local nginx with cert
+  #
+  ssh_guest \
+    -R localhost:4444:localhost:4444 \
+    -L localhost:4000:localhost:4000
+}
+
+function selenium_server {
+  local version="4.23.0"
+  local upstream="https://github.com/SeleniumHQ/selenium/releases/download/selenium-${version}/selenium-server-${version}.jar"
+  local file="$HOME/Downloads/selenium-server-${version}.jar"
+  [ -f "$file" ] || curl -Lo "$file" "$upstream"
+  java -jar "$file" standalone
+}
+
 function remote_num {
   printf "6%.3d" $1
 }
 function show_help {
   echo "REMOTE SCREENSHOTS"
   echo "  To watch screenshots from 32"
-  echo "  remote_sshfs 32"
+  echo "  re -s32 sshfs"
   echo "  feh ~/remote/32/screenshot.png &"
-  echo "  remote_watch 32 (keep running)"
-  echo "  remote_listen 32 (keep running)"
+  echo "  re watch (keep running)"
+  echo "  re listen 32 (keep running)"
   echo "  on server: (can be used as byebug display expression)"
   echo "  save_screenshot('~/code/screenshot.png')"
+  echo "REMOTE_SELENIUM"
+  echo "  re selenium"
+  echo "  re selenium_server"
+  echo "  re sshfs"
+  echo "export SHOW_BROWSER=1 SELENIUM_REMOTE=1 SELENIUM_HOST=localhost; be rspec spec/integration/wait_spec.rb"
 }
 function remote_sshfs {
   num=$(remote_num $server)

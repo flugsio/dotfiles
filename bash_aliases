@@ -695,9 +695,13 @@ function gbc {
   echo "gbc: commit body (ctrl-D to finish)"
   body=$(cat)
   if [ -n "$message" ]; then
-    local branch="$(echo $message | lowercase | sed 's/[^a-z]/-/g;s/-\+/-/g;s/\(^-\|-$\)//g')"
+    local branch="je-$(echo $message | lowercase | sed 's/[^a-z]/-/g;s/-\+/-/g;s/\(^-\|-$\)//g')"
     if [ "$opts" = "skip" ]; then
       branch="$branch-skip-ui-grafter"
+    elif [ "$opts" = "skip-ui" ]; then
+      branch="$branch-skip-ui"
+    elif [ "$opts" = "skip-grafter" ]; then
+      branch="$branch-skip-grafter"
     fi
     # cleans the branch name
     # replaces everything which isn't a-z, and then removes extra dashes

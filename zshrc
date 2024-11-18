@@ -53,6 +53,10 @@ fi
 export LYNX_CFG=~/.config/lynx/lynx.cfg
 export LYNX_LSS=~/.config/lynx/lynx.lss
 
+if type rg &> /dev/null; then
+  export FZF_DEFAULT_COMMAND='rg --files --hidden'
+fi
+
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
 

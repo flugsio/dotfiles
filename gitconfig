@@ -30,7 +30,8 @@
   b = branch
   d = diff
   s = status
-  c = commit -v
+  c = checkout
+  co = commit -v
   f = fetch --all
   p = pull
   u = push -u

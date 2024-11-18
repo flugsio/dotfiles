@@ -117,7 +117,7 @@ function refresh_prs {
       # limit to git recommended length, slack api is limited to 4000 characters (including the markdown syntax/urls)
       title=${title:0:50}
       title=$(echo $title | sed -E 's{(.*\] |)(.*){\1<'$url'|\2>{')
-      title=$(pt_links "$title")
+      title=$(story_links "$title")
     
       if [ -s "$SHOW_TIMES" ]; then
         content="$content%0A:op:$repo_short $title ${created_ago}h by $user"
@@ -151,7 +151,7 @@ function refresh_prs {
       #closed_ago=$(echo $((($(date +"%s")-$(date +"%s" -d "$closed_at"))/60)))
       title=${title:0:50}
       title=$(echo $title | sed -E 's{(.*\] |)(.*){\1<'$url'|\2>{')
-      title=$(pt_links "$title")
+      title=$(story_links "$title")
     
       if [ -s "$SHOW_TIMES" ]; then
         content="$content%0A:octagonal_sign:$repo_short $title ${created_ago}h by $user"
@@ -219,7 +219,7 @@ function refresh_prs_merged {
       closed_ago=$(echo $((($(date +"%s")-$(date +"%s" -d "$closed_at"))/60/60)))
       title=${title:0:50}
       title=$(echo $title | sed -E 's{(.*\] |)(.*){\1<'$url'|\2>{')
-      title=$(pt_links "$title")
+      title=$(story_links "$title")
     
       # TODO: who merged it, it's not included in the current api request
       if [ "$postfix" = "_daily" ]; then
@@ -254,7 +254,7 @@ function refresh_prs_merged {
       closed_ago=$(echo $((($(date +"%s")-$(date +"%s" -d "$closed_at"))/60/60)))
       title=${title:0:50}
       title=$(echo $title | sed -E 's{(.*\] |)(.*){\1<'$url'|\2>{')
-      title=$(pt_links "$title")
+      title=$(story_links "$title")
     
       if [ "$prev_repo" = "$repo_short" ]; then
         content_merged="$content_merged $title,"
@@ -325,8 +325,10 @@ function delete_slack {
   sleep 0.2
 }
 
-function pt_links {
-  echo $1 | sed -E 's{[،,\[]?#([[:digit:]]+)\]?{<https://pivotaltracker.com/story/show/\1/|#:p:>{g'
+function story_links {
+  echo $1 |\
+    sed -E 's{[،,\[]?#([[:digit:]]+)\]?{<https://pivotaltracker.com/story/show/\1/|:p:>{g' |\
+    sed -E 's{[،,\[]?#?([A-Z]+-[[:digit:]]+)\]?{<https://linear.app/promote/issue/\1/|:l:>{g'
 }
 
 main $@

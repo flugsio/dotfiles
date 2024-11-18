@@ -103,7 +103,7 @@ function refresh_prs {
       created_at=$(echo $pr | cut -d',' -f4 | sed 's/"//g')
       updated_at=$(echo $pr | cut -d',' -f5 | sed 's/"//g')
       closed_at=$(echo $pr | cut -d',' -f6 | sed 's/"//g')
-      comments=$(echo $pr | cut -d',' -f7)
+      #comments=$(echo $pr | cut -d',' -f7)
       repo_short=$(echo $url | cut -d'/' -f 5 | sed 's/promote-//' | cut -d'-' -f 1)
     
       created_ago=$(echo $((($(date +"%s")-$(date +"%s" -d "$created_at"))/60/60)))
@@ -128,9 +128,9 @@ function refresh_prs {
         content="$content%0A:op:$repo_short $title by $user"
       fi
       # this does not work with reviews
-      if [ "$comments" -gt 1 ] || [ "$repo_short" != "promote" -a "$comments" -gt 0 ]; then
-        content="$content:memo:${comments}"
-      fi
+      # if [ "$comments" -gt 1 ] || [ "$repo_short" != "promote" -a "$comments" -gt 0 ]; then
+      #   content="$content:memo:${comments}"
+      # fi
     done <<< $prs
   fi
   

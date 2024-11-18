@@ -77,19 +77,24 @@ function ci {
   elif [ "$1" = "fail" ]; then
     shift
     ci log $@ | grep -Po "(?<=^rspec ).*?(?= #)" | sort | uniq
+  elif [ "$1" = "failures.txt" ]; then
+    curl -Ls ${CI_URL}${job}/$build/artifact/failures.txt -L --user $JENKINS_USERTOKEN | sort | uniq
   elif [ "$1" = "error" ]; then # for vim
     shift
     ci log $@ | grep -Po "(?<=^rspec ).*" | sort | uniq
+  elif [ "$1" = "errors" ]; then # for vim
+    shift
+    ci log $@ | grep -Po "(?<=^rspec ).*" | sort | uniq -c
   else
     echo "no such command"
   fi
 }
 
 function ci_parse_job {
-  if [ -n "$1" ]; then
+  if [ -n "$1" ] && [ "$1" != "." ]; then
     echo "/job/${1//\//\/job\//}"
   else
-    echo "/job/${CI_PROJECTS[$(hubname)]//\%2F/\/job/}/job/$(active_branch)"
+    echo "/job/${CI_PROJECTS[$(hubname)]//\%2F//job/}/job/$(active_branch)"
   fi
 }
 
@@ -247,9 +252,9 @@ function cleanup {
 # invoker aliases
 function i {
   if command -v frum >/dev/null 2>&1; then
-    (frum local 3.1.2; invoker $@)
+    (frum local 3.3.2; invoker $@)
   else
-    (rbenv shell 3.2.1; invoker $@)
+    (rbenv shell 3.3.2; invoker $@)
   fi
 }
 alias istart='i start all -d'
@@ -257,11 +262,21 @@ alias iw='alias i{r,l,s,a,clear,log}; echo iA=run interactively'
 alias il='i list'
 alias ill='i list -r | grep -Po "(?<=Name |PID : ).*" | sed "/: /{N;s/\n/, /}" | column | ack --passthru Not'
 # These work on the argument list, or DEFAULT_RELOAD if set, or fallbacks to current directories processes
-function ir { for s in ${*:-${DEFAULT_RELOAD:-$(ihere)}}; do echo reload $s; i reload $s; done }
-function is { for s in ${*:-${DEFAULT_RELOAD:-$(ihere)}}; do echo remove $s; i remove $s; done }
-function ia { for s in ${*:-${DEFAULT_RELOAD:-$(ihere)}}; do echo add $s; i add $s; done }
-function icom { sed -n "/\[$1\]/,/^\[/p" ~/.invoker/all.ini | grep -Po "(?<=^command = ).*"; }
-function iA { is $1; eval " $(icom $1)"; }
+function ir {
+  for s in ${*:-${DEFAULT_RELOAD:-$(ihere)}}; do echo reload $s; i reload $s; done
+}
+function is {
+  for s in ${*:-${DEFAULT_RELOAD:-$(ihere)}}; do echo remove $s; i remove $s; done
+}
+function ia {
+  for s in ${*:-${DEFAULT_RELOAD:-$(ihere)}}; do echo add $s; i add $s; done
+}
+function icom {
+  sed -n "/\[$1\]/,/^\[/p" ~/.invoker/all.ini | grep -Po "(?<=^command = ).*";
+}
+function iA {
+  is $1; eval " $(icom $1)";
+}
 alias iclear='pkill -f "^tail.*.invoker/invoker.log"'
 alias ilog='tmux move-window -t9; while true; do clear; tmux clear-history; tail -n0 -F ~/.invoker/invoker.log; done'
 alias ilist="cat ~/.invoker/all.ini | sed -rn '/^\[/{N;s/\[([^]]*)\]\ndirectory = (.*)$/\1 \2/;p}'"
@@ -343,10 +358,18 @@ function mkde {
   vim log.md
 }
 # workaround frum with cd .
-function be { cd .;  bundle exec $@ }
-function ber { cd .; bundle exec rake $@ }
-function bb { cd .; bundle exec rspec $(ack byebug\$ spec --output=:: | sed s/::://) $@ }
-function berci { cd .; bundle exec rspec $(ci fail | xargs) $@ }
+function be {
+  cd .;  bundle exec $@
+}
+function ber {
+  cd .; bundle exec rake $@
+}
+function bb {
+  cd .; bundle exec rspec $(ack byebug\$ spec --output=:: | sed s/::://) $@
+}
+function berci {
+  cd .; bundle exec rspec $(ci fail | xargs) $@
+}
 alias datei='date -u +"%Y%m%dT%H%M%SZ"'
 alias dts='date -u +"%Y%m%d"'
 alias dta='date -u +"%Y%m%d %H%M"'
@@ -359,8 +382,12 @@ function xkcd {
   feh $(curl -sL https://xkcd.com/$1/info.0.json | jq -r '.img') --info \
     "curl -sL https://xkcd.com/$1/info.0.json | jq -r '(.num | tostring) + \": \" + .title, .alt'"
 }
-function bed { cd .; bundle exec rails db $@ }
-function bec { cd .; bundle exec rails console $@ }
+function bed {
+  cd .; bundle exec rails db $@
+}
+function bec {
+  cd .; bundle exec rails console $@
+}
 alias brow='surf -x $url 2> /dev/null & firefox $url & chromium $url &'
 alias tag='([ -f tags ] && echo "Preparing tags" && ctags -R --exclude="@.gitignore" --exclude="@$HOME/.gitignore" || true)'
 alias bun='cd .; (bundle check || bundle install); mkbunlinks'

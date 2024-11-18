@@ -3,19 +3,35 @@
 STORY_ID=${1:-$(xsel)}
 
 function main {
-  story=$(get_story)
-  echo "[#$STORY_ID] $(echo "$story" | jq -r .name)"
+  get_story
 }
 
 function get_story {
   if [ -n "$STORY_ID" ]; then
-    curl -s -X GET -H "X-TrackerToken: $PT_TOKEN" \
-      -H "Content-Type: application/json" \
-      "https://www.pivotaltracker.com/services/v5/projects/$PT_PROJECT_ID/stories/$STORY_ID"
+    if [[ "$STORY_ID" =~ ^#?[0-9] ]]; then
+      echo "[#$STORY_ID] $(get_pt_story_name)"
+    else
+      echo "[$STORY_ID] $(get_linear_story_name)"
+    fi
   else
-    echo "Aborted due to missing story name"
+    echo "Missing story name"
     exit
   fi
+}
+
+function get_pt_story_name {
+    curl -s -X GET -H "X-TrackerToken: $PT_TOKEN" \
+      -H "Content-Type: application/json" \
+      "https://www.pivotaltracker.com/services/v5/projects/$PT_PROJECT_ID/stories/$STORY_ID" |\
+      jq -r '.name'
+}
+
+function get_linear_story_name {
+  curl -s -X POST -H "Authorization: $LINEAR_TOKEN" \
+    -H "Content-Type: application/json" \
+    --data '{"query":"query Issue {  issue(id: \"'$STORY_ID'\") {title} }"}' \
+    https://api.linear.app/graphql |\
+    jq -r '.[keys_unsorted[0]].issue.title'
 }
 
 main

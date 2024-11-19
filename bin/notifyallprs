@@ -327,8 +327,8 @@ function delete_slack {
 
 function story_links {
   echo $1 |\
-    sed -E 's{[،,\[]?#([[:digit:]]+)\]?{<https://pivotaltracker.com/story/show/\1/|:p:#>{g' |\
-    sed -E 's{[،,\[]?#?([A-Z]+-[[:digit:]]+)\]?{<https://linear.app/promote/issue/\1/|:l:\1>{g'
+    sed -E 's^[،,\[]?(#[[:digit:]]{8,})\]?^<https://pivotaltracker.com/story/show/\1/|:p:\1>^g' |\
+    sed -E 's^[،,\[]?#?([A-Z]+-[[:digit:]]+)\]?^<https://linear.app/promote/issue/\1/|:l:\1>^g'
 }
 
 main $@

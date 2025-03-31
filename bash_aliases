@@ -69,7 +69,7 @@ function ci {
     curl -s ${CI_URL}/$2/api/json -L --user $JENKINS_USERTOKEN
   elif [ "$1" = "build" ]; then
     set -x
-    build="/build"
+    build="build"
     curl -XPOST -s ${CI_URL}${job}/$build -L --user $JENKINS_USERTOKEN
   elif [ "$1" = "buildparam" ]; then
     curl -XPOST -s ${CI_URL}${job}/buildWithParameters -L --user $JENKINS_USERTOKEN \
@@ -92,7 +92,7 @@ function ci {
 
 function ci_parse_job {
   if [ -n "$1" ] && [ "$1" != "." ]; then
-    echo "/job/${1//\//\/job\//}"
+    echo "/job/${1//\///job/}"
   else
     echo "/job/${CI_PROJECTS[$(hubname)]//\%2F//job/}/job/$(active_branch)"
   fi
@@ -411,6 +411,9 @@ alias windows2='rdesktop 192.168.1.188 -u Avidity -k sv -g 2550x1380 -r sound:of
 alias mkbunlinks='if [ -f "Gemfile" ]; then mkdir -p bunlinks && find bunlinks -type l -delete && cd bunlinks && bundle list --paths | xargs -L1 ln -s; cd .. ; else echo "not in Gemfile directory"; fi'
 alias perrbit='cd ~/code/promote3 && xsel > errbit_error.txt && vim errbit_error.txt -c "%s/\v^(.*gems.*gems\/)?([^(-)]*-\d\.)/bunlinks\/\2/e | %s/\v^([^(bunlinks|\/opt)].)/\1/e | %s/\v^\/opt\/promote\/releases\/\d+T\d+\///e | w | set errorformat=%f:%l%m | cbuffer | copen" && rm errbit_error.txt'
 alias cop='bun && be rubocop > rubocop_error.txt; vim rubocop_error.txt -c "set errorformat=%f:%l%m | cbuffer | copen" && rm rubocop_error.txt'
+function failvim {
+  ci error | vim - -c "set errorformat=%f:%l%m | cbuffer! | bd! 1 | copen"
+}
 alias textgraph="sort | uniq -c | sort -rn | perl -ane 'printf \"%30s %s\\n\", \$F[1], \"=\"x\$F[0];'"
 alias rgdb='gdb $(rbenv which ruby) $(pgrep -f "jobs:work" | head -n1)'
 alias glujc='gluj -m | egrep --color "[A-Z]|$"'
@@ -507,7 +510,7 @@ alias deleted_files_in_use="lsof +c 0 | grep 'DEL.*lib' | awk '1 { print $1 \": 
 alias windows_downtime="ruby -e \"require 'date'; puts (DateTime.now-Date.parse('2013-09-26')).to_i\""
 alias ltra="rbenv shell 2.3.5; ruby -e \"require 'date'; require 'time'; require 'active_support/all'; puts ((DateTime.parse('2018-02-15 18:30:00')-DateTime.parse('2017-08-17 23:30:00')).to_f)\""
 #alias mount_ql_demos='cd ~/.wine_ql/drive_c/users/flugsio/Application\ Data/id\ Software/quakelive/home/baseq3 && sudo mount -t tmpfs -o size=512M,noatime tmpfs ./demos'
-alias mount_donjon='mkdir ~/donjon; sudo mount -t tmpfs -o size=64M,noatime tmpfs ~/donjon && cd ~/donjon && git clone git@github.com:promoteinternational/donjon .'
+alias mount_donjon='mkdir ~/donjon; sudo mount -t tmpfs -o size=256M,noatime tmpfs ~/donjon && cd ~/donjon && git clone git@github.com:promoteinternational/donjon .'
 alias mkchangelog='surf -x -t hgmd.css | read HDSURFXID & (while read; do hoedown CHANGELOG.md > changelog.html; echo xprop -id $HDSURFXID -f _SURF_GO 8s -set _SURF_GO "file://$(pwd)/changelog.html" ; done; rm changelog.html)'
 function active_branch {
   if [ -z "$B" ]; then

@@ -412,8 +412,13 @@ alias mkbunlinks='if [ -f "Gemfile" ]; then mkdir -p bunlinks && find bunlinks -
 alias perrbit='cd ~/code/promote3 && xsel > errbit_error.txt && vim errbit_error.txt -c "%s/\v^(.*gems.*gems\/)?([^(-)]*-\d\.)/bunlinks\/\2/e | %s/\v^([^(bunlinks|\/opt)].)/\1/e | %s/\v^\/opt\/promote\/releases\/\d+T\d+\///e | w | set errorformat=%f:%l%m | cbuffer | copen" && rm errbit_error.txt'
 alias cop='bun && be rubocop > rubocop_error.txt; vim rubocop_error.txt -c "set errorformat=%f:%l%m | cbuffer | copen" && rm rubocop_error.txt'
 function failvim {
-  local build=${1:-lastBuild}
-  ci failures.txt "" $build | vim - -c "set errorformat=%f:%l%m | cbuffer! | bd! 1 | copen"
+  if [ $# = 0 ]; then
+    ci failures.txt
+  else
+    for build in $@; do
+      ci failures.txt "" $build
+    done
+  fi | sort | uniq | vim - -c "set errorformat=%f:%l%m | cbuffer! | bd! 1 | copen"
 }
 alias textgraph="sort | uniq -c | sort -rn | perl -ane 'printf \"%30s %s\\n\", \$F[1], \"=\"x\$F[0];'"
 alias rgdb='gdb $(rbenv which ruby) $(pgrep -f "jobs:work" | head -n1)'

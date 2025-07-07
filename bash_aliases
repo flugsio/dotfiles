@@ -111,6 +111,18 @@ function mo {
     curl -sb "$MONIT_COOKIE" "${MONIT_URL}${prefix}/status/hosts/list" | \
       jq '.records[] | select(.led != 2) | [(.hostname | sub(".promoteapp.net"; "")), .led, .statusid, .status] | @csv' -r | \
       column -s, -t
+  elif [ "$1" = "prune" ]; then
+    local dave_id=$(curl -sb "$MONIT_COOKIE" "${MONIT_URL}${prefix}/status/hosts/list" | \
+      jq '.records[] | select(.hostname == "dave.avidity.se") | .id')
+    local branches=$(curl -sb "$MONIT_COOKIE" "${MONIT_URL}${prefix}/status/hosts/get?id=$dave_id" | \
+      jq '.records.host.services[] | select((.name | test("^domain-.*-https$")) and .led != 2 and .events > 100) | .name' \
+      -r | sort | uniq)
+    for b in $(echo $branches); do
+      b="${b#domain-}"
+      b="${b%.dev.promoteapp.net-https}"
+      echo "pruning $b"
+      ci buildparam grafter/prune "GRAFTER_NAME=$b"
+    done
   elif [ "$1" = "list" ]; then
     curl -sb "$MONIT_COOKIE" "${MONIT_URL}${prefix}/status/hosts/list"
   elif [ "$1" = "login" ]; then
@@ -369,6 +381,14 @@ function bb {
 }
 function berci {
   cd .; bundle exec rspec $(ci fail | xargs) $@
+}
+function bunout {
+  bundle outdated
+  local IFS=$'\n'
+  for g in $(bundle outdated | sed -n '/Latest/,$p' | sed '1d' ); do
+    echo $g
+    bundle-stats versions $(echo $g | cut -d' ' -f1)
+  done
 }
 alias datei='date -u +"%Y%m%dT%H%M%SZ"'
 alias dts='date -u +"%Y%m%d"'

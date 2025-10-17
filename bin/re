@@ -163,10 +163,7 @@ function remote_syncthing {
 }
 
 function remote_selenium {
-  echo "make sure local nginx is configured 443"
   echo "start server in new terminal with: re selenium_server"
-  # this requires forward in local nginx with cert
-  #
   ssh_guest \
     -R localhost:4444:localhost:4444 \
     -L localhost:4000:localhost:4000

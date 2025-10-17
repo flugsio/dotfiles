@@ -72,8 +72,31 @@ function ci {
     build="build"
     curl -XPOST -s ${CI_URL}${job}/$build -L --user $JENKINS_USERTOKEN
   elif [ "$1" = "buildparam" ]; then
-    curl -XPOST -s ${CI_URL}${job}/buildWithParameters -L --user $JENKINS_USERTOKEN \
-      -F "$build"
+    shift 2
+    response=$(curl -s -D - -o /dev/null -XPOST -s ${CI_URL}${job}/buildWithParameters?delay=0sec \
+      -L --user $JENKINS_USERTOKEN "${@/#/-F }")
+    location=$(echo "$response" | grep -Po '(?i)^Location:\s*\Khttps?://[^\s\r]*')
+    # echo "${location}api/json"
+    for i in $(seq 200); do
+      result=$(curl -s "${location}api/json" --user $JENKINS_USERTOKEN | jq -r '.why // .executable.url')
+      if [[ "$result" = *operations/job* ]]; then
+        break
+      else
+        echo "$result"
+      fi
+      sleep 5
+    done
+    for i in $(seq 200); do
+      # curl "${result}api/json" --user $JENKINS_USERTOKEN -s | jq .
+      # echo
+      result2=$(curl "${result}api/json" --user $JENKINS_USERTOKEN -s | jq -r '.result // (.duration | tostring) + "/" + (.estimatedDuration | tostring)')
+      echo "$result2"
+      if [[ "$result2" != */* ]]; then
+        break
+        echo "$result"
+      fi
+      sleep 5
+    done
   elif [ "$1" = "fail" ]; then
     shift
     ci log $@ | grep -Po "(?<=^rspec ).*?(?= #)" | sort | uniq
@@ -297,6 +320,22 @@ function ihere {
   local p=$(pwd | sed "s#$HOME#~#")
   ilist | grep -E "$p($|\/)" | cut -f1 -d' ' | xargs echo
 }
+function iui {
+  local p=$(pwd | sed "s#$HOME#~#")
+  local services=$(ilist | grep -E "$p($|\/)" | cut -f1 -d' ')
+  local choice
+  while sleep 0.1; do
+    # in newer fzf: --mouse --bind click:accept
+    choice=$(echo -e "$services" | fzf --prompt="Restart: " || echo "")
+    if [ -n "$choice" ]; then
+      echo "Restarting: $choice"
+      ir $choice
+    else
+      echo "Nothing selected"
+    fi
+    sleep 2
+  done
+}
 
 # docker aliases
 function phere {
@@ -326,7 +365,7 @@ function doco {
     if [[ $PWD != *promote-docker* ]]; then
       cd ~/code/promote-docker
     fi
-    docker-compose $@
+    UID=$(id -u) GID=$(id -g) docker-compose $@
   )
 }
 # docker start
@@ -372,6 +411,12 @@ function mkde {
 # workaround frum with cd .
 function be {
   cd .;  bundle exec $@
+}
+function bes {
+  cd .; bundle exec rspec $@
+}
+function besb {
+  cd .; SHOW_BROWSER=1 SELENIUM_REMOTE=1 bundle exec rspec $@
 }
 function ber {
   cd .; bundle exec rake $@
@@ -772,7 +817,7 @@ $body"
 
     git push -u &&
       #openpr &&
-      (gh pr create -f || true)
+      ( ( [ "$opts" = "draft" ] && gh pr create -f --draft) || gh pr create -f || true)
          # &&
       #git checkout master &&
       #git branch -D "$branch"

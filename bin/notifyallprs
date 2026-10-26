@@ -276,7 +276,7 @@ function minutes_since_post {
     echo "$(( ($now - $posted_at) / 60 ))"
   else
     echo 2629800
-  end
+  fi
 }
 
 function delete_old_message {

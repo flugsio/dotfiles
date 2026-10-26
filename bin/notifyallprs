@@ -270,9 +270,13 @@ function refresh_prs_merged {
 }
 
 function minutes_since_post {
-  local now=$(date -u +%s)
-  local posted_at=$(cat "$HOME/.cache/notifypr_content" | jq -r .ts | cut -d. -f1)
-  echo "$(( ($now - $posted_at) / 60 ))"
+  if [ -e "$HOME/.cache/notifypr_content" ]; then
+    local now=$(date -u +%s)
+    local posted_at=$(cat "$HOME/.cache/notifypr_content" | jq -r .ts | cut -d. -f1)
+    echo "$(( ($now - $posted_at) / 60 ))"
+  else
+    echo 2629800
+  end
 }
 
 function delete_old_message {
@@ -308,14 +312,14 @@ function notify_slack_update {
 function create_slack {
   local text="$1"
   local output="$2"
-  curl -d "token=${SLACK_PROMOTEINT_TOKEN}" -d "channel=$recipient" -d "as_user=true" -d "link_names=true" --data-binary "text=${text}" https://slack.com/api/chat.postMessage -o "$output"
+  curl -d "token=${SLACK_PROMOTEINT_TOKEN}" -d "channel=$recipient" -d "as_user=true" -d "link_names=true" -d "unfurl_links=false" -d "unfurl_media=false" --data-binary "text=${text}" https://slack.com/api/chat.postMessage -o "$output"
   sleep 0.2
 }
 
 function update_slack {
   local text="$1"
   local ts="$2"
-  curl -d "token=${SLACK_PROMOTEINT_TOKEN}" -d "channel=$recipient" -d "as_user=true" -d "link_names=true" --data-binary "text=${text}" -d ts="$ts" https://slack.com/api/chat.update
+  curl -d "token=${SLACK_PROMOTEINT_TOKEN}" -d "channel=$recipient" -d "as_user=true" -d "link_names=true" -d "unfurl_links=false" -d "unfurl_media=false" --data-binary "text=${text}" -d ts="$ts" https://slack.com/api/chat.update
   sleep 0.2
 }
 
